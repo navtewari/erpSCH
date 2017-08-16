@@ -2,6 +2,17 @@
 <html lang="en">
     <head>
         <title>School ERP Software: Teamfreelancers</title>
+        <script>
+            site_url_ = <?PHP echo '"' . site_url() . '"'; ?>;
+            base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
+            <?php if($this->session->userdata('_current_year___')){?>
+                _current_year___ = <?php echo '"'.$this->session->userdata('_current_year___').'"'; ?>;
+                _previous_year___= <?php echo '"'.$this->session->userdata('_previous_year___').'"'; ?>;
+            <?php } else { ?>
+                _current_year___ = '1000'
+                _previous_year___= '999';
+            <?php } ?>
+        </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/bootstrap.min.css'); ?>" />
@@ -30,7 +41,7 @@
                         <li class="divider"></li>
                         <li><a href="#"><i class="icon-check"></i> My Tasks</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="icon-key"></i> Log Out</a></li>
+                        <li><a href="<?php echo site_url('login/logout');?>"><i class="icon-key"></i> Log Out</a></li>
                     </ul>
                 </li>                
                 <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li>

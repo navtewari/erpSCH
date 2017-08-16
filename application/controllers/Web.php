@@ -9,14 +9,8 @@ class Web extends CI_Controller {
         $this->load->model('my_model', 'mm');    
     }
 
-    public function index() {       
-        //$this->load->view('templates/header');       
-        $this->load->view('login');
-        //$this->load->view('templates/footer');
-    }  
-    
     public function dashboard($active = 1, $submenu = 'index') {       
-        //$data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'));
+        $this->check_login();
         $data['active'] = $active;
         
         // fetching page according to active status
@@ -24,7 +18,7 @@ class Web extends CI_Controller {
         $data['inner_page'] = $this->get_submenu($submenu);
         // ----------------------------------------s
 
-        $data['menu'] = $this->mm->getmenu('adm', 1);
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
         
         $this->load->view('templates/header');
@@ -57,5 +51,28 @@ class Web extends CI_Controller {
                 $inner_page = 'index';
         }
         return $inner_page;
+    }
+    function registration(){
+        $this -> check_login();
+
+        $data['breadCrumb'] = 'Register Student';
+        $data['title'] = 'Student Registration';
+
+        $data['class_in_session'] = $this-> clsm -> get_classes_in_sesson($this->session->userdata('_current_year___'));
+        $data['last_reg_'] = $this -> mm -> last_registration();
+        $data['country_'] = $this -> mm -> get_country();
+        $data['states_'] = $this -> mm -> get_states();
+
+        $data['menu_'] = $this -> mnum -> get_menu();
+        $data['submenu_'] = $this -> mnum -> get_submenu();
+
+        $this -> load -> view('templates/header', $data);
+        $this -> load -> view('registration/index',$data);
+        $this -> load -> view('templates/footer');
+    }
+    function check_login(){
+        if(! $this -> session -> userdata('_user___')){
+            redirect('login/logout');
+        }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2017 at 02:59 PM
+-- Generation Time: Aug 16, 2017 at 07:59 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -4913,7 +4913,7 @@ CREATE TABLE `menu_1` (
 INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 (1, 'icon icon-home', 'Dashboard', 'web/dashboard', 1),
 (2, 'icon icon-leaf', 'Master', 'x', 2),
-(3, 'icon icon-pencil', 'Register', 'web/registration', 3),
+(3, 'icon icon-pencil', 'Register', 'reg_adm', 3),
 (4, 'icon icon-pencil', 'Admission', 'web/admission', 4),
 (5, 'icon icon-pencil', 'Manage Student', 'x', 5),
 (6, 'icon icon-pencil', 'Fee', 'x', 6),
@@ -5951,17 +5951,17 @@ ALTER TABLE `master_15_subject_marks`
 -- AUTO_INCREMENT for table `menu_1`
 --
 ALTER TABLE `menu_1`
-  MODIFY `ID_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `menu_2_submenu`
 --
 ALTER TABLE `menu_2_submenu`
-  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- Constraints for dumped tables
 --
