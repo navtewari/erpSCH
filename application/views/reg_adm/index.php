@@ -6,26 +6,31 @@
             </div>
             <div class="widget-content nopadding">
                 <div class="control-group">
-                    <form class="form-horizontal" method="post" action="#" name="basic_validate" id="basic_validate" novalidate="novalidate">
-                        <div class="control-group">
-                            <label class="control-label">Select input</label>
+                    <?php
+                    $attrib_ = array(
+                        'class' => 'form-horizontal',
+                        'name' => 'frmFindStudent',
+                        'id' => 'frmFindStudent',
+                    );
+                    ?>
+                    <?php echo form_open('#', $attrib_); ?>
+                            <label class="control-label">Select Student</label>
                             <div class="controls">
-                                <select >
-                                    <option>First option</option>
-                                    <option>Second option</option>
-                                    <option>Third option</option>
-                                    <option>Fourth option</option>
-                                    <option>Fifth option</option>
-                                    <option>Sixth option</option>
-                                    <option>Seventh option</option>
-                                    <option>Eighth option</option>
-                                </select>
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbRegistrationID',
+                                    'id' => 'cmbRegistrationID',
+                                    'required' => 'required'
+                                );
+                                $options = array();
+                                $options[''] = 'Select Student';
+                            ?>
+                            <?php echo form_dropdown($data, $options, ''); ?>
                             </div>
-                        </div>
-                    </form>
+                    <?php echo form_close(); ?>
                 </div>
-            </div>            
-        </div>
+            </div>
+        </div>            
     </div>
 </div>
 <div class="row-fluid">
