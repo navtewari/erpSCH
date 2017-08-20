@@ -6,7 +6,8 @@
 
 <script src="<?php echo base_url('assets_/js/jquery.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.ui.custom.js');?>"></script> 
-<script src="<?php echo base_url('assets_/js/bootstrap.min.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/bootstrap.min.js');?>"></script>
+<script src="<?php echo base_url('assets_/js/myjs.js');?>?version=1.0"></script>  
 <script src="<?php echo base_url('assets_/js/bootstrap-colorpicker.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-datepicker.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.toggle.buttons.js');?>"></script> 
@@ -19,7 +20,7 @@
 <script src="<?php echo base_url('assets_/js/jquery.peity.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-wysihtml5.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/matrix.tables.js');?>"></script>
-<script src="<?php echo base_url('assets_/js/excanvas.min.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/excanvas.min.js');?>"></script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
