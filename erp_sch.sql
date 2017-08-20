@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 16, 2017 at 07:59 AM
+-- Generation Time: Aug 20, 2017 at 04:55 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -4913,8 +4913,8 @@ CREATE TABLE `menu_1` (
 INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 (1, 'icon icon-home', 'Dashboard', 'web/dashboard', 1),
 (2, 'icon icon-leaf', 'Master', 'x', 2),
-(3, 'icon icon-pencil', 'Register', 'reg_adm', 3),
-(4, 'icon icon-pencil', 'Admission', 'web/admission', 4),
+(3, 'icon icon-pencil', 'Register', 'web/dashboard/3', 3),
+(4, 'icon icon-pencil', 'Admission', 'web/dashboard/3', 4),
 (5, 'icon icon-pencil', 'Manage Student', 'x', 5),
 (6, 'icon icon-pencil', 'Fee', 'x', 6),
 (7, 'icon icon-pencil', 'Attendance', 'x', 7),
@@ -6013,30 +6013,6 @@ ALTER TABLE `fee_8_class_fee`
 ALTER TABLE `fee_9_class_fee_split`
   ADD CONSTRAINT `fee_9_class_fee_split_ibfk_1` FOREIGN KEY (`ST_HD_ID`) REFERENCES `fee_3_static_heads` (`ST_HD_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fee_9_class_fee_split_ibfk_2` FOREIGN KEY (`CFEEID`) REFERENCES `fee_8_class_fee` (`CFEEID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `master_7_stud_personal`
---
-ALTER TABLE `master_7_stud_personal`
-  ADD CONSTRAINT `master_7_stud_personal_ibfk_1` FOREIGN KEY (`regid`) REFERENCES `register_with_us` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `master_8_stud_academics`
---
-ALTER TABLE `master_8_stud_academics`
-  ADD CONSTRAINT `master_8_stud_academics_ibfk_1` FOREIGN KEY (`regid`) REFERENCES `register_with_us` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `master_9_stud_address`
---
-ALTER TABLE `master_9_stud_address`
-  ADD CONSTRAINT `master_9_stud_address_ibfk_1` FOREIGN KEY (`regid`) REFERENCES `register_with_us` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `master_10_stud_contact`
---
-ALTER TABLE `master_10_stud_contact`
-  ADD CONSTRAINT `master_10_stud_contact_ibfk_1` FOREIGN KEY (`regid`) REFERENCES `register_with_us` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `master_15_subject_marks`
