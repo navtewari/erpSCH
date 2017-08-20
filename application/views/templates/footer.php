@@ -13,13 +13,14 @@
 <script src="<?php echo base_url('assets_/js/jquery.flot.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.flot.resize.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.peity.min.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/jquery.gritter.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/fullcalendar.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.dashboard.js');?>"></script> 
-<script src="<?php echo base_url('assets_/js/jquery.gritter.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.interface.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.chat.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.validate.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/matrix.form_common.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.form_validation.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.wizard.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.uniform.js');?>"></script> 
@@ -27,6 +28,7 @@
 <script src="<?php echo base_url('assets_/js/matrix.popover.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.dataTables.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.tables.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/wysihtml5-0.3.0.js');?>"></script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

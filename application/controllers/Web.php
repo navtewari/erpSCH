@@ -9,13 +9,13 @@ class Web extends CI_Controller {
         $this->load->model('my_model', 'mm');    
     }
 
-    public function dashboard($active = 1, $submenu = 'index') {       
+    public function dashboard($active = 1, $submenu = 'index') {   
         $this->check_login();
-        $data['active'] = $active;
-        
+
         // fetching page according to active status
-        $data['page_'] = $this->get_page($active);
-        $data['inner_page'] = $this->get_submenu($submenu);
+        $data = $this->get_page($active);
+        $data['inner_page'] = $submenu;
+        $data['active'] = $active;
         // ----------------------------------------s
 
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
@@ -29,29 +29,23 @@ class Web extends CI_Controller {
     function get_page($active){
         switch($active){
             case 1:
-                $page_ = 'dashboard';
+                $data['page_'] = 'dashboard';
+                $data['title_'] = 'Dashboard';
                 break;
             case 2:
-                $page_ = 'master';
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master Entries';
+                break;
+            case 3:
+                $data['page_'] = 'reg_adm';
+                $data['title_'] = 'Registration';
                 break;
             default: 
-                $page_ = 'eror';
+                $data['page_'] = 'eror';
         }
-        return $page_;
+        return $data;
     }
-    function get_submenu($submenu){
-        switch($submenu){
-            case 1:
-                $inner_page = 'dashboard';
-                break;
-            case 2:
-                $inner_page = 'master';
-                break;
-            default: 
-                $inner_page = 'index';
-        }
-        return $inner_page;
-    }
+    
     function registration(){
         $this -> check_login();
 
