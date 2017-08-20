@@ -7,6 +7,7 @@ class Reg_adm extends CI_Controller {
         parent::__construct();    
         $this->load->model('my_model', 'mm');    
     }
+    
     function index($active = 1, $submenu = 'index'){
     	$this->check_login();
         $data['active'] = $active;
@@ -24,6 +25,7 @@ class Reg_adm extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }
+    
     function check_login(){
         if(! $this -> session -> userdata('_user___')) redirect('login/logout');
     }

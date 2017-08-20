@@ -16,8 +16,7 @@ class Web extends CI_Controller {
         $data = $this->get_page($active);
         $data['inner_page'] = $submenu;
         $data['active'] = $active;
-        // ----------------------------------------s
-
+        // ----------------------------------------
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
         
@@ -26,6 +25,7 @@ class Web extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }  
+    
     function get_page($active){
         switch($active){
             case 1:
@@ -34,7 +34,7 @@ class Web extends CI_Controller {
                 break;
             case 2:
                 $data['page_'] = 'master';
-                $data['title_'] = 'Master Entries';
+                $data['title_'] = 'Master / Sessions';
                 break;
             case 3:
                 $data['page_'] = 'reg_adm';

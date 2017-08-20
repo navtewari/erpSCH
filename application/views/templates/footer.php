@@ -20,6 +20,7 @@
 <script src="<?php echo base_url('assets_/js/bootstrap-wysihtml5.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/matrix.tables.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/excanvas.min.js');?>"></script> 
+<script src="<?php echo base_url('assets_/js/navJS.js');?>"></script> 
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
