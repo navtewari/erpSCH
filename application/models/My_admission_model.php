@@ -22,6 +22,17 @@ class My_admission_model extends CI_Model {
         return $query->result();
     }
 
+    function getClasses_in_session($session){
+        $this->db->where('SESSID', $session);
+        $this->db->select('CLSSESSID, CLASSID');
+        $query = $this->db->get('class_2_in_session');
+        return $query->result();
+    }
+
+    function getState(){
+        $query = $this->db->get('master_3_state_');
+        return $query->result();
+    }
     function _db_error(){
         //exception handling ------------------
         if ($this -> db -> trans_status() == FALSE) {

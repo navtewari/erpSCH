@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-media.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/select2.css');?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/uniform.css');?>" />
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css');?>" />
     </head>
     <body>
 

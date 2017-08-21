@@ -35,4 +35,13 @@ class Reg_adm extends CI_Controller {
         $data['students_'] = $this->mam->getstudents_for_dropdown();
         echo json_encode($data);
     }
+
+    function getClasses_in_session($session){
+        $data['class_in_session'] = $this->mam->getClasses_in_session($session);
+        echo json_encode($data);   
+    }
+    function getState(){
+        $data['state'] = $this->mam->getState();
+        echo json_encode($data);      
+    }
 }
