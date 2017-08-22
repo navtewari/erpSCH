@@ -22,7 +22,7 @@
 	    				<label class="control-label">City</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'City',
 	                            'autocomplete' => 'off',
@@ -37,7 +37,7 @@
 	    				<label class="control-label">District</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'District',
 	                            'autocomplete' => 'off',
@@ -52,7 +52,7 @@
 	    				<label class="control-label">Pin Code</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Profession',
 	                            'autocomplete' => 'off',
@@ -72,7 +72,7 @@
 	                                'id' => 'cmbPState',
 	                            );
 	                            $options = array();
-	                            $options[''] = 'Select State';
+	                            $options['-x-'] = 'Select State';
 	                        ?>
 	                        <?php echo form_dropdown($data, $options, ''); ?>
 	                        <div style="padding: 5px"></div>
@@ -82,7 +82,7 @@
 	    				<label class="control-label">Country</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Mobile No.',
 	                            'autocomplete' => 'off',
@@ -118,7 +118,7 @@
 	    				<label class="control-label">City</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'City',
 	                            'autocomplete' => 'off',
@@ -133,7 +133,7 @@
 	    				<label class="control-label">District</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'District',
 	                            'autocomplete' => 'off',
@@ -148,7 +148,7 @@
 	    				<label class="control-label">Pin Code</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Profession',
 	                            'autocomplete' => 'off',
@@ -168,7 +168,7 @@
 	                                'id' => 'cmbCState',
 	                            );
 	                            $options = array();
-	                            $options[''] = 'Select State';
+	                            $options['-x-'] = 'Select State';
 	                        ?>
 	                        <?php echo form_dropdown($data, $options, ''); ?>
 	                        <div style="padding: 5px"></div>
@@ -178,7 +178,7 @@
 	    				<label class="control-label">Country</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Mobile No.',
 	                            'autocomplete' => 'off',
@@ -193,7 +193,7 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
-                		<input type="button" value="Update" class="btn btn-success" onclick="submit_or_update_admission();">
+                		<input type="button" value="Update" class="btn btn-success submit_or_update_admission">
                 	</div>
               	</div>
 </div>

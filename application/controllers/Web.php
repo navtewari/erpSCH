@@ -39,9 +39,9 @@ class Web extends CI_Controller {
             case 3:
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';
-                $data['Personal'] = '';
+                $data['Personal'] = ' active';
                 $data['Parents'] = '';
-                $data['Address'] = ' active';
+                $data['Address'] = '';
                 break;
             default: 
                 $data['page_'] = 'eror';

@@ -44,4 +44,8 @@ class Reg_adm extends CI_Controller {
         $data['state'] = $this->mam->getState();
         echo json_encode($data);      
     }
+    function update_Admission(){
+        $data = $this->mam->update_Admission();
+        echo json_encode($data);
+    }
 }

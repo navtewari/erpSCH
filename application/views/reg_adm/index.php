@@ -1,18 +1,18 @@
 <div class="row-fluid">
+    <?php
+        $attrib_ = array(
+            'class' => 'form-vertical',
+            'name' => 'frmAdmission',
+            'id' => 'frmAdmission',
+        );
+        echo form_open('#', $attrib_); 
+    ?>
     <div class="span4">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Registration</h5>
             </div>
             <div class="widget-content">
-                <?php
-                    $attrib_ = array(
-                        'class' => 'form-vertical',
-                        'name' => 'frmFindStudent',
-                        'id' => 'frmFindStudent',
-                    );
-                    echo form_open('#', $attrib_); 
-                ?>
                 <div class="control-group">
                     <label class="control-label">Select Student</label>
                     <div class="controls">
@@ -44,11 +44,30 @@
                         </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label">Date of Admission <span style="font-size: 9px">(dd-mm-yyyy)</span></label>
                     <div class="controls">
-                        <input type="submit" value="Update" class="btn btn-success">
+                        <div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
+                        <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class'=>"span10",
+                                'data-date-format'=>"dd-mm-yyyy",
+                                'autocomplete' => 'off',
+                                'name' => 'txtDOA',
+                                'id' => 'txtDOA',
+                                'value'=> date('d-m-Y')
+                            );
+                            echo form_input($data);
+                        ?>
+                        <span class="add-on"><i class="icon-th"></i></span> 
+                        </div>
                     </div>
                 </div>
-                <?php echo form_close(); ?>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="button" value="Update" class="btn btn-success submit_or_update_admission">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -61,14 +80,6 @@
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#Address">Address</a></li>
                 </ul>
             </div>
-            <?php
-                $attrib_ = array(
-                    'class' => 'form-vertical',
-                    'name' => 'frmAdmission',
-                    'id' => 'frmAdmission',
-                );
-                echo form_open('#', $attrib_); 
-            ?>
             <div class="widget-content tab-content">
                 <div id="Personal" class="tab-pane<?php echo $Personal;?>">
                     <?php $this->load->view('reg_adm/tabs/personal'); ?>
@@ -80,9 +91,9 @@
                     <?php $this->load->view('reg_adm/tabs/contact'); ?>
                 </div>
             </div>
-            <?php echo form_close();?>
         </div>
     </div>
+    <?php echo form_close();?>
 </div>
 <div class="row-fluid">
         <?php $this->load->view('reg_adm/view_student_data'); ?>

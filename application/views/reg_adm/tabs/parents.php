@@ -19,7 +19,7 @@
 	    				<label class="control-label">Father's Mobile</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Mobile No.',
 	                            'autocomplete' => 'off',
@@ -49,7 +49,7 @@
 	    				<label class="control-label">Father's Profession</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Profession',
 	                            'autocomplete' => 'off',
@@ -81,7 +81,7 @@
 	    				<label class="control-label">Mother's Mobile</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Mobile No.',
 	                            'autocomplete' => 'off',
@@ -111,7 +111,7 @@
 	    				<label class="control-label">Father's Profession</label>
 	    				<?php
 	                        $data = array(
-	                            'type' => 'email',
+	                            'type' => 'text',
 	                            'class'=>"span11",
 	                            'placeholder' => 'Profession',
 	                            'autocomplete' => 'off',
@@ -125,7 +125,7 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
-                		<input type="button" value="Update" class="btn btn-success" onclick="submit_or_update_admission();">
+                		<input type="button" value="Update" class="btn btn-success submit_or_update_admission">
                 	</div>
               	</div>
 </div>

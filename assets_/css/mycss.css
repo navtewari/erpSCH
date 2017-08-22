@@ -1,0 +1,10 @@
+.gritter-success .gritter-item,
+.gritter-success .gritter-bottom,
+.gritter-success .gritter-top{
+	border-radius: 10px;
+	background: #30c203;
+    color: #fff;
+}
+.gritter-success .gritter-title {
+    text-shadow: none;
+}

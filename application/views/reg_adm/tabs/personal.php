@@ -16,7 +16,7 @@
 	                    ?>
 	    			</div>
 	    			<div class="controls span4">
-	    				<label class="control-label">Date of Birth <span style="font-size: 9px">(dd-mm-YYYY)</span></label>
+	    				<label class="control-label">Date of Birth <span style="font-size: 9px">(dd-mm-yyyy)</span></label>
 						<div class="controls">
 							<div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
 							<?php
@@ -37,17 +37,18 @@
 	    			</div>
 	    			<div class="controls span4">
 	    				<label class="control-label">Gender</label>
-						<div class="controls">
-							<label style="background:#f0f0f0; padding: 5px 5px; border: #E0E0E0 solid 1px">
+						<div class="controls" style="float: left; background:#f0f0f0; padding: 0px 10px; border: #E0E0E0 solid 1px">
+							<label style="float: left;margin-top: 5px;">
 			                  <input type="radio" name="optStuGender" id="optStuMale" value="M" />
-			                  Male
+			                  Male</label>
+			                  <label style="float: left;margin-top: 5px;">
 			                  &nbsp;&nbsp;&nbsp;&nbsp;|
 			                  <input type="radio" name="optStuGender" id="optStuFemale" value="F" />
 			                  Female</label>
 	    				</div>
 	    			</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group" style="clear: both;">
 					<div class="controls span4">
 						<label class="control-label">Contact <span style="font-size: 11px; color: #0000ff">(999) 999-9999</span></label>
 						<?php
@@ -92,7 +93,7 @@
 				</div>
 				<div class="control-group">
 					<div class="controls span12">
-                	<input type="button" value="Update" class="btn btn-success" onclick="submit_or_update_admission();">
+                	<input type="button" value="Update" class="btn btn-success submit_or_update_admission">
                 	</div>
               	</div>
 </div>
