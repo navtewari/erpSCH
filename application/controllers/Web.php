@@ -35,6 +35,8 @@ class Web extends CI_Controller {
             case 2:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / Sessions';
+                $this->load->model('my_master_model', 'mmm');
+                $data['session'] = $this->mmm->getsession_();
                 break;
             case 3:
                 $data['page_'] = 'reg_adm';

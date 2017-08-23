@@ -17,12 +17,13 @@
 <script src="<?php echo base_url('assets_/js/jquery.uniform.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/select2.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.js');?>"></script> 
-<script src="<?php echo base_url('assets_/js/matrix.form_common.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/wysihtml5-0.3.0.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.peity.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-wysihtml5.js');?>"></script>
+<script src="<?php echo base_url('assets_/js/jquery.dataTables.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/matrix.tables.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/excanvas.min.js');?>"></script>
+<script src="<?php echo base_url('assets_/js/matrix.form_common.js');?>"></script> 
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

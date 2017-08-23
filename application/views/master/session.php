@@ -56,54 +56,28 @@
 
     <div class="span6">
         <div class="widget-box">
-            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                <h5>Registration</h5>
+            <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>Existing Sessions</h5>
             </div>
-            <div class="widget-content">
-                <?php
-                    $attrib_ = array(
-                        'class' => 'form-vertical',
-                        'name' => 'frmFindStudent',
-                        'id' => 'frmFindStudent',
-                    );
-                    echo form_open('#', $attrib_); 
-                ?>
-                <div class="control-group">
-                    <label class="control-label">Select Student</label>
-                    <div class="controls">
-                        <?php
-                            $data = array(
-                                'name' => 'cmbRegistration',
-                                'id' => 'cmbRegistration',
-                                'required' => 'required'
-                            );
-                            $options = array();
-                            $options['new'] = 'New | New Student';
-                        ?>
-                        <?php echo form_dropdown($data, $options, ''); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Class of Admission</label>
-                        <div class="controls">
-                            <?php
-                                $data = array(
-                                    'name' => 'cmbClassofAdmission',
-                                    'id' => 'cmbClassofAdmission',
-                                    'required' => 'required'
-                                );
-                                $options = array();
-                                $options[''] = 'Select Class';
-                            ?>
-                            <?php echo form_dropdown($data, $options, ''); ?>
-                        </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <input type="submit" value="Update" class="btn btn-success">
-                    </div>
-                </div>
-                <?php echo form_close(); ?>
+            <div class="widget-content nopadding">
+                <table class="table table-bordered data-table">
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th>Session Start</th>
+                            <th>Session End</th>                 
+                        </tr>
+                    </thead>
+                    <tbody id="tabSession"> 
+                        <?php foreach ($session as $item) { ?>
+                            <tr class='gradeX'>
+                                <td><?php echo $item->SESSID; ?></td>
+                                <td><?php echo $item->SESSSTART; ?></td>
+                                <td><?php echo $item->SESSEND; ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

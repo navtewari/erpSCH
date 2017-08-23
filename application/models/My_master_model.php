@@ -12,7 +12,7 @@ class My_Master_model extends CI_Model {
     }
 
     function getsession_() {
-        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('SESSSTART', 'desc');
         $this->db->from('master_6_session');
         $query = $this->db->get();
         return $query->result();
