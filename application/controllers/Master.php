@@ -14,11 +14,10 @@ class Master extends CI_Controller {
         $data['session'] = $this->mmm->getsession_();
         echo json_encode($data);
     }
-    
 
-    function submitSession() {
-        $res_ = $this->mam->mcreate_session();
-        $this->session->set_flashdata('msg_all', $res_['msg_']);        
+    function create_Session() {
+        $data = $this->mmm->mcreate_session();
+        echo json_encode($data);
     }
 
 }

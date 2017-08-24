@@ -44,9 +44,9 @@
                         echo form_input($data);
                         ?>                                                   
                     </div>
-                    <div class="form-actions" align="right">
-                        <button type="submit" class="btn btn-success">Create New Session</button>
-                        <button type="submit" class="btn btn-primary">Reset</button>                             
+                    <div class="form-actions" align="right">                        
+                        <input type="button" value="Create New Session" class="btn btn-success sessionSubmit">
+                        <button type="reset" class="btn btn-primary">Reset</button>                             
                     </div>
                     <?php echo form_close(); ?>
                 </div>
@@ -68,14 +68,8 @@
                             <th>Session End</th>                 
                         </tr>
                     </thead>
-                    <tbody id="tabSession"> 
-                        <?php foreach ($session as $item) { ?>
-                            <tr class='gradeX'>
-                                <td><?php echo $item->SESSID; ?></td>
-                                <td><?php echo $item->SESSSTART; ?></td>
-                                <td><?php echo $item->SESSEND; ?></td>
-                            </tr>
-                        <?php } ?>
+                    <tbody id="tabSession1"> 
+                        
                     </tbody>
                 </table>
             </div>
