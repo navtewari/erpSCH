@@ -12,7 +12,7 @@ $(function(){
 	// Registration and Admission Forms scripts
 		function fillStudents(){
 			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
-
+			$('#cmbRegistrationID').empty();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -29,6 +29,7 @@ $(function(){
 		}
 		function fillClasses(){
 			url_ = site_url_ + "/reg_adm/getClasses_in_session/2017-18";
+			$('#cmbClassofAdmission').empty();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -45,6 +46,7 @@ $(function(){
 		}
 		function fillStates(selector){
 			url_ = site_url_ + "/reg_adm/getState";
+			$('#'+selector).empty();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -79,6 +81,14 @@ $(function(){
 					data: data_,
 					success: function(data){
 						var obj = JSON.parse(data);
+						// Resetting whole Form
+						$('#reset_me').click();
+						$('#cmbPState').find(":selected:first");
+						fillStudents();
+						fillClasses();
+						fillStates('cmbPState');
+						fillStates('cmbCState');
+						// --------------------
 						callSuccess(obj.msg_);
 					}, error: function(xhr, status, error){
 						callSuccess(xhr.responseText);

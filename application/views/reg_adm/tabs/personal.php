@@ -5,7 +5,7 @@
 	    				<?php
 	                        $data = array(
 	                            'type' => 'text',
-	                            'class'=>"span11",
+	                            'class'=>"span12",
 	                            'placeholder' => 'Full Name',
 	                            'autocomplete' => 'off',
 	                            'required' => 'required',
@@ -94,6 +94,7 @@
 				<div class="control-group">
 					<div class="controls span12">
                 	<input type="button" value="Update" class="btn btn-success submit_or_update_admission">
+                	<input type="reset" value="Cancel" class="btn btn-danger" id="reset_me">
                 	</div>
               	</div>
 </div>
