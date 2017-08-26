@@ -194,6 +194,7 @@
 				<div class="control-group">
 					<div class="controls">
                 		<input type="button" value="Update" class="btn btn-success submit_or_update_admission">
+                		<input type="button" value="Cancel" class="btn btn-danger reset_button_template">
                 	</div>
               	</div>
 </div>

@@ -254,6 +254,23 @@ class My_admission_model extends CI_Model {
         return $data;
     }
 
+    function get_admision_detail_1($regid_){
+        $this->db->select('a.STUD_ID, a.FNAME, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session e', 'b.CLASS_OF_ADMISSION=e.CLSSESSID');
+        $this->db->where('a.regid', $regid_);
+        //$this->db->where('b.STATUS_OF_ADMISSION', 0); //No Need as no registration table exists
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->row();
+    }
+    function get_admision_detail_2($regid_){ //Permanent Address
+        //$this->db->select('');
+    }
+    function get_admision_detail_3($regid_){ // Correspondance Address
+        //$this->db->select('');
+    }
     function _db_error(){
         //exception handling ------------------
         if ($this -> db -> trans_status() == FALSE) {

@@ -38,7 +38,7 @@
                                     'required' => 'required'
                                 );
                                 $options = array();
-                                $options[''] = 'Select Class';
+                                $options['x'] = 'Select Class';
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>
                         </div>

@@ -48,4 +48,10 @@ class Reg_adm extends CI_Controller {
         $data = $this->mam->update_Admission();
         echo json_encode($data);
     }
+    function get_admision_detail($regid){
+        $data['personal_academics'] = $this->mam->get_admision_detail_1($regid);
+        $data['address_permanent'] = $this->mam->get_admision_detail_2($regid);
+        $data['address_correspondance'] = $this->mam->get_admision_detail_3($regid);
+        echo json_encode($data);
+    }
 }
