@@ -14,7 +14,7 @@ class My_Master_model extends CI_Model {
     function getsession_() {
         $this->db->order_by('SESSSTART', 'desc');
         $this->db->from('master_6_session');
-        $query = $this->db->get();              
+        $query = $this->db->get();
 
         return $query->result();
     }
@@ -44,6 +44,25 @@ class My_Master_model extends CI_Model {
 
             if ($query == TRUE) {
                 $bool_ = array('res_' => TRUE, 'msg_' => 'Session created Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_session($sessID) {
+        $this->db->where('SESSID', $sessID);
+        $query = $this->db->get('class_2_in_session');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Classes Already Associated with ' . $sessID . '. Therefore it can not be deleted');
+        } else {
+            $this->db->where('SESSID', $sessID);
+            $query = $this->db->delete('master_6_session');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Session Deleted Successfully');
             } else {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }

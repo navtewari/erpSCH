@@ -60,12 +60,13 @@
                 <h5>Existing Sessions</h5>
             </div>
             <div class="widget-content nopadding">
-                <table class="table table-bordered data-table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th></th>                            
                             <th>Session</th>
                             <th>Session Start</th>
-                            <th>Session End</th>                 
+                            <th>Session End</th>
                         </tr>
                     </thead>
                     <tbody id="tabSession1"> 
