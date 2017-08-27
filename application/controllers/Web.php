@@ -45,6 +45,7 @@ class Web extends CI_Controller {
                 $data['Parents'] = '';
                 $data['Address'] = '';
                 break;
+
             default: 
                 $data['page_'] = 'eror';
         }

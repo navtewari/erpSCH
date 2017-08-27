@@ -265,11 +265,17 @@ class My_admission_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->row();
     }
-    function get_admision_detail_2($regid_){ //Permanent Address
-        //$this->db->select('');
+    function get_admision_detail_2($regid_, $type_){ //Permanent Address
+        $this->db->where('ADDRESS_STATUS', $type_);
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('master_9_stud_address');
+        return $query->result();
     }
-    function get_admision_detail_3($regid_){ // Correspondance Address
-        //$this->db->select('');
+    function get_admision_detail_3($regid_){ // Contact
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('master_10_stud_contact');
+        echo $this->db->last_query();
+        return $query->result();
     }
     function _db_error(){
         //exception handling ------------------

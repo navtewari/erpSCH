@@ -91,18 +91,22 @@ $(function(){
 					type: 'post',
 					url: url_,
 					success: function(data){
+						//address_permanent
+						//address_correspondance
+						//contact
 						var obj = JSON.parse(data);
-						$('#cmbClassofAdmission').val(obj.CLASS_OF_ADMISSION);
-						$('#s2id_cmbClassofAdmission span').text("Class "+obj.CLASSID);
-						if(obj.DOA != ''){
-							$('#txtDOA').val(obj.DOA);
+						alert(obj.personal_academics[0].CLASS_OF_ADMISSION);
+						$('#cmbClassofAdmission').val(obj.personal_academics.CLASS_OF_ADMISSION);
+						$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
+						if(obj.personal_academics.DOA != ''){
+							$('#txtDOA').val(obj.personal_academics.DOA);
 						}
-						$('#txtFullName').val(obj.FNAME);
-						if(obj.DOB_ != ''){
-							$('#txtStudDOB').val(obj.DOB_);
+						$('#txtFullName').val(obj.personal_academics.FNAME);
+						if(obj.personal_academics.DOB_ != ''){
+							$('#txtStudDOB').val(obj.personal_academics.DOB_);
 						}
-						$('#txtStudentPhone').val('9760020667');
-						$('#optStuMale').prop('checked', true);
+						alert(obj.contact.MOBILE_S);
+						$('#txtStudentPhone').val(obj.contact.MOBILE_S);
 					}, error: function(xhr, status, error){
 						alert(xhr.responseText);
 					}
