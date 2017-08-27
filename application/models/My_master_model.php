@@ -70,6 +70,60 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
+    function getclasses_() {
+        $this->db->order_by('ABS(CLASS)');
+        $query = $this->db->get('class_1_classes');
+        return $query->result();
+    }
+
+    function mdelete_class($classID) {
+        $this->db->where('CLASSID', $classID);
+        $query = $this->db->get('class_2_in_session');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Class ' . $classID . ' is already Associated with Session. Therefore it can not be deleted');
+        } else {
+            $this->db->where('CLASSID', $classID);
+            $query = $this->db->delete('class_1_classes');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Class Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mcreate_class() {
+        $class_ = trim($this->input->post('txtAddClass_'));
+        $section_ = trim($this->input->post('cmbClassSection'));
+        $class_id_ = $class_ . ($section_ != '-' ? $section_ : '');
+
+        $this->db->where('CLASSID', $class_id_);
+        $query = $this->db->get('class_1_classes');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Sorry! Class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> is already exists.');
+        } else {
+            $data = array(
+                'CLASSID' => $class_id_,
+                'CLASS' => $class_,
+                'SECTION' => $section_,
+                'DATE_' => date('Y-m-d H:i:s')
+            );
+            $query = $this->db->insert('class_1_classes', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> added successfully.');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> is already exists. Please check and try again.');
+            }
+        }
+
+        return $bool_;
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {

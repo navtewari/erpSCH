@@ -4,13 +4,13 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#newClass">New Class</a></li>
-                    <li><a data-toggle="tab" href="#sessionClass">Session Wise Class</a></li>                    
+                    <li><a data-toggle="tab" href="#sessionClass">Add Class in Session</a></li>                    
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="newClass" class="tab-pane active">
                     <div class="span6">
-                        <div class="widget-box">
+                        <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5>New Class</h5>
                             </div>
@@ -19,43 +19,108 @@
                                     <?php
                                     $attrib_ = array(
                                         'class' => 'form-horizontal',
-                                        'name' => 'frmSession',
-                                        'id' => 'frmSession',
+                                        'name' => 'frmClasses',
+                                        'id' => 'frmClasses',
                                     );
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
-                                    <label class="control-label">Session Start</label>
-                                    <div class="controls">                        
-                                        <?php
-                                        $data = array(
-                                            'type' => 'text',
-                                            'class' => 'datepicker span11',
-                                            'data-date-format' => 'mm-dd-yyyy',
-                                            'name' => 'startYear',
-                                            'id' => 'startYear',
-                                            'value' => date('d-m-Y'),
-                                            'required' => 'required'
-                                        );
-                                        echo form_input($data);
-                                        ?>                                                   
+                                    <div class="control-group">
+                                        <label class="control-label">New Class</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'type' => 'text',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span11',
+                                                'name' => 'txtAddClass_',
+                                                'id' => 'txtAddClass_',
+                                                'value' => ''
+                                            );
+                                            echo form_input($data);
+                                            ?>                                                  
+                                        </div>
                                     </div>
-                                    <label class="control-label">Session End</label>
-                                    <div class="controls">                        
-                                        <?php
-                                        $data = array(
-                                            'type' => 'text',
-                                            'class' => 'datepicker span11',
-                                            'data-date-format' => 'mm-dd-yyyy',
-                                            'name' => 'endYear',
-                                            'id' => 'endYear',
-                                            'value' => date('d-m-Y'),
-                                            'required' => 'required'
-                                        );
-                                        echo form_input($data);
-                                        ?>                                                   
+                                    <div class="control-group">
+                                        <label class="control-label">Section</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'class' => 'required form-control m-bot8',
+                                                'name' => 'cmbClassSection',
+                                                'id' => 'cmbClassSection',
+                                                'required' => 'required'
+                                            );
+                                            $options = array();
+                                            $options['-'] = 'No Section';
+                                            for ($class_ = 65; $class_ <= 90; $class_++) {
+                                                $options[chr($class_)] = chr($class_);
+                                            }
+                                            echo form_dropdown($data, $options, '-');
+                                            ?>                                                   
+                                        </div>
                                     </div>
                                     <div class="form-actions" align="right">                        
-                                        <input type="button" value="Create New Session" class="btn btn-success sessionSubmit">
+                                        <input type="button" value="Create New Class" class="btn btn-success classSubmit">
+                                        <button type="reset" class="btn btn-primary">Reset</button>                             
+                                    </div>
+                                    <?php echo form_close(); ?>
+                                </div>
+                            </div>            
+                        </div>
+                        
+                        <div class="widget-box" id="editClass" style="display:none">
+                            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                                <h5>Edit Class</h5>
+                            </div>
+                            <div class="widget-content nopadding">
+                                <div class="control-group">
+                                    <?php
+                                    $attrib_ = array(
+                                        'class' => 'form-horizontal',
+                                        'name' => 'frmClasses',
+                                        'id' => 'frmClasses',
+                                    );
+                                    ?>
+                                    <?php echo form_open('#', $attrib_); ?>
+                                    <div class="control-group">
+                                        <label class="control-label">New Class</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'type' => 'text',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span11',
+                                                'name' => 'txtAddClass_',
+                                                'id' => 'txtAddClass_',
+                                                'value' => ''
+                                            );
+                                            echo form_input($data);
+                                            ?>                                                  
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Section</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'class' => 'required form-control m-bot8',
+                                                'name' => 'cmbClassSection',
+                                                'id' => 'cmbClassSection',
+                                                'required' => 'required'
+                                            );
+                                            $options = array();
+                                            $options['-'] = 'No Section';
+                                            for ($class_ = 65; $class_ <= 90; $class_++) {
+                                                $options[chr($class_)] = chr($class_);
+                                            }
+                                            echo form_dropdown($data, $options, '-');
+                                            ?>                                                   
+                                        </div>
+                                    </div>
+                                    <div class="form-actions" align="right">                        
+                                        <input type="button" value="Create New Class" class="btn btn-success classSubmit">
                                         <button type="reset" class="btn btn-primary">Reset</button>                             
                                     </div>
                                     <?php echo form_close(); ?>
@@ -67,19 +132,17 @@
                     <div class="span6">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                <h5>Existing Sessions</h5>
+                                <h5>Existing Classes</h5>
                             </div>
-                            <div class="widget-content nopadding">
+                            <div class="widget-content nopadding" style="height:400px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th></th>                            
-                                            <th>Session</th>
-                                            <th>Session Start</th>
-                                            <th>Session End</th>
+                                            <th colspan="2">Options</th>                                            
+                                            <th style="text-align:left;width:80%">Class Name</th>                                           
                                         </tr>
                                     </thead>
-                                    <tbody id="tabSession1"> 
+                                    <tbody id="tabClass"> 
 
                                     </tbody>
                                 </table>
