@@ -32,6 +32,7 @@
     </head>
     <body>
     <div style="text-align: center; width: 100%">
+    <div id="loading_process" style="font-weight: bold; font-family: verdana; display: inline-block; opacity: 0; left:auto; right: auto; position: fixed; min-width: 100px; width: auto; height: auto; border-radius: 5px; padding: 5px; background: #F0F0F0; border: #808080 dotted 1px; color: 000000; margin-top: 2%; z-index: 99999"></div>
     </div>
         <!--Header-part-->
         <div id="header">
