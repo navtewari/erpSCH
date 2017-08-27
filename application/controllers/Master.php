@@ -14,20 +14,34 @@ class Master extends CI_Controller {
         $data['session'] = $this->mmm->getsession_();
         echo json_encode($data);
     }
-    
+
     function deletesession() {
         $data['session'] = $this->mmm->getsession_();
         echo json_encode($data);
     }
-    
 
     function create_Session() {
         $data = $this->mmm->mcreate_session();
         echo json_encode($data);
     }
-    
+
     function delete_Session($sessID) {
         $data = $this->mmm->mdelete_session($sessID);
+        echo json_encode($data);
+    }
+
+    function getclasses() {
+        $data['classes'] = $this->mmm->getclasses_();
+        echo json_encode($data);
+    }
+
+    function delete_Class($classID) {
+        $data = $this->mmm->mdelete_class($classID);
+        echo json_encode($data);
+    }
+
+    function create_Class() {
+        $data = $this->mmm->mcreate_class();
         echo json_encode($data);
     }
 

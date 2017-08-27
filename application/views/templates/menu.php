@@ -1,6 +1,6 @@
 <!--sidebar-menu-->
-<div id="sidebar"><a href="#" class="visible-phone">
-    <ul>
+<div id="sidebar"><a href="#" class="visible-phone">               
+    <ul>               
         <?php foreach ($menu as $menu_item) {?>
             <?php 
                 $cls = '';
@@ -15,7 +15,7 @@
                     }
                 }
                 if($cls != ''){$cls = ' class="'.$cls.'"';}
-            ?>
+            ?>        
             <li<?php echo $cls;?>><a href="<?php if($menu_item->PATH_ == 'x') { echo "#"; } else { echo site_url($menu_item->PATH_); } ?>"><i class="<?php echo $menu_item->PRE_ICON;?>"></i> <span><?php echo $menu_item->MENU;?></span> <?php if($menu_item->PATH_ == 'x') { echo '<span style="float: right; padding: 0px 5px 0px 5px"><i class="icon-chevron-down"></i></span>'; } ?></a> 
                 <?php if($menu_item->PATH_ == 'x') { ?>
                 <ul>

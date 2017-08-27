@@ -14,35 +14,39 @@
                     );
                     ?>
                     <?php echo form_open('#', $attrib_); ?>
-                    <label class="control-label">Session Start</label>
-                    <div class="controls">                        
-                        <?php
-                        $data = array(
-                            'type' => 'text',
-                            'class' => 'datepicker span11',
-                            'data-date-format' => 'mm-dd-yyyy',
-                            'name' => 'startYear',
-                            'id' => 'startYear',
-                            'value' => date('d-m-Y'),
-                            'required' => 'required'
-                        );
-                        echo form_input($data);
-                        ?>                                                   
+                    <div class="control-group">
+                        <label class="control-label">Session Start</label>
+                        <div class="controls">                        
+                            <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class' => 'datepicker span11',
+                                'data-date-format' => 'mm-dd-yyyy',
+                                'name' => 'startYear',
+                                'id' => 'startYear',
+                                'value' => date('d-m-Y'),
+                                'required' => 'required'
+                            );
+                            echo form_input($data);
+                            ?>                                                   
+                        </div>
                     </div>
-                    <label class="control-label">Session End</label>
-                    <div class="controls">                        
-                        <?php
-                        $data = array(
-                            'type' => 'text',
-                            'class' => 'datepicker span11',
-                            'data-date-format' => 'mm-dd-yyyy',
-                            'name' => 'endYear',
-                            'id' => 'endYear',
-                            'value' => date('d-m-Y'),
-                            'required' => 'required'
-                        );
-                        echo form_input($data);
-                        ?>                                                   
+                    <div class="control-group">
+                        <label class="control-label">Session End</label>
+                        <div class="controls">                        
+                            <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class' => 'datepicker span11',
+                                'data-date-format' => 'mm-dd-yyyy',
+                                'name' => 'endYear',
+                                'id' => 'endYear',
+                                'value' => date('d-m-Y'),
+                                'required' => 'required'
+                            );
+                            echo form_input($data);
+                            ?>                                                   
+                        </div>
                     </div>
                     <div class="form-actions" align="right">                        
                         <input type="button" value="Create New Session" class="btn btn-success sessionSubmit">
@@ -70,7 +74,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabSession1"> 
-                        
+
                     </tbody>
                 </table>
             </div>

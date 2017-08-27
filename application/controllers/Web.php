@@ -13,7 +13,7 @@ class Web extends CI_Controller {
         $this->check_login();
 
         // fetching page according to active status
-        $data = $this->get_page($active);
+        $data = $this->get_page($subno);
         $data['inner_page'] = $submenu;
         $data['active'] = $active;
         // ----------------------------------------

@@ -32,7 +32,6 @@
     </head>
     <body>
     <div style="text-align: center; width: 100%">
-        <div id="loading_process" style="font-weight: bold; font-family: verdana; display: inline-block; opacity: 0; left:auto; right: auto; position: fixed; min-width: 100px; width: auto; height: auto; border-radius: 5px; padding: 5px; background: #F0F0F0; border: #808080 dotted 1px; color: 000000; margin-top: 2%; z-index: 99999"></div>
     </div>
         <!--Header-part-->
         <div id="header">
@@ -48,11 +47,17 @@
                         <li class="divider"></li>
                         <li><a href="#"><i class="icon-check"></i> My Tasks</a></li>
                         <li class="divider"></li>
-                        <li><a href="<?php echo site_url('login/logout');?>"><i class="icon-key"></i> Log Out</a></li>
+                        <li><a href="<?php echo site_url('login/logout');?>"><i class="icon-key"></i> Log Out</a></li>                                               
                     </ul>
+<<<<<<< HEAD
                 </li>                
                 <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li>
                 <li class=""><a title="" href="<?php echo site_url('login/logout');?>"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+=======
+                </li>                                
+                <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+                <li class=""><a title="" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text"> &nbsp;Session <?php echo $this->session->userdata('_current_year___');?></span></a></li>
+>>>>>>> origin/master
             </ul>
         </div>
         <!--close-top-Header-menu-->
