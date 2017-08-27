@@ -9,6 +9,7 @@
     ?>
     <div class="span4">
         <div class="widget-box">
+            <div  style="border: #ff0000 solid 0px; width: 50px; height:50px; float: right; right: 0px; z-index: 2222; position: absolute;" id="student_photo_here"></div>
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Registration</h5>
             </div>

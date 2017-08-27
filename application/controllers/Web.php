@@ -48,7 +48,7 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Master / Classes';
                 break;
             default:
-                $data['page_'] = 'eror';
+                $data['page_'] = 'erorrs';
         }
         return $data;
     }

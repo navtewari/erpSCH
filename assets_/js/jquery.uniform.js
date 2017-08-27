@@ -24,7 +24,7 @@ Enjoy!
   $.uniform = {
     options: {
       selectClass:   'selector',
-      radioClass: 'radio',
+      //radioClass: 'radio',
       checkboxClass: 'checker',
       fileClass: 'uploader',
       filenameClass: 'filename',

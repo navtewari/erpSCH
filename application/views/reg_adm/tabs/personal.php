@@ -37,12 +37,11 @@
 	    			</div>
 	    			<div class="controls span4">
 	    				<label class="control-label">Gender</label>
-						<div class="controls" style="float: left; background:#f0f0f0; padding: 0px 10px; border: #E0E0E0 solid 1px">
-							<label style="float: left;margin-top: 5px;">
+						<div class="controls span12" style="float: left; background:#f0f0f0; padding: 0px 10px; border: #E0E0E0 solid 1px;">
+							<label style="float: left;margin-top: 5px;" class="span6">
 			                  <input type="radio" name="optStuGender" id="optStuMale" value="M" />
 			                  Male</label>
-			                  <label style="float: left;margin-top: 5px;">
-			                  &nbsp;&nbsp;&nbsp;&nbsp;|
+			                  <label style="float: left;margin-top: 5px;" class="span6">
 			                  <input type="radio" name="optStuGender" id="optStuFemale" value="F" />
 			                  Female</label>
 	    				</div>

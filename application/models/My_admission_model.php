@@ -140,6 +140,7 @@ class My_admission_model extends CI_Model {
             'FNAME' => $this->input->post('txtFullName'),
             'MNAME' => '-x-',
             'LNAME' => '-x-',
+            'PHOTO_' => 'no-image.jpg',
             'DOB_' => $this->input->post('txtStudDOB'),
             'GENDER' => $this->input->post('optStuGender'),
             'FATHER' => $this->input->post('txtFatherName'),
@@ -153,8 +154,8 @@ class My_admission_model extends CI_Model {
             'USERNAME_' => $this->session->userdata('_user___'),
             'DATE_' => date('Y-m-d H:i:s')
             );
+
             $dataAcademics = array(
-                'DOA' => $this->input->post('txtDOA'),
                 'CLASS_OF_ADMISSION' => $class_this_session,
                 'STATUS_OF_ADMISSION' => 0,
                 'ANY_REMARK' => '-x-',
@@ -177,7 +178,7 @@ class My_admission_model extends CI_Model {
                 'CITY_' => $this->input->post('txtPCity'),
                 'PIN_' => $this->input->post('txtPPinCode'),
                 'DISTT_' => $this->input->post('txtPDistt'),
-                'STATE_' => $this->input->post('txtPState'),
+                'STATE_' => $this->input->post('cmbPState'),
                 'COUNTRY_' => $this->input->post('txtPCountry'),
                 'ADDRESS_STATUS' => 'PERMANENT',
                 'USERNAME_' => $this->session->userdata('_user___'),
@@ -198,9 +199,11 @@ class My_admission_model extends CI_Model {
             $query = $this->db->update('master_7_stud_personal', $dataPersonal);
 
             $this->db->where('regid', $regid_);
+            $this->db->where('ADDRESS_STATUS', 'CORRESPONDANCE');
             $query = $this->db->update('master_9_stud_address', $dataCorresAdd);
 
             $this->db->where('regid', $regid_);
+            $this->db->where('ADDRESS_STATUS', 'PERMANENT');
             $query = $this->db->update('master_9_stud_address', $dataPerAdd);
 
             $this->db->where('regid', $regid_);
@@ -212,6 +215,18 @@ class My_admission_model extends CI_Model {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again...!!');
             }
         }
+
+        // Photo updation if selected by user to upload
+        $path_ = $this->upload_stud_pic($regid_);
+        if($path_ != 'x'){
+            $data = array(
+                'PHOTO_' => $path_
+                );
+            $this->db->where('regid', $regid_);
+            $this->db->update('master_7_stud_personal', $data);
+        }
+        // --------------------------------------------
+
         return $bool_;
     }
 
@@ -254,8 +269,29 @@ class My_admission_model extends CI_Model {
         return $data;
     }
 
-    function get_admision_detail_1($regid_){
-        $this->db->select('a.STUD_ID, a.FNAME, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
+    function upload_stud_pic($id){
+        clearstatcache();
+        $config = array(
+            'upload_path' => './assets_/student_photo',
+            'allowed_types' => 'jpg|png',
+            'max_size' => 250,
+            'file_name' => $id,
+            'overwrite' => TRUE,
+        );
+        $file_element_name = 'txtPhotoUpload';
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload($file_element_name)) {
+            $path_ji = $this->upload->data();
+            $path_ = $path_ji['file_name'];
+        } else {
+            $path_ = 'x';
+        }
+        return $path_;
+    }
+
+    function get_admission_detail_1($regid_){
+        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session e', 'b.CLASS_OF_ADMISSION=e.CLSSESSID');
@@ -265,11 +301,16 @@ class My_admission_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->row();
     }
-    function get_admision_detail_2($regid_){ //Permanent Address
-        //$this->db->select('');
+    function get_admission_detail_2($regid_, $type_){ //Permanent/Correspondance Addresses
+        $this->db->where('ADDRESS_STATUS', $type_);
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('master_9_stud_address');
+        return $query->row();
     }
-    function get_admision_detail_3($regid_){ // Correspondance Address
-        //$this->db->select('');
+    function get_admission_detail_3($regid_){ // Contact Detail
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('master_10_stud_contact');
+        return $query->row();
     }
     function _db_error(){
         //exception handling ------------------

@@ -1,5 +1,6 @@
 <div class="row-fluid">
 	    		<div class="control-group span6">
+	    			<h5>Father's Detail</h5>
 	    			<div class="controls">
 	    				<label class="control-label">Father's Name</label>
 	    				<?php
@@ -62,6 +63,7 @@
 	    			</div>
 				</div>
 				<div class="control-group span6">
+					<h5>Mother's Detail</h5>
 	    			<div class="controls">
 	    				<label class="control-label">Mother's Name</label>
 	    				<?php
