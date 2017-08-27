@@ -27,12 +27,14 @@ $(function(){
 					}
 					$('#s2id_cmbRegistrationID span').text("New | New Student");
 					$('#cmbRegistrationID').html(str_html);
+				}, error: function(xhr, status, error){
+					alert(xhr.responseText);
 				}
 			});
 		}
 		function fillClasses(){
 			$('#s2id_cmbClassofAdmission span').text("Loading...");
-			url_ = site_url_ + "/reg_adm/getClasses_in_session/2017-18";
+			url_ = site_url_ + "/reg_adm/getClasses_in_session";
 			$('#cmbClassofAdmission').empty();
 			$.ajax({
 				type: "POST",

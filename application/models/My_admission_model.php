@@ -11,10 +11,11 @@ class My_admission_model extends CI_Model {
         // --------------------
     }  
 
-    function getstudents_for_dropdown($classessid=''){
+    function getstudents_for_dropdown($session, $classessid=''){
     	if($classessid!=''){
     		$this->db->where('CLASS_OF_ADMISSION', 	$classessid);
     	}
+        $this->db->where('SESSIONID', $session)
     	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');

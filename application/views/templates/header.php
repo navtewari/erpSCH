@@ -54,7 +54,6 @@
                 <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li>
                 <li class=""><a title="" href="<?php echo site_url('login/logout');?>"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
                 </li>                                
-                <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
                 <li class=""><a title="" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text"> &nbsp;Session <?php echo $this->session->userdata('_current_year___');?></span></a></li>
             </ul>
         </div>
