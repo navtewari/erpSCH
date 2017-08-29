@@ -209,7 +209,39 @@ $(function(){
 		});
 	// ----------------------------------------
 
-	// Master Fee
+	// Master Fee -----------------------------
+		/**/// Flexible Heads below
+		function rest_static_head_form(){
+			$('#txtFeeStaticHead').val('');
+		}
+		$('#add_static_head').click(function(){
+			if($.trim($('#txtFeeStaticHead').val()) != ''){
+				url_ = site_url_ + "/master_fee/submit_static_fee_head";
+				data_ = 'txtFeeStaticHead='+$('#txtFeeStaticHead').val();
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							fill_static_fee_heads();
+							rest_static_head_form();
+						} else {
+							callDanger(obj.msg_);
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			} else {
+				callDanger("Please fill Static head.");
+				$('#txtFeeStaticHead').focus();
+			}
+		return false;
+		});
+
 		function fill_static_fee_heads(){
 			url_ = site_url_ + "/master_fee/get_static_fee_heads";
 			loading_process();
@@ -237,32 +269,6 @@ $(function(){
 				}
 			});
 		}
-		$('#add_static_head').click(function(){
-			if($.trim($('#txtFeeStaticHead').val()) != ''){
-				url_ = site_url_ + "/master_fee/submit_static_fee_head";
-				data_ = 'txtFeeStaticHead='+$('#txtFeeStaticHead').val();
-				$.ajax({
-					type: "POST",
-					url: url_,
-					data: data_,
-					success: function(data){
-						var obj = JSON.parse(data);
-						if(obj.res_ == true){
-							callSuccess(obj.msg_);
-							fill_static_fee_heads();
-						} else {
-							callDanger(obj.msg_);
-						}
-					}, error: function(xhr, status, error){
-						callDanger(xhr.responseText);
-					}
-				});
-			} else {
-				callDanger("Please fill Static head.");
-				$('#txtFeeStaticHead').focus();
-			}
-		return false;
-		});
 
 		$('body').on('click', '.edit_static_head_', function () {
 			var str = this.id;
@@ -324,6 +330,149 @@ $(function(){
 				callDanger("Please fill Static head.");
 				$('#txtFeeStaticHead_edit').focus();
 			}
+		});
+
+		/**/// Flexible Heads below
+		function rest_flexi_head_form(){
+			$('#txtFeeFlexibleHead').val('');
+			$('#txtFeeFlexibleHeadAmt').val('');
+		}
+		$('#add_flexible_head').click(function(){
+			if($.trim($('#txtFeeFlexibleHead').val()) != '' && $.trim($('#txtFeeFlexibleHeadAmt').val()) != '' && isNaN($('#txtFeeFlexibleHeadAmt').val()) == false){
+				url_ = site_url_ + "/master_fee/submit_flexible_fee_head";
+				data_ = 'txtFeeFlexibleHead='+$('#txtFeeFlexibleHead').val()+'&txtFeeFlexibleHeadAmt='+$.trim($('#txtFeeFlexibleHeadAmt').val());
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							fill_flexible_fee_heads();
+							rest_flexi_head_form();
+						} else {
+							callDanger(obj.msg_);
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			} else {
+				callDanger("Please fill Flexible head and amount both and amount should be numeric.");
+				if($.trim($('#txtFeeFlexibleHead').val()) == ''){
+					$('#txtFeeFlexibleHead').focus();
+				} else {
+					$('#txtFeeFlexibleHeadAmt').focus();
+				}
+			}
+		return false;
+		});
+
+		function fill_flexible_fee_heads(){
+			url_ = site_url_ + "/master_fee/get_flexible_heads";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.flexi_heads.length; i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
+						str_html = str_html + obj.flexi_heads[i].FEE_HEAD;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td  style="text-align: right" class="taskDesc">'+ obj.flexi_heads[i].AMOUNT;
+						str_html = str_html + '</td>'
+						str_html = str_html + '<td class="taskOptions">';
+						str_html = str_html + '<a href="#" class="tip edit_flexible_head_" id="EditFlexibleHead~'+ obj.flexi_heads[i].FLX_HD_ID + '~'+ obj.flexi_heads[i].FEE_HEAD + '~' + obj.flexi_heads[i].AMOUNT + '"><i class="icon-pencil"></i></a> | ';
+						str_html = str_html + '<a href="#" class="tip delete_flexible_head_" id="'+ obj.flexi_heads[i].FLX_HD_ID + '"><i class="icon-remove"></i></a>';
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>'
+					}
+					$('#flexible_fee_heads_here').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+
+		$('body').on('click', '.edit_flexible_head_', function () {
+			var str = this.id;
+			arr_str = str.split('~');
+			static_head_id = arr_str[1];
+			$('#edit_flexible_head_panel').css('display', 'block');
+			$('#txtFlexibleHead_edit').val(arr_str[2]);
+			$('#txtFlexibleHeadAmt_edit').val(arr_str[3])
+			$('#txtFlexID_edit').val(arr_str[1]);
+			$('#txtFlexibleHead_edit').focus();
+		});
+
+		$('#update_flexible_head').click(function(){
+			if($.trim($('#txtFlexibleHead_edit').val()) != '' && $.trim($('#txtFlexibleHeadAmt_edit').val()) != '' && isNaN($('#txtFlexibleHeadAmt_edit').val()) == false){
+				url_ = site_url_ + "/master_fee/update_flexible_head";
+				data_ = "txtFlexibleHead_edit="+$('#txtFlexibleHead_edit').val()+"&txtFlexID_edit="+$('#txtFlexID_edit').val()+"&txtFlexibleHeadAmt_edit="+$('#txtFlexibleHeadAmt_edit').val();
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						$('#txtFlexibleHead_edit').val("");
+						$('#txtFlexibleHeadAmt_edit').val("");
+						$('#txtFlexID_edit').val("");
+						$('#edit_flexible_head_panel').css('display', 'none');
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							fill_flexible_fee_heads();
+						} else {
+							callDanger(obj.msg_);
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			} else {
+				callDanger("For updation: Please fill Flexible head and amount both and amount should be numeric.");
+				if($.trim($('#txtFlexibleHead_edit').val()) == ''){
+					$('#txtFlexibleHead_edit').focus();
+				} else {
+					$('#txtFlexibleHeadAmt_edit').focus();
+				}
+			}
+		});
+		$('.cancel_flexible_head_update').click(function(){
+			$('#edit_flexible_head_panel').css('display', 'none');
+		});
+		$('body').on('click', '.edit_static_head_', function () {
+			var str = this.id;
+			arr_str = str.split('~');
+			static_head_id = arr_str[1];
+			$('#edit_static_head_panel').css('display', 'block');
+			$('#txtFeeStaticHead_edit').val(arr_str[2]);
+			$('#txtID_edit').val(arr_str[1]);
+			$('#txtFeeStaticHead_edit').focus();
+		});
+
+		$('body').on('click', '.delete_flexible_head_', function () {
+			url_ = site_url_ + "/master_fee/delete_flexible_head/"+this.id;
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == true){
+						callSuccess(obj.msg_);
+						fill_flexible_fee_heads();
+					} else {
+						callDanger(obj.msg_);
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
 		});
 	// ----------
 	// Popup boxes
