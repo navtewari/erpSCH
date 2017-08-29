@@ -3,12 +3,12 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#newClass">New Class</a></li>
+                    <li class="active"><a data-toggle="tab" href="#newClassEntry">New Class</a></li>
                     <li><a data-toggle="tab" href="#sessionClass">Add Class in Session</a></li>                    
                 </ul>
             </div>
             <div class="widget-content tab-content">
-                <div class="tab-pane active">
+                <div class="tab-pane active" id="newClassEntry">
                     <div class="span6">
                         <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
