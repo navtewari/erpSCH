@@ -31,13 +31,13 @@ class Reg_adm extends CI_Controller {
         if(! $this -> session -> userdata('_user___')) redirect('login/logout');
     }
     
-    function getstudents_for_dropdown(){
-        $data['students_'] = $this->mam->getstudents_for_dropdown();
+    function getstudents_for_dropdown($studid=''){
+        $data['students_'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'), $studid);
         echo json_encode($data);
     }
 
-    function getClasses_in_session($session){
-        $data['class_in_session'] = $this->mam->getClasses_in_session($session);
+    function getClasses_in_session(){
+        $data['class_in_session'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
         echo json_encode($data);   
     }
     function getState(){
