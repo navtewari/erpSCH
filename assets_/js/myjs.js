@@ -9,8 +9,18 @@ $(function(){
 			fillStates('cmbCState');
 		}
 	});
-
 	// Registration and Admission Forms scripts
+		function reloadme(){
+			location.reload(true);
+		}
+		function fillStudents_in_table(){
+			//student_data_here
+			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
+			str = '';
+			str = '<tr class="gradeX odd"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>';
+			str = str + '<tr class="gradeX even"><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>';
+			$('#student_data_here').html(str);
+		}
 		function fillStudents(){
 			$('#s2id_cmbRegistrationID span').text("Loading...");
 			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
@@ -85,6 +95,9 @@ $(function(){
 				fillStates('cmbCState');
 			// --------------------
 		}
+		$('#reload_me').click(function(){
+			reloadme();
+		});
 		$('#cmbRegistrationID').change(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
 				reset_admission_form();
@@ -196,6 +209,123 @@ $(function(){
 		});
 	// ----------------------------------------
 
+	// Master Fee
+		function fill_static_fee_heads(){
+			url_ = site_url_ + "/master_fee/get_static_fee_heads";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.static_heads.length; i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
+						str_html = str_html + obj.static_heads[i].FEE_HEAD;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td class="taskOptions">';
+						str_html = str_html + '<a href="#" class="tip edit_static_head_" id="EditStaticHead~'+ obj.static_heads[i].ST_HD_ID + '~'+ obj.static_heads[i].FEE_HEAD + '"><i class="icon-pencil"></i></a> | ';
+						str_html = str_html + '<a href="#" class="tip delete_static_head_" id="'+ obj.static_heads[i].ST_HD_ID + '"><i class="icon-remove"></i></a>';
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>'
+					}
+					$('#static_fee_heads_here').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		$('#add_static_head').click(function(){
+			if($.trim($('#txtFeeStaticHead').val()) != ''){
+				url_ = site_url_ + "/master_fee/submit_static_fee_head";
+				data_ = 'txtFeeStaticHead='+$('#txtFeeStaticHead').val();
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							fill_static_fee_heads();
+						} else {
+							callDanger(obj.msg_);
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			} else {
+				callDanger("Please fill Static head.");
+				$('#txtFeeStaticHead').focus();
+			}
+		return false;
+		});
+
+		$('body').on('click', '.edit_static_head_', function () {
+			var str = this.id;
+			arr_str = str.split('~');
+			static_head_id = arr_str[1];
+			$('#edit_static_head_panel').css('display', 'block');
+			$('#txtFeeStaticHead_edit').val(arr_str[2]);
+			$('#txtID_edit').val(arr_str[1]);
+			$('#txtFeeStaticHead_edit').focus();
+		});
+
+		$('body').on('click', '.delete_static_head_', function () {
+			url_ = site_url_ + "/master_fee/deleteStatichead/"+this.id;
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == true){
+						callSuccess(obj.msg_);
+						fill_static_fee_heads();
+					} else {
+						callDanger(obj.msg_);
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
+
+		$('.cancel_static_head_update').click(function(){
+			$('#edit_static_head_panel').css('display', 'none');
+		});
+
+		$('#update_static_head').click(function(){
+			if($.trim($('#txtFeeStaticHead_edit').val()) != ''){
+				url_ = site_url_ + "/master_fee/update_static_head";
+				data_ = "txtFeeStaticHead_edit="+$('#txtFeeStaticHead_edit').val()+"&txtID_edit="+$('#txtID_edit').val();
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						$('#txtFeeStaticHead_edit').val("");
+						$('#txtID_edit').val("");
+						$('#edit_static_head_panel').css('display', 'none');
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							fill_static_fee_heads();
+						} else {
+							callDanger(obj.msg_);
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			} else {
+				callDanger("Please fill Static head.");
+				$('#txtFeeStaticHead_edit').focus();
+			}
+		});
+	// ----------
 	// Popup boxes
 		function callDanger(message){
 			$.gritter.add({

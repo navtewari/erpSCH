@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.3
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2017 at 06:59 AM
+-- Generation Time: Aug 29, 2017 at 04:43 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -14,13 +14,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `erp_sch`
 --
-CREATE DATABASE IF NOT EXISTS `erp_sch` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `erp_sch`;
 
 -- --------------------------------------------------------
 
@@ -28,12 +26,11 @@ USE `erp_sch`;
 -- Table structure for table `class_1_classes`
 --
 
-CREATE TABLE IF NOT EXISTS `class_1_classes` (
+CREATE TABLE `class_1_classes` (
   `CLASSID` varchar(10) NOT NULL,
   `CLASS` varchar(100) NOT NULL,
   `SECTION` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLASSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -79,16 +76,13 @@ INSERT INTO `class_1_classes` (`CLASSID`, `CLASS`, `SECTION`, `DATE_`) VALUES
 -- Table structure for table `class_2_in_session`
 --
 
-CREATE TABLE IF NOT EXISTS `class_2_in_session` (
-  `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_2_in_session` (
+  `CLSSESSID` int(15) NOT NULL,
   `CLASSID` varchar(10) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `STATUS_` tinyint(1) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLSSESSID`),
-  KEY `CLASSID` (`CLASSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=427 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_2_in_session`
@@ -163,20 +157,15 @@ INSERT INTO `class_2_in_session` (`CLSSESSID`, `CLASSID`, `SESSID`, `STATUS_`, `
 -- Table structure for table `class_3_class_wise_students`
 --
 
-CREATE TABLE IF NOT EXISTS `class_3_class_wise_students` (
-  `ID_` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_3_class_wise_students` (
+  `ID_` int(15) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSID` varchar(20) NOT NULL,
-  PRIMARY KEY (`ID_`),
-  KEY `regid` (`regid`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `USERNAME_` (`USERNAME_`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=430 ;
+  `SESSID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_3_class_wise_students`
@@ -618,8 +607,8 @@ INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`
 -- Table structure for table `class_4_class_wise_attendance`
 --
 
-CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
-  `ATTID` bigint(22) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_4_class_wise_attendance` (
+  `ATTID` bigint(22) NOT NULL,
   `regid` varchar(25) CHARACTER SET latin1 NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
@@ -627,9 +616,8 @@ CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
   `DATE_` varchar(15) CHARACTER SET latin1 NOT NULL,
   `TIME_` varchar(12) CHARACTER SET latin1 NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
-  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ATTID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=80 ;
+  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_4_class_wise_attendance`
@@ -722,12 +710,11 @@ INSERT INTO `class_4_class_wise_attendance` (`ATTID`, `regid`, `ROLLNO`, `CLSSES
 -- Table structure for table `exam_1_scholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_1_scholastic_items` (
-  `itemID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_1_scholastic_items` (
+  `itemID` int(10) NOT NULL,
   `item` varchar(200) CHARACTER SET utf8 NOT NULL,
-  `maxMarks` int(3) NOT NULL,
-  PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  `maxMarks` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_1_scholastic_items`
@@ -746,15 +733,14 @@ INSERT INTO `exam_1_scholastic_items` (`itemID`, `item`, `maxMarks`) VALUES
 -- Table structure for table `exam_2_add_scholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_2_add_scholastic_to_class` (
-  `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_2_add_scholastic_to_class` (
+  `ADDSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `itemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_2_add_scholastic_to_class`
@@ -778,11 +764,10 @@ INSERT INTO `exam_2_add_scholastic_to_class` (`ADDSCHCLASSID`, `CLSSESSID`, `SES
 -- Table structure for table `exam_3_coscholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_3_coscholastic_items` (
-  `coitemID` int(10) NOT NULL AUTO_INCREMENT,
-  `coitem` varchar(200) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`coitemID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+CREATE TABLE `exam_3_coscholastic_items` (
+  `coitemID` int(10) NOT NULL,
+  `coitem` varchar(200) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_3_coscholastic_items`
@@ -799,15 +784,14 @@ INSERT INTO `exam_3_coscholastic_items` (`coitemID`, `coitem`) VALUES
 -- Table structure for table `exam_4_add_coscholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_4_add_coscholastic_to_class` (
-  `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_4_add_coscholastic_to_class` (
+  `ADDCOSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `coitemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDCOSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_4_add_coscholastic_to_class`
@@ -825,12 +809,11 @@ INSERT INTO `exam_4_add_coscholastic_to_class` (`ADDCOSCHCLASSID`, `CLSSESSID`, 
 -- Table structure for table `exam_5_term`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_5_term` (
-  `termID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_5_term` (
+  `termID` int(10) NOT NULL,
   `termName` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`termID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_5_term`
@@ -846,8 +829,8 @@ INSERT INTO `exam_5_term` (`termID`, `termName`, `SESSID`) VALUES
 -- Table structure for table `exam_6_scholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
-  `schID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_6_scholastic_result` (
+  `schID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -858,9 +841,8 @@ CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
   `marks` int(10) NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`schID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=103 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_6_scholastic_result`
@@ -925,8 +907,8 @@ INSERT INTO `exam_6_scholastic_result` (`schID`, `regid`, `CLSSESSID`, `ROLLNO`,
 -- Table structure for table `exam_7_coscholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
-  `coschID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_7_coscholastic_result` (
+  `coschID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -935,9 +917,8 @@ CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
   `grade` char(1) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`coschID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_7_coscholastic_result`
@@ -1050,8 +1031,8 @@ INSERT INTO `exam_7_coscholastic_result` (`coschID`, `regid`, `CLSSESSID`, `ROLL
 -- Table structure for table `exam_8_result_subject_total`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_8_result_subject_total` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -1061,9 +1042,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1071,8 +1051,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
 -- Table structure for table `exam_9_result_remarks`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_9_result_remarks` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -1081,9 +1061,8 @@ CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
   `promotedClass` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1091,12 +1070,11 @@ CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
 -- Table structure for table `fee_1_type`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_1_type` (
+CREATE TABLE `fee_1_type` (
   `FEETYPEID` int(15) NOT NULL,
   `TYPE_` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FEETYPEID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1105,8 +1083,8 @@ CREATE TABLE IF NOT EXISTS `fee_1_type` (
 -- Table structure for table `fee_2`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_2` (
-  `feeID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_2` (
+  `feeID` int(11) NOT NULL,
   `regID` varchar(25) NOT NULL,
   `date` varchar(20) NOT NULL,
   `Amount` int(11) NOT NULL,
@@ -1117,16 +1095,8 @@ CREATE TABLE IF NOT EXISTS `fee_2` (
   `dd_ch_no` varchar(20) NOT NULL,
   `dd_ch_date` varchar(20) NOT NULL,
   `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`feeID`),
-  KEY `regID` (`regID`,`date`),
-  KEY `userID` (`username`),
-  KEY `username` (`username`),
-  KEY `username_2` (`username`),
-  KEY `regID_2` (`regID`),
-  KEY `feetype` (`feetype`),
-  KEY `SESSIONID` (`SESSIONID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=428 ;
+  `SESSIONID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_2`
@@ -1568,20 +1538,19 @@ INSERT INTO `fee_2` (`feeID`, `regID`, `date`, `Amount`, `username`, `feetype`, 
 -- Table structure for table `fee_3_static_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_3_static_heads` (
-  `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_3_static_heads` (
+  `ST_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ST_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_3_static_heads`
 --
 
 INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `USERNAME`, `DATE_`) VALUES
-(1, 'REGISTRATION', 'nitin', '2016-02-15 11:08:52'),
+(1, 'REGISTRATION', 'nitin', '2017-08-29 13:01:42'),
 (2, 'ADMISSION', 'nitin', '2016-02-15 16:16:15'),
 (9, 'WITHDRAWL', 'nitin', '2016-02-15 16:28:39'),
 (10, 'TUITION', 'nitin', '2016-03-12 06:16:59'),
@@ -1595,14 +1564,13 @@ INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `USERNAME`, `DATE_`) V
 -- Table structure for table `fee_4_flexible_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_4_flexible_heads` (
-  `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_4_flexible_heads` (
+  `FLX_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FLX_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_4_flexible_heads`
@@ -1619,21 +1587,16 @@ INSERT INTO `fee_4_flexible_heads` (`FLX_HD_ID`, `FEE_HEAD`, `AMOUNT`, `USERNAME
 -- Table structure for table `fee_5_add_flexi_head_to_students`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_5_add_flexi_head_to_students` (
-  `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_5_add_flexi_head_to_students` (
+  `ADFLXFEESTUDID` int(15) NOT NULL,
   `REGID` varchar(100) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `FLX_HD_ID` int(15) NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADFLXFEESTUDID`),
-  KEY `FLX_HD_ID` (`FLX_HD_ID`),
-  KEY `REGID` (`REGID`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_5_add_flexi_head_to_students`
@@ -1674,8 +1637,8 @@ INSERT INTO `fee_5_add_flexi_head_to_students` (`ADFLXFEESTUDID`, `REGID`, `CLSS
 -- Table structure for table `fee_6_invoice`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
-  `INVID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_6_invoice` (
+  `INVID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `YEAR_FROM` varchar(15) NOT NULL,
@@ -1692,14 +1655,8 @@ CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
   `REGID` varchar(25) NOT NULL,
   `ACTUAL_DUE_AMOUNT` int(11) NOT NULL,
   `DUE_AMOUNT` int(11) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`INVID`),
-  KEY `REGID` (`REGID`),
-  KEY `CFEESESSID` (`STATIC_HEADS`),
-  KEY `REGID_2` (`REGID`),
-  KEY `ADFLXFEESTUDID` (`FLEXIBLE_HEADS`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=614 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_6_invoice`
@@ -1982,8 +1939,8 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 -- Table structure for table `fee_7_receipts`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
-  `RECPTID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_7_receipts` (
+  `RECPTID` int(15) NOT NULL,
   `FLEXI_FEE_STATUS` varchar(100) NOT NULL,
   `ADFLXFEESTUDID` text NOT NULL,
   `DISCOUNT` varchar(10) NOT NULL,
@@ -1996,11 +1953,8 @@ CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
   `DD_CQ_DATE` varchar(25) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `INVID` int(15) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`RECPTID`),
-  KEY `INVID` (`INVID`),
-  KEY `regid` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_7_receipts`
@@ -2022,15 +1976,13 @@ INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `
 -- Table structure for table `fee_8_class_fee`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_8_class_fee` (
-  `CFEEID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_8_class_fee` (
+  `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `TOTFEE` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEEID`),
-  KEY `CLSSESSID` (`CLSSESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_8_class_fee`
@@ -2053,18 +2005,15 @@ INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DAT
 -- Table structure for table `fee_9_class_fee_split`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_9_class_fee_split` (
-  `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_9_class_fee_split` (
+  `CFEESPLITID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `ST_HD_ID` int(15) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `PAYMENT_STATUS` varchar(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESPLITID`),
-  KEY `ST_HD_ID` (`ST_HD_ID`),
-  KEY `CFEEID` (`CFEEID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_9_class_fee_split`
@@ -2089,14 +2038,13 @@ INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUN
 -- Table structure for table `fee_10_class_fee_in_a_session`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
+CREATE TABLE `fee_10_class_fee_in_a_session` (
   `CFEESESSID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` int(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2105,12 +2053,10 @@ CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
 -- Table structure for table `login`
 --
 
-CREATE TABLE IF NOT EXISTS `login` (
+CREATE TABLE `login` (
   `USERNAME_` varchar(40) NOT NULL,
   `PASSWORD_` varchar(25) NOT NULL,
-  `USER_STATUS` varchar(5) NOT NULL,
-  PRIMARY KEY (`USERNAME_`),
-  KEY `USER_STATUS` (`USER_STATUS`)
+  `USER_STATUS` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2130,10 +2076,9 @@ INSERT INTO `login` (`USERNAME_`, `PASSWORD_`, `USER_STATUS`) VALUES
 -- Table structure for table `master_0_country_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_0_country_` (
+CREATE TABLE `master_0_country_` (
   `ABREV_` varchar(5) NOT NULL,
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`ABREV_`)
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2398,7 +2343,7 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 ('WF', 'Wallis and Futuna'),
 ('WK', 'Wake Island'),
 ('WS', 'Samoa'),
-('YD', 'People''s Democratic Repub'),
+('YD', 'People\'s Democratic Repub'),
 ('YE', 'Yemen'),
 ('YT', 'Mayotte'),
 ('ZA', 'South Africa'),
@@ -2412,10 +2357,9 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 -- Table structure for table `master_1_zone_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_1_zone_` (
+CREATE TABLE `master_1_zone_` (
   `ID` int(11) NOT NULL,
-  `ZONE` varchar(10) NOT NULL,
-  PRIMARY KEY (`ID`)
+  `ZONE` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2436,12 +2380,11 @@ INSERT INTO `master_1_zone_` (`ID`, `ZONE`) VALUES
 -- Table structure for table `master_2_zone_region`
 --
 
-CREATE TABLE IF NOT EXISTS `master_2_zone_region` (
+CREATE TABLE `master_2_zone_region` (
   `ID_` int(11) NOT NULL,
   `ZONE_` int(11) NOT NULL,
   `REGION` varchar(10) NOT NULL,
-  `REG_NAME` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID_`)
+  `REG_NAME` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2490,7 +2433,7 @@ INSERT INTO `master_2_zone_region` (`ID_`, `ZONE_`, `REGION`, `REG_NAME`) VALUES
 -- Table structure for table `master_3_state_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_3_state_` (
+CREATE TABLE `master_3_state_` (
   `NAME_` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2512,9 +2455,8 @@ INSERT INTO `master_3_state_` (`NAME_`) VALUES
 -- Table structure for table `master_4_city_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_4_city_` (
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`NAME_`)
+CREATE TABLE `master_4_city_` (
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2533,10 +2475,9 @@ INSERT INTO `master_4_city_` (`NAME_`) VALUES
 -- Table structure for table `master_5_user_status`
 --
 
-CREATE TABLE IF NOT EXISTS `master_5_user_status` (
+CREATE TABLE `master_5_user_status` (
   `ST_ID` varchar(5) NOT NULL,
-  `STATUS` varchar(25) NOT NULL,
-  PRIMARY KEY (`ST_ID`)
+  `STATUS` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2556,12 +2497,11 @@ INSERT INTO `master_5_user_status` (`ST_ID`, `STATUS`) VALUES
 -- Table structure for table `master_6_session`
 --
 
-CREATE TABLE IF NOT EXISTS `master_6_session` (
+CREATE TABLE `master_6_session` (
   `SESSID` varchar(20) NOT NULL,
   `SESSSTART` varchar(100) NOT NULL,
   `SESSEND` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`SESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2580,11 +2520,12 @@ INSERT INTO `master_6_session` (`SESSID`, `SESSSTART`, `SESSEND`, `DATE_`) VALUE
 -- Table structure for table `master_7_stud_personal`
 --
 
-CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
-  `STUD_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_7_stud_personal` (
+  `STUD_ID` int(11) NOT NULL,
   `FNAME` varchar(50) NOT NULL,
   `MNAME` varchar(50) NOT NULL DEFAULT '-x-',
   `LNAME` varchar(50) NOT NULL DEFAULT '-x-',
+  `PHOTO_` varchar(100) NOT NULL,
   `DOB_` varchar(15) NOT NULL DEFAULT '00/00/0000',
   `GENDER` varchar(10) NOT NULL,
   `FATHER` varchar(50) NOT NULL,
@@ -2598,465 +2539,464 @@ CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`STUD_ID`),
-  UNIQUE KEY `regid_2` (`regid`),
-  KEY `regid` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=479 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_7_stud_personal`
 --
 
-INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `DOB_`, `GENDER`, `FATHER`, `F_MOBILE`, `F_EMAIL`, `F_PROFESSION`, `MOTHER`, `M_MOBILE`, `M_EMAIL`, `M_PROFESSION`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
-(1, 'NEHA JETHA', '-x-', '-x-', '2005.10.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041001', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(2, 'HOSHIYAR SINGH', '-x-', '-x-', '2006.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041002', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(3, 'MANISHA NEGI', '-x-', '-x-', '2006.01.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041003', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(4, 'BABITA NEGI', '-x-', '-x-', '2006.01.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041004', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(5, 'BHAWANA', '-x-', '-x-', '2006.04.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041005', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(6, 'MANJU RANA', '-x-', '-x-', '2006.06.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041006', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(7, 'ISHWAR SINGH MEHRA', '-x-', '-x-', '2006.10.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041007', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(8, 'PRIYANSHU RANA', '-x-', '-x-', '2006.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041008', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(9, 'TANIYA NEGI', '-x-', '-x-', '2005.03.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041009', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(10, 'MANOJ SINGH', '-x-', '-x-', '2005.11.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041010', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(11, 'NEHA MARTOLIYA', '-x-', '-x-', '2006.09.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041011', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(12, 'LABLI KORANGA', '-x-', '-x-', '2006.04.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041012', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(13, 'RIYA MARTOLIYA', '-x-', '-x-', '2006.09.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041013', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(14, 'KARAN SINGH MEHRA', '-x-', '-x-', '2006.03.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041014', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(15, 'KHUSMITA ARYA', '-x-', '-x-', '2005.10.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041015', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(16, 'PRIYANKA SEMIYA', '-x-', '-x-', '2006.04.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041016', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(17, 'PANKAJ SINGH BHANDARI', '-x-', '-x-', '2006.03.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041017', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(18, 'ROHIT SINGH BHANDARI', '-x-', '-x-', '2006.04.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041018', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(19, 'GEETA BISHT', '-x-', '-x-', '2006.03.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041019', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(20, 'UMESH KUMAR', '-x-', '-x-', '2006.01.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041020', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(21, 'DEVESH SINGH BISHT', '-x-', '-x-', '2006.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041021', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(22, 'NEHA CHIRAL', '-x-', '-x-', '2006.05.23', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041022', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(23, 'BHUPENDRA SINGH TOLIA', '-x-', '-x-', '2005.06.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041023', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(24, 'HARENDRA SINGH', '-x-', '-x-', '2006.12.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041024', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(25, 'KAILASH SINGH TOMKIYAL', '-x-', '-x-', '2006.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041025', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(26, 'SUMAN NEGI', '-x-', '-x-', '2006.01.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041026', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(27, 'KAMLESH SINGH QUIRIYAL', '-x-', '-x-', '2005.06.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041027', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(28, 'ROHIT DASPA', '-x-', '-x-', '2005.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041028', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(29, 'NEERAJ SINGH ', '-x-', '-x-', '2004.12.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041029', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(30, 'HIMANSHU RANA', '-x-', '-x-', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041030', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(31, 'DINESH SINGH PANWAR', '-x-', '-x-', '2006.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041031', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(32, 'BHUPESH PAPRA', '-x-', '-x-', '2006.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041032', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(33, 'DEEPAK SINGH PAPRA', '-x-', '-x-', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041033', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(34, 'LOVERAJ KUMAR TAMTA', '-x-', '-x-', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041034', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(35, 'PRIYANSHU KUMAR', '-x-', '-x-', '2006.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041035', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(36, 'PANKAJ PANA', '-x-', '-x-', '2006.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041036', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(37, 'PANKAJ KUMAR', '-x-', '-x-', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041037', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(38, 'ISHA', '-x-', '-x-', '2006.07.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041038', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(39, 'RAVEENA DHAMI', '-x-', '-x-', '2006.02.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041039', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(40, 'MANOJ SINGH ', '-x-', '-x-', 'x', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041040', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(41, 'ANJALI NABYAL', '-x-', '-x-', '2006.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041041', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(42, 'BABITA BRIJWAL', '-x-', '-x-', '2006.07.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041042', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(43, 'DEEPIKA BISHT', '-x-', '-x-', '2006.05.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041043', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(44, 'DIYA BHANDARI', '-x-', '-x-', '2006.04.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041044', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(45, 'HANSHA LAWAL', '-x-', '-x-', '2005.04.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041045', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(46, 'KAVITA NEGI', '-x-', '-x-', '2005.10.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041046', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(47, 'LAXMI DHAMI', '-x-', '-x-', '2004.12.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041047', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(48, 'MAHI VISWAKARMA', '-x-', '-x-', '2006.02.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041048', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(49, 'PRIYA GHINGA', '-x-', '-x-', '2006.07.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041049', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(50, 'TANUJA MARTOLIYA', '-x-', '-x-', '2005.11.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041050', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(51, 'USHA PANGTEY', '-x-', '-x-', '2006.04.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041051', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(52, 'BHARAT SINGH KATHAYAT', '-x-', '-x-', '2006.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041052', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(53, 'BHASKER SINGH GANGHARIYA', '-x-', '-x-', '2006.02.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041053', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(54, 'DEEPAK ARYA', '-x-', '-x-', '2006.02.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041054', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(55, 'DEEPAK GOSWAMI', '-x-', '-x-', '2006.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041055', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(56, 'DIVYANSHU NITWAL', '-x-', '-x-', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041056', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(57, 'GAURAV SINGH DHAMI', '-x-', '-x-', '2006.09.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041057', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(58, 'GAURAV SINGH RANA', '-x-', '-x-', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041058', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(59, 'HIMANSHU KORANGA ', '-x-', '-x-', '2006.04.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041059', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(60, 'HONEY KUMAR', '-x-', '-x-', '2005.07.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041060', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(61, 'HIMANSHU SINGH FARSWAN', '-x-', '-x-', '2006.05.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041061', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(62, 'HIMANSHU CHIRAL', '-x-', '-x-', '2005.05.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041062', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(63, 'INDERJEET SINGH PANWAR', '-x-', '-x-', '2006.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041063', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(64, 'KAVINDRA SINGH DARIYAL', '-x-', '-x-', '2007.12.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041064', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(65, 'MANOJ SINGH MAHAR', '-x-', '-x-', '2006.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041065', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(66, 'MAYANK KUMAR', '-x-', '-x-', '2006.04.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041066', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(67, 'MUKESH SINGH FARSWAN', '-x-', '-x-', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041067', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(68, 'NEERAJ KUMAR', '-x-', '-x-', '2004.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041068', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(69, 'NEERAJ SINGH PANWAR', '-x-', '-x-', '2006.04.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041069', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(70, 'NAVNEET SINGH BRIJWAL', '-x-', '-x-', '2006.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041070', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(71, 'PANKAJ KUMAR', '-x-', '-x-', '2004.09.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041071', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(72, 'PRAVEEN SINGH PANWAR', '-x-', '-x-', '2006.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041072', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(73, 'RAJAT SINGH MEHTA', '-x-', '-x-', '2006.02.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041073', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(74, 'SANJAY SINGH RAWAT', '-x-', '-x-', '2006.02.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041074', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(75, 'TRIBHUWAN KUMAR VISWAKARMA', '-x-', '-x-', '2006.05.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041075', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(76, 'VIKRAM SIGNH PANCHPAL', '-x-', '-x-', '2005.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041076', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(77, 'VIKRAM SINGH KHATRI', '-x-', '-x-', '2008.07.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041077', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(78, 'PUSHPA', '-x-', '-x-', '2006.03.18', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041078', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(79, 'SONU', '-x-', '-x-', '2005.04.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041079', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(80, 'ISHWAR HARKOTIA', '-x-', '-x-', '2005.02.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041080', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(81, 'SAGAR VISWAKARMA', '-x-', '-x-', '2006.03.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041081', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(82, 'APRNA TRIPATHI', '-x-', '-x-', '2004.01.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041082', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(83, 'DIVYA TOMKIYAL', '-x-', '-x-', '2005.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041083', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(84, 'KALPANA GHINGA', '-x-', '-x-', '2005.02.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041084', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(85, 'KANUPRIYA RILKOTIA', '-x-', '-x-', '2005.03.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041085', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(86, 'MANISHA MEHTA', '-x-', '-x-', '2005.09.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041086', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(87, 'NIHARIKA TRIPATHI', '-x-', '-x-', '2005.08.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041087', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(88, 'PREETI GWAL', '-x-', '-x-', '2004.09.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041088', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(89, 'KHEELA LASPAL', '-x-', '-x-', '2004.07.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041089', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(90, 'BHUPESH HARKOTIA', '-x-', '-x-', '2005.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041090', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(91, 'BHUPESH MEHTA', '-x-', '-x-', '2005.04.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041091', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(92, 'VINOD RANA', '-x-', '-x-', '2005.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041092', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(93, 'CHANDAN SINGH ', '-x-', '-x-', '2005.03.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041093', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(94, 'CHETAN BRIJWAL', '-x-', '-x-', '2005.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041094', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(95, 'DEEPAK KUMAR', '-x-', '-x-', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041095', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(96, 'GAJENDRA KUMAR', '-x-', '-x-', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041096', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(97, 'GANESH SINGH NEGI', '-x-', '-x-', '2005.10.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041097', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(98, 'GAURAV BAGARI', '-x-', '-x-', '2004.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041098', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(99, 'HIMANSHU KUMAR', '-x-', '-x-', '2005.05.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041099', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(100, 'ISHANT MEHRA', '-x-', '-x-', '2005.08.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041100', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(101, 'JAGJIVAN BRIJWAL', '-x-', '-x-', '2005.04.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041101', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(102, 'JEEVAN DHOKTI', '-x-', '-x-', '2005.06.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041102', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(103, 'JITENDRA SINGH', '-x-', '-x-', '2005.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041103', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(104, 'KAILASH MARTOLIYA', '-x-', '-x-', '2004.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041104', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(105, 'KAMLESH DHOKTI', '-x-', '-x-', '2005.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041105', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(106, 'KAMLESH JOSHI', '-x-', '-x-', '2004.02.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041106', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(107, 'KAVINDRA SINGH IMLAL', '-x-', '-x-', '2005.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041107', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(108, 'LOVERAJ KUMAR', '-x-', '-x-', '2005.01.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041108', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(109, 'LOVERAJ LASPAL', '-x-', '-x-', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041109', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(110, 'MANISH SINGH BORA', '-x-', '-x-', '2005.06.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041110', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(111, 'MAYANK VERMA', '-x-', '-x-', '2005.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041111', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(112, 'PANKAJ KUMAR', '-x-', '-x-', '2005.05.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041112', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(113, 'PRADEEP PANT', '-x-', '-x-', '2005.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041113', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(114, 'RAHUL BISHT', '-x-', '-x-', '2005.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041114', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(115, 'RAHUL SINGH TOMKIYAL', '-x-', '-x-', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041115', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(116, 'RAVI PALIWAL', '-x-', '-x-', '2004.04.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041116', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(117, 'SIDDHARTH PANDEY', '-x-', '-x-', '2006.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041117', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(118, 'VIVEK FARSWAN', '-x-', '-x-', '2005.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041118', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(119, 'YOGESH JOSHI', '-x-', '-x-', '2005.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041119', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(120, 'VIVEK MARTOLIYA', '-x-', '-x-', '2003.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041120', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(121, 'MANISH SINGH BHAKUNI', '-x-', '-x-', '2005.10.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041121', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(122, 'LOVERAJ PANWAR', '-x-', '-x-', '2005.01.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041122', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(123, 'ANKIT VERMA', '-x-', '-x-', '2006.02.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041123', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(124, 'DIYA DHAMI', '-x-', '-x-', '2005.06.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041124', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(125, 'GEETANJALI MARTOLIYA', '-x-', '-x-', '2004.08.29', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041125', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(126, 'HIMANSHI KORANGA', '-x-', '-x-', '2004.01.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041126', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(127, 'LAXMI BHANDARI', '-x-', '-x-', '2003.08.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041127', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(128, 'MANISHA KATHAYAT', '-x-', '-x-', '2005.04.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041128', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(129, 'PREETI PANA', '-x-', '-x-', '2005.03.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041129', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(130, 'TANUJA NITWAL', '-x-', '-x-', '2005.04.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041130', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(131, 'MITALI MARTOLIYA', '-x-', '-x-', '2005.03.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041131', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(132, 'PRIYANSHU RANA', '-x-', '-x-', '2005.03.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041132', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(133, 'VINOD RANA', '-x-', '-x-', '2005.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041133', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(134, 'CHANDAN SINGH ', '-x-', '-x-', '2005.03.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041134', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(135, 'CHETAN BRIJWAL', '-x-', '-x-', '2005.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041135', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(136, 'DEEPAK KUMAR', '-x-', '-x-', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041136', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(137, 'GAJENDRA KUMAR', '-x-', '-x-', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041137', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(138, 'GANESH SINGH NEGI', '-x-', '-x-', '2005.10.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041138', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(139, 'GAURAV BAGARI', '-x-', '-x-', '2004.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041139', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(140, 'HIMANSHU KUMAR', '-x-', '-x-', '2005.05.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041140', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(141, 'ISHANT MEHRA', '-x-', '-x-', '2005.08.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041141', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(142, 'JAGJIVAN BRIJWAL', '-x-', '-x-', '2005.04.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041142', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(143, 'JEEVAN DHOKTI', '-x-', '-x-', '2005.06.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041143', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(144, 'JITENDRA SINGH', '-x-', '-x-', '2005.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041144', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(145, 'KAILASH MARTOLIYA', '-x-', '-x-', '2004.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041145', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(146, 'KAMLESH DHOKTI', '-x-', '-x-', '2005.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041146', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(147, 'KAMLESH JOSHI', '-x-', '-x-', '2004.02.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041147', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(148, 'KAVINDRA SINGH IMLAL', '-x-', '-x-', '2005.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041148', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(149, 'LOVERAJ KUMAR', '-x-', '-x-', '2005.01.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041149', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(150, 'LOVERAJ LASPAL', '-x-', '-x-', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041150', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(151, 'MANISH SINGH BORA', '-x-', '-x-', '2005.06.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041151', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(152, 'MAYANK VERMA', '-x-', '-x-', '2005.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041152', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(153, 'PANKAJ KUMAR', '-x-', '-x-', '2005.05.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041153', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(154, 'PRADEEP PANT', '-x-', '-x-', '2005.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041154', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(155, 'RAHUL BISHT', '-x-', '-x-', '2005.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041155', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(156, 'RAHUL SINGH TOMKIYAL', '-x-', '-x-', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041156', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(157, 'RAVI PALIWAL', '-x-', '-x-', '2004.04.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041157', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(158, 'SIDDHARTH PANDEY', '-x-', '-x-', '2006.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041158', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(159, 'VIVEK FARSWAN', '-x-', '-x-', '2005.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041159', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(160, 'YOGESH JOSHI', '-x-', '-x-', '2005.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041160', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(161, 'VIVEK MARTOLIYA', '-x-', '-x-', '2003.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041161', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(162, 'MANISH SINGH BHAKUNI', '-x-', '-x-', '2005.10.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041162', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(163, 'LOVERAJ PANWAR', '-x-', '-x-', '2005.01.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041163', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(164, 'BHAWANA DHAPWAL', '-x-', '-x-', '2004.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041164', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(165, 'DIYA RANA', '-x-', '-x-', '2005.09.22', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041165', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(166, 'DIKSHA TOLIA', '-x-', '-x-', '2004.04.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041166', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(167, 'ISHWARI ARYA', '-x-', '-x-', '2003.09.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041167', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(168, 'POOJA PANDA', '-x-', '-x-', '2005.10.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041168', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(169, 'RITU NIKHURPA', '-x-', '-x-', '2003.07.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041169', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(170, 'SWETA NIKHURPA', '-x-', '-x-', '2004.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041170', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(171, 'SUNITA PANCHPAL', '-x-', '-x-', '2004.08.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041171', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(172, 'TRIPTI BISHT', '-x-', '-x-', '2005.04.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041172', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(173, 'TANUJA NEGI', '-x-', '-x-', '2004.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041173', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(174, 'AJAY DWIVEDI ', '-x-', '-x-', '2004.04.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041174', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(175, 'BHUPENDRA DHAMI', '-x-', '-x-', '2003.08.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041175', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(176, 'BHUPENDRA SINGH JAIMYAL', '-x-', '-x-', '2004.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041176', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(177, 'BHUPENDRA MEHTA', '-x-', '-x-', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041177', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(178, 'CHANDRABHANU', '-x-', '-x-', '2004.05.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041178', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(179, 'DIVYANSHU TOMKIYAL', '-x-', '-x-', '2004.05.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041179', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(180, 'GOVIND TOLIA', '-x-', '-x-', '2004.03.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041180', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(181, 'HEMRAJ SINGH ', '-x-', '-x-', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041181', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(182, 'JITENDRA KUMAR', '-x-', '-x-', '2004.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041182', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(183, 'JEEVAN SINGH', '-x-', '-x-', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041183', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(184, 'JEEVAN TOLIA', '-x-', '-x-', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041184', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(185, 'KARAN RAWAT', '-x-', '-x-', '2004.05.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041185', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(186, 'NEERAJ PANA', '-x-', '-x-', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041186', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(187, 'RAHUL KORANGA', '-x-', '-x-', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041187', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(188, 'YOGESH KUMAR', '-x-', '-x-', '2004.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041188', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(189, 'VIKRAM PANWAR', '-x-', '-x-', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041189', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(190, 'GAURAV JIGYASU', '-x-', '-x-', '2007.08.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041190', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(191, 'ANJALI ARYA', '-x-', '-x-', '2004.05.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041191', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(192, 'YOGITA RAWAT', '-x-', '-x-', '2003.09.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041192', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(193, 'GAURAV SINGH', '-x-', '-x-', '2004.02.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041193', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(194, 'JITENDRA ', '-x-', '-x-', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041194', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(195, 'NAVNEET DHARMSAKTU', '-x-', '-x-', '2002.05.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041195', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(196, 'AJAY RAWAT', '-x-', '-x-', '2003.01.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041196', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(197, 'AYUSHI NITWAL', '-x-', '-x-', '2004.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041197', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(198, 'JAYA PANGTEY', '-x-', '-x-', '2003.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041198', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(199, 'GANESH SINGH', '-x-', '-x-', '2004.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041199', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(200, 'DIKSHA SORAGI', '-x-', '-x-', '2004.02.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041200', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(201, 'POOJA VERMA', '-x-', '-x-', '2004.02.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041201', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(202, 'ANJALI KORANGA', '-x-', '-x-', '2001.05.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041202', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(203, 'BABITA NIKHURPA', '-x-', '-x-', '1999.09.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041203', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(204, 'DIVYA SAYAL', '-x-', '-x-', '2001.05.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041204', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(205, 'HEMA JOSHI', '-x-', '-x-', '2000.07.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041205', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(206, 'KANCHAN GOSWAMI', '-x-', '-x-', '2000.01.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041206', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(207, 'KANCHANA RILKOTIA', '-x-', '-x-', '1999.08.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041207', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(208, 'KAVITA PINDIYAL', '-x-', '-x-', '1999.08.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041208', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(209, 'KHEELA NEGI', '-x-', '-x-', '2000.05.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041209', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(210, 'MAMTA CHIRAL', '-x-', '-x-', '2001.04.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041210', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(211, 'MAMTA DANU', '-x-', '-x-', '1999.11.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041211', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(212, 'MAYA MARTOLIYA', '-x-', '-x-', '2000.06.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041212', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(213, 'MANSHI PANGTEY', '-x-', '-x-', '2001.12.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041213', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(214, 'NEETU SEMIA', '-x-', '-x-', '2000.12.23', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041214', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(215, 'PRIYANKA TRIPATHI', '-x-', '-x-', '2000.03.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041215', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(216, 'RASHI SUMTYAL', '-x-', '-x-', '2001.07.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041216', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(217, 'RAVEENA MARTOLIYA', '-x-', '-x-', '2001.06.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041217', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(218, 'RITU RAWAT', '-x-', '-x-', '1999.12.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041218', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(219, 'SANGEETA KOSHYARI', '-x-', '-x-', '2000.10.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041219', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(220, 'BHUPENDRA KUNWAR', '-x-', '-x-', '1998.12.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041220', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(221, 'DEEPAK SINGH BURFAL', '-x-', '-x-', '2000.12.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041221', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(222, 'DEEPAK SINGH LASPAL', '-x-', '-x-', '2001.06.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041222', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(223, 'DEEPAK SINGH MARTOLIYA', '-x-', '-x-', '2001.02.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041223', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(224, 'DEEPAKANJ RAWAT', '-x-', '-x-', '2001.08.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041224', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(225, 'DINESH SINGH BISHT', '-x-', '-x-', '2001.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041225', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(226, 'GOPAL BHATT', '-x-', '-x-', '1999.08.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041226', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(227, 'GAURAV DARIYAL', '-x-', '-x-', '2000.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041227', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(228, 'GAURAV PANGTEY', '-x-', '-x-', '1998.12.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041228', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(229, 'HIMANSHU DARIYAL', '-x-', '-x-', '2000.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041229', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(230, 'HIMANSHU MARTOLIYA', '-x-', '-x-', '2000.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041230', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(231, 'HIMANSHU SINGH PANGTEY', '-x-', '-x-', '2000.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041231', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(232, 'HIMANSHU VERMA', '-x-', '-x-', '2000.06.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041232', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(233, 'HIMANSHU KUMAR', '-x-', '-x-', '2001.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041233', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(234, 'ISHWAR DHAPWAL', '-x-', '-x-', '2001.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041234', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(235, 'ISHWAR SINGH PANCHPAL', '-x-', '-x-', '2001.03.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041235', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(236, 'JITENDRA SINGH BURFAL', '-x-', '-x-', '2000.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041236', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(237, 'JITENDRA SINGH DHAMI ', '-x-', '-x-', '2001.05.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041237', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(238, 'KARTIKAY SINGH PANGTEY', '-x-', '-x-', '2001.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041238', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(239, 'LAXMAN SINGH PAPRA', '-x-', '-x-', '2001.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041239', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(240, 'LOVERAJ SINGH KUNWAR', '-x-', '-x-', '2001.06.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041240', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(241, 'MANISH SINGH GWAL', '-x-', '-x-', '2002.01.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041241', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(242, 'MANOJ KUMAR', '-x-', '-x-', '2000.10.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041242', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(243, 'PRAKASH SINGH KARKI', '-x-', '-x-', '2001.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041243', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(244, 'PRVEEN SINGH NEGI', '-x-', '-x-', '2002.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041244', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(245, 'SANJEEV SINGH THAPRIYAL', '-x-', '-x-', '2001.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041245', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(246, 'SANJAY RAM', '-x-', '-x-', '2000.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041246', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(247, 'MUKESH CHANYAL', '-x-', '-x-', '2001.06.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041247', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(248, 'UMESH CHANDRA JOSHI', '-x-', '-x-', '2002.09.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041248', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(249, 'VINOD SINGH DHOKTI', '-x-', '-x-', '2000.03.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041249', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(250, 'JITENDRA SINGH PANGTEY', '-x-', '-x-', '2000.11.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041250', '2017-18', 'nitin', '2017-04-29 10:43:00'),
-(251, 'Rakesh', 'Chandra', 'Gupta', '2001-05-12', 'M', 'Suresh chandra Gupta', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017051251', '2017-18', 'nitin', '2017-05-05 07:01:43'),
-(252, 'ANJALI NITWLA', '-x-', '-x-', '2003.03.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041251', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(253, 'DIKSHA MEHTA', '-x-', '-x-', '2004.04.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041252', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(254, 'HINA BRIJWAL ', '-x-', '-x-', '2007.07.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041253', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(255, 'KIRAN DHAMI ', '-x-', '-x-', '2004.03.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041254', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(256, 'NEHA SUMTYAL', '-x-', '-x-', '2006.12.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041255', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(257, 'X', '-x-', '-x-', '0000.00.00', 'x', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041256', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(258, 'POOJA RAWAT', '-x-', '-x-', '2004.04.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041257', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(259, 'PRIYANKA NITWAL', '-x-', '-x-', '2004.03.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041258', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(260, 'SHALINI NIKHURPA', '-x-', '-x-', '2004.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041259', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(261, 'SHEELA', '-x-', '-x-', '2004.11.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041260', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(262, 'SIYA SAYALA', '-x-', '-x-', '2003.11.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041261', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(263, 'LUBNA NITWAL', '-x-', '-x-', '2004.10.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041262', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(264, 'YOGITA PANDEY', '-x-', '-x-', '2003.05.17', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041263', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(265, 'BHUPENDRA SINGH IMLAL', '-x-', '-x-', '2004.03.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041264', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(266, 'CHANCHAL SINGH ', '-x-', '-x-', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041265', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(267, 'CHANDRA MOHAN SINGH RANA', '-x-', '-x-', '2004.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041266', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(268, 'DEEPAK SINGH RANA', '-x-', '-x-', '2003.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041267', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(269, 'DEVESH SINGH JESTHA', '-x-', '-x-', '2004.11.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041268', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(270, 'HIMANSHU RAWAT', '-x-', '-x-', '2003.09.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041269', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(271, 'HIMANSHU SINGH RAWAT', '-x-', '-x-', '2003.07.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041270', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(272, 'HIMANSHU SHARMA', '-x-', '-x-', '2003.07.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041271', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(273, 'JATIN SINGH BRIJWAL', '-x-', '-x-', '2004.01.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041272', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(274, 'LAXMAN SINGH RINGWAL', '-x-', '-x-', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041273', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(275, 'LOVERAJ CHIRAL', '-x-', '-x-', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041274', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(276, 'NAVEEN SINGH RANA', '-x-', '-x-', '2005.02.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041275', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(277, 'MAHESH PANWAR', '-x-', '-x-', '2004.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041276', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(278, 'MUKESH SINGH SUMTYAL', '-x-', '-x-', '2004.04.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041277', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(279, 'PANKAJ SINGH MAHAR', '-x-', '-x-', '2004.06.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041278', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(280, 'PANKAJ KUMAR', '-x-', '-x-', '2003.04.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041279', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(281, 'PANKAJ SINGH PANGTEY', '-x-', '-x-', '2004.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041280', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(282, 'TIKENDRA SINGH BISHT ', '-x-', '-x-', '2004.03.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041281', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(283, 'UMESH SINGH PANWAR', '-x-', '-x-', '2004.03.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041282', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(284, 'VIKRAM SINGH', '-x-', '-x-', '2004.08.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041283', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(285, 'VINOD SINGH NITWAL', '-x-', '-x-', '2003.09.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041284', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(286, 'BHAWANA BAGARI', '-x-', '-x-', '2003.08.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041285', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(287, 'CHITRA PANGTEY ', '-x-', '-x-', '2002.04.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041286', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(288, 'DEEPIKA JANGPANGI', '-x-', '-x-', '2003.03.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041287', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(289, 'DEEPTI KHALJHUNIA', '-x-', '-x-', '2002.05.18', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041288', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(290, 'GARIMA', '-x-', '-x-', '2006.08.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041289', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(291, 'HIMANI DWIVEDI', '-x-', '-x-', '2003.07.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041290', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(292, 'ISHA DHAPWAL', '-x-', '-x-', '2003.03.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041291', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(293, 'JYOTI MEHRA', '-x-', '-x-', '2003.12.07', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041292', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(294, 'KAVITA PAPRA', '-x-', '-x-', '2003.04.16', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041293', '2017-18', 'nitin', '0000-00-00 00:00:00');
-INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `DOB_`, `GENDER`, `FATHER`, `F_MOBILE`, `F_EMAIL`, `F_PROFESSION`, `MOTHER`, `M_MOBILE`, `M_EMAIL`, `M_PROFESSION`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
-(295, 'KOMAL VERMA', '-x-', '-x-', '2003.12.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041294', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(296, 'MANISHA BHANDARI', '-x-', '-x-', '2003.04.09', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041295', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(297, 'MANSI MARTOLIA', '-x-', '-x-', '2003.07.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041296', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(298, 'SONIYA NEGI', '-x-', '-x-', '2003.02.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041297', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(299, 'SUSHEELA LASPAL', '-x-', '-x-', '2002.12.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041298', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(300, 'ABHISHEK SINGH RAWAT', '-x-', '-x-', '2003.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041299', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(301, 'DEVRAJ SINGH ', '-x-', '-x-', '2002.08.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041300', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(302, 'DURGESH SINGH DANU', '-x-', '-x-', '2002.07.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041301', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(303, 'GAURAV SINGH PANDA', '-x-', '-x-', '2004.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041302', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(304, 'GAURAV SINGH PANWAR', '-x-', '-x-', '2003.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041303', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(305, 'GAURAV SINGH RANA', '-x-', '-x-', '2003.06.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041304', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(306, 'GOVIND SINGH JAIMYAL', '-x-', '-x-', '2003.03.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041305', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(307, 'ISHWAR SINGH KHATRI', '-x-', '-x-', '2003.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041306', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(308, 'JITENDRA SINGH ', '-x-', '-x-', '2003.06.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041307', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(309, 'KAPIL SINGH DHAMI', '-x-', '-x-', '2003.07.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041308', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(310, 'KARAN SINGH TOLIA', '-x-', '-x-', '2001.06.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041309', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(311, 'LOVERAJ SINGH RAWAT', '-x-', '-x-', '2003.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041310', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(312, 'MANISH CHANDRA JOSHI', '-x-', '-x-', '2002.04.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041311', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(313, 'MUKESH SINGH GHINGA', '-x-', '-x-', '2004.02.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041312', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(314, 'MUKESH SINGH RAWAT', '-x-', '-x-', '2003.07.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041313', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(315, 'NISHANT SINGH DEWALI', '-x-', '-x-', '2003.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041314', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(316, 'PANKAJ SINGH DHOKTI', '-x-', '-x-', '2001.05.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041315', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(317, 'PREMPRAKASH SINGH PANDA', '-x-', '-x-', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041316', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(318, 'PRIYANSHU BORA', '-x-', '-x-', '2004.07.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041317', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(319, 'RAHUL SINGH BISHT', '-x-', '-x-', '2003.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041318', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(320, 'RAHUL SINGH', '-x-', '-x-', '2003.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041319', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(321, 'RAJENDRA PRAKASH', '-x-', '-x-', '2002.07.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041320', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(322, 'ROHIT SINGH GHINGA', '-x-', '-x-', '2003.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041321', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(323, 'ROHIT SINGH DHOKTI', '-x-', '-x-', '2003.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041322', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(324, 'CHANDRA MOHAN SINGH KHATRI', '-x-', '-x-', '2004.06.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041323', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(325, 'SAMEER SINGH', '-x-', '-x-', '2003.04.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041324', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(326, 'SANJAY SINGH DHAPWAL', '-x-', '-x-', '2002.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041325', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(327, 'SANJAY SINGH RANA', '-x-', '-x-', '2003.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041326', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(328, 'SAURABH DHOKTI', '-x-', '-x-', '2003.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041327', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(329, 'TRILOK SINGH IMLAL', '-x-', '-x-', '2002.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041328', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(330, 'VIRENDRA KUMAR', '-x-', '-x-', '2004.07.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041329', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(331, 'VINOD SINGH MEHRA', '-x-', '-x-', '2003.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041330', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(332, 'YASHDEEP', '-x-', '-x-', '2002.12.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041331', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(333, 'YOGESH SINGH', '-x-', '-x-', '2003.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041332', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(334, 'YOGESH SINGH FARSWAN', '-x-', '-x-', '2003.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041333', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(335, 'KAVINDRA SINGH', '-x-', '-x-', '2003.01.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041334', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(336, 'BHUPENDRA SINGH LUNTRI', '-x-', '-x-', '2004.11.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041335', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(337, 'CHANDANI RAWAT', '-x-', '-x-', '2003.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041336', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(338, 'CHETANA BHAKUNI', '-x-', '-x-', '2003.03.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041337', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(339, 'DIVYA BAGARI ', '-x-', '-x-', '2003.03.09', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041338', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(340, 'GARIMA BISHT', '-x-', '-x-', '2003.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041339', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(341, 'KAVITA ARYA', '-x-', '-x-', '2003.02.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041340', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(342, 'KANISHKA TOLIA', '-x-', '-x-', '2003.06.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041341', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(343, 'MAHIMA RAUTELA', '-x-', '-x-', '2003.03.16', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041342', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(344, 'RITU MARTOLIYA ', '-x-', '-x-', '2003.04.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041343', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(345, 'SANGEETA PANGTEY', '-x-', '-x-', '2003.04.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041344', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(346, 'NISHA VERMA', '-x-', '-x-', '2003.09.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041345', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(347, 'KOMAL RAWAT', '-x-', '-x-', '2002.04.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041346', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(348, 'BABITA KORANGA', '-x-', '-x-', '2003.03.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041347', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(349, 'KARISHMA ', '-x-', '-x-', '2002.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041348', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(350, 'DEEPIKA ARYA', '-x-', '-x-', '2002.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041349', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(351, 'AKSHAY SINGH JESTHA', '-x-', '-x-', '2003.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041350', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(352, 'DEEPANSHU BRIJWAL', '-x-', '-x-', '2001.06.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041351', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(353, 'DEEPAK GIRI', '-x-', '-x-', '2003.05.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041352', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(354, 'DEEPAK GOSWAMI', '-x-', '-x-', '2003.04.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041353', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(355, 'DEEPAK SINGH NEGI', '-x-', '-x-', '2003.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041354', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(356, 'DEEPAK SINGH PACHHAI', '-x-', '-x-', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041355', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(357, 'DHEERAJ SINGH CHIRAL', '-x-', '-x-', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041356', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(358, 'DEVENDRA SINGH PANWAR', '-x-', '-x-', '2002.11.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041357', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(359, 'HIMANSHU JOSHI', '-x-', '-x-', '2002.05.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041358', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(360, 'KRISHNA DOSAD', '-x-', '-x-', '2002.05.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041359', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(361, 'LAXMAN SINGH PANWAR', '-x-', '-x-', '2003.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041360', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(362, 'MANJEET KUMAR', '-x-', '-x-', '2002.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041361', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(363, 'MANOJ SINGH KORNGA', '-x-', '-x-', '2003.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041362', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(364, 'NEERAJ SINGH PANWAR', '-x-', '-x-', '2003.03.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041363', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(365, 'LAXMAN SINGH PANA', '-x-', '-x-', '2002.03.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041364', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(366, 'NITISH SINGH JANGPANGI', '-x-', '-x-', '2003.02.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041365', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(367, 'NAVEEN SINGH PANCHPAL', '-x-', '-x-', '2003.06.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041366', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(368, 'NITESH SINGH BISHT', '-x-', '-x-', '2003.02.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041367', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(369, 'PAWAN SINGH KOSHIYARI', '-x-', '-x-', '2003.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041368', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(370, 'PANKAJ SINGH TRIPATHI', '-x-', '-x-', '2002.02.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041369', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(371, 'RAHUL SINGH SUMTYAL', '-x-', '-x-', '2004.06.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041370', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(372, 'SHUBHAM JOSHI', '-x-', '-x-', '2003.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041371', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(373, 'HIMANSHU BARFAL', '-x-', '-x-', '2003.03.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041372', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(374, 'TRIBHUWAN SINGH MAHAR', '-x-', '-x-', '2003.01.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041373', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(375, 'TARUN SINGH RALMAL', '-x-', '-x-', '2003.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041374', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(376, 'GANESH SINGH DHAMI', '-x-', '-x-', '2003.10.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041375', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(377, 'ROHIT PANCHPAL', '-x-', '-x-', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041376', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(378, 'DHEERAJ SINGH BRIJWAL', '-x-', '-x-', '2002.07.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041377', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(379, 'RAVINDRA SINGH MEHTA', '-x-', '-x-', '2004.02.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041378', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(380, 'TRIBHUWAN SINGH MAPWAL', '-x-', '-x-', '2002.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041379', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(381, 'KRISHNA SINGH DANU', '-x-', '-x-', '2003.12.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041380', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(382, 'DINESH RAM', '-x-', '-x-', '2002.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041381', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(383, 'MANISH PRAKASH', '-x-', '-x-', '2002.01.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041382', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(384, 'MAYA MEHRA', '-x-', '-x-', '2003.03.17', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041383', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(385, 'KIRAN FARSWAN', '-x-', '-x-', '2001.09.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041384', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(386, 'PRATYUSHA NIKHURPA', '-x-', '-x-', '2001.09.22', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041385', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(387, 'RAMESWARI MARTOLIA', '-x-', '-x-', '2001.11.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041386', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(388, 'REKHA PANWAR', '-x-', '-x-', '2001.02.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041387', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(389, 'ABHILASH SINGH BAGARI', '-x-', '-x-', '2001.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041388', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(390, 'AJAY PRAKESH', '-x-', '-x-', '2001.06.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041389', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(391, 'ARJUN SINGH BISHT', '-x-', '-x-', '2000.06.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041390', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(392, 'BHAWESH JOSHI ', '-x-', '-x-', '2001.10.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041391', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(393, 'BHUPENDRA SINGH MARTOLIYA', '-x-', '-x-', '2001.06.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041392', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(394, 'VIRENDRA SINGH KHATRI', '-x-', '-x-', '2001.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041393', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(395, 'DEEPAK SINGH BRIJWAL', '-x-', '-x-', '2001.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041394', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(396, 'DINESH SINGH RAWAT', '-x-', '-x-', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041395', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(397, 'GANESH SINGH SORAGI', '-x-', '-x-', '2000.06.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041396', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(398, 'GAURAV SINGH DHARAMSHATU', '-x-', '-x-', '2002.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041397', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(399, 'JATIN SINGH ', '-x-', '-x-', '2001.05.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041398', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(400, 'JEEWAN CHANDRA DIVEDI', '-x-', '-x-', '2001.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041399', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(401, 'JITENDRA SINGH BOTHAYAL', '-x-', '-x-', '2000.08.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041400', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(402, 'HEMRAJ SINGH ', '-x-', '-x-', '2001.06.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041401', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(403, 'HIMANSHU KUMAR ', '-x-', '-x-', '2001.06.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041402', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(404, 'LOVRAJ SING ', '-x-', '-x-', '1999.12.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041403', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(405, 'LOVRAJ SINGH JESTHA', '-x-', '-x-', '1999.12.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041404', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(406, 'LAXMAN SINGH DARIYAL', '-x-', '-x-', '2001.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041405', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(407, 'LOKESH KUMAR ', '-x-', '-x-', '2001.09.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041406', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(408, 'MAHIMANT RAM ', '-x-', '-x-', '1999.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041407', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(409, 'MANISH SINGH NEGI', '-x-', '-x-', '2001.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041408', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(410, 'MANMOHAN SINGH MEHRA', '-x-', '-x-', '2000.05.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041409', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(411, 'MAYANK SINGH DHAPWAL', '-x-', '-x-', '2000.11.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041410', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(412, 'NARESH SINGH BHANDARI', '-x-', '-x-', '2001.12.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041411', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(413, 'PANKAJ KUMAR', '-x-', '-x-', '2002.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041412', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(414, 'PANKAJ SINGH JESTHA', '-x-', '-x-', '1999.10.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041413', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(415, 'RAHUL RAITO', '-x-', '-x-', '1999.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041414', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(416, 'RAJENDRA SINGH ', '-x-', '-x-', '2006.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041415', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(417, 'RAJENDRA SINGH BHANDARI', '-x-', '-x-', '2001.12.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041416', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(418, 'RAJESH JOSHI', '-x-', '-x-', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041417', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(419, 'RAKESH SINGH ', '-x-', '-x-', '2003.09.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041418', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(420, 'RISHABH SINGH JESTHA', '-x-', '-x-', '2000.01.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041419', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(421, 'ROHIT PANT', '-x-', '-x-', '2002.09.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041420', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(422, 'SACHIN SINGH GHEENGA', '-x-', '-x-', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041421', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(423, 'SAGAR SINGH DHOKTI', '-x-', '-x-', '2000.07.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041422', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(424, 'SUNIL SINGH NIKHURPA ', '-x-', '-x-', '2001.06.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041423', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(425, 'SURAJ SINGH', '-x-', '-x-', '2001.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041424', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(426, 'SURAJ SINGH BHANDARI', '-x-', '-x-', '2001.07.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041425', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(427, 'VIKRAM SINGH GANGHARIA', '-x-', '-x-', '1999.04.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041426', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(428, 'VINOD SINGH DHAPWAL', '-x-', '-x-', '1999.09.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041427', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(460, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081428', '2017-18', 'nitin', '2017-08-22 18:25:21'),
-(461, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081429', '2017-18', 'nitin', '2017-08-22 18:25:23'),
-(462, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081430', '2017-18', 'nitin', '2017-08-22 18:25:23'),
-(463, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081431', '2017-18', 'nitin', '2017-08-22 18:25:39'),
-(464, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081432', '2017-18', 'nitin', '2017-08-22 18:25:40'),
-(465, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081433', '2017-18', 'nitin', '2017-08-22 18:25:41'),
-(466, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081434', '2017-18', 'nitin', '2017-08-22 18:25:41'),
-(467, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081435', '2017-18', 'nitin', '2017-08-22 18:25:41'),
-(468, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081436', '2017-18', 'nitin', '2017-08-22 18:25:41'),
-(469, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081437', '2017-18', 'nitin', '2017-08-22 18:25:42'),
-(470, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081438', '2017-18', 'nitin', '2017-08-22 18:26:00'),
-(471, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081439', '2017-18', 'nitin', '2017-08-22 18:26:02'),
-(472, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02'),
-(473, 'Nitin Deepak Mathur', '-x-', '-x-', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081441', '2017-18', 'nitin', '2017-08-22 18:26:03'),
-(474, 'Naveen Singh', '-x-', '-x-', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56'),
-(475, 'asd', '-x-', '-x-', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081443', '2017-18', 'nitin', '2017-08-22 18:35:51'),
-(476, 'asd', '-x-', '-x-', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20'),
-(477, 'Naveen', '-x-', '-x-', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081445', '2017-18', 'nitin', '2017-08-22 18:37:46'),
-(478, 'Sundari Kaur', '-x-', '-x-', '23-08-2017', 'F', '', '', '', '', '', '', '', '', '2017081446', '2017-18', 'nitin', '2017-08-22 18:46:27');
+INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHOTO_`, `DOB_`, `GENDER`, `FATHER`, `F_MOBILE`, `F_EMAIL`, `F_PROFESSION`, `MOTHER`, `M_MOBILE`, `M_EMAIL`, `M_PROFESSION`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
+(1, 'NEHA JETHA', '-x-', '-x-', 'no-image.jpg', '2005.10.04', 'F', 'Mr Jetha', '', '', '', 'Smt Jetha', '', '', '', '2017041001', '2017-18', 'nitin', '2017-08-27 08:41:48'),
+(2, 'HOSHIYAR SINGH', '-x-', '-x-', 'no-image.jpg', '2006.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041002', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(3, 'MANISHA NEGI', '-x-', '-x-', 'no-image.jpg', '2006.01.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041003', '2017-18', 'nitin', '2017-08-27 12:02:22'),
+(4, 'BABITA NEGI', '-x-', '-x-', 'no-image.jpg', '2006.01.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041004', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(5, 'BHAWANA', '-x-', '-x-', 'no-image.jpg', '2006.04.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041005', '2017-18', 'nitin', '2017-08-27 12:06:13'),
+(6, 'MANJU RANA', '-x-', '-x-', 'no-image.jpg', '2006.06.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041006', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(7, 'ISHWAR SINGH MEHRA', '-x-', '-x-', 'no-image.jpg', '2006.10.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041007', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(8, 'PRIYANSHU RANA', '-x-', '-x-', 'no-image.jpg', '2006.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041008', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(9, 'TANIYA NEGI', '-x-', '-x-', 'no-image.jpg', '2005.03.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041009', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(10, 'MANOJ SINGH', '-x-', '-x-', 'no-image.jpg', '2005.11.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041010', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(11, 'NEHA MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2006.09.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041011', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(12, 'LABLI KORANGA', '-x-', '-x-', 'no-image.jpg', '2006.04.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041012', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(13, 'RIYA MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2006.09.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041013', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(14, 'KARAN SINGH MEHRA', '-x-', '-x-', 'no-image.jpg', '2006.03.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041014', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(15, 'KHUSMITA ARYA', '-x-', '-x-', 'no-image.jpg', '2005.10.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041015', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(16, 'PRIYANKA SEMIYA', '-x-', '-x-', 'no-image.jpg', '2006.04.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041016', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(17, 'PANKAJ SINGH BHANDARI', '-x-', '-x-', 'no-image.jpg', '2006.03.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041017', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(18, 'ROHIT SINGH BHANDARI', '-x-', '-x-', 'no-image.jpg', '2006.04.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041018', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(19, 'GEETA BISHT', '-x-', '-x-', 'no-image.jpg', '2006.03.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041019', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(20, 'UMESH KUMAR', '-x-', '-x-', 'no-image.jpg', '2006.01.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041020', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(21, 'DEVESH SINGH BISHT', '-x-', '-x-', 'no-image.jpg', '2006.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041021', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(22, 'NEHA CHIRAL', '-x-', '-x-', 'no-image.jpg', '2006.05.23', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041022', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(23, 'BHUPENDRA SINGH TOLIA', '-x-', '-x-', 'no-image.jpg', '2005.06.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041023', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(24, 'HARENDRA SINGH', '-x-', '-x-', 'no-image.jpg', '2006.12.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041024', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(25, 'KAILASH SINGH TOMKIYAL', '-x-', '-x-', 'no-image.jpg', '2006.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041025', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(26, 'SUMAN NEGI', '-x-', '-x-', 'no-image.jpg', '2006.01.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041026', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(27, 'KAMLESH SINGH QUIRIYAL', '-x-', '-x-', 'no-image.jpg', '2005.06.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041027', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(28, 'ROHIT DASPA', '-x-', '-x-', 'no-image.jpg', '2005.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041028', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(29, 'NEERAJ SINGH ', '-x-', '-x-', 'no-image.jpg', '2004.12.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041029', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(30, 'HIMANSHU RANA', '-x-', '-x-', 'no-image.jpg', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041030', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(31, 'DINESH SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2006.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041031', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(32, 'BHUPESH PAPRA', '-x-', '-x-', 'no-image.jpg', '2006.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041032', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(33, 'DEEPAK SINGH PAPRA', '-x-', '-x-', 'no-image.jpg', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041033', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(34, 'LOVERAJ KUMAR TAMTA', '-x-', '-x-', 'no-image.jpg', '2006.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041034', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(35, 'PRIYANSHU KUMAR', '-x-', '-x-', 'no-image.jpg', '2006.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041035', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(36, 'PANKAJ PANA', '-x-', '-x-', 'no-image.jpg', '2006.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041036', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(37, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041037', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(38, 'ISHA', '-x-', '-x-', 'no-image.jpg', '2006.07.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041038', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(39, 'RAVEENA DHAMI', '-x-', '-x-', 'no-image.jpg', '2006.02.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041039', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(40, 'MANOJ SINGH ', '-x-', '-x-', 'no-image.jpg', 'x', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041040', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(41, 'ANJALI NABYAL', '-x-', '-x-', 'no-image.jpg', '2006.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041041', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(42, 'BABITA BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2006.07.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041042', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(43, 'DEEPIKA BISHT', '-x-', '-x-', 'no-image.jpg', '2006.05.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041043', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(44, 'DIYA BHANDARI', '-x-', '-x-', 'no-image.jpg', '2006.04.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041044', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(45, 'HANSHA LAWAL', '-x-', '-x-', 'no-image.jpg', '2005.04.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041045', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(46, 'KAVITA NEGI', '-x-', '-x-', 'no-image.jpg', '2005.10.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041046', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(47, 'LAXMI DHAMI', '-x-', '-x-', 'no-image.jpg', '2004.12.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041047', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(48, 'MAHI VISWAKARMA', '-x-', '-x-', 'no-image.jpg', '2006.02.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041048', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(49, 'PRIYA GHINGA', '-x-', '-x-', 'no-image.jpg', '2006.07.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041049', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(50, 'TANUJA MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2005.11.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041050', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(51, 'USHA PANGTEY', '-x-', '-x-', 'no-image.jpg', '2006.04.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041051', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(52, 'BHARAT SINGH KATHAYAT', '-x-', '-x-', 'no-image.jpg', '2006.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041052', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(53, 'BHASKER SINGH GANGHARIYA', '-x-', '-x-', 'no-image.jpg', '2006.02.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041053', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(54, 'DEEPAK ARYA', '-x-', '-x-', 'no-image.jpg', '2006.02.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041054', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(55, 'DEEPAK GOSWAMI', '-x-', '-x-', 'no-image.jpg', '2006.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041055', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(56, 'DIVYANSHU NITWAL', '-x-', '-x-', 'no-image.jpg', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041056', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(57, 'GAURAV SINGH DHAMI', '-x-', '-x-', 'no-image.jpg', '2006.09.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041057', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(58, 'GAURAV SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041058', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(59, 'HIMANSHU KORANGA ', '-x-', '-x-', 'no-image.jpg', '2006.04.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041059', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(60, 'HONEY KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.07.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041060', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(61, 'HIMANSHU SINGH FARSWAN', '-x-', '-x-', 'no-image.jpg', '2006.05.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041061', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(62, 'HIMANSHU CHIRAL', '-x-', '-x-', 'no-image.jpg', '2005.05.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041062', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(63, 'INDERJEET SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2006.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041063', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(64, 'KAVINDRA SINGH DARIYAL', '-x-', '-x-', 'no-image.jpg', '2007.12.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041064', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(65, 'MANOJ SINGH MAHAR', '-x-', '-x-', 'no-image.jpg', '2006.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041065', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(66, 'MAYANK KUMAR', '-x-', '-x-', 'no-image.jpg', '2006.04.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041066', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(67, 'MUKESH SINGH FARSWAN', '-x-', '-x-', 'no-image.jpg', '2006.03.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041067', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(68, 'NEERAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2004.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041068', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(69, 'NEERAJ SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2006.04.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041069', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(70, 'NAVNEET SINGH BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2006.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041070', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(71, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2004.09.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041071', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(72, 'PRAVEEN SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2006.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041072', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(73, 'RAJAT SINGH MEHTA', '-x-', '-x-', 'no-image.jpg', '2006.02.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041073', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(74, 'SANJAY SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2006.02.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041074', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(75, 'TRIBHUWAN KUMAR VISWAKARMA', '-x-', '-x-', 'no-image.jpg', '2006.05.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041075', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(76, 'VIKRAM SIGNH PANCHPAL', '-x-', '-x-', 'no-image.jpg', '2005.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041076', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(77, 'VIKRAM SINGH KHATRI', '-x-', '-x-', 'no-image.jpg', '2008.07.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041077', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(78, 'PUSHPA', '-x-', '-x-', 'no-image.jpg', '2006.03.18', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041078', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(79, 'SONU', '-x-', '-x-', 'no-image.jpg', '2005.04.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041079', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(80, 'ISHWAR HARKOTIA', '-x-', '-x-', 'no-image.jpg', '2005.02.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041080', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(81, 'SAGAR VISWAKARMA', '-x-', '-x-', 'no-image.jpg', '2006.03.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041081', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(82, 'APRNA TRIPATHI', '-x-', '-x-', 'no-image.jpg', '2004.01.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041082', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(83, 'DIVYA TOMKIYAL', '-x-', '-x-', 'no-image.jpg', '2005.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041083', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(84, 'KALPANA GHINGA', '-x-', '-x-', 'no-image.jpg', '2005.02.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041084', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(85, 'KANUPRIYA RILKOTIA', '-x-', '-x-', 'no-image.jpg', '2005.03.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041085', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(86, 'MANISHA MEHTA', '-x-', '-x-', 'no-image.jpg', '2005.09.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041086', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(87, 'NIHARIKA TRIPATHI', '-x-', '-x-', 'no-image.jpg', '2005.08.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041087', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(88, 'PREETI GWAL', '-x-', '-x-', 'no-image.jpg', '2004.09.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041088', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(89, 'KHEELA LASPAL', '-x-', '-x-', 'no-image.jpg', '2004.07.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041089', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(90, 'BHUPESH HARKOTIA', '-x-', '-x-', 'no-image.jpg', '2005.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041090', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(91, 'BHUPESH MEHTA', '-x-', '-x-', 'no-image.jpg', '2005.04.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041091', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(92, 'VINOD RANA', '-x-', '-x-', 'no-image.jpg', '2005.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041092', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(93, 'CHANDAN SINGH ', '-x-', '-x-', 'no-image.jpg', '2005.03.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041093', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(94, 'CHETAN BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2005.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041094', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(95, 'DEEPAK KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041095', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(96, 'GAJENDRA KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041096', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(97, 'GANESH SINGH NEGI', '-x-', '-x-', 'no-image.jpg', '2005.10.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041097', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(98, 'GAURAV BAGARI', '-x-', '-x-', 'no-image.jpg', '2004.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041098', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(99, 'HIMANSHU KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041099', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(100, 'ISHANT MEHRA', '-x-', '-x-', 'no-image.jpg', '2005.08.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041100', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(101, 'JAGJIVAN BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2005.04.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041101', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(102, 'JEEVAN DHOKTI', '-x-', '-x-', 'no-image.jpg', '2005.06.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041102', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(103, 'JITENDRA SINGH', '-x-', '-x-', 'no-image.jpg', '2005.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041103', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(104, 'KAILASH MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2004.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041104', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(105, 'KAMLESH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2005.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041105', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(106, 'KAMLESH JOSHI', '-x-', '-x-', 'no-image.jpg', '2004.02.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041106', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(107, 'KAVINDRA SINGH IMLAL', '-x-', '-x-', 'no-image.jpg', '2005.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041107', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(108, 'LOVERAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.01.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041108', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(109, 'LOVERAJ LASPAL', '-x-', '-x-', 'no-image.jpg', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041109', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(110, 'MANISH SINGH BORA', '-x-', '-x-', 'no-image.jpg', '2005.06.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041110', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(111, 'MAYANK VERMA', '-x-', '-x-', 'no-image.jpg', '2005.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041111', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(112, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041112', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(113, 'PRADEEP PANT', '-x-', '-x-', 'no-image.jpg', '2005.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041113', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(114, 'RAHUL BISHT', '-x-', '-x-', 'no-image.jpg', '2005.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041114', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(115, 'RAHUL SINGH TOMKIYAL', '-x-', '-x-', 'no-image.jpg', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041115', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(116, 'RAVI PALIWAL', '-x-', '-x-', 'no-image.jpg', '2004.04.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041116', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(117, 'SIDDHARTH PANDEY', '-x-', '-x-', 'no-image.jpg', '2006.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041117', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(118, 'VIVEK FARSWAN', '-x-', '-x-', 'no-image.jpg', '2005.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041118', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(119, 'YOGESH JOSHI', '-x-', '-x-', 'no-image.jpg', '2005.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041119', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(120, 'VIVEK MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2003.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041120', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(121, 'MANISH SINGH BHAKUNI', '-x-', '-x-', 'no-image.jpg', '2005.10.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041121', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(122, 'LOVERAJ PANWAR', '-x-', '-x-', 'no-image.jpg', '2005.01.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041122', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(123, 'ANKIT VERMA', '-x-', '-x-', 'no-image.jpg', '2006.02.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041123', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(124, 'DIYA DHAMI', '-x-', '-x-', 'no-image.jpg', '2005.06.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041124', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(125, 'GEETANJALI MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2004.08.29', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041125', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(126, 'HIMANSHI KORANGA', '-x-', '-x-', 'no-image.jpg', '2004.01.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041126', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(127, 'LAXMI BHANDARI', '-x-', '-x-', 'no-image.jpg', '2003.08.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041127', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(128, 'MANISHA KATHAYAT', '-x-', '-x-', 'no-image.jpg', '2005.04.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041128', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(129, 'PREETI PANA', '-x-', '-x-', 'no-image.jpg', '2005.03.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041129', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(130, 'TANUJA NITWAL', '-x-', '-x-', 'no-image.jpg', '2005.04.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041130', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(131, 'MITALI MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2005.03.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041131', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(132, 'PRIYANSHU RANA', '-x-', '-x-', 'no-image.jpg', '2005.03.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041132', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(133, 'VINOD RANA', '-x-', '-x-', 'no-image.jpg', '2005.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041133', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(134, 'CHANDAN SINGH ', '-x-', '-x-', 'no-image.jpg', '2005.03.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041134', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(135, 'CHETAN BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2005.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041135', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(136, 'DEEPAK KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041136', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(137, 'GAJENDRA KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041137', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(138, 'GANESH SINGH NEGI', '-x-', '-x-', 'no-image.jpg', '2005.10.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041138', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(139, 'GAURAV BAGARI', '-x-', '-x-', 'no-image.jpg', '2004.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041139', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(140, 'HIMANSHU KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041140', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(141, 'ISHANT MEHRA', '-x-', '-x-', 'no-image.jpg', '2005.08.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041141', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(142, 'JAGJIVAN BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2005.04.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041142', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(143, 'JEEVAN DHOKTI', '-x-', '-x-', 'no-image.jpg', '2005.06.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041143', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(144, 'JITENDRA SINGH', '-x-', '-x-', 'no-image.jpg', '2005.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041144', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(145, 'KAILASH MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2004.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041145', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(146, 'KAMLESH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2005.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041146', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(147, 'KAMLESH JOSHI', '-x-', '-x-', 'no-image.jpg', '2004.02.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041147', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(148, 'KAVINDRA SINGH IMLAL', '-x-', '-x-', 'no-image.jpg', '2005.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041148', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(149, 'LOVERAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.01.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041149', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(150, 'LOVERAJ LASPAL', '-x-', '-x-', 'no-image.jpg', '2005.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041150', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(151, 'MANISH SINGH BORA', '-x-', '-x-', 'no-image.jpg', '2005.06.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041151', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(152, 'MAYANK VERMA', '-x-', '-x-', 'no-image.jpg', '2005.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041152', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(153, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2005.05.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041153', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(154, 'PRADEEP PANT', '-x-', '-x-', 'no-image.jpg', '2005.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041154', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(155, 'RAHUL BISHT', '-x-', '-x-', 'no-image.jpg', '2005.02.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041155', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(156, 'RAHUL SINGH TOMKIYAL', '-x-', '-x-', 'no-image.jpg', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041156', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(157, 'RAVI PALIWAL', '-x-', '-x-', 'no-image.jpg', '2004.04.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041157', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(158, 'SIDDHARTH PANDEY', '-x-', '-x-', 'no-image.jpg', '2006.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041158', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(159, 'VIVEK FARSWAN', '-x-', '-x-', 'no-image.jpg', '2005.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041159', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(160, 'YOGESH JOSHI', '-x-', '-x-', 'no-image.jpg', '2005.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041160', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(161, 'VIVEK MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2003.02.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041161', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(162, 'MANISH SINGH BHAKUNI', '-x-', '-x-', 'no-image.jpg', '2005.10.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041162', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(163, 'LOVERAJ PANWAR', '-x-', '-x-', 'no-image.jpg', '2005.01.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041163', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(164, 'BHAWANA DHAPWAL', '-x-', '-x-', 'no-image.jpg', '2004.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041164', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(165, 'DIYA RANA', '-x-', '-x-', 'no-image.jpg', '2005.09.22', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041165', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(166, 'DIKSHA TOLIA', '-x-', '-x-', 'no-image.jpg', '2004.04.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041166', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(167, 'ISHWARI ARYA', '-x-', '-x-', 'no-image.jpg', '2003.09.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041167', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(168, 'POOJA PANDA', '-x-', '-x-', 'no-image.jpg', '2005.10.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041168', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(169, 'RITU NIKHURPA', '-x-', '-x-', 'no-image.jpg', '2003.07.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041169', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(170, 'SWETA NIKHURPA', '-x-', '-x-', 'no-image.jpg', '2004.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041170', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(171, 'SUNITA PANCHPAL', '-x-', '-x-', 'no-image.jpg', '2004.08.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041171', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(172, 'TRIPTI BISHT', '-x-', '-x-', 'no-image.jpg', '2005.04.08', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041172', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(173, 'TANUJA NEGI', '-x-', '-x-', 'no-image.jpg', '2004.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041173', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(174, 'AJAY DWIVEDI ', '-x-', '-x-', 'no-image.jpg', '2004.04.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041174', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(175, 'BHUPENDRA DHAMI', '-x-', '-x-', 'no-image.jpg', '2003.08.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041175', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(176, 'BHUPENDRA SINGH JAIMYAL', '-x-', '-x-', 'no-image.jpg', '2004.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041176', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(177, 'BHUPENDRA MEHTA', '-x-', '-x-', 'no-image.jpg', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041177', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(178, 'CHANDRABHANU', '-x-', '-x-', 'no-image.jpg', '2004.05.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041178', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(179, 'DIVYANSHU TOMKIYAL', '-x-', '-x-', 'no-image.jpg', '2004.05.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041179', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(180, 'GOVIND TOLIA', '-x-', '-x-', 'no-image.jpg', '2004.03.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041180', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(181, 'HEMRAJ SINGH ', '-x-', '-x-', 'no-image.jpg', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041181', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(182, 'JITENDRA KUMAR', '-x-', '-x-', 'no-image.jpg', '2004.03.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041182', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(183, 'JEEVAN SINGH', '-x-', '-x-', 'no-image.jpg', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041183', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(184, 'JEEVAN TOLIA', '-x-', '-x-', 'no-image.jpg', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041184', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(185, 'KARAN RAWAT', '-x-', '-x-', 'no-image.jpg', '2004.05.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041185', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(186, 'NEERAJ PANA', '-x-', '-x-', 'no-image.jpg', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041186', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(187, 'RAHUL KORANGA', '-x-', '-x-', 'no-image.jpg', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041187', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(188, 'YOGESH KUMAR', '-x-', '-x-', 'no-image.jpg', '2004.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041188', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(189, 'VIKRAM PANWAR', '-x-', '-x-', 'no-image.jpg', '2004.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041189', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(190, 'GAURAV JIGYASU', '-x-', '-x-', 'no-image.jpg', '2007.08.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041190', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(191, 'ANJALI ARYA', '-x-', '-x-', 'no-image.jpg', '2004.05.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041191', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(192, 'YOGITA RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.09.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041192', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(193, 'GAURAV SINGH', '-x-', '-x-', 'no-image.jpg', '2004.02.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041193', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(194, 'JITENDRA ', '-x-', '-x-', 'no-image.jpg', '2004.03.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041194', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(195, 'NAVNEET DHARMSAKTU', '-x-', '-x-', 'no-image.jpg', '2002.05.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041195', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(196, 'AJAY RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.01.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041196', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(197, 'AYUSHI NITWAL', '-x-', '-x-', 'no-image.jpg', '2004.03.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041197', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(198, 'JAYA PANGTEY', '-x-', '-x-', 'no-image.jpg', '2003.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041198', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(199, 'GANESH SINGH', '-x-', '-x-', 'no-image.jpg', '2004.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041199', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(200, 'DIKSHA SORAGI', '-x-', '-x-', 'no-image.jpg', '2004.02.21', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041200', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(201, 'POOJA VERMA', '-x-', '-x-', 'no-image.jpg', '2004.02.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041201', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(202, 'ANJALI KORANGA', '-x-', '-x-', 'no-image.jpg', '2001.05.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041202', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(203, 'BABITA NIKHURPA', '-x-', '-x-', 'no-image.jpg', '1999.09.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041203', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(204, 'DIVYA SAYAL', '-x-', '-x-', 'no-image.jpg', '2001.05.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041204', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(205, 'HEMA JOSHI', '-x-', '-x-', 'no-image.jpg', '2000.07.25', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041205', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(206, 'KANCHAN GOSWAMI', '-x-', '-x-', 'no-image.jpg', '2000.01.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041206', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(207, 'KANCHANA RILKOTIA', '-x-', '-x-', 'no-image.jpg', '1999.08.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041207', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(208, 'KAVITA PINDIYAL', '-x-', '-x-', 'no-image.jpg', '1999.08.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041208', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(209, 'KHEELA NEGI', '-x-', '-x-', 'no-image.jpg', '2000.05.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041209', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(210, 'MAMTA CHIRAL', '-x-', '-x-', 'no-image.jpg', '2001.04.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041210', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(211, 'MAMTA DANU', '-x-', '-x-', 'no-image.jpg', '1999.11.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041211', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(212, 'MAYA MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2000.06.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041212', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(213, 'MANSHI PANGTEY', '-x-', '-x-', 'no-image.jpg', '2001.12.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041213', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(214, 'NEETU SEMIA', '-x-', '-x-', 'no-image.jpg', '2000.12.23', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041214', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(215, 'PRIYANKA TRIPATHI', '-x-', '-x-', 'no-image.jpg', '2000.03.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041215', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(216, 'RASHI SUMTYAL', '-x-', '-x-', 'no-image.jpg', '2001.07.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041216', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(217, 'RAVEENA MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2001.06.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041217', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(218, 'RITU RAWAT', '-x-', '-x-', 'no-image.jpg', '1999.12.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041218', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(219, 'SANGEETA KOSHYARI', '-x-', '-x-', 'no-image.jpg', '2000.10.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041219', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(220, 'BHUPENDRA KUNWAR', '-x-', '-x-', 'no-image.jpg', '1998.12.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041220', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(221, 'DEEPAK SINGH BURFAL', '-x-', '-x-', 'no-image.jpg', '2000.12.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041221', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(222, 'DEEPAK SINGH LASPAL', '-x-', '-x-', 'no-image.jpg', '2001.06.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041222', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(223, 'DEEPAK SINGH MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2001.02.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041223', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(224, 'DEEPAKANJ RAWAT', '-x-', '-x-', 'no-image.jpg', '2001.08.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041224', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(225, 'DINESH SINGH BISHT', '-x-', '-x-', 'no-image.jpg', '2001.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041225', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(226, 'GOPAL BHATT', '-x-', '-x-', 'no-image.jpg', '1999.08.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041226', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(227, 'GAURAV DARIYAL', '-x-', '-x-', 'no-image.jpg', '2000.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041227', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(228, 'GAURAV PANGTEY', '-x-', '-x-', 'no-image.jpg', '1998.12.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041228', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(229, 'HIMANSHU DARIYAL', '-x-', '-x-', 'no-image.jpg', '2000.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041229', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(230, 'HIMANSHU MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2000.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041230', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(231, 'HIMANSHU SINGH PANGTEY', '-x-', '-x-', 'no-image.jpg', '2000.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041231', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(232, 'HIMANSHU VERMA', '-x-', '-x-', 'no-image.jpg', '2000.06.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041232', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(233, 'HIMANSHU KUMAR', '-x-', '-x-', 'no-image.jpg', '2001.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041233', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(234, 'ISHWAR DHAPWAL', '-x-', '-x-', 'no-image.jpg', '2001.06.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041234', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(235, 'ISHWAR SINGH PANCHPAL', '-x-', '-x-', 'no-image.jpg', '2001.03.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041235', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(236, 'JITENDRA SINGH BURFAL', '-x-', '-x-', 'no-image.jpg', '2000.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041236', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(237, 'JITENDRA SINGH DHAMI ', '-x-', '-x-', 'no-image.jpg', '2001.05.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041237', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(238, 'KARTIKAY SINGH PANGTEY', '-x-', '-x-', 'no-image.jpg', '2001.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041238', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(239, 'LAXMAN SINGH PAPRA', '-x-', '-x-', 'no-image.jpg', '2001.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041239', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(240, 'LOVERAJ SINGH KUNWAR', '-x-', '-x-', 'no-image.jpg', '2001.06.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041240', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(241, 'MANISH SINGH GWAL', '-x-', '-x-', 'no-image.jpg', '2002.01.22', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041241', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(242, 'MANOJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2000.10.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041242', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(243, 'PRAKASH SINGH KARKI', '-x-', '-x-', 'no-image.jpg', '2001.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041243', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(244, 'PRVEEN SINGH NEGI', '-x-', '-x-', 'no-image.jpg', '2002.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041244', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(245, 'SANJEEV SINGH THAPRIYAL', '-x-', '-x-', 'no-image.jpg', '2001.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041245', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(246, 'SANJAY RAM', '-x-', '-x-', 'no-image.jpg', '2000.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041246', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(247, 'MUKESH CHANYAL', '-x-', '-x-', 'no-image.jpg', '2001.06.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041247', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(248, 'UMESH CHANDRA JOSHI', '-x-', '-x-', 'no-image.jpg', '2002.09.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041248', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(249, 'VINOD SINGH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2000.03.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041249', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(250, 'JITENDRA SINGH PANGTEY', '-x-', '-x-', 'no-image.jpg', '2000.11.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041250', '2017-18', 'nitin', '2017-04-29 10:43:00'),
+(251, 'Rakesh', 'Chandra', 'Gupta', 'no-image.jpg', '2001-05-12', 'M', 'Suresh chandra Gupta', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017051251', '2017-18', 'nitin', '2017-05-05 07:01:43'),
+(252, 'ANJALI NITWLA', '-x-', '-x-', 'no-image.jpg', '2003.03.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041251', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(253, 'DIKSHA MEHTA', '-x-', '-x-', 'no-image.jpg', '2004.04.27', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041252', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(254, 'HINA BRIJWAL ', '-x-', '-x-', 'no-image.jpg', '2007.07.28', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041253', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(255, 'KIRAN DHAMI ', '-x-', '-x-', 'no-image.jpg', '2004.03.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041254', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(256, 'NEHA SUMTYAL', '-x-', '-x-', 'no-image.jpg', '2006.12.11', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041255', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(257, 'X', '-x-', '-x-', 'no-image.jpg', '0000.00.00', 'x', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041256', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(258, 'POOJA RAWAT', '-x-', '-x-', 'no-image.jpg', '2004.04.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041257', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(259, 'PRIYANKA NITWAL', '-x-', '-x-', 'no-image.jpg', '2004.03.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041258', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(260, 'SHALINI NIKHURPA', '-x-', '-x-', 'no-image.jpg', '2004.06.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041259', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(261, 'SHEELA', '-x-', '-x-', 'no-image.jpg', '2004.11.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041260', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(262, 'SIYA SAYALA', '-x-', '-x-', 'no-image.jpg', '2003.11.01', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041261', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(263, 'LUBNA NITWAL', '-x-', '-x-', 'no-image.jpg', '2004.10.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041262', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(264, 'YOGITA PANDEY', '-x-', '-x-', 'no-image.jpg', '2003.05.17', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041263', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(265, 'BHUPENDRA SINGH IMLAL', '-x-', '-x-', 'no-image.jpg', '2004.03.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041264', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(266, 'CHANCHAL SINGH ', '-x-', '-x-', 'no-image.jpg', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041265', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(267, 'CHANDRA MOHAN SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2004.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041266', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(268, 'DEEPAK SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2003.08.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041267', '2017-18', 'nitin', '0000-00-00 00:00:00');
+INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHOTO_`, `DOB_`, `GENDER`, `FATHER`, `F_MOBILE`, `F_EMAIL`, `F_PROFESSION`, `MOTHER`, `M_MOBILE`, `M_EMAIL`, `M_PROFESSION`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
+(269, 'DEVESH SINGH JESTHA', '-x-', '-x-', 'no-image.jpg', '2004.11.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041268', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(270, 'HIMANSHU RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.09.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041269', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(271, 'HIMANSHU SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.07.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041270', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(272, 'HIMANSHU SHARMA', '-x-', '-x-', 'no-image.jpg', '2003.07.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041271', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(273, 'JATIN SINGH BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2004.01.19', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041272', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(274, 'LAXMAN SINGH RINGWAL', '-x-', '-x-', 'no-image.jpg', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041273', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(275, 'LOVERAJ CHIRAL', '-x-', '-x-', 'no-image.jpg', '2004.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041274', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(276, 'NAVEEN SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2005.02.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041275', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(277, 'MAHESH PANWAR', '-x-', '-x-', 'no-image.jpg', '2004.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041276', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(278, 'MUKESH SINGH SUMTYAL', '-x-', '-x-', 'no-image.jpg', '2004.04.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041277', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(279, 'PANKAJ SINGH MAHAR', '-x-', '-x-', 'no-image.jpg', '2004.06.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041278', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(280, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2003.04.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041279', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(281, 'PANKAJ SINGH PANGTEY', '-x-', '-x-', 'no-image.jpg', '2004.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041280', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(282, 'TIKENDRA SINGH BISHT ', '-x-', '-x-', 'no-image.jpg', '2004.03.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041281', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(283, 'UMESH SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2004.03.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041282', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(284, 'VIKRAM SINGH', '-x-', '-x-', 'no-image.jpg', '2004.08.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041283', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(285, 'VINOD SINGH NITWAL', '-x-', '-x-', 'no-image.jpg', '2003.09.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041284', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(286, 'BHAWANA BAGARI', '-x-', '-x-', 'no-image.jpg', '2003.08.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041285', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(287, 'CHITRA PANGTEY ', '-x-', '-x-', 'no-image.jpg', '2002.04.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041286', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(288, 'DEEPIKA JANGPANGI', '-x-', '-x-', 'no-image.jpg', '2003.03.02', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041287', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(289, 'DEEPTI KHALJHUNIA', '-x-', '-x-', 'no-image.jpg', '2002.05.18', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041288', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(290, 'GARIMA', '-x-', '-x-', 'no-image.jpg', '2006.08.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041289', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(291, 'HIMANI DWIVEDI', '-x-', '-x-', 'no-image.jpg', '2003.07.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041290', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(292, 'ISHA DHAPWAL', '-x-', '-x-', 'no-image.jpg', '2003.03.30', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041291', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(293, 'JYOTI MEHRA', '-x-', '-x-', 'no-image.jpg', '2003.12.07', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041292', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(294, 'KAVITA PAPRA', '-x-', '-x-', 'no-image.jpg', '2003.04.16', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041293', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(295, 'KOMAL VERMA', '-x-', '-x-', 'no-image.jpg', '2003.12.06', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041294', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(296, 'MANISHA BHANDARI', '-x-', '-x-', 'no-image.jpg', '2003.04.09', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041295', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(297, 'MANSI MARTOLIA', '-x-', '-x-', 'no-image.jpg', '2003.07.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041296', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(298, 'SONIYA NEGI', '-x-', '-x-', 'no-image.jpg', '2003.02.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041297', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(299, 'SUSHEELA LASPAL', '-x-', '-x-', 'no-image.jpg', '2002.12.05', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041298', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(300, 'ABHISHEK SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.03.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041299', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(301, 'DEVRAJ SINGH ', '-x-', '-x-', 'no-image.jpg', '2002.08.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041300', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(302, 'DURGESH SINGH DANU', '-x-', '-x-', 'no-image.jpg', '2002.07.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041301', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(303, 'GAURAV SINGH PANDA', '-x-', '-x-', 'no-image.jpg', '2004.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041302', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(304, 'GAURAV SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2003.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041303', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(305, 'GAURAV SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2003.06.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041304', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(306, 'GOVIND SINGH JAIMYAL', '-x-', '-x-', 'no-image.jpg', '2003.03.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041305', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(307, 'ISHWAR SINGH KHATRI', '-x-', '-x-', 'no-image.jpg', '2003.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041306', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(308, 'JITENDRA SINGH ', '-x-', '-x-', 'no-image.jpg', '2003.06.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041307', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(309, 'KAPIL SINGH DHAMI', '-x-', '-x-', 'no-image.jpg', '2003.07.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041308', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(310, 'KARAN SINGH TOLIA', '-x-', '-x-', 'no-image.jpg', '2001.06.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041309', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(311, 'LOVERAJ SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041310', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(312, 'MANISH CHANDRA JOSHI', '-x-', '-x-', 'no-image.jpg', '2002.04.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041311', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(313, 'MUKESH SINGH GHINGA', '-x-', '-x-', 'no-image.jpg', '2004.02.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041312', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(314, 'MUKESH SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.07.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041313', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(315, 'NISHANT SINGH DEWALI', '-x-', '-x-', 'no-image.jpg', '2003.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041314', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(316, 'PANKAJ SINGH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2001.05.09', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041315', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(317, 'PREMPRAKASH SINGH PANDA', '-x-', '-x-', 'no-image.jpg', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041316', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(318, 'PRIYANSHU BORA', '-x-', '-x-', 'no-image.jpg', '2004.07.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041317', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(319, 'RAHUL SINGH BISHT', '-x-', '-x-', 'no-image.jpg', '2003.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041318', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(320, 'RAHUL SINGH', '-x-', '-x-', 'no-image.jpg', '2003.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041319', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(321, 'RAJENDRA PRAKASH', '-x-', '-x-', 'no-image.jpg', '2002.07.08', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041320', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(322, 'ROHIT SINGH GHINGA', '-x-', '-x-', 'no-image.jpg', '2003.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041321', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(323, 'ROHIT SINGH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2003.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041322', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(324, 'CHANDRA MOHAN SINGH KHATRI', '-x-', '-x-', 'no-image.jpg', '2004.06.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041323', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(325, 'SAMEER SINGH', '-x-', '-x-', 'no-image.jpg', '2003.04.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041324', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(326, 'SANJAY SINGH DHAPWAL', '-x-', '-x-', 'no-image.jpg', '2002.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041325', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(327, 'SANJAY SINGH RANA', '-x-', '-x-', 'no-image.jpg', '2003.03.23', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041326', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(328, 'SAURABH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2003.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041327', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(329, 'TRILOK SINGH IMLAL', '-x-', '-x-', 'no-image.jpg', '2002.04.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041328', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(330, 'VIRENDRA KUMAR', '-x-', '-x-', 'no-image.jpg', '2004.07.07', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041329', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(331, 'VINOD SINGH MEHRA', '-x-', '-x-', 'no-image.jpg', '2003.03.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041330', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(332, 'YASHDEEP', '-x-', '-x-', 'no-image.jpg', '2002.12.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041331', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(333, 'YOGESH SINGH', '-x-', '-x-', 'no-image.jpg', '2003.03.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041332', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(334, 'YOGESH SINGH FARSWAN', '-x-', '-x-', 'no-image.jpg', '2003.09.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041333', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(335, 'KAVINDRA SINGH', '-x-', '-x-', 'no-image.jpg', '2003.01.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041334', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(336, 'BHUPENDRA SINGH LUNTRI', '-x-', '-x-', 'no-image.jpg', '2004.11.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041335', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(337, 'CHANDANI RAWAT', '-x-', '-x-', 'no-image.jpg', '2003.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041336', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(338, 'CHETANA BHAKUNI', '-x-', '-x-', 'no-image.jpg', '2003.03.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041337', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(339, 'DIVYA BAGARI ', '-x-', '-x-', 'no-image.jpg', '2003.03.09', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041338', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(340, 'GARIMA BISHT', '-x-', '-x-', 'no-image.jpg', '2003.03.10', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041339', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(341, 'KAVITA ARYA', '-x-', '-x-', 'no-image.jpg', '2003.02.13', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041340', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(342, 'KANISHKA TOLIA', '-x-', '-x-', 'no-image.jpg', '2003.06.12', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041341', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(343, 'MAHIMA RAUTELA', '-x-', '-x-', 'no-image.jpg', '2003.03.16', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041342', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(344, 'RITU MARTOLIYA ', '-x-', '-x-', 'no-image.jpg', '2003.04.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041343', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(345, 'SANGEETA PANGTEY', '-x-', '-x-', 'no-image.jpg', '2003.04.20', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041344', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(346, 'NISHA VERMA', '-x-', '-x-', 'no-image.jpg', '2003.09.14', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041345', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(347, 'KOMAL RAWAT', '-x-', '-x-', 'no-image.jpg', '2002.04.19', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041346', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(348, 'BABITA KORANGA', '-x-', '-x-', 'no-image.jpg', '2003.03.26', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041347', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(349, 'KARISHMA ', '-x-', '-x-', 'no-image.jpg', '2002.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041348', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(350, 'DEEPIKA ARYA', '-x-', '-x-', 'no-image.jpg', '2002.04.15', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041349', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(351, 'AKSHAY SINGH JESTHA', '-x-', '-x-', 'no-image.jpg', '2003.05.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041350', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(352, 'DEEPANSHU BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2001.06.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041351', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(353, 'DEEPAK GIRI', '-x-', '-x-', 'no-image.jpg', '2003.05.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041352', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(354, 'DEEPAK GOSWAMI', '-x-', '-x-', 'no-image.jpg', '2003.04.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041353', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(355, 'DEEPAK SINGH NEGI', '-x-', '-x-', 'no-image.jpg', '2003.03.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041354', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(356, 'DEEPAK SINGH PACHHAI', '-x-', '-x-', 'no-image.jpg', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041355', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(357, 'DHEERAJ SINGH CHIRAL', '-x-', '-x-', 'no-image.jpg', '2003.01.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041356', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(358, 'DEVENDRA SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2002.11.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041357', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(359, 'HIMANSHU JOSHI', '-x-', '-x-', 'no-image.jpg', '2002.05.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041358', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(360, 'KRISHNA DOSAD', '-x-', '-x-', 'no-image.jpg', '2002.05.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041359', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(361, 'LAXMAN SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2003.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041360', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(362, 'MANJEET KUMAR', '-x-', '-x-', 'no-image.jpg', '2002.04.18', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041361', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(363, 'MANOJ SINGH KORNGA', '-x-', '-x-', 'no-image.jpg', '2003.04.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041362', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(364, 'NEERAJ SINGH PANWAR', '-x-', '-x-', 'no-image.jpg', '2003.03.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041363', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(365, 'LAXMAN SINGH PANA', '-x-', '-x-', 'no-image.jpg', '2002.03.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041364', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(366, 'NITISH SINGH JANGPANGI', '-x-', '-x-', 'no-image.jpg', '2003.02.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041365', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(367, 'NAVEEN SINGH PANCHPAL', '-x-', '-x-', 'no-image.jpg', '2003.06.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041366', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(368, 'NITESH SINGH BISHT', '-x-', '-x-', 'no-image.jpg', '2003.02.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041367', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(369, 'PAWAN SINGH KOSHIYARI', '-x-', '-x-', 'no-image.jpg', '2003.03.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041368', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(370, 'PANKAJ SINGH TRIPATHI', '-x-', '-x-', 'no-image.jpg', '2002.02.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041369', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(371, 'RAHUL SINGH SUMTYAL', '-x-', '-x-', 'no-image.jpg', '2004.06.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041370', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(372, 'SHUBHAM JOSHI', '-x-', '-x-', 'no-image.jpg', '2003.07.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041371', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(373, 'HIMANSHU BARFAL', '-x-', '-x-', 'no-image.jpg', '2003.03.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041372', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(374, 'TRIBHUWAN SINGH MAHAR', '-x-', '-x-', 'no-image.jpg', '2003.01.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041373', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(375, 'TARUN SINGH RALMAL', '-x-', '-x-', 'no-image.jpg', '2003.07.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041374', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(376, 'GANESH SINGH DHAMI', '-x-', '-x-', 'no-image.jpg', '2003.10.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041375', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(377, 'ROHIT PANCHPAL', '-x-', '-x-', 'no-image.jpg', '2004.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041376', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(378, 'DHEERAJ SINGH BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2002.07.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041377', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(379, 'RAVINDRA SINGH MEHTA', '-x-', '-x-', 'no-image.jpg', '2004.02.24', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041378', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(380, 'TRIBHUWAN SINGH MAPWAL', '-x-', '-x-', 'no-image.jpg', '2002.01.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041379', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(381, 'KRISHNA SINGH DANU', '-x-', '-x-', 'no-image.jpg', '2003.12.14', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041380', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(382, 'DINESH RAM', '-x-', '-x-', 'no-image.jpg', '2002.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041381', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(383, 'MANISH PRAKASH', '-x-', '-x-', 'no-image.jpg', '2002.01.11', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041382', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(384, 'MAYA MEHRA', '-x-', '-x-', 'no-image.jpg', '2003.03.17', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041383', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(385, 'KIRAN FARSWAN', '-x-', '-x-', 'no-image.jpg', '2001.09.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041384', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(386, 'PRATYUSHA NIKHURPA', '-x-', '-x-', 'no-image.jpg', '2001.09.22', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041385', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(387, 'RAMESWARI MARTOLIA', '-x-', '-x-', 'no-image.jpg', '2001.11.03', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041386', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(388, 'REKHA PANWAR', '-x-', '-x-', 'no-image.jpg', '2001.02.04', 'F', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041387', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(389, 'ABHILASH SINGH BAGARI', '-x-', '-x-', 'no-image.jpg', '2001.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041388', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(390, 'AJAY PRAKESH', '-x-', '-x-', 'no-image.jpg', '2001.06.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041389', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(391, 'ARJUN SINGH BISHT', '-x-', '-x-', 'no-image.jpg', '2000.06.28', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041390', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(392, 'BHAWESH JOSHI ', '-x-', '-x-', 'no-image.jpg', '2001.10.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041391', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(393, 'BHUPENDRA SINGH MARTOLIYA', '-x-', '-x-', 'no-image.jpg', '2001.06.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041392', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(394, 'VIRENDRA SINGH KHATRI', '-x-', '-x-', 'no-image.jpg', '2001.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041393', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(395, 'DEEPAK SINGH BRIJWAL', '-x-', '-x-', 'no-image.jpg', '2001.03.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041394', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(396, 'DINESH SINGH RAWAT', '-x-', '-x-', 'no-image.jpg', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041395', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(397, 'GANESH SINGH SORAGI', '-x-', '-x-', 'no-image.jpg', '2000.06.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041396', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(398, 'GAURAV SINGH DHARAMSHATU', '-x-', '-x-', 'no-image.jpg', '2002.04.25', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041397', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(399, 'JATIN SINGH ', '-x-', '-x-', 'no-image.jpg', '2001.05.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041398', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(400, 'JEEWAN CHANDRA DIVEDI', '-x-', '-x-', 'no-image.jpg', '2001.05.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041399', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(401, 'JITENDRA SINGH BOTHAYAL', '-x-', '-x-', 'no-image.jpg', '2000.08.20', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041400', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(402, 'HEMRAJ SINGH ', '-x-', '-x-', 'no-image.jpg', '2001.06.17', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041401', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(403, 'HIMANSHU KUMAR ', '-x-', '-x-', 'no-image.jpg', '2001.06.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041402', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(404, 'LOVRAJ SING ', '-x-', '-x-', 'no-image.jpg', '1999.12.16', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041403', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(405, 'LOVRAJ SINGH JESTHA', '-x-', '-x-', 'no-image.jpg', '1999.12.29', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041404', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(406, 'LAXMAN SINGH DARIYAL', '-x-', '-x-', 'no-image.jpg', '2001.07.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041405', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(407, 'LOKESH KUMAR ', '-x-', '-x-', 'no-image.jpg', '2001.09.27', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041406', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(408, 'MAHIMANT RAM ', '-x-', '-x-', 'no-image.jpg', '1999.07.01', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041407', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(409, 'MANISH SINGH NEGI', '-x-', '-x-', 'no-image.jpg', '2001.04.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041408', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(410, 'MANMOHAN SINGH MEHRA', '-x-', '-x-', 'no-image.jpg', '2000.05.13', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041409', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(411, 'MAYANK SINGH DHAPWAL', '-x-', '-x-', 'no-image.jpg', '2000.11.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041410', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(412, 'NARESH SINGH BHANDARI', '-x-', '-x-', 'no-image.jpg', '2001.12.21', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041411', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(413, 'PANKAJ KUMAR', '-x-', '-x-', 'no-image.jpg', '2002.04.10', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041412', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(414, 'PANKAJ SINGH JESTHA', '-x-', '-x-', 'no-image.jpg', '1999.10.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041413', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(415, 'RAHUL RAITO', '-x-', '-x-', 'no-image.jpg', '1999.03.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041414', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(416, 'RAJENDRA SINGH ', '-x-', '-x-', 'no-image.jpg', '2006.04.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041415', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(417, 'RAJENDRA SINGH BHANDARI', '-x-', '-x-', 'no-image.jpg', '2001.12.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041416', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(418, 'RAJESH JOSHI', '-x-', '-x-', 'no-image.jpg', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041417', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(419, 'RAKESH SINGH ', '-x-', '-x-', 'no-image.jpg', '2003.09.06', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041418', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(420, 'RISHABH SINGH JESTHA', '-x-', '-x-', 'no-image.jpg', '2000.01.03', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041419', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(421, 'ROHIT PANT', '-x-', '-x-', 'no-image.jpg', '2002.09.02', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041420', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(422, 'SACHIN SINGH GHEENGA', '-x-', '-x-', 'no-image.jpg', '2001.07.05', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041421', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(423, 'SAGAR SINGH DHOKTI', '-x-', '-x-', 'no-image.jpg', '2000.07.12', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041422', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(424, 'SUNIL SINGH NIKHURPA ', '-x-', '-x-', 'no-image.jpg', '2001.06.15', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041423', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(425, 'SURAJ SINGH', '-x-', '-x-', 'no-image.jpg', '2001.06.04', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041424', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(426, 'SURAJ SINGH BHANDARI', '-x-', '-x-', 'no-image.jpg', '2001.07.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041425', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(427, 'VIKRAM SINGH GANGHARIA', '-x-', '-x-', 'no-image.jpg', '1999.04.26', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041426', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(428, 'VINOD SINGH DHAPWAL', '-x-', '-x-', 'no-image.jpg', '1999.09.30', 'M', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '-x-', '2017041427', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(460, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081428', '2017-18', 'nitin', '2017-08-22 18:25:21'),
+(461, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081429', '2017-18', 'nitin', '2017-08-22 18:25:23'),
+(462, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081430', '2017-18', 'nitin', '2017-08-22 18:25:23'),
+(463, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081431', '2017-18', 'nitin', '2017-08-22 18:25:39'),
+(464, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081432', '2017-18', 'nitin', '2017-08-22 18:25:40'),
+(465, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081433', '2017-18', 'nitin', '2017-08-22 18:25:41'),
+(466, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081434', '2017-18', 'nitin', '2017-08-22 18:25:41'),
+(467, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081435', '2017-18', 'nitin', '2017-08-22 18:25:41'),
+(468, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081436', '2017-18', 'nitin', '2017-08-22 18:25:41'),
+(469, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081437', '2017-18', 'nitin', '2017-08-22 18:25:42'),
+(470, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081438', '2017-18', 'nitin', '2017-08-22 18:26:00'),
+(471, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081439', '2017-18', 'nitin', '2017-08-22 18:26:02'),
+(472, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02'),
+(473, 'Nitin Deepak Mathur', '-x-', '-x-', 'no-image.jpg', '22-08-2017', 'M', '', '', 'x@gmail.com', '', '', '', 'y@gmail.com', '', '2017081441', '2017-18', 'nitin', '2017-08-27 08:43:28'),
+(474, 'Naveen Singh', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56'),
+(475, 'Gagan Pant', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081443', '2017-18', 'nitin', '2017-08-27 06:19:38'),
+(476, 'asd', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20'),
+(477, 'Naveen Tewari', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'M', 'Naveen', '9874563214', 'papa@gmail.com', 'Service', '', '', '', '', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
+(478, 'Sundari Kaur', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'F', '', '', '', '', '', '', '', '', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
+(479, 'Vihaan Mathur', '-x-', '-x-', '2017081447.JPG', '05/29/2014', 'M', '', '', '', '', '', '', '', '', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
+(480, 'Neeraj Punetha', '-x-', '-x-', '', '29-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
 
 -- --------------------------------------------------------
 
@@ -3064,8 +3004,8 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `DOB
 -- Table structure for table `master_8_stud_academics`
 --
 
-CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
-  `AC_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_8_stud_academics` (
+  `AC_ID` int(15) NOT NULL,
   `DOA` varchar(50) DEFAULT NULL,
   `CLASS_OF_ADMISSION` int(15) NOT NULL COMMENT 'ClassSessID from class_2_in_session',
   `STATUS_OF_ADMISSION` tinyint(1) NOT NULL COMMENT '0 means modification is possible and 1 means no changes from now',
@@ -3075,23 +3015,19 @@ CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `DOL` varchar(50) DEFAULT NULL COMMENT 'Date of Left School',
-  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school',
-  PRIMARY KEY (`AC_ID`),
-  UNIQUE KEY `regid_3` (`regid`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=500 ;
+  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_8_stud_academics`
 --
 
 INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `STATUS_OF_ADMISSION`, `ANY_REMARK`, `regid`, `SESSID`, `USERNAME_`, `DATE_`, `DOL`, `STATUS_`) VALUES
-(1, '1/0/1900 0:00', 406, 1, '-x-', '2017041001', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(1, '1/0/1900 0:00', 406, 0, '-x-', '2017041001', '2017-18', 'nitin', '2017-08-27 08:41:48', NULL, 1),
 (2, '1/1/1900 0:00', 406, 1, '-x-', '2017041002', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(3, '1/2/1900 0:00', 406, 1, '-x-', '2017041003', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(3, '1/2/1900 0:00', 406, 0, '-x-', '2017041003', '2017-18', 'nitin', '2017-08-27 12:02:22', NULL, 1),
 (4, '1/3/1900 0:00', 406, 1, '-x-', '2017041004', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(5, '1/4/1900 0:00', 406, 1, '-x-', '2017041005', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(5, '1/4/1900 0:00', 406, 0, '-x-', '2017041005', '2017-18', 'nitin', '2017-08-27 12:06:13', NULL, 1),
 (6, '1/5/1900 0:00', 406, 1, '-x-', '2017041006', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (7, '1/6/1900 0:00', 406, 1, '-x-', '2017041007', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (8, '1/7/1900 0:00', 406, 1, '-x-', '2017041008', '2017-18', 'nitin', '0000-00-00 00:00:00', NULL, 1),
@@ -3528,12 +3464,14 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (491, '22-08-2017', 405, 0, '-x-', '2017081438', '2017-18', 'nitin', '2017-08-22 18:26:00', NULL, 1),
 (492, '22-08-2017', 405, 0, '-x-', '2017081439', '2017-18', 'nitin', '2017-08-22 18:26:02', NULL, 1),
 (493, '22-08-2017', 405, 0, '-x-', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02', NULL, 1),
-(494, '22-08-2017', 405, 0, '-x-', '2017081441', '2017-18', 'nitin', '2017-08-22 18:26:03', NULL, 1),
+(494, '22-08-2017', 405, 0, '-x-', '2017081441', '2017-18', 'nitin', '2017-08-27 08:43:28', NULL, 1),
 (495, '23-08-2017', 405, 0, '-x-', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56', NULL, 1),
-(496, '23-08-2017', 406, 0, '-x-', '2017081443', '2017-18', 'nitin', '2017-08-22 18:35:51', NULL, 1),
+(496, '23-08-2017', 406, 0, '-x-', '2017081443', '2017-18', 'nitin', '2017-08-27 06:19:38', NULL, 1),
 (497, '23-08-2017', 406, 0, '-x-', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20', NULL, 1),
-(498, '23-08-2017', 391, 0, '-x-', '2017081445', '2017-18', 'nitin', '2017-08-22 18:37:46', NULL, 1),
-(499, '23-08-2017', 391, 0, '-x-', '2017081446', '2017-18', 'nitin', '2017-08-22 18:46:27', NULL, 1);
+(498, '23-08-2017', 391, 0, '-x-', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15', NULL, 1),
+(499, '23-08-2017', 391, 0, '-x-', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02', NULL, 1),
+(500, '27-08-2017', 391, 0, '-x-', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59', NULL, 1),
+(501, '29-08-2017', 405, 0, '-x-', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -3541,8 +3479,8 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 -- Table structure for table `master_9_stud_address`
 --
 
-CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
-  `ADDRID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_9_stud_address` (
+  `ADDRID` int(15) NOT NULL,
   `STREET_1` text NOT NULL,
   `CITY_` varchar(25) NOT NULL,
   `PIN_` varchar(8) NOT NULL,
@@ -3555,28 +3493,24 @@ CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDRID`),
-  KEY `CITY_` (`CITY_`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=927 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_9_stud_address`
 --
 
 INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DISTT_`, `STATE_`, `COUNTRY_`, `DOC_`, `STATUS`, `ADDRESS_STATUS`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
-(1, 'VILLAGE  CHAUNA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041001', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(2, 'VILLAGE  CHAUNA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041001', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(1, 'as', '', '', '', 'MAHARASHTRA', 'INDIA', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041001', '2017-18', 'nitin', '2017-08-27 08:41:48'),
+(2, 'as', '', '', '', 'MAHARASHTRA', 'INDIA', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041001', '2017-18', 'nitin', '2017-08-27 08:41:48'),
 (3, 'VILLAGE  KOTAKHARIK', 'MUNSYARI', '262555', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041002', '2017-18', 'nitin', '0000-00-00 00:00:00'),
 (4, 'VILLAGE  KOTAKHARIK', 'MUNSYARI', '262555', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041002', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(5, 'VILLAGE TANGA SERA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041003', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(6, 'VILLAGE TANGA SERA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041003', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(5, 'VILLAGE TANGA SERA', 'MUNSYARI', '262554', '-x-', 'UTTARAKHAND', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041003', '2017-18', 'nitin', '2017-08-27 12:02:22'),
+(6, 'VILLAGE TANGA SERA', 'MUNSYARI', '-x-', '262554', 'UTTARAKHAND', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041003', '2017-18', 'nitin', '2017-08-27 12:02:22'),
 (7, 'VILLAGE TANGA SERA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041004', '2017-18', 'nitin', '0000-00-00 00:00:00'),
 (8, 'VILLAGE TANGA SERA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041004', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(9, 'VILLAGE BUNGA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041005', '2017-18', 'nitin', '0000-00-00 00:00:00'),
-(10, 'VILLAGE BUNGA', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041005', '2017-18', 'nitin', '0000-00-00 00:00:00'),
+(9, 'VILLAGE BUNGA', 'MUNSYARI', '262554', '-x-', 'UTTARAKHAND', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041005', '2017-18', 'nitin', '2017-08-27 12:06:13'),
+(10, 'VILLAGE BUNGA', 'MUNSYARI', '-x-', '262554', 'UTTARAKHAND', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041005', '2017-18', 'nitin', '2017-08-27 12:06:13'),
 (11, 'VILLAGE  GINI ', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041006', '2017-18', 'nitin', '0000-00-00 00:00:00'),
 (12, 'VILLAGE  GINI ', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'CORRESPONDANCE', '2017041006', '2017-18', 'nitin', '0000-00-00 00:00:00'),
 (13, 'VILLAGE SARMOLI ', 'MUNSYARI', '262554', '-x-', 'UL', 'India', '2017-04-29 16:13:00', 1, 'PERMANENT', '2017041007', '2017-18', 'nitin', '0000-00-00 00:00:00'),
@@ -4451,18 +4385,22 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (912, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:02', 1, 'PERMANENT', '2017081439', '2017-18', 'nitin', '2017-08-22 18:26:02'),
 (913, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:02', 1, 'CORRESPONDANCE', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02'),
 (914, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:02', 1, 'PERMANENT', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02'),
-(915, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:03', 1, 'CORRESPONDANCE', '2017081441', '2017-18', 'nitin', '2017-08-22 18:26:03'),
-(916, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:03', 1, 'PERMANENT', '2017081441', '2017-18', 'nitin', '2017-08-22 18:26:03'),
+(915, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:03', 1, 'CORRESPONDANCE', '2017081441', '2017-18', 'nitin', '2017-08-27 08:43:28'),
+(916, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-22 23:56:03', 1, 'PERMANENT', '2017081441', '2017-18', 'nitin', '2017-08-27 08:43:28'),
 (917, '', '', '', '', '', 'INDIA', '2017-08-23 00:05:04', 1, 'PERMANENT', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56'),
 (918, '', '', '', '', '', 'INDIA', '2017-08-23 00:05:04', 1, 'PERMANENT', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56'),
-(919, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:05:51', 1, 'CORRESPONDANCE', '2017081443', '2017-18', 'nitin', '2017-08-22 18:35:51'),
-(920, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:05:51', 1, 'PERMANENT', '2017081443', '2017-18', 'nitin', '2017-08-22 18:35:51'),
+(919, '', '', '', '', '', 'INDIA', '2017-08-23 00:05:51', 1, 'PERMANENT', '2017081443', '2017-18', 'nitin', '2017-08-27 06:19:38'),
+(920, '', '', '', '', '', 'INDIA', '2017-08-23 00:05:51', 1, 'PERMANENT', '2017081443', '2017-18', 'nitin', '2017-08-27 06:19:38'),
 (921, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:06:20', 1, 'CORRESPONDANCE', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20'),
 (922, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:06:20', 1, 'PERMANENT', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20'),
-(923, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:07:46', 1, 'CORRESPONDANCE', '2017081445', '2017-18', 'nitin', '2017-08-22 18:37:46'),
-(924, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:07:46', 1, 'PERMANENT', '2017081445', '2017-18', 'nitin', '2017-08-22 18:37:46'),
-(925, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:16:27', 1, 'CORRESPONDANCE', '2017081446', '2017-18', 'nitin', '2017-08-22 18:46:27'),
-(926, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:16:27', 1, 'PERMANENT', '2017081446', '2017-18', 'nitin', '2017-08-22 18:46:27');
+(923, 'HALDWANI', 'HALDWANI', '263139', 'NAINITAL', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:07:46', 1, 'CORRESPONDANCE', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
+(924, 'asdasd', 'asd', '123', 'asd', 'UTTARAKHAND', 'INDIA', '2017-08-23 00:07:46', 1, 'PERMANENT', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
+(925, 'BAREILLY', 'BAREILLY', '258963', 'BAREILLY', 'UTTAR PRADESH', 'INDIA', '2017-08-23 00:16:27', 1, 'CORRESPONDANCE', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
+(926, 'BAREILLY', 'BAREILLY', '258963', 'BAREILLY', 'UTTAR PRADESH', 'INDIA', '2017-08-23 00:16:27', 1, 'PERMANENT', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
+(927, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-27 15:19:59', 1, 'CORRESPONDANCE', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
+(928, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-27 15:19:59', 1, 'PERMANENT', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
+(929, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
+(930, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-29 14:00:57', 1, 'PERMANENT', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
 
 -- --------------------------------------------------------
 
@@ -4470,8 +4408,8 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 -- Table structure for table `master_10_stud_contact`
 --
 
-CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
-  `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_10_stud_contact` (
+  `CNTCT_ID` int(15) NOT NULL,
   `MOBILE_S` varchar(50) NOT NULL,
   `PH_S` varchar(50) NOT NULL,
   `EMAIL_S` varchar(200) NOT NULL,
@@ -4481,22 +4419,19 @@ CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CNTCT_ID`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=449 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_10_stud_contact`
 --
 
 INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`, `DOC_`, `STATUS`, `CONTACT_STATUS`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
-(1, '9837540462', '9837540462', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041001', '2017-18', 'nitin', '2017-04-29 10:43:03'),
+(1, '9837540462', '-x-', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041001', '2017-18', 'nitin', '2017-08-27 08:41:48'),
 (2, '9756456762', '9756456762', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041002', '2017-18', 'nitin', '2017-04-29 10:43:03'),
-(3, '9756332197', '9756332197', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041003', '2017-18', 'nitin', '2017-04-29 10:43:03'),
+(3, '9756332197', '-x-', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041003', '2017-18', 'nitin', '2017-08-27 12:02:22'),
 (4, '9756332197', '9756332197', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041004', '2017-18', 'nitin', '2017-04-29 10:43:03'),
-(5, '7351844779', '7351844779', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041005', '2017-18', 'nitin', '2017-04-29 10:43:03'),
+(5, '7351844779', '-x-', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041005', '2017-18', 'nitin', '2017-08-27 12:06:13'),
 (6, '7500700406', '7500700406', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041006', '2017-18', 'nitin', '2017-04-29 10:43:03'),
 (7, '8958317054', '8958317054', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041007', '2017-18', 'nitin', '2017-04-29 10:43:03'),
 (8, '9568106745', '9568106745', 'x@gmail.com', '2017-04-29', 1, 'CORRESPONDANCE', '2017041008', '2017-18', 'nitin', '2017-04-29 10:43:03'),
@@ -4934,12 +4869,14 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (440, '(976) 002-0667', '-x-', 'nitin.d12@gmail.com', '2017-08-22 23:56:00', 1, 'CORRESPONDANCE', '2017081438', '2017-18', 'nitin', '2017-08-22 18:26:00'),
 (441, '(976) 002-0667', '-x-', 'nitin.d12@gmail.com', '2017-08-22 23:56:02', 1, 'CORRESPONDANCE', '2017081439', '2017-18', 'nitin', '2017-08-22 18:26:02'),
 (442, '(976) 002-0667', '-x-', 'nitin.d12@gmail.com', '2017-08-22 23:56:02', 1, 'CORRESPONDANCE', '2017081440', '2017-18', 'nitin', '2017-08-22 18:26:02'),
-(443, '(976) 002-0667', '-x-', 'nitin.d12@gmail.com', '2017-08-22 23:56:03', 1, 'CORRESPONDANCE', '2017081441', '2017-18', 'nitin', '2017-08-22 18:26:03'),
+(443, '(976) 002-0667', '-x-', 'nitin.d12@gmail.com', '2017-08-22 23:56:03', 1, 'CORRESPONDANCE', '2017081441', '2017-18', 'nitin', '2017-08-27 08:43:28'),
 (444, '', '-x-', '', '2017-08-23 00:05:04', 1, 'CORRESPONDANCE', '2017081442', '2017-18', 'nitin', '2017-08-22 18:38:56'),
-(445, '', '-x-', '', '2017-08-23 00:05:51', 1, 'CORRESPONDANCE', '2017081443', '2017-18', 'nitin', '2017-08-22 18:35:51'),
+(445, '(987) 456-3214', '-x-', 'gagan@gmail.com', '2017-08-23 00:05:51', 1, 'CORRESPONDANCE', '2017081443', '2017-18', 'nitin', '2017-08-27 06:19:38'),
 (446, '', '-x-', '', '2017-08-23 00:06:20', 1, 'CORRESPONDANCE', '2017081444', '2017-18', 'nitin', '2017-08-22 18:36:20'),
-(447, '', '-x-', '', '2017-08-23 00:07:46', 1, 'CORRESPONDANCE', '2017081445', '2017-18', 'nitin', '2017-08-22 18:37:46'),
-(448, '', '-x-', '', '2017-08-23 00:16:27', 1, 'CORRESPONDANCE', '2017081446', '2017-18', 'nitin', '2017-08-22 18:46:27');
+(447, '7500700406', '-x-', 'x@gmail.com', '2017-08-23 00:07:46', 1, 'CORRESPONDANCE', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
+(448, '(976) 002-0667', '-x-', 'sundari@gmail.com', '2017-08-23 00:16:27', 1, 'CORRESPONDANCE', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
+(449, '(976) 002-0667', '-x-', 'vahan@gmail.com', '2017-08-27 15:19:59', 1, 'CORRESPONDANCE', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
+(450, '', '-x-', '', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
 
 -- --------------------------------------------------------
 
@@ -4947,15 +4884,14 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 -- Table structure for table `master_11_grading`
 --
 
-CREATE TABLE IF NOT EXISTS `master_11_grading` (
-  `gradeID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_11_grading` (
+  `gradeID` int(15) NOT NULL,
   `minMarks` int(10) NOT NULL,
   `maxMarks` int(10) NOT NULL,
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `description` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `clssessID` int(15) NOT NULL,
-  PRIMARY KEY (`gradeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+  `clssessID` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_11_grading`
@@ -4972,14 +4908,13 @@ INSERT INTO `master_11_grading` (`gradeID`, `minMarks`, `maxMarks`, `grade`, `de
 -- Table structure for table `master_12_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_12_subject` (
-  `subjectID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_12_subject` (
+  `subjectID` int(10) NOT NULL,
   `subName` varchar(100) CHARACTER SET utf8 NOT NULL,
   `classID` varchar(10) CHARACTER SET utf8 NOT NULL,
   `status` varchar(10) CHARACTER SET utf8 NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`subjectID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_12_subject`
@@ -5004,12 +4939,11 @@ INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `status`, `S
 -- Table structure for table `master_13_teacher`
 --
 
-CREATE TABLE IF NOT EXISTS `master_13_teacher` (
-  `teacherID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_13_teacher` (
+  `teacherID` int(13) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `username` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`teacherID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  `username` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_13_teacher`
@@ -5026,13 +4960,12 @@ INSERT INTO `master_13_teacher` (`teacherID`, `name`, `username`) VALUES
 -- Table structure for table `master_14_teacher_wise_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_14_teacher_wise_subject` (
-  `tasID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_14_teacher_wise_subject` (
+  `tasID` int(13) NOT NULL,
   `teacherID` int(13) NOT NULL,
   `subjectID` int(10) NOT NULL,
-  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`tasID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_14_teacher_wise_subject`
@@ -5050,14 +4983,12 @@ INSERT INTO `master_14_teacher_wise_subject` (`tasID`, `teacherID`, `subjectID`,
 -- Table structure for table `master_15_subject_marks`
 --
 
-CREATE TABLE IF NOT EXISTS `master_15_subject_marks` (
-  `submarkID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_15_subject_marks` (
+  `submarkID` int(10) NOT NULL,
   `subjectID` int(10) NOT NULL,
   `maxMarks` int(3) NOT NULL,
-  `passMarks` int(3) NOT NULL,
-  PRIMARY KEY (`submarkID`),
-  KEY `subjectID` (`subjectID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `passMarks` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_15_subject_marks`
@@ -5072,14 +5003,13 @@ INSERT INTO `master_15_subject_marks` (`submarkID`, `subjectID`, `maxMarks`, `pa
 -- Table structure for table `menu_1`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_1` (
-  `ID_` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_1` (
+  `ID_` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `MENU` varchar(30) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
-  `PRIORITY_` int(11) NOT NULL,
-  PRIMARY KEY (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+  `PRIORITY_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_1`
@@ -5088,8 +5018,8 @@ CREATE TABLE IF NOT EXISTS `menu_1` (
 INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 (1, 'icon icon-home', 'Dashboard', 'web/dashboard', 1),
 (2, 'icon icon-leaf', 'Master', 'x', 2),
-(3, 'icon icon-pencil', 'Register', 'web/dashboard/3', 3),
-(4, 'icon icon-pencil', 'Admission', 'web/dashboard/3', 4),
+(3, 'icon icon-pencil', 'Register', 'web/dashboard/3/3', 3),
+(4, 'icon icon-pencil', 'Admission', 'web/dashboard/4/10', 4),
 (5, 'icon icon-pencil', 'Manage Student', 'x', 5),
 (6, 'icon icon-pencil', 'Fee', 'x', 6),
 (7, 'icon icon-pencil', 'Attendance', 'x', 7),
@@ -5102,16 +5032,14 @@ INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 -- Table structure for table `menu_2_submenu`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_2_submenu` (
-  `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_2_submenu` (
+  `SUBMENUID` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `SUBMENU` varchar(150) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
   `PRIORITY` int(11) NOT NULL,
-  `ID_` int(11) NOT NULL,
-  PRIMARY KEY (`SUBMENUID`),
-  KEY `ID_` (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+  `ID_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_2_submenu`
@@ -5124,7 +5052,7 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (4, 'fa fa-money', 'Subjects', 'subjects', 4, 2),
 (5, 'fa fa-money', 'Grading', 'grading', 5, 2),
 (6, 'fa fa-user', 'Teachers', 'teachers', 6, 2),
-(7, 'fa fa-money', 'Fee', 'fee', 7, 2),
+(7, 'fa fa-money', 'Fee', 'web/dashboard/2/8/fee', 7, 2),
 (8, 'fa fa-sitemap', 'Promote Students', 'students/promote', 1, 5),
 (9, 'fa fa-sitemap', 'Switch Students', 'students/switch', 2, 5),
 (10, 'fa fa-user', 'Invoice', 'fee/invoice', 6, 6),
@@ -5147,7 +5075,7 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 -- Table structure for table `register_with_us`
 --
 
-CREATE TABLE IF NOT EXISTS `register_with_us` (
+CREATE TABLE `register_with_us` (
   `regid` varchar(25) NOT NULL,
   `FULLNAME` varchar(150) NOT NULL,
   `FATHER` varchar(150) NOT NULL,
@@ -5174,9 +5102,7 @@ CREATE TABLE IF NOT EXISTS `register_with_us` (
   `PASSWORD_` varchar(25) NOT NULL DEFAULT '123456',
   `DOR_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`regid`),
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -5621,14 +5547,11 @@ INSERT INTO `register_with_us` (`regid`, `FULLNAME`, `FATHER`, `DOB_`, `PHOTO_`,
 -- Table structure for table `user_menu`
 --
 
-CREATE TABLE IF NOT EXISTS `user_menu` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_menu` (
+  `ID` int(11) NOT NULL,
   `MENU` int(11) NOT NULL,
-  `USER_` varchar(5) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `MENU` (`MENU`),
-  KEY `USER_` (`USER_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  `USER_` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_menu`
@@ -5658,11 +5581,10 @@ INSERT INTO `user_menu` (`ID`, `MENU`, `USER_`) VALUES
 -- Table structure for table `_id_`
 --
 
-CREATE TABLE IF NOT EXISTS `_id_` (
+CREATE TABLE `_id_` (
   `ID_` int(11) NOT NULL,
   `regid_` varchar(25) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -5670,8 +5592,483 @@ CREATE TABLE IF NOT EXISTS `_id_` (
 --
 
 INSERT INTO `_id_` (`ID_`, `regid_`, `SESSIONID`) VALUES
-(1446, '2017081446', '2017-18');
+(1448, '2017081448', '2017-18');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `class_1_classes`
+--
+ALTER TABLE `class_1_classes`
+  ADD PRIMARY KEY (`CLASSID`);
+
+--
+-- Indexes for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  ADD PRIMARY KEY (`CLSSESSID`),
+  ADD KEY `CLASSID` (`CLASSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  ADD PRIMARY KEY (`ID_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `USERNAME_` (`USERNAME_`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  ADD PRIMARY KEY (`ATTID`);
+
+--
+-- Indexes for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  ADD PRIMARY KEY (`itemID`);
+
+--
+-- Indexes for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  ADD PRIMARY KEY (`ADDSCHCLASSID`);
+
+--
+-- Indexes for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  ADD PRIMARY KEY (`coitemID`);
+
+--
+-- Indexes for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  ADD PRIMARY KEY (`ADDCOSCHCLASSID`);
+
+--
+-- Indexes for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  ADD PRIMARY KEY (`termID`);
+
+--
+-- Indexes for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  ADD PRIMARY KEY (`schID`);
+
+--
+-- Indexes for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  ADD PRIMARY KEY (`coschID`);
+
+--
+-- Indexes for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `fee_1_type`
+--
+ALTER TABLE `fee_1_type`
+  ADD PRIMARY KEY (`FEETYPEID`);
+
+--
+-- Indexes for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  ADD PRIMARY KEY (`feeID`),
+  ADD KEY `regID` (`regID`,`date`),
+  ADD KEY `userID` (`username`),
+  ADD KEY `username` (`username`),
+  ADD KEY `username_2` (`username`),
+  ADD KEY `regID_2` (`regID`),
+  ADD KEY `feetype` (`feetype`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  ADD PRIMARY KEY (`ST_HD_ID`);
+
+--
+-- Indexes for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  ADD PRIMARY KEY (`FLX_HD_ID`);
+
+--
+-- Indexes for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  ADD PRIMARY KEY (`ADFLXFEESTUDID`),
+  ADD KEY `FLX_HD_ID` (`FLX_HD_ID`),
+  ADD KEY `REGID` (`REGID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  ADD PRIMARY KEY (`INVID`),
+  ADD KEY `REGID` (`REGID`),
+  ADD KEY `CFEESESSID` (`STATIC_HEADS`),
+  ADD KEY `REGID_2` (`REGID`),
+  ADD KEY `ADFLXFEESTUDID` (`FLEXIBLE_HEADS`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  ADD PRIMARY KEY (`RECPTID`),
+  ADD KEY `INVID` (`INVID`),
+  ADD KEY `regid` (`regid`);
+
+--
+-- Indexes for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  ADD PRIMARY KEY (`CFEEID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`);
+
+--
+-- Indexes for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  ADD PRIMARY KEY (`CFEESPLITID`),
+  ADD KEY `ST_HD_ID` (`ST_HD_ID`),
+  ADD KEY `CFEEID` (`CFEEID`);
+
+--
+-- Indexes for table `fee_10_class_fee_in_a_session`
+--
+ALTER TABLE `fee_10_class_fee_in_a_session`
+  ADD PRIMARY KEY (`CFEESESSID`);
+
+--
+-- Indexes for table `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`USERNAME_`),
+  ADD KEY `USER_STATUS` (`USER_STATUS`);
+
+--
+-- Indexes for table `master_0_country_`
+--
+ALTER TABLE `master_0_country_`
+  ADD PRIMARY KEY (`ABREV_`);
+
+--
+-- Indexes for table `master_1_zone_`
+--
+ALTER TABLE `master_1_zone_`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `master_2_zone_region`
+--
+ALTER TABLE `master_2_zone_region`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `master_4_city_`
+--
+ALTER TABLE `master_4_city_`
+  ADD PRIMARY KEY (`NAME_`);
+
+--
+-- Indexes for table `master_5_user_status`
+--
+ALTER TABLE `master_5_user_status`
+  ADD PRIMARY KEY (`ST_ID`);
+
+--
+-- Indexes for table `master_6_session`
+--
+ALTER TABLE `master_6_session`
+  ADD PRIMARY KEY (`SESSID`);
+
+--
+-- Indexes for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  ADD PRIMARY KEY (`STUD_ID`),
+  ADD UNIQUE KEY `regid_2` (`regid`),
+  ADD KEY `regid` (`regid`);
+
+--
+-- Indexes for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  ADD PRIMARY KEY (`AC_ID`),
+  ADD UNIQUE KEY `regid_3` (`regid`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  ADD PRIMARY KEY (`ADDRID`),
+  ADD KEY `CITY_` (`CITY_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  ADD PRIMARY KEY (`CNTCT_ID`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  ADD PRIMARY KEY (`gradeID`);
+
+--
+-- Indexes for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  ADD PRIMARY KEY (`subjectID`);
+
+--
+-- Indexes for table `master_13_teacher`
+--
+ALTER TABLE `master_13_teacher`
+  ADD PRIMARY KEY (`teacherID`);
+
+--
+-- Indexes for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  ADD PRIMARY KEY (`tasID`);
+
+--
+-- Indexes for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  ADD PRIMARY KEY (`submarkID`),
+  ADD KEY `subjectID` (`subjectID`);
+
+--
+-- Indexes for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  ADD PRIMARY KEY (`SUBMENUID`),
+  ADD KEY `ID_` (`ID_`);
+
+--
+-- Indexes for table `register_with_us`
+--
+ALTER TABLE `register_with_us`
+  ADD PRIMARY KEY (`regid`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `MENU` (`MENU`),
+  ADD KEY `USER_` (`USER_`);
+
+--
+-- Indexes for table `_id_`
+--
+ALTER TABLE `_id_`
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  MODIFY `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=427;
+--
+-- AUTO_INCREMENT for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=430;
+--
+-- AUTO_INCREMENT for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  MODIFY `ATTID` bigint(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+--
+-- AUTO_INCREMENT for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  MODIFY `itemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  MODIFY `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  MODIFY `coitemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  MODIFY `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  MODIFY `termID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  MODIFY `schID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+--
+-- AUTO_INCREMENT for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  MODIFY `coschID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+--
+-- AUTO_INCREMENT for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  MODIFY `feeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=428;
+--
+-- AUTO_INCREMENT for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  MODIFY `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+--
+-- AUTO_INCREMENT for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  MODIFY `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  MODIFY `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=614;
+--
+-- AUTO_INCREMENT for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  MODIFY `RECPTID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+--
+-- AUTO_INCREMENT for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=481;
+--
+-- AUTO_INCREMENT for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
+--
+-- AUTO_INCREMENT for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=931;
+--
+-- AUTO_INCREMENT for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=451;
+--
+-- AUTO_INCREMENT for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  MODIFY `gradeID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  MODIFY `subjectID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+--
+-- AUTO_INCREMENT for table `master_13_teacher`
+--
+ALTER TABLE `master_13_teacher`
+  MODIFY `teacherID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  MODIFY `tasID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  MODIFY `submarkID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  MODIFY `ID_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- Constraints for dumped tables
 --

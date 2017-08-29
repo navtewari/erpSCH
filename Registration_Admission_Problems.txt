@@ -1,0 +1,4 @@
+Registration Module Problems
+---------------------------------------
+
+1. Table data is not working via ajax (Need to resolve later)

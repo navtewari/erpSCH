@@ -7,10 +7,13 @@ class Web extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('my_model', 'mm');
+        $this->load->model('my_admission_model', 'mam');
+        $this->load->model('My_master_fee_model', 'mmm');
     }
 
     public function dashboard($active = 1, $subno = 1, $submenu = 'index') {
         $this->check_login();
+        $this->set_live_session();
 
         // fetching page according to active status
         $data = $this->get_page($subno);
@@ -37,6 +40,7 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Master / Sessions';
                 break;
             case 3:
+                $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';
                 $data['Personal'] = ' active';
@@ -62,10 +66,23 @@ class Web extends CI_Controller {
             case 8:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / Fee';
+                $data['static_head'] = ' active';
+                $data['static_heads__'] = $this->mmm->get_static_heads($this->session->userdata('_current_year___'));
+                $data['flexible_head'] = '';
+                $data['associate_static'] = '';
+                $data['associate_flexible'] = '';
                 break;
             case 9:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / General';
+                break;
+            case 10:
+                $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
+                $data['page_'] = 'reg_adm';
+                $data['title_'] = 'Admission';
+                $data['Personal'] = ' active';
+                $data['Parents'] = '';
+                $data['Address'] = '';
                 break;
             default:
                 $data['page_'] = 'erorrs';
@@ -76,6 +93,13 @@ class Web extends CI_Controller {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');
         }
+    }
+
+    function set_live_session(){
+        $thisyr = date('Y');
+        $nextyr = date('y')+1;
+        $live_ = $thisyr . "-" . $nextyr;
+        $this->session->set_userdata('live__' , $live_);
     }
 
 }

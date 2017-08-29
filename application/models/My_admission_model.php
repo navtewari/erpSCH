@@ -16,9 +16,10 @@ class My_admission_model extends CI_Model {
     		$this->db->where('CLASS_OF_ADMISSION', 	$classessid);
     	}
         $this->db->where('a.SESSID', $session);
-    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid');
+    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, C.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLASS_OF_ADMISSION=c.CLSSESSID');
         $query = $this->db->get();
         return $query->result();
     }
@@ -47,93 +48,98 @@ class My_admission_model extends CI_Model {
         $class_this_session = $this->input->post('cmbClassofAdmission');
 
         if($this->input->post('cmbRegistrationID') == 'new'){
-            $dataPersonal = array(
-            'FNAME' => $this->input->post('txtFullName'),
-            'MNAME' => '-x-',
-            'LNAME' => '-x-',
-            'DOB_' => $this->input->post('txtStudDOB'),
-            'GENDER' => $this->input->post('optStuGender'),
-            'FATHER' => $this->input->post('txtFatherName'),
-            'F_MOBILE' => $this->input->post('txtFatherMobile'),
-            'F_EMAIL' => $this->input->post('txtFatherEmail'),
-            'F_PROFESSION' => $this->input->post('txtFatherProfession'),
-            'MOTHER' => $this->input->post('txtMotherName'),
-            'M_MOBILE' => $this->input->post('txtMotherMobile'),
-            'M_EMAIL' => $this->input->post('txtMotherEmail'),
-            'M_PROFESSION' => $this->input->post('txtMotherProfession'),
-            'regid' => $regid_,
-            'SESSID' => $this->session->userdata('_current_year___'),
-            'USERNAME_' => $this->session->userdata('_user___'),
-            'DATE_' => date('Y-m-d H:i:s')
-            );
-            $dataAcademics = array(
-                'DOA' => $this->input->post('txtDOA'),
-                'CLASS_OF_ADMISSION' => $class_this_session,
-                'STATUS_OF_ADMISSION' => 0,
-                'ANY_REMARK' => '-x-',
-                'regid' => $regid_,
-                'SESSID' => $this->session->userdata('_current_year___'),
-                'USERNAME_' => $this->session->userdata('_user___'),
-                'DATE_' => date('Y-m-d H:i:s'),
-                'STATUS_' => 1
-            );
-            $dataCorresAdd = array(
-                'STREET_1' => $this->input->post('txtCAddress'),
-                'CITY_' => $this->input->post('txtCCity'),
-                'PIN_' => $this->input->post('txtCPinCode'),
-                'DISTT_' => $this->input->post('txtCDistt'),
-                'STATE_' => $this->input->post('cmbCState'),
-                'COUNTRY_' => $this->input->post('txtCCountry'),
-                'DOC_' => date('Y-m-d H:i:s'),
-                'STATUS' => '1',
-                'ADDRESS_STATUS' => 'CORRESPONDANCE',
+            if($this->session->userdata('live__') == $this->session->userdata('_current_year___')){
+                $dataPersonal = array(
+                'FNAME' => $this->input->post('txtFullName'),
+                'MNAME' => '-x-',
+                'LNAME' => '-x-',
+                'DOB_' => $this->input->post('txtStudDOB'),
+                'GENDER' => $this->input->post('optStuGender'),
+                'FATHER' => $this->input->post('txtFatherName'),
+                'F_MOBILE' => $this->input->post('txtFatherMobile'),
+                'F_EMAIL' => $this->input->post('txtFatherEmail'),
+                'F_PROFESSION' => $this->input->post('txtFatherProfession'),
+                'MOTHER' => $this->input->post('txtMotherName'),
+                'M_MOBILE' => $this->input->post('txtMotherMobile'),
+                'M_EMAIL' => $this->input->post('txtMotherEmail'),
+                'M_PROFESSION' => $this->input->post('txtMotherProfession'),
                 'regid' => $regid_,
                 'SESSID' => $this->session->userdata('_current_year___'),
                 'USERNAME_' => $this->session->userdata('_user___'),
                 'DATE_' => date('Y-m-d H:i:s')
-            );
-            $dataPerAdd = array(
-                'STREET_1' => $this->input->post('txtPAddress'),
-                'CITY_' => $this->input->post('txtPCity'),
-                'PIN_' => $this->input->post('txtPPinCode'),
-                'DISTT_' => $this->input->post('txtPDistt'),
-                'STATE_' => $this->input->post('cmbPState'),
-                'COUNTRY_' => $this->input->post('txtPCountry'),
-                'DOC_' => date('Y-m-d H:i:s'),
-                'STATUS' => '1',
-                'ADDRESS_STATUS' => 'PERMANENT',
-                'regid' => $regid_,
-                'SESSID' => $this->session->userdata('_current_year___'),
-                'USERNAME_' => $this->session->userdata('_user___'),
-                'DATE_' => date('Y-m-d H:i:s')
-            );
-            $dataStuContact = array(
-                'MOBILE_S' => $this->input->post('txtStudentPhone'),
-                'PH_S' => '-x-',
-                'EMAIL_S' => $this->input->post('txtEmail'),
-                'DOC_' => date('Y-m-d H:i:s'),
-                'STATUS' => '1',
-                'CONTACT_STATUS' => 'CORRESPONDANCE',
-                'regid' => $regid_,
-                'SESSID' => $this->session->userdata('_current_year___'),
-                'USERNAME_' => $this->session->userdata('_user___'),
-                'DATE_' => date('Y-m-d H:i:s')
-            );
-            $query = $this->db->insert('master_8_stud_academics', $dataAcademics);
-            $query = $this->db->insert('master_7_stud_personal', $dataPersonal);
-            $query = $this->db->insert('master_9_stud_address', $dataCorresAdd);
-            $query = $this->db->insert('master_9_stud_address', $dataPerAdd);
-            $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
+                );
+                $dataAcademics = array(
+                    'DOA' => $this->input->post('txtDOA'),
+                    'CLASS_OF_ADMISSION' => $class_this_session,
+                    'STATUS_OF_ADMISSION' => 0,
+                    'ANY_REMARK' => '-x-',
+                    'regid' => $regid_,
+                    'SESSID' => $this->session->userdata('_current_year___'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s'),
+                    'STATUS_' => 1
+                );
+                $dataCorresAdd = array(
+                    'STREET_1' => $this->input->post('txtCAddress'),
+                    'CITY_' => $this->input->post('txtCCity'),
+                    'PIN_' => $this->input->post('txtCPinCode'),
+                    'DISTT_' => $this->input->post('txtCDistt'),
+                    'STATE_' => $this->input->post('cmbCState'),
+                    'COUNTRY_' => $this->input->post('txtCCountry'),
+                    'DOC_' => date('Y-m-d H:i:s'),
+                    'STATUS' => '1',
+                    'ADDRESS_STATUS' => 'CORRESPONDANCE',
+                    'regid' => $regid_,
+                    'SESSID' => $this->session->userdata('_current_year___'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $dataPerAdd = array(
+                    'STREET_1' => $this->input->post('txtPAddress'),
+                    'CITY_' => $this->input->post('txtPCity'),
+                    'PIN_' => $this->input->post('txtPPinCode'),
+                    'DISTT_' => $this->input->post('txtPDistt'),
+                    'STATE_' => $this->input->post('cmbPState'),
+                    'COUNTRY_' => $this->input->post('txtPCountry'),
+                    'DOC_' => date('Y-m-d H:i:s'),
+                    'STATUS' => '1',
+                    'ADDRESS_STATUS' => 'PERMANENT',
+                    'regid' => $regid_,
+                    'SESSID' => $this->session->userdata('_current_year___'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $dataStuContact = array(
+                    'MOBILE_S' => $this->input->post('txtStudentPhone'),
+                    'PH_S' => '-x-',
+                    'EMAIL_S' => $this->input->post('txtEmail'),
+                    'DOC_' => date('Y-m-d H:i:s'),
+                    'STATUS' => '1',
+                    'CONTACT_STATUS' => 'CORRESPONDANCE',
+                    'regid' => $regid_,
+                    'SESSID' => $this->session->userdata('_current_year___'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
 
-            if ($query == true) {
-                $i = $this->updateID___($pid_, $newid_, $regid_);
-                if($i == true){
-                    $bool_ = array('res_' => TRUE, 'msg_' => 'Submitted Successfully..!!');
+                $query = $this->db->insert('master_8_stud_academics', $dataAcademics);
+                $query = $this->db->insert('master_7_stud_personal', $dataPersonal);
+                $query = $this->db->insert('master_9_stud_address', $dataCorresAdd);
+                $query = $this->db->insert('master_9_stud_address', $dataPerAdd);
+                $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
+
+                if ($query == true) {
+                    $i = $this->updateID___($pid_, $newid_, $regid_);
+                    if($i == true){
+                        $bool_ = array('res_' => TRUE, 'msg_' => 'Submitted Successfully..!!');
+                    } else {
+                        $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
+                    }
                 } else {
-                    $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
+                    $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again...!!');
                 }
             } else {
-                $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again...!!');
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Student can take admission only for the Session ' . $this->session->userdata('live__'));
             }
 
         } else {
