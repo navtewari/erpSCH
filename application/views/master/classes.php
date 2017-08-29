@@ -8,7 +8,7 @@
                 </ul>
             </div>
             <div class="widget-content tab-content">
-                <div id="newClass" class="tab-pane active">
+                <div class="tab-pane active">
                     <div class="span6">
                         <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
@@ -69,35 +69,48 @@
                             </div>            
                         </div>
                         
-                        <div class="widget-box" id="editClass" style="display:none">
-                            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5>Edit Class</h5>
+                        <div class="widget-box" id="editClass" style="display:none;">
+                            <div class="widget-title" style="background:#ff3333; color:#fff"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                                <h5 style="color:#fff">Edit Class</h5>
                             </div>
                             <div class="widget-content nopadding">
                                 <div class="control-group">
                                     <?php
                                     $attrib_ = array(
                                         'class' => 'form-horizontal',
-                                        'name' => 'frmClasses',
-                                        'id' => 'frmClasses',
+                                        'name' => 'frmClasses_Edit',
+                                        'id' => 'frmClasses_Edit',
                                     );
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
                                     <div class="control-group">
-                                        <label class="control-label">New Class</label>
+                                        <label class="control-label">Class</label>
                                         <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'type' => 'hidden',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span11',
+                                                'name' => 'txtEditClass_ID',
+                                                'id' => 'txtEditClass_ID',
+                                                'value' => ''
+                                            );
+                                            echo form_input($data);
+                                            ?>                                                  
+                                            
                                             <?php
                                             $data = array(
                                                 'type' => 'text',
                                                 'autocomplete' => 'off',
                                                 'required' => 'required',
                                                 'class' => 'span11',
-                                                'name' => 'txtAddClass_',
-                                                'id' => 'txtAddClass_',
+                                                'name' => 'txtEditClass_',
+                                                'id' => 'txtEditClass_',
                                                 'value' => ''
                                             );
                                             echo form_input($data);
-                                            ?>                                                  
+                                            ?>  
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -106,9 +119,9 @@
                                             <?php
                                             $data = array(
                                                 'class' => 'required form-control m-bot8',
-                                                'name' => 'cmbClassSection',
-                                                'id' => 'cmbClassSection',
-                                                'required' => 'required'
+                                                'name' => 'cmbEditSection',
+                                                'id' => 'cmbEditSection',
+                                                'required' => 'required'                                                
                                             );
                                             $options = array();
                                             $options['-'] = 'No Section';
@@ -120,8 +133,8 @@
                                         </div>
                                     </div>
                                     <div class="form-actions" align="right">                        
-                                        <input type="button" value="Create New Class" class="btn btn-success classSubmit">
-                                        <button type="reset" class="btn btn-primary">Reset</button>                             
+                                        <input type="button" value="Update Class" class="btn btn-success classUpdate">
+                                        <button type="reset" class="btn btn-primary classUpdateCancel">Cancel</button>                             
                                     </div>
                                     <?php echo form_close(); ?>
                                 </div>

@@ -124,6 +124,48 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
+    function mget_Class_for_update($classid) {
+        $this->db->where('CLASSID', $classid);
+        $query = $this->db->get('class_1_classes');
+        return $query->result();
+    }
+
+    function mupdate_Class($classID) {
+        $this->db->where('CLASSID', $classID);
+        $query = $this->db->get('class_2_in_session');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Class ' . $classID . ' is already Associated with Session. Therefore it can not be Updated');
+        } else {
+            $class_ = trim($this->input->post('txtEditClass_'));
+            $section_ = trim($this->input->post('cmbEditSection'));
+            $class_id_ = $class_ . ($section_ != '-' ? $section_ : '');
+
+            $this->db->where('CLASSID', $class_id_);
+            $query = $this->db->get('class_1_classes');
+
+            if ($query->num_rows() != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Sorry! Class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> is already exists.');
+            } else {
+                $data = array(
+                    'CLASSID' => $class_id_,
+                    'CLASS' => $class_,
+                    'SECTION' => $section_,
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $this->db->where('CLASSID', $classID);
+                $query = $this->db->update('class_1_classes', $data);
+
+                if ($query == TRUE) {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> Updated successfully.');
+                } else {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or class <span style="color: #0000ff; font-weight: bold">' . $class_id_ . '</span> is already exists. Please check and try again.');
+                }
+            }
+        }
+        return $bool_;
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {

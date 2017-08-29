@@ -47,6 +47,26 @@ class Web extends CI_Controller {
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / Classes';
                 break;
+            case 5:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / Subject';
+                break;
+            case 6:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / grading';
+                break;
+            case 7:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / Teachers';
+                break;
+            case 8:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / Fee';
+                break;
+            case 9:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / General';
+                break;
             default:
                 $data['page_'] = 'erorrs';
         }

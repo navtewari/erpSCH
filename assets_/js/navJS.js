@@ -153,8 +153,64 @@ $(function () {
     });
 
     $('body').on('click', '.editClasses', function () {
-        alert('hi');
-        document.getElementById('#newClass').style.display = 'none';
+        var classid = this.id;
+        url_ = site_url_ + "/master/get_Class_for_update/" + classid;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $('#txtEditClass_ID').val(obj.classData[0].CLASSID);
+                $('#txtEditClass_').val(obj.classData[0].CLASS);
+                $('#s2id_cmbEditSection span').text(obj.classData[0].SECTION);
+                if (obj.classData[0].SECTION != '-') {
+                    $("#cmbEditSection option:contains(" + obj.classData[0].SECTION + ")").attr('selected', 'selected');
+                }
+                $('#newClass').css({'display': 'none'});
+                $('#editClass').css({'display': 'block'});
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+    $('body').on('click', '.classUpdateCancel', function () {
+        $('#newClass').css({'display': 'block'});
+        $('#editClass').css({'display': 'none'});
+    });
+
+    $('body').on('click', '.classUpdate', function () {
+        var classid = $('#txtEditClass_ID').val();
+        if ($('#txtEditClass_').val() == '') {
+            callDanger("Please fill Class Name !!");
+            $('#txtEditClass_').focus();
+        } else {
+            if (confirm('Are you sure you want to Update Class ' + classid)) {
+
+                data_ = $('#frmClasses_Edit').serialize();
+                url_ = site_url_ + "/master/update_Class/" + classid;
+
+                $.ajax({
+                    type: 'POST',
+                    url: url_,
+                    data: data_,
+                    success: function (data) {
+                        var obj = JSON.parse(data);
+                        //alert(obj.res_);
+                        if (obj.res_ === false) {
+                            callDanger(obj.msg_);
+                        } else {
+                            callSuccess(obj.msg_);
+                            fillClasses();
+                            $('#newClass').css({'display': 'block'});
+                            $('#editClass').css({'display': 'none'});
+                        }
+                    }, error: function (xhr, status, error) {
+                        callSuccess(xhr.responseText);
+                    }
+                });
+            }
+        }
     });
 
     // Popup boxes

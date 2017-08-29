@@ -45,4 +45,14 @@ class Master extends CI_Controller {
         echo json_encode($data);
     }
 
+    function get_Class_for_update($classID) {
+        $data['classData'] = $this->mmm->mget_Class_for_update($classID);
+        echo json_encode($data);
+    }
+
+    function update_Class($classiD) {
+        $data = $this->mmm->mupdate_Class($classiD);
+        echo json_encode($data);
+    }
+
 }
