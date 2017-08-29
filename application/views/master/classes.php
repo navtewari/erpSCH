@@ -68,7 +68,7 @@
                                 </div>
                             </div>            
                         </div>
-                        
+
                         <div class="widget-box" id="editClass" style="display:none;">
                             <div class="widget-title" style="background:#ff3333; color:#fff"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5 style="color:#fff">Edit Class</h5>
@@ -98,7 +98,7 @@
                                             );
                                             echo form_input($data);
                                             ?>                                                  
-                                            
+
                                             <?php
                                             $data = array(
                                                 'type' => 'text',
@@ -121,7 +121,7 @@
                                                 'class' => 'required form-control m-bot8',
                                                 'name' => 'cmbEditSection',
                                                 'id' => 'cmbEditSection',
-                                                'required' => 'required'                                                
+                                                'required' => 'required'
                                             );
                                             $options = array();
                                             $options['-'] = 'No Section';
@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <div id="sessionClass" class="tab-pane">
-                    <p> waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end. </p>
+                    <?php $this->load->view('master/sessionWiseClass'); ?>
                 </div>                
             </div>
         </div>

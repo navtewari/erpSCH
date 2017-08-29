@@ -24,6 +24,7 @@
 <script src="<?php echo base_url('assets_/js/matrix.tables.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/excanvas.min.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/matrix.form_common.js');?>"></script> 
+<script src="<?PHP echo base_url() . 'assets_/multiSelect/js/multiselect.min.js'; ?>"></script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
