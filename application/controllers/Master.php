@@ -54,5 +54,25 @@ class Master extends CI_Controller {
         $data = $this->mmm->mupdate_Class($classiD);
         echo json_encode($data);
     }
+    
+    function getTotalClasses(){
+        $data['totalClassData']=$this -> mmm -> get_totalClass_not_present_in_current_session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+    
+    function fillClassesNewSession(){
+        $data['totalclass_in_session']=$this -> mmm -> get_totalClass_in_current_session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+    
+    function fillUsedClasses(){
+        $data['used_classes_']=$this -> mmm -> used_classes_($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+    
+    function setClassInSession(){  
+        $data = $this -> mmm -> set_Class_in_Session($this->session->userdata('_current_year___'));        
+        echo json_encode($data);
+    }
 
 }

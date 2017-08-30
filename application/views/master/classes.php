@@ -150,9 +150,9 @@
                             <div class="widget-content nopadding" style="height:400px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
-                                        <tr>
-                                            <th colspan="2">Options</th>                                            
-                                            <th style="text-align:left;width:80%">Class Name</th>                                           
+                                        <tr>                                   
+                                            <th style="text-align:left;width:40%">Class Name</th>                                           
+                                            <th style="text-align: center">Actions</th>         
                                         </tr>
                                     </thead>
                                     <tbody id="tabClass"> 

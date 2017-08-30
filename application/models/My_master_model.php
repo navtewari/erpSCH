@@ -227,6 +227,45 @@ class My_Master_model extends CI_Model {
         return $query->result();
     }
 
+    function set_Class_in_Session($year__) {
+        $count_list = $this->input->post('to');        
+
+        $this->db->where('SESSID', $year__);
+        $query = $this->db->get('class_2_in_session');
+
+        if ($query->num_rows() != 0) {
+
+            $query = $this->db->query("DELETE FROM class_2_in_session where SESSID = '" . $year__ . "' AND CLSSESSID NOT IN (SELECT `CLSSESSID` from class_3_class_wise_students)");
+
+            $bool_ = $this->insert_classes_in_session($count_list, $year__);
+        } else {
+            $bool_ = $this->insert_classes_in_session($count_list, $year__);
+        }
+
+        return $bool_;
+    }
+
+    function insert_classes_in_session($class_list, $year__) {
+        $bool_ = 0;
+        for ($i = 0; $i < count($class_list); $i++) {
+            $data = array(
+                'CLASSID' => $class_list[$i],
+                'SESSID' => $year__,
+                'DATE_' => date('Y-m-d H:i:s'),
+                'STATUS_' => 1
+            );
+            $query = $this->db->insert('class_2_in_session', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Classes Updated successfully.');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or class <span style="color: #0000ff; font-weight: bold"> </span> is already exists. Please check and try again.');
+            }
+        }
+
+        return $bool_;
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {

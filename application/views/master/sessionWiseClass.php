@@ -1,10 +1,9 @@
 <style>
-    .selectMe{
-        height:200px !important;
+    .selectMe{       
         display:block !important;
     }
 </style>
-<?php echo form_open('class_/setClassInSession', array('name' => 'frmClassInSession')); ?>
+<?php echo form_open('#', array('id' => 'frmClassInSession', 'name' => 'frmClassInSession')); ?>
 <div class="row-fluid">
     <div class="span12">
         <div class="span3">
@@ -16,13 +15,12 @@
                 $data = array(
                     'class' => 'span11 selectMe',
                     'name' => 'cmbClassSection',
-                    'id' => 'undo_redo',                   
+                    'id' => 'undo_redo',
+                    'style' => 'height:300px; margin-left:7px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
-                foreach ($totalclass_ as $item_) {
-                    $options[$item_->CLASSID] = $item_->CLASSID;
-                }
+
                 echo form_dropdown($data, $options, '');
                 ?>
             </div>
@@ -42,18 +40,16 @@
             <div class="widget-box">         
                 <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                     <h5>Classes in New Session (<?php echo $this->session->userdata('_current_year___'); ?>)</h5>
-                </div>            
+                </div>
                 <?php
                 $data = array(
                     'class' => 'span11 selectMe',
                     'name' => 'to[]',
-                    'id' => 'undo_redo_to',                           
+                    'id' => 'undo_redo_to',
+                    'style' => 'height:300px; margin-left:9px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
-                foreach ($totalclass_in_session as $item_) {
-                    $options[$item_->CLASSID] = $item_->CLASSID;
-                }
                 echo form_dropdown($data, $options, '');
                 ?>
             </div>
@@ -67,32 +63,28 @@
                 $data = array(
                     'class' => 'span11 selectMe',
                     'name' => 'used[]',
-                    'id' => 'undo_redo',                    
+                    'id' => 'undo_redo1',
                     'multiple' => 'multiple',
+                    'style' => 'height:300px; margin-left:7px;',
                     'disabled' => 'disabled'
                 );
                 $options = array();
-                if (count($used_classes_) != 0) {
-                    foreach ($used_classes_ as $item_) {
-                        $options[$item_->CLASSID] = $item_->CLASSID;
-                    }
-                } else {
-                    $options['x'] = '-NA-';
-                }
+                
                 echo form_dropdown($data, $options, '');
                 ?>
             </div>
         </div>
     </div><!--/.row-->   
 </div>
-</div>
+
 <div class="row-fluid">
     <div class="form-group" style="margin-top:10px;">
         <div class="col-xs-6"></div>
         <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary col-sm-12" name="cmbAddClassSubmit" id="cmbAddClassSubmit">SUBMIT CLASSES TO SESSION</button>
+            <button type="button" class="btn btn-primary col-sm-12" name="btnAddSessionClassSubmit" id="btnAddSessionClassSubmit">SUBMIT CLASSES TO SESSION <?php echo $this->session->userdata('_current_year___'); ?></button>
         </div>  
         <div class="col-xs-2">
         </div> 
     </div>            
 </div>
+<?php echo form_close();?>

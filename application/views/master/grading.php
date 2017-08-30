@@ -9,26 +9,24 @@
                     <?php
                     $attrib_ = array(
                         'class' => 'form-horizontal',
-                        'name' => 'frmSession',
-                        'id' => 'frmSession',
+                        'name' => 'frmGrades',
+                        'id' => 'frmGrades',
                     );
                     ?>
                     <?php echo form_open('#', $attrib_); ?>
                     <div class="control-group">
-                        <label class="control-label">Session Start</label>
-                        <div class="controls">                        
+                        <label class="control-label">Class of Admission</label>
+                        <div class="controls">
                             <?php
                             $data = array(
-                                'type' => 'text',
-                                'class' => 'datepicker span11',
-                                'data-date-format' => 'mm-dd-yyyy',
-                                'name' => 'startYear',
-                                'id' => 'startYear',
-                                'value' => date('d-m-Y'),
+                                'name' => 'cmbClassofAdmission',
+                                'id' => 'cmbClassofAdmission',
                                 'required' => 'required'
                             );
-                            echo form_input($data);
-                            ?>                                                   
+                            $options = array();
+                            $options['x'] = 'Select Class';
+                            ?>
+                            <?php echo form_dropdown($data, $options, ''); ?>
                         </div>
                     </div>
                     <div class="control-group">
@@ -61,7 +59,7 @@
     <div class="span6">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5>Existing Sessions</h5>
+                <h5>Existing Grades</h5>
             </div>
             <div class="widget-content nopadding">
                 <table class="table table-bordered">
