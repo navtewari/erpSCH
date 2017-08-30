@@ -166,6 +166,67 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
+    function get_totalClass_not_present_in_current_session($year__) {
+        $this->db->order_by('ABS(a.CLASS)', 'asc');
+        $this->db->select('a.*');
+        $this->db->from('class_1_classes a');
+        $this->db->join('class_2_in_session b', 'a.CLASSID=b.CLASSID AND b.SESSID="' . $year__ . '"', 'left');
+        $this->db->where('b.CLASSID', NULL);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_totalClass_in_current_session($year__) {
+        /*
+          Below query having join retrieves
+          the data PRRESENT in table 'a' [class_2_in_session]
+          but NOT PRRESENT in table 'b' [class_3_class_wise_students]
+          AND
+          if data PRRESENT in class_3_class_wise_students 'b'
+          than it will not retrieve in this query from table 'a' [class_2_in_session].
+         */
+        $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->select('a.*');
+        $this->db->from('class_1_classes x');
+        $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
+        $this->db->join('class_3_class_wise_students b', 'a.CLSSESSID = b.CLSSESSID', 'left outer');
+        $this->db->where('b.CLSSESSID IS NULL');
+        $this->db->where('a.SESSID = "' . $year__ . '"');
+        $this->db->order_by('a.CLASSID');
+        $this->db->distinct();
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_Classes_in_current_session($year__) {
+        $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->select('a.*');
+        $this->db->from('class_1_classes x');
+        $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
+        $this->db->where('a.SESSID = "' . $year__ . '"');
+        $this->db->order_by('a.CLASSID');
+        $this->db->distinct();
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function used_classes_($year__) {
+        /*
+          Below query having join retrieves
+          ONLY the COMMON data PRRESENT in table a [class_2_in_session]
+          and ALSO PRRESENT in table b [class_3_class_wise_students].
+         */
+        $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->select('a.*');
+        $this->db->from('class_1_classes x');
+        $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
+        $this->db->join('class_3_class_wise_students b', 'a.CLSSESSID=b.CLSSESSID AND a.SESSID="' . $year__ . '"');
+        $this->db->order_by('a.CLASSID');
+        $this->db->distinct();
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {
