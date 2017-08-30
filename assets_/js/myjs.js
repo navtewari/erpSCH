@@ -8,6 +8,10 @@ $(function(){
 			fillStates('cmbPState');
 			fillStates('cmbCState');
 		}
+		if($('#frmAssociateStaticFee').length != 0){
+			fillClasses_for_current_session();
+			fill_accordion_showing_classes_associates_staticHeads();
+		}
 	});
 	// Registration and Admission Forms scripts
 		function reloadme(){
@@ -474,6 +478,144 @@ $(function(){
 				}
 			});
 		});
+
+		// Asociate Static Heads with Classes
+		
+		function fill_accordion_showing_classes_associates_staticHeads(){
+			url_ = site_url_ + "/master_fee/fill_accordion_statichead_associates_classes";
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.class_fee_in_session.length; i++){
+						str_html = str_html + '<div class="accordion-group widget-box">';
+						str_html = str_html + '<div class="accordion-heading">';
+						str_html = str_html + '<div class="widget-title"> ';
+						str_html = str_html + '<a data-parent="#collapse-group" href="#cls_'+obj.class_fee_in_session[i].CLSSESSID+'" data-toggle="collapse">'
+						str_html = str_html + '<span class="icon"><i class="icon-plus-sign"></i></span>';
+						str_html = str_html + '<h5>Class ' + obj.class_fee_in_session[i].CLASSID + '</h5>';
+						str_html = str_html + '</a>';
+						str_html = str_html + '</div>';
+						str_html = str_html + '</div>';
+						if(i != 0){
+							str_html = str_html + '<div class="collapse accordion-body" id="cls_'+obj.class_fee_in_session[i].CLSSESSID+'">';
+						} else { 
+							str_html = str_html + '<div class="collapse in accordion-body" id="cls_'+obj.class_fee_in_session[i].CLSSESSID+'">';
+						}
+						str_html = str_html + '<div class="widget-content">';
+						for(j=0; j<obj.class_splitted_fee_in_session.length; j++){
+							if(obj.class_fee_in_session[i].CLSSESSID == obj.class_splitted_fee_in_session[j].CLSSESSID){
+								str_html = str_html + '<div style="clear: both; height: 2px"></div>';
+								str_html = str_html + '<div style="border:#A0A0A0 dotted 1px; background: #f0f0f0; border-radius:5px; padding: 5px 5px 0px 5px" class="span8" id="panel_'+obj.class_splitted_fee_in_session[j].CFEESPLITID+'">';
+								str_html = str_html + '<div class="span6"><span class="icon"><i class="icon-ok"></i></span>&nbsp;&nbsp;';
+								str_html = str_html + obj.class_splitted_fee_in_session[j].FEE_HEAD;
+								str_html = str_html + '</div>';
+								str_html = str_html + '<div class="span5">';
+								str_html = str_html + obj.class_splitted_fee_in_session[j].AMOUNT;
+								str_html = str_html + '</div>';
+								str_html = str_html + '<div class="span1">';
+								str_html = str_html + '<a href="#"><span class="icon"><i class="icon-remove delete_splitted_static_fee_in_class" style="color: #ff0000" id="del~'+obj.class_splitted_fee_in_session[j].CFEESPLITID+'"></i></span></a>';
+								str_html = str_html + '</div>';
+								str_html = str_html + '</div>'
+								str_html = str_html + '<div style="clear: both;"></div>';
+							}
+						}
+						str_html = str_html + '</div>';
+						str_html = str_html + '</div>';
+						str_html = str_html + '</div>';
+					}
+					$('#collapse-group').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		$('body').on('click', '.delete_splitted_static_fee_in_class', function () {
+			str = this.id;
+			arrid = str.split('~');
+			strid = 'panel_'+arrid[1];
+			url_ = site_url_ + "/master_fee/delete_splitted_head_from_class/"+arrid[1];
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == true){
+						$('#'+strid).css('opacity', '0');
+					} else {
+						callDanger(obj.msg_);
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
+		function fillClasses_for_current_session(){
+			url_ = site_url_ + "/master_fee/get_class_in_session";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.classes_.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="checkbox" name="ckhClass_[]" id="ckh~'+obj.classes_[i].CLSSESSID+'" value="'+obj.classes_[i].CLSSESSID+'" style="border: #f0f0f0 dashed 1px"/>';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + 'Class ' + obj.classes_[i].CLASSID;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#classes_associates_staticHeads').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}		
+		$('#associate_static_head_with_classes').click(function(){
+			var anyBoxesChecked = false;
+			if($('#cmbStaticHeads').val() != 'x' && $.trim($('#txtFeeStaticHeadAmt').val()) != '' && isNaN($('#txtFeeStaticHeadAmt').val()) == false){
+				$('#frmAssociateStaticFee input[type="checkbox"]').each(function() {
+			        if ($(this).is(":checked")) {
+			            anyBoxesChecked = true;
+			        }
+			    });
+			    if(anyBoxesChecked == false){
+			    	callDanger("Please select atleast 1 Class to associate the selected static head.");	
+			    } else {
+			    	url_ = site_url_ + '/master_fee/submit_static_fee_to_class';
+			    	data_ = $('#frmAssociateStaticFee').serialize();
+			    	loading_process();
+			    	$.ajax({
+			    		type: 'POST',
+			    		url: url_,
+			    		data: data_,
+			    		success: function(data){
+			    			var obj = JSON.parse(data);
+			    			if(obj.res_ == true){
+			    				callSuccess(obj.msg_);
+			    				$('.cancel_static_associates_classes').click();
+			    				fill_accordion_showing_classes_associates_staticHeads();
+			    			} else {
+			    				callDanger(obj.msg_);
+			    			}
+			    			hide_loading_process();
+			    		}, error: function(xhr, status, error){
+							callDanger(xhr.responseText);
+						}
+			    	});
+			    }
+			} else {
+				callDanger('Please Select Static head and amount both and amount should be numeric.');
+			}
+		});
+		// ----------------------------------
 	// ----------
 	// Popup boxes
 		function callDanger(message){

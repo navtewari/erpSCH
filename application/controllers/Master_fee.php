@@ -48,4 +48,25 @@ class Master_fee extends CI_Controller {
         $data = $this->mmm->delete_flexible_head($flexid);
         echo json_encode($data);
     }
+
+    function get_class_in_session(){
+        $data['classes_'] = $this->mmm->get_class_in_session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function submit_static_fee_to_class(){
+        $data = $this->mmm->submit_static_fee_to_class();
+        echo json_encode($data);
+    }
+
+    function fill_accordion_statichead_associates_classes(){
+        $data['class_fee_in_session'] = $this -> mmm -> get_class_fee_in_session($this -> session -> userdata('_current_year___'));
+        $data['class_splitted_fee_in_session'] = $this -> mmm -> get_class_splitted_fee_in_session($this -> session -> userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function delete_splitted_head_from_class($splittedID){
+        $data = $this -> mmm -> delete_splitted_head_from_class($splittedID);
+        echo json_encode($data);   
+    }
 }
