@@ -54,24 +54,49 @@ class Master extends CI_Controller {
         $data = $this->mmm->mupdate_Class($classiD);
         echo json_encode($data);
     }
-    
-    function getTotalClasses(){
-        $data['totalClassData']=$this -> mmm -> get_totalClass_not_present_in_current_session($this->session->userdata('_current_year___'));
+
+    function getTotalClasses() {
+        $data['totalClassData'] = $this->mmm->get_totalClass_not_present_in_current_session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function fillClassesNewSession() {
+        $data['totalclass_in_session'] = $this->mmm->get_totalClass_in_current_session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function fillUsedClasses() {
+        $data['used_classes_'] = $this->mmm->used_classes_($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function setClassInSession() {
+        $data = $this->mmm->set_Class_in_Session($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
+
+    function getClassGrade($classSessID) {
+        $data['class_grade'] = $this->mmm->get_grade_in_class($classSessID);
+        echo json_encode($data);
+    }
+
+    function submitGrades() {
+        $data = $this->mmm->mcreate_grading();
         echo json_encode($data);
     }
     
-    function fillClassesNewSession(){
-        $data['totalclass_in_session']=$this -> mmm -> get_totalClass_in_current_session($this->session->userdata('_current_year___'));
+    function deleteGrade($gradeID){
+        $data = $this->mmm->mdelete_grade($gradeID);
         echo json_encode($data);
     }
     
-    function fillUsedClasses(){
-        $data['used_classes_']=$this -> mmm -> used_classes_($this->session->userdata('_current_year___'));
+    function get_grade_for_update($gradeID){
+        $data['class_grade'] = $this->mmm->mget_grade_for_update($gradeID);
         echo json_encode($data);
     }
     
-    function setClassInSession(){  
-        $data = $this -> mmm -> set_Class_in_Session($this->session->userdata('_current_year___'));        
+    function editGrades(){
+        $data = $this->mmm->mupdate_grading();
         echo json_encode($data);
     }
 

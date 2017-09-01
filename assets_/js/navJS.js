@@ -11,7 +11,7 @@ $(function () {
             $('#undo_redo').multiselect();
         }
         if ($("#frmGrades").length != 0) {
-           
+
             fillClasses_grade();
         }
     });
@@ -178,8 +178,8 @@ $(function () {
                 if (obj.classData[0].SECTION != '-') {
                     $("#cmbEditSection option:contains(" + obj.classData[0].SECTION + ")").attr('selected', 'selected');
                 }
-                $('#newClass').css({'display': 'none'});
                 $('#editClass').css({'display': 'block'});
+                $('#txtEditClass_').focus();
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
             }
@@ -187,7 +187,6 @@ $(function () {
     });
 
     $('body').on('click', '.classUpdateCancel', function () {
-        $('#newClass').css({'display': 'block'});
         $('#editClass').css({'display': 'none'});
     });
 
@@ -313,9 +312,9 @@ $(function () {
 //------------------------------------------------------------------------
 ////---------------------------------grading-----------------------------
     function fillClasses_grade() {
-        $('#s2id_cmbClassofAdmission span').text("Loading...");             
+        $('#s2id_cmbClassofGrading span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
-        $('#cmbClassofAdmission').empty();
+        $('#cmbClassofGrading').empty();
         $.ajax({
             type: "POST",
             url: url_,
@@ -326,11 +325,171 @@ $(function () {
                 for (i = 0; i < obj.class_in_session.length; i++) {
                     str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
                 }
-                $('#s2id_cmbClassofAdmission span').text("Choose Class");
-                $('#cmbClassofAdmission').html(str_html);
+                $('#s2id_cmbClassofGrading span').text("Choose Class");
+                $('#cmbClassofGrading').html(str_html);
             }
         });
     }
+
+    $('#cmbClassofGrading').change(function () {
+        fillGradeinTable();
+    });
+
+    function fillGradeinTable() {
+        var classSessID = $('#cmbClassofGrading').val();
+        var className = $("#cmbClassofGrading option:selected").text();
+        url_ = site_url_ + "/master/getClassGrade/" + classSessID;
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                if (obj.class_grade.length > 0) {
+                    for (i = 0; i < obj.class_grade.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.class_grade[i].minMarks + ' - ' + obj.class_grade[i].maxMarks + "</b></td>";
+                        str_html = str_html + "<td><b>" + obj.class_grade[i].grade + "</b></td>";
+                        str_html = str_html + "<td><b>" + obj.class_grade[i].description + "</b></td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip editGrade' id='" + obj.class_grade[i].gradeID + "'><i class='icon-pencil'></i></a> | ";
+                        str_html = str_html + "<a href='#' class='tip deleteGrade' id='" + obj.class_grade[i].gradeID + '~' + obj.class_grade[i].grade + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#tabGrading').html(str_html);
+                } else {
+                    $('#tabGrading').html('NO Grade Present for ' + className);
+                }
+            }
+        });
+    }
+
+    $('.gradingSubmit').click(function () {
+        if ($('#cmbClassofGrading').val() === '') {
+            callDanger("Please Select Class !!");
+            $('#cmbClassofGrading').focus();
+        } else if ($('#minMarks').val() === '') {
+            callDanger("Please Enter Minimum Marks !!");
+            $('#minMarks').focus();
+        } else if ($('#maxMarks').val() === '') {
+            callDanger("Please Enter Maximum Marks !!");
+            $('#maxMarks').focus();
+        } else if ($('#txtGrade').val() === '') {
+            callDanger("Please Enter Grade !!");
+            $('#txtGrade').focus();
+        } else {
+            data_ = $('#frmGrades').serializeArray();
+            url_ = site_url_ + "/master/submitGrades";
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillGradeinTable();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.deleteGrade', function () {
+        var str = this.id;
+        var arr_str = str.split('~');
+        var gradeid = arr_str[0];
+        var gradeName = arr_str[1];
+
+        url_ = site_url_ + "/master/deleteGrade/" + gradeid;
+        if (confirm('Are you sure you want to delete Grade ' + gradeName)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillGradeinTable();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.editGrade', function () {
+        var gradeID = this.id;
+
+        var className = $("#cmbClassofGrading option:selected").text();
+
+        url_ = site_url_ + "/master/get_grade_for_update/" + gradeID;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $('#gradeID_Edit').val(obj.class_grade[0].gradeID);
+                $('#classID_Edit').val(obj.class_grade[0].clssessID);
+                $('#ClassID_Edit').val(className);
+                $('#minMarks_Edit').val(obj.class_grade[0].minMarks);
+                $('#maxMarks_Edit').val(obj.class_grade[0].maxMarks);
+                $('#txtGrade_Edit').val(obj.class_grade[0].grade);
+                $('#txtDesc_Edit').val(obj.class_grade[0].description);
+
+                $('#editGrade').css({'display': 'block'});
+                $('#minMarks_Edit').focus();
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+    $('.gradingEdit').click(function () {
+        if ($('#minMarks_Edit').val() === '') {
+            callDanger("Please Enter Minimum Marks !!");
+            $('#minMarks_Edit').focus();
+        } else if ($('#maxMarks_Edit').val() === '') {
+            callDanger("Please Enter Maximum Marks !!");
+            $('#maxMarks_Edit').focus();
+        } else if ($('#txtGrade_Edit').val() === '') {
+            callDanger("Please Enter Grade !!");
+            $('#txtGrade_Edit').focus();
+        } else {
+            data_ = $('#frmGrades_Edit').serializeArray();
+            url_ = site_url_ + "/master/editGrades";
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillGradeinTable();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('.gradingEditCancel').click(function () {
+        $('#editGrade').css({'display': 'none'});
+    });
 //-----------------------------------------------------------------------
     // Popup boxes
     function callDanger(message) {

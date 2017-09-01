@@ -9,7 +9,7 @@
             </div>
             <div class="widget-content tab-content">
                 <div class="tab-pane active" id="newClassEntry">
-                    <div class="span6">
+                    <div class="span4">
                         <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5>New Class</h5>
@@ -68,10 +68,35 @@
                                 </div>
                             </div>            
                         </div>
+                        
+                    </div>
+
+                    <div class="span4">
+                        <div class="widget-box">
+                            <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                                <h5>Existing Classes</h5>
+                            </div>
+                            <div class="widget-content nopadding" style="height:400px; overflow: scroll">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>                                   
+                                            <th style="text-align:left;width:40%">Class Name</th>                                           
+                                            <th style="text-align: center">Actions</th>         
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabClass"> 
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="span4">                       
 
                         <div class="widget-box" id="editClass" style="display:none;">
-                            <div class="widget-title" style="background:#ff3333; color:#fff"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5 style="color:#fff">Edit Class</h5>
+                            <div class="widget-title"  style="color: #cc3300"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                                <h5  style="color: #cc3300">Edit Class</h5>
                             </div>
                             <div class="widget-content nopadding">
                                 <div class="control-group">
@@ -84,7 +109,7 @@
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
                                     <div class="control-group">
-                                        <label class="control-label">Class</label>
+                                        <label class="control-label" style="color: #cc3300">Class</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -114,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Section</label>
+                                        <label class="control-label" style="color: #cc3300">Section</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -133,33 +158,12 @@
                                         </div>
                                     </div>
                                     <div class="form-actions" align="right">                        
-                                        <input type="button" value="Update Class" class="btn btn-success classUpdate">
+                                        <input type="button" value="Update Class" class="btn btn-danger classUpdate">
                                         <button type="reset" class="btn btn-primary classUpdateCancel">Cancel</button>                             
                                     </div>
                                     <?php echo form_close(); ?>
                                 </div>
                             </div>            
-                        </div>
-                    </div>
-
-                    <div class="span6">
-                        <div class="widget-box">
-                            <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                <h5>Existing Classes</h5>
-                            </div>
-                            <div class="widget-content nopadding" style="height:400px; overflow: scroll">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>                                   
-                                            <th style="text-align:left;width:40%">Class Name</th>                                           
-                                            <th style="text-align: center">Actions</th>         
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tabClass"> 
-
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>

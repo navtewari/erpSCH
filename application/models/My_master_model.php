@@ -228,7 +228,7 @@ class My_Master_model extends CI_Model {
     }
 
     function set_Class_in_Session($year__) {
-        $count_list = $this->input->post('to');        
+        $count_list = $this->input->post('to');
 
         $this->db->where('SESSID', $year__);
         $query = $this->db->get('class_2_in_session');
@@ -263,6 +263,92 @@ class My_Master_model extends CI_Model {
             }
         }
 
+        return $bool_;
+    }
+
+    function get_grade_in_class($classSessID) {
+        $this->db->where('clssessID', $classSessID);
+        $query = $this->db->get('master_11_grading');
+        return $query->result();
+    }
+
+    function mcreate_grading() {
+        $classessID = $this->input->post('cmbClassofGrading');
+        $minM = $this->input->post('minMarks');
+        $maxM = $this->input->post('maxMarks');
+        $grade = $this->input->post('txtGrade');
+        $desc = $this->input->post('txtDesc');
+
+        $this->db->where('clssessID', $classessID);
+        $this->db->where('minMarks', $minM);
+        $this->db->where('maxMarks', $maxM);
+        $query = $this->db->get('master_11_grading');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'This Grade is already present for Class');
+        } else {
+            $data = array(
+                'minMarks' => $minM,
+                'maxMarks' => $maxM,
+                'grade' => $grade,
+                'description' => $desc,
+                'clssessID' => $classessID
+            );
+
+            $query = $this->db->insert('master_11_grading', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Grade created Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_grade($gID) {
+        $this->db->where('gradeID', $gID);
+        $query = $this->db->delete('master_11_grading');
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Grade Deleted Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
+    function mget_grade_for_update($gID) {
+        $this->db->where('gradeID', $gID);
+        $query = $this->db->get('master_11_grading');
+        return $query->result();
+    }
+
+    function mupdate_grading() {
+        $gID = $this->input->post('gradeID_Edit');
+        $classessID = $this->input->post('classID_Edit');
+        $minM = $this->input->post('minMarks_Edit');
+        $maxM = $this->input->post('maxMarks_Edit');
+        $grade = $this->input->post('txtGrade_Edit');
+        $desc = $this->input->post('txtDesc_Edit');
+
+
+        $data = array(
+            'minMarks' => $minM,
+            'maxMarks' => $maxM,
+            'grade' => $grade,
+            'description' => $desc,
+        );
+
+        $this->db->where('gradeID', $gID);
+        $query = $this->db->update('master_11_grading', $data);
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Grade Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
         return $bool_;
     }
 
