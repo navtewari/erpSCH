@@ -139,5 +139,20 @@ class Master extends CI_Controller {
         $data = $this->mmm->mupdate_teacher();
         echo json_encode($data);
     }
+    
+    function getTeacherAssociatedSubject($teacherID){
+        $data['Teacher_subject'] = $this->mmm->mget_exiting_subject_forTeacher($teacherID);
+        echo json_encode($data);
+    }
+    
+    function AssociatedSubject(){
+        $data = $this->mmm->massociate_subject();
+        echo json_encode($data);
+    }
+    
+    function deleteAssoicatedSubject($tasID){
+         $data = $this->mmm->mdel_teacher_subject($tasID);
+        echo json_encode($data);
+    }
 
 }

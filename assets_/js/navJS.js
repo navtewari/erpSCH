@@ -20,6 +20,8 @@ $(function () {
 
         if ($("#frmTeacher").length != 0) {
             fillTeacher();
+            fillTeacher_combo();
+            fillClasses_teacher();
         }
     });
     //-------------------------------------------Session
@@ -624,7 +626,7 @@ $(function () {
                 for (i = 0; i < obj.Teacher.length; i++) {
                     str_html = str_html + "<tr class='gradeX'>";
                     str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Teacher[i].name + "</b></td>";
-                    str_html = str_html + "<td>" + obj.Teacher[i].username + "</td>";                    
+                    str_html = str_html + "<td>" + obj.Teacher[i].username + "</td>";
                     str_html = str_html + '<td class="taskOptions">';
                     str_html = str_html + "<a href='#' class='tip editTeacher' id='" + obj.Teacher[i].teacherID + "'><i class='icon-pencil'></i></a> | ";
                     str_html = str_html + "<a href='#' class='tip deleteTeacher' id='" + obj.Teacher[i].teacherID + '~' + obj.Teacher[i].name + "'><i class='icon-remove'></i></a>";
@@ -635,7 +637,7 @@ $(function () {
             }
         });
     }
-    
+
     $('.teacherSubmit').click(function () {
         if ($('#txtName').val() === '') {
             callDanger("Please Enter Teacher Name !!");
@@ -665,7 +667,7 @@ $(function () {
             });
         }
     });
-    
+
     $('body').on('click', '.deleteTeacher', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -691,9 +693,9 @@ $(function () {
             });
         }
     });
-    
-    $('body').on('click', '.editTeacher', function () {        
-        var teacherID = this.id;        
+
+    $('body').on('click', '.editTeacher', function () {
+        var teacherID = this.id;
 
         url_ = site_url_ + "/master/get_teacher_for_update/" + teacherID;
         $.ajax({
@@ -703,7 +705,7 @@ $(function () {
                 var obj = JSON.parse(data);
                 $('#txtName_Edit').val(obj.Teacher_data[0].name);
                 $('#teachID_Edit').val(obj.Teacher_data[0].teacherID);
-                $('#txtUname_Edit').val(obj.Teacher_data[0].username);      
+                $('#txtUname_Edit').val(obj.Teacher_data[0].username);
 
                 $('#editTeacher').css({'display': 'block'});
                 $('#txtName_Edit').focus();
@@ -712,8 +714,8 @@ $(function () {
             }
         });
     });
-    
-    $('.teacherEdit').click(function () {        
+
+    $('.teacherEdit').click(function () {
         if ($('#txtName_Edit').val() === '') {
             callDanger("Please Enter Teacher Name !!");
             $('#txtName_Edit').focus();
@@ -742,11 +744,169 @@ $(function () {
             });
         }
     });
-    
-    $('.cancelUpdateTeacher').click(function () {        
+
+    $('.cancelUpdateTeacher').click(function () {
         $('#editTeacher').css({'display': 'none'});
     });
+
+    function fillTeacher_combo() {
+        $('#s2id_txtTeacherID span').text("Loading...");
+        url_ = site_url_ + "/master/getTeachers";
+        $('#txtTeacherID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.Teacher.length; i++) {
+                    str_html = str_html + "<option value='" + obj.Teacher[i].teacherID + "'>Class " + obj.Teacher[i].name + "</option>";
+                }
+                $('#s2id_txtTeacherID span').text("Choose Teacher");
+                $('#txtTeacherID').html(str_html);
+            }
+        });
+    }
+
+    $('#txtTeacherID').change(function () {
+        fillTeacherAssociatedSubject();
+    });
+
+    function fillTeacherAssociatedSubject() {
+        var teacherID = $('#txtTeacherID').val();
+        var teacherName = $("#txtTeacherID option:selected").text();
+
+        url_ = site_url_ + "/master/getTeacherAssociatedSubject/" + teacherID;
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.Teacher_subject.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Teacher_subject.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Teacher_subject[i].classID + "</b></td>";
+                        str_html = str_html + "<td>" + obj.Teacher_subject[i].subName + "</td>";
+                        str_html = str_html + "<td>" + obj.Teacher_subject[i].status + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip deleteAssoicatedSubject' id='" + obj.Teacher_subject[i].tasID + '~' + obj.Teacher_subject[i].subName + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#exitHeading').html('Associated Subjects for ' + teacherName);
+                    $('#tabAssociatedSubjects').html(str_html);
+                } else {
+                    $('#exitHeading').html('Associated Subjects for ' + teacherName);
+                    $('#tabAssociatedSubjects').html('No subject Associated');
+                }
+            }
+        });
+    }
+
+    $('.SubmitAssociate').click(function () {
+        if ($('#txtTeacherID').val() === '') {
+            callDanger("Please Select Teacher Name !!");
+            $('#txtTeacherID').focus();
+        } else if ($('#cmbSubject').val() === null) {
+            callDanger("Please Select subject to Associate !!");
+            $('#cmbSubject').focus();
+        } else {
+            data_ = $('#frmAssociateSubject').serializeArray();
+            url_ = site_url_ + "/master/AssociatedSubject";
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillTeacherAssociatedSubject();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    function fillClasses_teacher() {
+        $('#s2id_subClassTeacherID span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#subClassTeacherID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLASSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                }
+                $('#s2id_subClassTeacherID span').text("Choose Class");
+                $('#subClassTeacherID').html(str_html);
+            }
+        });
+    }
+
+    $('#subClassTeacherID').change(function () {
+        var classID = $('#subClassTeacherID').val();
+        url_ = site_url_ + "/master/getClassSubject/" + classID;
+
+        $('#s2id_cmbSubject span').text("Loading...");
+        $('#cmbSubject').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.class_subject.length > 0) {
+                    var str_html = '';
+                    str_html = str_html + "<option value=''>Choose Class</option>";
+                    for (i = 0; i < obj.class_subject.length; i++) {
+                        str_html = str_html + "<option value='" + obj.class_subject[i].subjectID + "'>" + obj.class_subject[i].subName + " " + obj.class_subject[i].status + "</option>";
+                    }
+                    $('#s2id_cmbSubject span').text("Choose Subject");
+                    $('#cmbSubject').html(str_html);
+                } else {
+                    $('#s2id_cmbSubject span').text('Subject not found');
+                }
+            }
+        });
+    });
     
+    $('body').on('click', '.deleteAssoicatedSubject', function () {
+        var str = this.id;
+        var arr_str = str.split('~');
+        var tasid = arr_str[0];
+        var subName = arr_str[1];
+
+        url_ = site_url_ + "/master/deleteAssoicatedSubject/" + tasid;
+        if (confirm('Are you sure you want to delete Associated Subject ' + subName)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillTeacherAssociatedSubject();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
 //------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes

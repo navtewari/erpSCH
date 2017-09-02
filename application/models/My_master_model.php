@@ -542,6 +542,90 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
+    function mget_exiting_subject_($classID) {
+        $this->db->where('classID', $classID);
+        $this->db->order_by('subName', 'Asc');
+        $this->db->order_by('status', 'desc');
+        $query = $this->db->get('master_12_subject');
+
+        if ($query->num_rows() != 0) {
+            $output = "<option value=''>SELECT SUBJECT</option>";
+            foreach ($query->result() as $row) {
+                $output .= "<option value='" . $row->subjectID . "'>" . $row->subName . " (" . $row->status . ")" . "</option>";
+            }
+        } else {
+            $output = "<option value='0'>NO SUBJECT AVAILABLE</option>";
+        }
+        return $output;
+    }
+
+    function mget_exiting_subject_forTeacher($tid) {
+        $this->db->select('a.*, b.*');
+        $this->db->from('master_14_teacher_wise_subject a');
+        $this->db->join('master_12_subject b', 'a.subjectID=b.subjectID');
+        $this->db->where('a.sessID', $this->session->userdata('_current_year___'));
+        $this->db->where('a.teacherID', $tid);
+        $this->db->order_by('b.classID', 'Asc');
+        $this->db->order_by('b.status', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function massociate_subject() {
+        $techID = $this->input->post('txtTeacherID');
+        $subID = $this->input->post('cmbSubject');
+        $sessID = $this->session->userdata('_current_year___');
+
+        $this->db->where('teacherID', $techID);
+        $this->db->where('subjectID', $subID);
+        $this->db->where('sessID', $sessID);
+
+        $query = $this->db->get('master_14_teacher_wise_subject');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'This Subject already Assoicated');
+        } else {
+            
+            $this->db->where('teacherID <>', $techID);
+            $this->db->where('subjectID', $subID);
+            $this->db->where('sessID', $sessID);
+
+            $query = $this->db->get('master_14_teacher_wise_subject');
+
+            if ($query->num_rows() != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'This Subject is already Assoicated with other Teacher');
+            } else {
+                $data = array(
+                    'teacherID' => $techID,
+                    'subjectID' => $subID,
+                    'sessID' => $sessID,
+                );
+
+                $query = $this->db->insert('master_14_teacher_wise_subject', $data);
+
+                if ($query == TRUE) {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Subject Associated with Teacher Successfully');
+                } else {
+                    $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+                }
+            }
+        }
+        return $bool_;
+    }
+
+    function mdel_teacher_subject($tassoID) {
+        $this->db->where('tasID', $tassoID);
+        $query = $this->db->delete('master_14_teacher_wise_subject');
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher-Subject Association Deleted Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {

@@ -4,7 +4,7 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#newClassEntry">New Teachers</a></li>
-                    <li><a data-toggle="tab" href="#sessionClass">Associate Subjects to Teacher</a></li>                    
+                    <li><a data-toggle="tab" href="#sessionClass">Associate Subjects to Teacher for session <?php echo $this->session->userdata('_current_year___');?></a></li>                    
                 </ul>
             </div>
             <div class="widget-content tab-content">
