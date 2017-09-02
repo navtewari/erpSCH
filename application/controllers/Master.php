@@ -84,19 +84,59 @@ class Master extends CI_Controller {
         $data = $this->mmm->mcreate_grading();
         echo json_encode($data);
     }
-    
-    function deleteGrade($gradeID){
+
+    function deleteGrade($gradeID) {
         $data = $this->mmm->mdelete_grade($gradeID);
         echo json_encode($data);
     }
-    
-    function get_grade_for_update($gradeID){
+
+    function get_grade_for_update($gradeID) {
         $data['class_grade'] = $this->mmm->mget_grade_for_update($gradeID);
         echo json_encode($data);
     }
-    
-    function editGrades(){
+
+    function editGrades() {
         $data = $this->mmm->mupdate_grading();
+        echo json_encode($data);
+    }
+
+    function getClassSubject($classID) {
+        $data['class_subject'] = $this->mmm->get_subject_in_class($classID);
+        echo json_encode($data);
+    }
+
+    function submitSubject() {
+        $data = $this->mmm->mcreate_subject();
+        echo json_encode($data);
+    }
+
+    function deleteSubject($classID) {
+        $data = $this->mmm->mdelete_subject($classID);
+        echo json_encode($data);
+    }
+
+    function getTeachers() {
+        $data['Teacher'] = $this->mmm->getAll_teacher();
+        echo json_encode($data);
+    }
+
+    function submitTeacher() {
+        $data = $this->mmm->mcreate_teacher();
+        echo json_encode($data);
+    }
+
+    function deleteTeacher($teacherID) {
+        $data = $this->mmm->mdelete_teacher($teacherID);
+        echo json_encode($data);
+    }
+
+    function get_teacher_for_update($teacherID) {
+        $data['Teacher_data'] = $this->mmm->get_teacher_id($teacherID);
+        echo json_encode($data);
+    }
+
+    function updateTeacher() {
+        $data = $this->mmm->mupdate_teacher();
         echo json_encode($data);
     }
 

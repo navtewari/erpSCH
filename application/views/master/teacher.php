@@ -4,7 +4,7 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#newClassEntry">New Teachers</a></li>
-                    <li><a data-toggle="tab" href="#sessionClass">Associate Teachers to Subjects</a></li>                    
+                    <li><a data-toggle="tab" href="#sessionClass">Associate Subjects to Teacher</a></li>                    
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -14,13 +14,13 @@
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5>New Teacher</h5>
                             </div>
-                            <div class="widget-content nopadding">
+                            <div class="widget-content padding">
                                 <div class="control-group">
                                     <?php
                                     $attrib_ = array(
-                                        'class' => 'form-horizontal',
-                                        'name' => 'frmClasses',
-                                        'id' => 'frmClasses',
+                                        'class' => 'form-vertical',
+                                        'name' => 'frmTeacher',
+                                        'id' => 'frmTeacher',
                                     );
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
@@ -32,9 +32,9 @@
                                                 'type' => 'text',
                                                 'autocomplete' => 'off',
                                                 'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtAddClass_',
-                                                'id' => 'txtAddClass_',
+                                                'class' => 'span12',
+                                                'name' => 'txtName',
+                                                'id' => 'txtName',
                                                 'value' => ''
                                             );
                                             echo form_input($data);
@@ -49,124 +49,118 @@
                                                 'type' => 'text',
                                                 'autocomplete' => 'off',
                                                 'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtAddClass_',
-                                                'id' => 'txtAddClass_',
+                                                'class' => 'span12',
+                                                'name' => 'txtUname',
+                                                'id' => 'txtUname',
                                                 'value' => ''
                                             );
                                             echo form_input($data);
                                             ?>                                                      
                                         </div>
                                     </div>
-                                    <div class="form-actions" align="right">                        
-                                        <input type="button" value="Submit New Teacher" class="btn btn-success classSubmit">
+                                    <div>                        
+                                        <input type="button" value="Submit New Teacher" class="btn btn-success teacherSubmit">
                                         <button type="reset" class="btn btn-primary">Reset</button>                             
                                     </div>
                                     <?php echo form_close(); ?>
                                 </div>
                             </div>            
                         </div>
-                        
+
                     </div>
 
-                    <div class="span4">
+                    <div class="span5">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                <h5>Existing Classes</h5>
+                                <h5>Existing Teachers</h5>
                             </div>
-                            <div class="widget-content nopadding" style="height:400px; overflow: scroll">
+                            <div class="widget-content nopadding" style="min-height:200px;max-height:400px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
-                                            <th style="text-align:left;width:40%">Class Name</th>                                           
+                                            <th style="text-align:left;width:55%">Teacher Name</th>                                           
+                                            <th style="text-align:left;width:25%">User Name</th> 
                                             <th style="text-align: center">Actions</th>         
                                         </tr>
                                     </thead>
-                                    <tbody id="tabClass"> 
+                                    <tbody id="tabTeacher"> 
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="span4">                       
 
-                        <div class="widget-box" id="editClass" style="display:none;">
+                    <div class="span3">                       
+                        <div class="widget-box" id="editTeacher" style="display:none;">
                             <div class="widget-title"  style="color: #cc3300"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5  style="color: #cc3300">Edit Class</h5>
+                                <h5 style="color: #cc3300">Edit Teacher</h5>
                             </div>
-                            <div class="widget-content nopadding">
+                            <div class="widget-content padding">
                                 <div class="control-group">
                                     <?php
                                     $attrib_ = array(
-                                        'class' => 'form-horizontal',
-                                        'name' => 'frmClasses_Edit',
-                                        'id' => 'frmClasses_Edit',
+                                        'class' => 'form-vertical',
+                                        'name' => 'frmUpdateTeacher',
+                                        'id' => 'frmUpdateTeacher',
                                     );
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
                                     <div class="control-group">
-                                        <label class="control-label" style="color: #cc3300">Class</label>
+                                        <label class="control-label" style="color: #cc3300">Teacher Name</label>
                                         <div class="controls">                        
-                                            <?php
-                                            $data = array(
-                                                'type' => 'hidden',
-                                                'autocomplete' => 'off',
-                                                'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtEditClass_ID',
-                                                'id' => 'txtEditClass_ID',
-                                                'value' => ''
-                                            );
-                                            echo form_input($data);
-                                            ?>                                                  
-
                                             <?php
                                             $data = array(
                                                 'type' => 'text',
                                                 'autocomplete' => 'off',
                                                 'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtEditClass_',
-                                                'id' => 'txtEditClass_',
+                                                'class' => 'span12',
+                                                'name' => 'txtName_Edit',
+                                                'id' => 'txtName_Edit',
                                                 'value' => ''
                                             );
                                             echo form_input($data);
-                                            ?>  
+
+                                            $data = array(
+                                                'type' => 'hidden',
+                                                'class' => 'required form-control m-bot8',
+                                                'name' => 'teachID_Edit',
+                                                'id' => 'teachID_Edit',
+                                                'required' => 'required'
+                                            );
+                                            echo form_input($data);
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" style="color: #cc3300">Section</label>
+                                        <label class="control-label" style="color: #cc3300">User Name</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
-                                                'class' => 'required form-control m-bot8',
-                                                'name' => 'cmbEditSection',
-                                                'id' => 'cmbEditSection',
-                                                'required' => 'required'
+                                                'type' => 'text',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span12',
+                                                'name' => 'txtUname_Edit',
+                                                'id' => 'txtUname_Edit',
+                                                'value' => ''
                                             );
-                                            $options = array();
-                                            $options['-'] = 'No Section';
-                                            for ($class_ = 65; $class_ <= 90; $class_++) {
-                                                $options[chr($class_)] = chr($class_);
-                                            }
-                                            echo form_dropdown($data, $options, '-');
-                                            ?>                                                   
+                                            echo form_input($data);
+                                            ?>                                                      
                                         </div>
                                     </div>
-                                    <div class="form-actions" align="right">                        
-                                        <input type="button" value="Update Class" class="btn btn-danger classUpdate">
-                                        <button type="reset" class="btn btn-primary classUpdateCancel">Cancel</button>                             
+                                    <div>                        
+                                        <input type="button" value="Update Teacher" class="btn btn-success teacherEdit">
+                                        <button type="reset" class="btn btn-primary cancelUpdateTeacher">Cancel</button>                             
                                     </div>
                                     <?php echo form_close(); ?>
                                 </div>
-                            </div>            
+                            </div>           
                         </div>
                     </div>
                 </div>
                 <div id="sessionClass" class="tab-pane">
-                    <?php $this->load->view('master/sessionWiseClass'); ?>
+                    <?php $this->load->view('master/AssociateTeacherSubject'); ?>
                 </div>                
             </div>
         </div>

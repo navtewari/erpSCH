@@ -352,6 +352,196 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
+    function get_subject_in_class($classID) {
+        $this->db->where('classID', $classID);
+        $this->db->order_by('subName', 'Asc');
+        $this->db->order_by('status', 'desc');
+        $query = $this->db->get('master_12_subject');
+        return $query->result();
+    }
+
+    function mcreate_subject() {
+        $classID = $this->input->post('subClassID');
+        $subName = $this->input->post('txtSubject');
+        $stTH = $this->input->post('chkSubStatusTH');
+        $stPR = $this->input->post('chkSubStatusPR');
+
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('classID', $classID);
+
+        $this->db->where('subName', $subName);
+        if ($stTH != '' && $stPR == '') {
+            $whereQ = "status='$stTH'";
+            $status = $stTH;
+        } else if ($stPR != '' && $stTH == '') {
+            $whereQ = "status='$stPR'";
+            $status = $stPR;
+        } else if ($stTH != '' && $stPR != '') {
+            $whereQ = "(status='$stTH' OR status='$stPR')";
+            $status = 1;
+        }
+
+        $this->db->where($whereQ);
+        $query = $this->db->get('master_12_subject');
+        // echo $this->db->last_query();
+        // echo "<br>".$query->num_rows();
+        // exit();
+
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'This Subject with selected status already present for this Class');
+        } else {
+
+            if ($status != 1) {
+                $data = array(
+                    'subName' => $subName,
+                    'classID' => $classID,
+                    'status' => $status,
+                    'SESSID' => $this->session->userdata('_current_year___')
+                );
+
+                $query = $this->db->insert('master_12_subject', $data);
+            } else {
+                //theory--------------------------------------------------
+                $data = array(
+                    'subName' => $subName,
+                    'classID' => $classID,
+                    'status' => $stTH,
+                    'SESSID' => $this->session->userdata('_current_year___')
+                );
+
+                $query = $this->db->insert('master_12_subject', $data);
+
+                //practical-----------------------------------------------
+                $data = array(
+                    'subName' => $subName,
+                    'classID' => $classID,
+                    'status' => $stPR,
+                    'SESSID' => $this->session->userdata('_current_year___')
+                );
+
+                $query = $this->db->insert('master_12_subject', $data);
+            }
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Subject created Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_subject($sID) {
+        $this->db->where('subjectID', $sID);
+        $query1 = $this->db->get('exam_6_scholastic_result');
+
+        if ($query1->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Result already associated with this Subject therefore cannot be Deleted');
+        } else {
+            $this->db->where('subjectID', $sID);
+            $query = $this->db->delete('master_12_subject');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Subject Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function getAll_teacher() {
+        $query = $this->db->get('master_13_teacher');
+        return $query->result();
+    }
+
+    function mcreate_teacher() {
+        $techName = $this->input->post('txtName');
+        $techUname = $this->input->post('txtUname');
+
+        $this->db->where('name', $techName);
+        $this->db->where('username', $techUname);
+
+        $query = $this->db->get('master_13_teacher');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Teacher already present');
+        } else {
+            $data = array(
+                'name' => $techName,
+                'username' => $techUname,
+            );
+
+            $query = $this->db->insert('master_13_teacher', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Submitted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_teacher($tID) {
+        $this->db->where('teacherID', $tID);
+        $query = $this->db->get('master_14_teacher_wise_subject');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Teacher already associated with subject !! Therefore cannot be deleted');
+        } else {
+
+            $this->db->where('teacherID', $tID);
+            $query = $this->db->delete('master_13_teacher');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+
+        return $bool_;
+    }
+
+    function get_teacher_id($teacherID) {
+        $this->db->where('teacherID', $teacherID);
+        $query = $this->db->get('master_13_teacher');
+        return $query->result();
+    }
+
+    function mupdate_teacher() {
+        $techName = $this->input->post('txtName_Edit');
+        $techUname = $this->input->post('txtUname_Edit');
+        $teachID = $this->input->post('teachID_Edit');
+
+        $this->db->where('name', $techName);
+        $this->db->where('username', $techUname);
+
+        $query = $this->db->get('master_13_teacher');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Teacher already present');
+        } else {
+
+            $data = array(
+                'name' => $techName,
+                'username' => $techUname,
+            );
+
+            $this->db->where('teacherID', $teachID);
+            $query = $this->db->update('master_13_teacher', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Updated Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
     function _db_error() {
         //exception handling ------------------
         if ($this->db->trans_status() == FALSE) {
