@@ -1,4 +1,3 @@
-<?php //print_r($student_in_current_session); ?>
 <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>Data table</h5>

@@ -12,11 +12,20 @@ $(function(){
 			fillClasses_for_current_session();
 			fill_accordion_showing_classes_associates_staticHeads();
 		}
-	});
-	// Registration and Admission Forms scripts
-		function reloadme(){
-			location.reload(true);
+		if($('#frmAssociateFlexibleFee').length != 0){
+			$('input[type=checkbox]').css('opacity', '1');
+			fillFlexibleHeads_for_Associate_with_students();
+			fillClasses_to_find_students();
+			view_classes_to_view_students();
 		}
+	});
+	// Common Function to reload the current Page via http
+	function reloadme(){
+		location.reload(true);
+	}
+	// ---------------------------------------------------
+
+	// Registration and Admission Forms scripts
 		function fillStudents_in_table(){
 			//student_data_here
 			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
@@ -480,7 +489,15 @@ $(function(){
 		});
 
 		// Asociate Static Heads with Classes
-		
+		$("#classes_for_static_heads_check_boxes").click(function(){  //"select all" change 
+		    var status = this.checked; // "select all" checked status
+		    $('.classes_for_static_heads').each(function(){ //iterate all listed checkbox items
+		        this.checked = status; //change ".checkbox" checked status
+		    });
+		    $('.classes_for_static_heads').each(function(){ //iterate all listed checkbox items
+		        this.checked = status; //change ".checkbox" checked status
+		    });
+		});
 		function fill_accordion_showing_classes_associates_staticHeads(){
 			url_ = site_url_ + "/master_fee/fill_accordion_statichead_associates_classes";
 			$.ajax({
@@ -564,7 +581,7 @@ $(function(){
 					for(i=0; i<obj.classes_.length;i++){
 						str_html = str_html + '<tr>';
 						str_html = str_html + '<td>';
-						str_html = str_html + '<input type="checkbox" name="ckhClass_[]" id="ckh~'+obj.classes_[i].CLSSESSID+'" value="'+obj.classes_[i].CLSSESSID+'" style="border: #f0f0f0 dashed 1px"/>';
+						str_html = str_html + '<input type="checkbox" class="classes_for_static_heads" name="ckhClass_[]" id="ckh~'+obj.classes_[i].CLSSESSID+'" value="'+obj.classes_[i].CLSSESSID+'" style="border: #f0f0f0 dashed 1px"/>';
 						str_html = str_html + '</td>';
 						str_html = str_html + '<td>';
 						str_html = str_html + 'Class ' + obj.classes_[i].CLASSID;
@@ -616,6 +633,247 @@ $(function(){
 			}
 		});
 		// ----------------------------------
+
+		// Asociate Flexible Heads with Students individually
+		$("#classes_associates_students_for_flexibleHeads_check_boxes").click(function(){  //"select all" change 
+		    var status = this.checked; // "select all" checked status
+		    $('.students_as_per_class_for_flexible_heads').each(function(){ //iterate all listed checkbox items
+		        this.checked = status; //change ".checkbox" checked status
+		    });
+		});
+
+		function fillFlexibleHeads_for_Associate_with_students(){
+			url_ = site_url_ + "/master_fee/get_flexible_heads";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.flexi_heads.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="opt_flexible_heads" id="opt~'+obj.flexi_heads[i].FLX_HD_ID+'" value="'+obj.flexi_heads[i].FLX_HD_ID+'" style="border: #f0f0f0 dashed 1px"/>';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.flexi_heads[i].FEE_HEAD + "<span style='color:#0000ff'> [INR "+obj.flexi_heads[i].AMOUNT+"/-]</span>";
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#flexibleHeads_for_associating_Students').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+
+		function fillClasses_to_find_students(){
+			url_ = site_url_ + "/master_fee/get_class_in_session";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.classes_.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="optClasses" class="fillStudents_for_flexible_heads" id="opt~'+obj.classes_[i].CLSSESSID+'~'+obj.classes_[i].CLASSID+'" value="'+obj.classes_[i].CLSSESSID+'" />';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + 'Class ' + obj.classes_[i].CLASSID;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#classes_to_find_students').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		$('body').on('click', '.fillStudents_for_flexible_heads', function () {
+			var clsid = this.id;
+			var clssessid = this.value;
+			var cls = clsid.split('~');
+			url_ = site_url_ + "/master_fee/getStduents_in_current_session/"+clssessid;
+			$('#name_of_class_for_students').html('Students for Class <b style="width: 15px; background: #808080; color: #ffff00; padding: 2px; border-radius: 5px;">'+cls[2]+'</b>');
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					if(obj.students__.length != 0){
+						for(i=0; i<obj.students__.length;i++){
+							str_html = str_html + '<tr>';
+							str_html = str_html + '<td>';
+							str_html = str_html + '<input type="checkbox" class="students_as_per_class_for_flexible_heads" name="ckhStudents_[]" id="ckh~'+obj.students__[i].regid+'" value="'+obj.students__[i].regid+'" />';
+							str_html = str_html + '</td>';
+							str_html = str_html + '<td>';
+							str_html = str_html + obj.students__[i].regid + " | "+obj.students__[i].FNAME;
+							str_html = str_html + '</td>';
+							str_html = str_html + '</tr>';
+						}
+					} else {
+						str_html = str_html = "<tr style='color:#ff0000'><td>X</td><td>No Student Found</td></tr>";
+					}
+					$('#students_for_selected_class').html(str_html);
+					$('#classes_associates_students_for_flexibleHeads_check_boxes').attr('checked', false);
+					$('#uniform-classes_associates_students_for_flexibleHeads_check_boxes').removeClass('checked');
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+			
+		});
+
+		$('#associate_flexible_head_with_Students').click(function(){
+			var anyBoxesChecked = false;
+			var anyradiobox_for_flexible_head = false;
+			var anyradiobox_for_class = false;
+
+
+			$('#flexibleHeads_for_associating_Students input[type="radio"]').each(function() {
+		        if ($(this).is(":checked")) {
+		            anyradiobox_for_flexible_head = true;
+		        }
+		    });
+
+			$('#classes_to_find_students input[type="radio"]').each(function() {
+		        if ($(this).is(":checked")) {
+		            anyradiobox_for_class = true;
+		        }
+		    });
+
+			$('#students_for_selected_class input[type="checkbox"]').each(function() {
+		        if ($(this).is(":checked")) {
+		            anyBoxesChecked = true;
+		        }
+		    });
+		    if(anyradiobox_for_flexible_head == false){
+		    	callDanger('Please select a flexible head to proceed.');
+		    } else if(anyradiobox_for_class == false){
+		    	callDanger('Please select a class to find students.');
+		    } else if(anyBoxesChecked == false){
+		    	callDanger('Please select atleast 1 student to associate the selected flexible head.');
+		    } else {
+		    	url_ = site_url_ + "/master_fee/associateFlexibleHead_with_student";
+		    	data_ = $('#frmAssociateFlexibleFee').serialize();
+		    	
+		    	$.ajax({
+		    		type: "POST",
+		    		url: url_,
+		    		data: data_,
+		    		success: function(data){
+		    			var obj = JSON.parse(data);
+		    			if(obj.res_ == true){
+		    				callSuccess(obj.msg_);
+		    			} else {
+		    				callDanger(obj.msg_);
+		    			}
+		    		}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+		    	});
+		    }
+		});
+
+		$('body').on('click', '.View_Students_for_flexible_heads', function () {
+			str = this.id;
+			arr = str.split('~');
+			clssessid = arr[1];
+			url_ = site_url_ + "/master_fee/get_flexible_fee_head_for_class/"+clssessid;
+			loading_process();
+			$.ajax({
+				type:"POST",
+				url:url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					var flexi_heads;
+					if(obj.students__.length != 0){
+						for(i=0; i<obj.students__.length; i++){
+							str_html = str_html + '<tr>';
+							str_html = str_html + '<td>';
+							str_html = str_html + obj.students__[i].regid
+							str_html = str_html + '</td>';
+							str_html = str_html + '<td>';
+							str_html = str_html + obj.students__[i].FNAME
+							str_html = str_html + '</td>';
+							str_html = str_html + '<td>';
+							flexi_heads = '';
+							for(j=0; j<obj.view_student_associated_with_flexible_heads.length;j++){
+								if(obj.students__[i].regid == obj.view_student_associated_with_flexible_heads[j].regid){
+									flexi_heads = flexi_heads + '<div id="_delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'" style="float: left; padding: 2px; overflow: hidden"><div style="padding: 1px 3px 1px 3px; border-radius:5px; background: #00AFEC; font-size: 10px; color: #ffffff; display: inline-block; min-width: 20px">'+obj.view_student_associated_with_flexible_heads[j].FEE_HEAD+'<i class="icon-trash my_flexible_head_association" style="float: right;padding: 3px 3px 0px 6px; font-size: 11px" id="delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'"></i></div></div>';
+								}
+							}
+							str_html = str_html + flexi_heads;
+							str_html = str_html + '</td>';
+							str_html = str_html + '</tr>';
+						}
+						$('#student_associated_flexibleheads_classwise').html(str_html);
+					} else {
+						str_html = str_html + '<tr><td colspan="3" style="color: #ff0000; font-family: verdana, Arial">X: No Student Found in this class !!</td></tr>';
+						$('#student_associated_flexibleheads_classwise').html(str_html);
+					}
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
+		$('body').on('click', '.my_flexible_head_association', function(){
+			str = this.id;
+			arr = str.split('__');
+			url_ = site_url_ + "/master_fee/del_associated_flx_with_student/"+arr[1];
+			$('#_'+str).hide();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == false){
+						callDanger(obj.msg_);
+						$('#_'+str).show();
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
+		function view_classes_to_view_students(){
+			url_ = site_url_ + "/master_fee/get_class_in_session";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.classes_.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="optClassesforview" class="View_Students_for_flexible_heads" id="view_opt~'+obj.classes_[i].CLSSESSID+'~'+obj.classes_[i].CLASSID+'" value="'+obj.classes_[i].CLSSESSID+'" />';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + 'Class ' + obj.classes_[i].CLASSID;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#classes_to_View_Students_status').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		// --------------------------------------------------
 	// ----------
 	// Popup boxes
 		function callDanger(message){

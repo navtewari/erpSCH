@@ -25,7 +25,7 @@ Enjoy!
     options: {
       selectClass:   'selector',
       //radioClass: 'radio',
-      checkboxClass: 'checker',
+      //checkboxClass: 'checker',
       fileClass: 'uploader',
       filenameClass: 'filename',
       fileBtnClass: 'action',

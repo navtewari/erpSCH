@@ -71,8 +71,8 @@ class Web extends CI_Controller {
                 $data['classes_'] = $this->mmm->get_class_in_session($this->session->userdata('_current_year___'));
                 $data['static_head'] = '';
                 $data['flexible_head'] = '';
-                $data['associate_static'] = ' active';
-                $data['associate_flexible'] = '';
+                $data['associate_static'] = '';
+                $data['associate_flexible'] = ' active';
                 break;
             case 9:
                 $data['page_'] = 'master';

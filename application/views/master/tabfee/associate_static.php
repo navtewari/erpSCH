@@ -46,9 +46,10 @@
 	</div>
 	<div class="controls span3">
 		<div class="widget-box">
-          <div class="widget-title"> <span class="icon">
-            <input type="checkbox" id="title-checkbox" name="title-checkbox" />
-            </span>
+          <div class="widget-title">
+            <div style="float: left; padding: 5px; border:#C0C0C0 solid 1px; width: 20px;height: 25px; text-align: center">
+                <input type="checkbox" id="classes_for_static_heads_check_boxes" name="title-checkbox" />
+            </div>
             <h5>Classes in Session <?php echo $this->session->userdata('_current_year___'); ?></h5>
           </div>
           <div class="widget-content nopadding" style="overflow: auto; height: 350px">
@@ -64,11 +65,11 @@
               </tbody>
             </table>
           </div>
-	   </div>
+        </div>
        <div class="control-group">
             <div class="controls">
                 <input type="button" value="Add Fee to selected Class" class="btn btn-success span9" id="associate_static_head_with_classes">
-                <input type="reset" value="X" class="btn btn-danger cancel_static_associates_classes span3">
+                <input type="reset" value="X" class="btn btn-danger cancel_static_associates_classes span3" style="float: right">
             </div>
         </div>
     </div>

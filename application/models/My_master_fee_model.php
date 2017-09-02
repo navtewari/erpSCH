@@ -170,6 +170,18 @@ class My_master_fee_model extends CI_Model {
     }
 
     //------------------------------------ASSOCIATE STATIC HEADS FEE AMT TO CLASS --------------------------------------
+    function get_static_heads_to_class($class__){
+        $this->db->select('d.CLASSID, c.FEE_HEAD, a.TOTFEE, b.AMOUNT, b.PAYMENT_STATUS');
+        $this->db->from('fee_8_class_fee a');
+        $this->db->join('fee_9_class_fee_split b', 'a.CFEEID=b.CFEEID');
+        $this->db->join('fee_3_static_heads c', 'c.ST_HD_ID = b.ST_HD_ID');
+        $this->db->join('class_2_in_session d', 'd.CLSSESSID = a.CLSSESSID');
+        $this->db->where('a.CLSSESSID', $class__);
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
+
     function submit_static_fee_to_class(){
         $static_head = $this -> input -> post ('cmbStaticHeads');
         $seleted_classes = $this->input->post('ckhClass_');
@@ -297,6 +309,128 @@ class My_master_fee_model extends CI_Model {
         return $bool_;
     }
 
+    // ASSOCIATE FLEXIBE HEADS TO THE INDIVIDUAL STUDENTS
+
+    function associateFlexibleHead_with_student($year__){
+        $cnt = 0;
+        $total = 0;
+        $anyquery = true;
+        $students = $this->input->post('ckhStudents_');
+        $class_in_session_ = $this->input->post('optClasses');
+        $flx_hd_id = $this->input->post('opt_flexible_heads');
+
+        $bool_ = FALSE;
+        for($loop1_ = 0; $loop1_ < count($students); $loop1_++){
+
+            $this->db->where('CLSSESSID', $class_in_session_);
+            $this->db->where('SESSID', $year__);
+            $this->db->where('FLX_HD_ID', $flx_hd_id);
+            $this->db->where('REGID', $students[$loop1_]);
+            $this->db->where('STATUS', 1);
+            $query = $this->db->get('fee_5_add_flexi_head_to_students');
+            $total++;
+            if($query->num_rows() != 0){
+            } else {
+                $data = array(
+                    'REGID' => $students[$loop1_],
+                    'CLSSESSID' => $class_in_session_,
+                    'SESSID' => $year__,
+                    'FLX_HD_ID' => $flx_hd_id,
+                    'STATUS' => 1,
+                    'USERNAME' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $bool_ = $this->db->insert('fee_5_add_flexi_head_to_students', $data);
+                if($bool_ == false){
+                    $anyquery = false;
+                }
+            }
+            if($bool_ == true){
+                $cnt++;
+            }
+        }
+        if($cnt > 0){
+            if($anyquery == false){
+                $bool_ = array('res_' => true, 'msg_' => 'Out of ' . $total . ' selected students '.$cnt.' Successfully submitted. Please try again for rest!!');
+            } else {
+                $bool_ = array('res_' => true, 'msg_' => 'Out of ' . $total . ' selected students '.$cnt.' Successfully submitted. Rest already exists!!');
+            }
+        } else {
+            if($anyquery == false){
+                $bool_ = array('res_' => false, 'msg_' => 'Something goes wrong. Please try again !!');
+            } else {
+                $bool_ = array('res_' => false, 'msg_' => 'Already Exists !!');
+            }
+        }
+    return $bool_;
+    }
+
+    function get_associatedFlexibleHead_with_student($year__, $reg_id = 'x'){
+        $this->db->select('a.FEE_HEAD, a.AMOUNT, b.*');
+        $this->db->from('fee_4_flexible_heads a');
+        $this->db->join('fee_5_add_flexi_head_to_students b', 'a.FLX_HD_ID = b.FLX_HD_ID', 'left');
+        $this -> db -> where('b.SESSID', $year__);
+        $this -> db -> where('b.STATUS', 1);
+
+        if($reg_id != 'x') $this -> db -> where('REGID', $reg_id);
+
+        $query = $this -> db -> get();
+
+        return $query->result();
+    }
+
+    /*
+    function del_associated_flx_with_student_old($flx_asso_student_id, $regid){
+        $where_condition = "FIND_IN_SET('".$flx_asso_student_id."', ADFLXFEESTUDID)";
+        $this->db->where($where_condition);
+        $this->db->where('REGID', $regid);
+        $query = $this->db->get('fee_5_add_flexi_head_to_students');
+
+        if($query->num_rows() != 0){
+            $data = array(
+                'STATUS' => 0
+            );
+            $this->db->where('ADFLXFEESTUDID', $flx_asso_student_id);
+            $bool_ = $this->db->update('fee_5_add_flexi_head_to_students', $data);
+        } else {
+            $this->db->where('ADFLXFEESTUDID', $flx_asso_student_id);
+            $bool_ = $this->db->delete('fee_5_add_flexi_head_to_students');
+        }
+        return $bool_;
+    }
+    */
+
+    function del_associated_flx_with_student($flx_asso_student_id){
+        $this->db->where('ADFLXFEESTUDID', $flx_asso_student_id);
+        $bool_ = $this->db->delete('fee_5_add_flexi_head_to_students');
+        if($bool_ == true){
+            $bool_ = array('res_' => true, 'msg_' => 'Sucessfully Deleted !!');
+        } else {
+            $bool_ = array('res_' => false, 'msg_' => 'Something goes wrong. Please try again !!');
+        }
+        return $bool_;
+    }
+
+    function get_flexible_fee_head_for_class($class__){
+        $this->db->select('c.regid, a.FEE_HEAD, a.AMOUNT, b.*');
+        $this->db->from('fee_4_flexible_heads a');
+        $this->db->join('fee_5_add_flexi_head_to_students b', 'a.FLX_HD_ID = b.FLX_HD_ID', 'left');
+        $this->db->join('master_7_stud_personal c', 'b.REGID=c.regid');
+        $this -> db -> where('b.CLSSESSID', $class__);
+        $this -> db -> where('b.STATUS', 1);
+        $query = $this -> db -> get();
+        return $query->result();
+    }
+
+    function get_students_in_class($clssessid){
+        $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->where('b.clssessid', $clssessid);
+        $query = $this->db->get();
+        return $query->result();
+    }
     function _db_error(){
         //exception handling ------------------
         if ($this -> db -> trans_status() == false) {
