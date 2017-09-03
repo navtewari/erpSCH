@@ -45,7 +45,7 @@
                     </div>                                        
                     <div class="control-group">
                         <label class="control-label">Status</label>
-                        <div class="controls">                        
+                        <div class="controls">                               
                             <div class="col-sm-12">
                                 <h4><input type="checkbox" name="chkSubStatusTH" id="chkSubStatusTH" value="TH"> Theory</h4>                                        
                             </div>
