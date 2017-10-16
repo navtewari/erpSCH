@@ -1,7 +1,7 @@
 <div class="row-fluid">
 	    		<div class="control-group span6">
 	    			<h5>Permanent</h5>
-	    			
+
 	    			<div class="controls">
 	    				<label class="control-label">Address</label>
 	    				<?php

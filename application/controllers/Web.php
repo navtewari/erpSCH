@@ -46,6 +46,7 @@ class Web extends CI_Controller {
                 $data['Personal'] = ' active';
                 $data['Parents'] = '';
                 $data['Address'] = '';
+                $data['siblings'] = '';
                 break;
             case 4:
                 $data['page_'] = 'master';
@@ -85,6 +86,7 @@ class Web extends CI_Controller {
                 $data['Personal'] = ' active';
                 $data['Parents'] = '';
                 $data['Address'] = '';
+                $data['siblings'] = '';
                 break;
             default:
                 $data['page_'] = 'erorrs';

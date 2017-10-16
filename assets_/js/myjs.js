@@ -7,6 +7,7 @@ $(function(){
 			fillClasses();
 			fillStates('cmbPState');
 			fillStates('cmbCState');
+			fillSiblings();
 		}
 		if($('#frmAssociateStaticFee').length != 0){
 			fillClasses_for_current_session();
@@ -50,6 +51,27 @@ $(function(){
 					}
 					$('#s2id_cmbRegistrationID span').text("New | New Student");
 					$('#cmbRegistrationID').html(str_html);
+				}, error: function(xhr, status, error){
+					alert(xhr.responseText);
+				}
+			});
+		}
+		function fillSiblings(){
+			$('#s2id_cmbSiblingRegistrationID span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
+			$('#cmbRegistrationID').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value='x'>Select Sibling</option>";
+					for(i=0;i<obj.students_.length; i++){
+						str_html = str_html + "<option value='"+obj.students_[i].regid+"'>"+obj.students_[i].regid+" | "+obj.students_[i].FNAME+"</option>";
+					}
+					$('#s2id_cmbSiblingRegistrationID span').text("Select Sibling");
+					$('#cmbSiblingRegistrationID').html(str_html);
 				}, error: function(xhr, status, error){
 					alert(xhr.responseText);
 				}
@@ -846,6 +868,35 @@ $(function(){
 					callDanger(xhr.responseText);
 				}
 			});
+		});
+		$('#cmbSiblingRegistrationID').change(function(){
+			if($('#cmbSiblingRegistrationID').val()!='x'){
+				var current_selection = $('#cmbSiblingRegistrationID').val();
+				var current_selection_ = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_sibling icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
+				if($('#txtSiblings').val() != ''){
+					var str = $('#txtSiblings').val();
+    				if(str.indexOf(current_selection) == -1){
+    					$('#txtSiblings').val($('#txtSiblings').val() + ", " + current_selection);
+    					alert(current_selection_);
+    					$('#show_siblings').html($('#show_siblings').html()+current_selection_);
+    				}
+				} else {
+					$('#txtSiblings').val(current_selection);
+					$('#show_siblings').html(current_selection_);
+				}
+			}
+		});
+		$('body').on('click', '.deleteme_as_sibling', function(){
+			var temp = this.id;
+			var arr = temp.split('_');
+			var id_ = arr[0];
+
+			var x_ = $('#txtSiblings').val();
+			var arrSibling = x_.split(',');
+			alert($.inArray(id_, arrSibling));
+			xx = arrSibling.splice($.inArray(id_, arrSibling),1);
+			alert(xx);
+			$('#_'+temp).css('display','none');
 		});
 		function view_classes_to_view_students(){
 			url_ = site_url_ + "/master_fee/get_class_in_session";
