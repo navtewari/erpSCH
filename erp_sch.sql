@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2017 at 09:24 PM
+-- Generation Time: Oct 16, 2017 at 07:26 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -4968,7 +4968,9 @@ INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `status`, `S
 (28, 'English', '10B', 'TH', '2017-18'),
 (29, 'English', '12A', 'TH', '2017-18'),
 (30, 'Science', '12A', 'TH', '2017-18'),
-(31, 'Science', '12A', 'PR', '2017-18');
+(31, 'Science', '12A', 'PR', '2017-18'),
+(32, 'Art', '10B', 'TH', '2017-18'),
+(33, 'Art', '10B', 'PR', '2017-18');
 
 -- --------------------------------------------------------
 
@@ -4989,7 +4991,8 @@ CREATE TABLE `master_13_teacher` (
 INSERT INTO `master_13_teacher` (`teacherID`, `name`, `username`) VALUES
 (6, 'Dr Naveen Tewari', 'navtewari'),
 (7, 'Dr Gopal Datt', 'gdatt'),
-(8, 'Dr Nitin Deepak', 'nd12');
+(8, 'Dr Nitin Deepak', 'nd12'),
+(9, 'Gunjan Mathur', 'gunjan');
 
 -- --------------------------------------------------------
 
@@ -5012,7 +5015,10 @@ INSERT INTO `master_14_teacher_wise_subject` (`tasID`, `teacherID`, `subjectID`,
 (4, 7, 28, '2017-18'),
 (5, 6, 23, '2017-18'),
 (6, 6, 20, '2017-18'),
-(7, 6, 19, '2017-18');
+(7, 6, 19, '2017-18'),
+(8, 9, 29, '2017-18'),
+(9, 9, 30, '2017-18'),
+(10, 9, 31, '2017-18');
 
 -- --------------------------------------------------------
 
@@ -5105,6 +5111,21 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (20, 'fa fa-sliders', 'Admit Students', 'reports/admitted_students', 3, 9),
 (21, 'fa fa-user', 'Fee Reports', 'reports/fee', 3, 9),
 (22, 'fa fa-edit', 'Attendance Reports', 'reports/attendance', 4, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `register_sibling`
+--
+
+CREATE TABLE `register_sibling` (
+  `regid` varchar(25) NOT NULL,
+  `SIBLINGS` text NOT NULL COMMENT 'regids seperated by comma(,)',
+  `DISCOUNT_OFFERED` tinyint(1) NOT NULL,
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `USERNAME_` varchar(40) NOT NULL,
+  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Used to store siblings';
 
 -- --------------------------------------------------------
 
@@ -5922,6 +5943,12 @@ ALTER TABLE `menu_2_submenu`
   ADD KEY `ID_` (`ID_`);
 
 --
+-- Indexes for table `register_sibling`
+--
+ALTER TABLE `register_sibling`
+  ADD PRIMARY KEY (`regid`);
+
+--
 -- Indexes for table `register_with_us`
 --
 ALTER TABLE `register_with_us`
@@ -6040,12 +6067,12 @@ ALTER TABLE `fee_7_receipts`
 -- AUTO_INCREMENT for table `fee_8_class_fee`
 --
 ALTER TABLE `fee_8_class_fee`
-  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 --
 -- AUTO_INCREMENT for table `fee_9_class_fee_split`
 --
 ALTER TABLE `fee_9_class_fee_split`
-  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 --
 -- AUTO_INCREMENT for table `master_7_stud_personal`
 --
@@ -6075,17 +6102,17 @@ ALTER TABLE `master_11_grading`
 -- AUTO_INCREMENT for table `master_12_subject`
 --
 ALTER TABLE `master_12_subject`
-  MODIFY `subjectID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `subjectID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `master_13_teacher`
 --
 ALTER TABLE `master_13_teacher`
-  MODIFY `teacherID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `teacherID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `master_14_teacher_wise_subject`
 --
 ALTER TABLE `master_14_teacher_wise_subject`
-  MODIFY `tasID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `tasID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `master_15_subject_marks`
 --
