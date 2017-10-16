@@ -877,7 +877,7 @@ $(function(){
 					var str = $('#txtSiblings').val();
     				if(str.indexOf(current_selection) == -1){
     					$('#txtSiblings').val($('#txtSiblings').val() + ", " + current_selection);
-    					alert(current_selection_);
+    					//alert(current_selection_);
     					$('#show_siblings').html($('#show_siblings').html()+current_selection_);
     				}
 				} else {

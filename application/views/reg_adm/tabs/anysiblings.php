@@ -17,7 +17,7 @@
             <label class="control-label">Sibling(s)</label>
                 <?php
                     $data = array(
-                    	'type' => 'text',
+                    	'type' => 'hidden',
                         'name' => 'txtSiblings',
                         'id' => 'txtSiblings',
                         'required' => 'required',
