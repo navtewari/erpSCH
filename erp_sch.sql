@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2017 at 12:05 PM
+-- Generation Time: Oct 20, 2017 at 01:32 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -3033,7 +3033,9 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (477, 'Naveen Tewari', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'M', 'Naveen', '9874563214', 'papa@gmail.com', 'Service', '', '', '', '', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
 (478, 'Sundari Kaur', '-x-', '-x-', 'no-image.jpg', '23-08-2017', 'F', '', '', '', '', '', '', '', '', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
 (479, 'Vihaan Mathur', '-x-', '-x-', '2017081447.JPG', '05/29/2014', 'M', '', '', '', '', '', '', '', '', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
-(480, 'Neeraj Punetha', '-x-', '-x-', '', '29-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
+(480, 'Neeraj Punetha', '-x-', '-x-', '', '29-08-2017', 'M', '', '', '', '', '', '', '', '', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
+(481, 'Umesh', '-x-', '-x-', '2017101449.png', '07/15/1999', 'M', '', '', '', '', '', '', '', '', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
+(482, 'raani', '-x-', '-x-', '', '20-10-2017', 'F', '', '', '', '', '', '', '', '', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
 
 -- --------------------------------------------------------
 
@@ -3508,7 +3510,9 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (498, '23-08-2017', 391, 0, '-x-', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15', NULL, 1),
 (499, '23-08-2017', 391, 0, '-x-', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02', NULL, 1),
 (500, '27-08-2017', 391, 0, '-x-', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59', NULL, 1),
-(501, '29-08-2017', 405, 0, '-x-', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57', NULL, 1);
+(501, '29-08-2017', 405, 0, '-x-', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57', NULL, 1),
+(502, '10/20/2017', 425, 0, '-x-', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16', NULL, 1),
+(503, '20-10-2017', 425, 0, '-x-', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -4437,7 +4441,11 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (927, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-27 15:19:59', 1, 'CORRESPONDANCE', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
 (928, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-27 15:19:59', 1, 'PERMANENT', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
 (929, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
-(930, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-29 14:00:57', 1, 'PERMANENT', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
+(930, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-08-29 14:00:57', 1, 'PERMANENT', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
+(931, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:16', 1, 'CORRESPONDANCE', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
+(932, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:16', 1, 'PERMANENT', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
+(933, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:43', 1, 'CORRESPONDANCE', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43'),
+(934, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:43', 1, 'PERMANENT', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
 
 -- --------------------------------------------------------
 
@@ -4913,7 +4921,9 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (447, '7500700406', '-x-', 'x@gmail.com', '2017-08-23 00:07:46', 1, 'CORRESPONDANCE', '2017081445', '2017-18', 'nitin', '2017-08-27 11:54:15'),
 (448, '(976) 002-0667', '-x-', 'sundari@gmail.com', '2017-08-23 00:16:27', 1, 'CORRESPONDANCE', '2017081446', '2017-18', 'nitin', '2017-08-27 06:45:02'),
 (449, '(976) 002-0667', '-x-', 'vahan@gmail.com', '2017-08-27 15:19:59', 1, 'CORRESPONDANCE', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
-(450, '', '-x-', '', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57');
+(450, '', '-x-', '', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
+(451, '(999) 999-9999', '-x-', 'umesh@gmail.com', '2017-10-20 16:48:16', 1, 'CORRESPONDANCE', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
+(452, '(888) 888-8888', '-x-', 'rani@gmail.com', '2017-10-20 16:48:43', 1, 'CORRESPONDANCE', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
 
 -- --------------------------------------------------------
 
@@ -5043,6 +5053,21 @@ INSERT INTO `master_15_subject_marks` (`submarkID`, `subjectID`, `maxMarks`, `pa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `master_16_discount`
+--
+
+CREATE TABLE `master_16_discount` (
+  `DID` int(11) NOT NULL,
+  `ITEM_` varchar(200) NOT NULL,
+  `STATUS_` varchar(30) NOT NULL COMMENT 'Percentage or Amount',
+  `AMOUNT` varchar(15) NOT NULL,
+  `PERCENTAGE` varchar(15) NOT NULL,
+  `DESC_` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menu_1`
 --
 
@@ -5110,7 +5135,8 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (19, 'fa fa-book', 'Register Students', 'reports/registered_students', 3, 9),
 (20, 'fa fa-sliders', 'Admit Students', 'reports/admitted_students', 3, 9),
 (21, 'fa fa-user', 'Fee Reports', 'reports/fee', 3, 9),
-(22, 'fa fa-edit', 'Attendance Reports', 'reports/attendance', 4, 9);
+(22, 'fa fa-edit', 'Attendance Reports', 'reports/attendance', 4, 9),
+(23, 'fa fa-money', 'Discount (if any?)', 'web/dashboard/2/11/discount', 8, 2);
 
 -- --------------------------------------------------------
 
@@ -5134,7 +5160,8 @@ CREATE TABLE `register_sibling` (
 INSERT INTO `register_sibling` (`regid`, `SIBLINGS`, `DISCOUNT_OFFERED`, `DATE_`, `USERNAME_`, `STATUS`) VALUES
 ('2017041001', '', 1, '2017-10-20 09:50:00', 'nitin', 1),
 ('2017041007', '2017041003,2017041006', 1, '2017-10-20 10:02:03', 'nitin', 1),
-('2017041025', '2017041001,2017081429,2017041006', 1, '2017-10-20 10:03:48', 'nitin', 1);
+('2017041025', '2017041001,2017081429,2017041006', 1, '2017-10-20 10:03:48', 'nitin', 1),
+('2017101450', '2017041002,2017041007', 1, '2017-10-20 11:18:43', 'nitin', 1);
 
 -- --------------------------------------------------------
 
@@ -5659,7 +5686,7 @@ CREATE TABLE `_id_` (
 --
 
 INSERT INTO `_id_` (`ID_`, `regid_`, `SESSIONID`) VALUES
-(1448, '2017081448', '2017-18');
+(1450, '2017101450', '2017-18');
 
 --
 -- Indexes for dumped tables
@@ -5939,6 +5966,12 @@ ALTER TABLE `master_15_subject_marks`
   ADD KEY `subjectID` (`subjectID`);
 
 --
+-- Indexes for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  ADD PRIMARY KEY (`DID`);
+
+--
 -- Indexes for table `menu_1`
 --
 ALTER TABLE `menu_1`
@@ -6086,22 +6119,22 @@ ALTER TABLE `fee_9_class_fee_split`
 -- AUTO_INCREMENT for table `master_7_stud_personal`
 --
 ALTER TABLE `master_7_stud_personal`
-  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=481;
+  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
 --
 -- AUTO_INCREMENT for table `master_8_stud_academics`
 --
 ALTER TABLE `master_8_stud_academics`
-  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
+  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=504;
 --
 -- AUTO_INCREMENT for table `master_9_stud_address`
 --
 ALTER TABLE `master_9_stud_address`
-  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=931;
+  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=935;
 --
 -- AUTO_INCREMENT for table `master_10_stud_contact`
 --
 ALTER TABLE `master_10_stud_contact`
-  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=451;
+  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=453;
 --
 -- AUTO_INCREMENT for table `master_11_grading`
 --
@@ -6128,6 +6161,11 @@ ALTER TABLE `master_14_teacher_wise_subject`
 ALTER TABLE `master_15_subject_marks`
   MODIFY `submarkID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `menu_1`
 --
 ALTER TABLE `menu_1`
@@ -6136,7 +6174,7 @@ ALTER TABLE `menu_1`
 -- AUTO_INCREMENT for table `menu_2_submenu`
 --
 ALTER TABLE `menu_2_submenu`
-  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `user_menu`
 --
