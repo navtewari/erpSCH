@@ -123,11 +123,24 @@ class My_admission_model extends CI_Model {
                     'DATE_' => date('Y-m-d H:i:s')
                 );
 
+                $siblings = trim($this->input->post('txtSiblings'));
+                $dataSibling = array(
+                    'regid' => $regid_,
+                    'SIBLINGS' => $siblings,
+                    'DISCOUNT_OFFERED'=>1,
+                    'DATE_'=> date('Y-m-d H:i:s'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'STATUS' => 1
+                );
+
                 $query = $this->db->insert('master_8_stud_academics', $dataAcademics);
                 $query = $this->db->insert('master_7_stud_personal', $dataPersonal);
                 $query = $this->db->insert('master_9_stud_address', $dataCorresAdd);
                 $query = $this->db->insert('master_9_stud_address', $dataPerAdd);
                 $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
+                if($siblings!=''){
+                    $query = $this->db->insert('register_sibling', $dataSibling);
+                }
 
                 if ($query == true) {
                     $i = $this->updateID___($pid_, $newid_, $regid_);
@@ -200,6 +213,17 @@ class My_admission_model extends CI_Model {
                 'USERNAME_' => $this->session->userdata('_user___'),
                 'DATE_' => date('Y-m-d H:i:s')
             );
+
+            $siblings = trim($this->input->post('txtSiblings'));
+            //return $bool_ = array('res_' => TRUE, 'msg_' => $siblings);
+            $dataSibling = array(
+                'SIBLINGS' => $siblings,
+                'DISCOUNT_OFFERED'=>1,
+                'DATE_'=> date('Y-m-d H:i:s'),
+                'USERNAME_' => $this->session->userdata('_user___'),
+                'STATUS' => 1
+            );
+
             $this->db->where('regid', $regid_);
             $query = $this->db->update('master_8_stud_academics', $dataAcademics);
 
@@ -216,6 +240,28 @@ class My_admission_model extends CI_Model {
 
             $this->db->where('regid', $regid_);
             $query = $this->db->update('master_10_stud_contact', $dataStuContact);
+
+            // Code for Siblings
+            $this->db->where('regid', $regid_);
+            $query = $this->db->get('register_sibling');
+                
+                if($query->num_rows()!=0){
+                    $this->db->where('regid', $regid_);
+                    $query = $this->db->update('register_sibling', $dataSibling);
+                } else {
+                    if($siblings!=''){
+                        $dataSibling = array(
+                        'regid' => $regid_,
+                        'SIBLINGS' => $siblings,
+                        'DISCOUNT_OFFERED'=>1,
+                        'DATE_'=> date('Y-m-d H:i:s'),
+                        'USERNAME_' => $this->session->userdata('_user___'),
+                        'STATUS' => 1
+                        );
+                        $query = $this->db->insert('register_sibling', $dataSibling);
+                    }
+                }
+            // -----------------
 
             if ($query == true) {
                 $bool_ = array('res_' => TRUE, 'msg_' => 'Updated Successfully..!!');
@@ -319,6 +365,11 @@ class My_admission_model extends CI_Model {
         $this->db->where('regid', $regid_);
         $query = $this->db->get('master_10_stud_contact');
         return $query->row();
+    }
+    function get_siblings_4($regid_){
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('register_sibling');
+        return $query->row();   
     }
     function _db_error(){
         //exception handling ------------------

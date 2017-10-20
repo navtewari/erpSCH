@@ -123,11 +123,14 @@ $(function(){
 				$('#reset_me').click();
 				$('#uniform-optStuMale span').removeClass('checked');
 				$('#uniform-optStuFemale span').removeClass('checked');
+				$('#student_photo_here').html('<img src='+base_url_+'/assets_/student_photo/no-image.jpg'+' />');
 				$('.filename').text("No file selected");
+				$('#show_siblings').html('');
 				fillStudents();
 				fillClasses();
 				fillStates('cmbPState');
 				fillStates('cmbCState');
+				fillSiblings();
 			// --------------------
 		}
 		$('#reload_me').click(function(){
@@ -201,6 +204,17 @@ $(function(){
 							$('#txtStudentPhone').val(obj.contact.MOBILE_S);
 							$('#txtEmail').val(obj.contact.EMAIL_S);
 						}
+						if(jQuery.isEmptyObject(obj.siblings) == false){
+							$('#txtSiblings').val(obj.siblings.SIBLINGS);
+							var x_ = $('#txtSiblings').val();
+							var arrSibling = x_.split(',');
+							$('#show_siblings').html('');
+							for(i=0;i<arrSibling.length;i++){
+								if($.trim(arrSibling[i]) != ''){
+									$('#show_siblings').html($('#show_siblings').html()+design_cover_for_sibling_representation(arrSibling[i]));
+								}
+							}
+						}
 						hide_loading_process();
 					}, error: function(xhr, status, error){
 						alert(xhr.responseText);
@@ -242,10 +256,46 @@ $(function(){
 				});
 			}
 		});
+		// Sibling Module Code
+		function design_cover_for_sibling_representation(current_selection){
+			var temp = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_sibling icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
+			return temp;
+		}
+		$('#cmbSiblingRegistrationID').change(function(){
+			if($('#cmbSiblingRegistrationID').val()!='x'){
+				var current_selection = $('#cmbSiblingRegistrationID').val();
+				var current_selection_ = design_cover_for_sibling_representation(current_selection);
+				if($('#txtSiblings').val() != ''){
+					var str = $('#txtSiblings').val();
+    				if(str.indexOf(current_selection) == -1){
+    					$('#txtSiblings').val($('#txtSiblings').val() + "," + current_selection);
+    					$('#show_siblings').html($('#show_siblings').html()+current_selection_);
+    				}
+				} else {
+					$('#txtSiblings').val(current_selection);
+					$('#show_siblings').html(current_selection_);
+				}
+			}
+		});
+		$('body').on('click', '.deleteme_as_sibling', function(){
+			var arrSibling = [];
+			var temp = this.id;
+			var arr = temp.split('_');
+			var id_ = $.trim(arr[0]);
+			
+			var x_ = $('#txtSiblings').val();
+			var arrSibling = x_.split(',');
+
+			arrSibling.splice($.inArray(id_, arrSibling),1);
+
+			$('#txtSiblings').val(arrSibling);
+			$('#_'+temp).css('display','none');
+		});
+		// -----------------------
 	// ----------------------------------------
 
 	// Master Fee -----------------------------
-		/**/// Flexible Heads below
+		/**/// Static Heads below
 		function rest_static_head_form(){
 			$('#txtFeeStaticHead').val('');
 		}
@@ -868,35 +918,6 @@ $(function(){
 					callDanger(xhr.responseText);
 				}
 			});
-		});
-		$('#cmbSiblingRegistrationID').change(function(){
-			if($('#cmbSiblingRegistrationID').val()!='x'){
-				var current_selection = $('#cmbSiblingRegistrationID').val();
-				var current_selection_ = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_sibling icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
-				if($('#txtSiblings').val() != ''){
-					var str = $('#txtSiblings').val();
-    				if(str.indexOf(current_selection) == -1){
-    					$('#txtSiblings').val($('#txtSiblings').val() + ", " + current_selection);
-    					//alert(current_selection_);
-    					$('#show_siblings').html($('#show_siblings').html()+current_selection_);
-    				}
-				} else {
-					$('#txtSiblings').val(current_selection);
-					$('#show_siblings').html(current_selection_);
-				}
-			}
-		});
-		$('body').on('click', '.deleteme_as_sibling', function(){
-			var temp = this.id;
-			var arr = temp.split('_');
-			var id_ = arr[0];
-
-			var x_ = $('#txtSiblings').val();
-			var arrSibling = x_.split(',');
-			alert($.inArray(id_, arrSibling));
-			xx = arrSibling.splice($.inArray(id_, arrSibling),1);
-			alert(xx);
-			$('#_'+temp).css('display','none');
 		});
 		function view_classes_to_view_students(){
 			url_ = site_url_ + "/master_fee/get_class_in_session";

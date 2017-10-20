@@ -54,6 +54,7 @@ class Reg_adm extends CI_Controller {
         $data['address_permanent'] = $this->mam->get_admission_detail_2($regid, 'PERMANENT');
         $data['address_correspondance'] = $this->mam->get_admission_detail_2($regid, 'CORRESPONDANCE');
         $data['contact'] = $this->mam->get_admission_detail_3($regid);
+        $data['siblings'] = $this->mam->get_siblings_4($regid);
         echo json_encode($data);
     }
 }
