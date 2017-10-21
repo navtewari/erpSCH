@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2017 at 01:32 PM
+-- Generation Time: Oct 21, 2017 at 09:37 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -5061,9 +5061,19 @@ CREATE TABLE `master_16_discount` (
   `ITEM_` varchar(200) NOT NULL,
   `STATUS_` varchar(30) NOT NULL COMMENT 'Percentage or Amount',
   `AMOUNT` varchar(15) NOT NULL,
-  `PERCENTAGE` varchar(15) NOT NULL,
-  `DESC_` text NOT NULL
+  `DESC_` text NOT NULL,
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `master_16_discount`
+--
+
+INSERT INTO `master_16_discount` (`DID`, `ITEM_`, `STATUS_`, `AMOUNT`, `DESC_`, `DATE_`) VALUES
+(1, 'SIBLINGS', 'Percentage', '5', 'x', '2017-10-21 17:13:01'),
+(2, 'OBC', 'Percentage', '10', 'x', '2017-10-21 19:35:26'),
+(3, 'SC', 'Percentage', '8', 'x', '2017-10-21 17:21:18'),
+(6, 'ST', 'Percentage', '8', 'x', '2017-10-21 18:52:54');
 
 -- --------------------------------------------------------
 
@@ -6164,7 +6174,7 @@ ALTER TABLE `master_15_subject_marks`
 -- AUTO_INCREMENT for table `master_16_discount`
 --
 ALTER TABLE `master_16_discount`
-  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `menu_1`
 --

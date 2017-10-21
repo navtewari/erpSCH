@@ -9,6 +9,7 @@ class Web extends CI_Controller {
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('My_master_fee_model', 'mmm');
+        $this->load->model('my_discount_model', 'mdm');
     }
 
     public function dashboard($active = 1, $subno = 1, $submenu = 'index') {
@@ -70,10 +71,10 @@ class Web extends CI_Controller {
                 $data['static_heads__'] = $this->mmm->get_static_heads();
                 $data['flexible_heads__'] = $this->mmm->get_flexible_heads();
                 $data['classes_'] = $this->mmm->get_class_in_session($this->session->userdata('_current_year___'));
-                $data['static_head'] = '';
+                $data['static_head'] = ' active';
                 $data['flexible_head'] = '';
                 $data['associate_static'] = '';
-                $data['associate_flexible'] = ' active';
+                $data['associate_flexible'] = '';
                 break;
             case 9:
                 $data['page_'] = 'master';
@@ -91,6 +92,8 @@ class Web extends CI_Controller {
             case 11:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / Discount (if any?)';
+                $data['discounts'] = ' active';
+                $data['discounted_items'] = $this->mdm->get_discounts();
                 break;
             default:
                 $data['page_'] = 'erorrs';

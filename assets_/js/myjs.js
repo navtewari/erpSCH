@@ -293,7 +293,79 @@ $(function(){
 		});
 		// -----------------------
 	// ----------------------------------------
+	// Master Discount ------------------------
 
+		$('#update_master_Discount').click(function(){
+			if($('#txtItem').val() == ''){
+				callDanger("Please fill the name of discounted item !!");
+			} else if($('#cmdStatus').val() == 'x'){
+				callDanger("Please select the status of discounted category !!");
+			} else if($('#txtAmount').val() == '') {
+				callDanger("Please select the status of discounted category !!");
+			} else {
+				var data_ = $('#frmDiscounts').serialize();
+				var url_ = site_url_ + "/discount/submit_discount";
+				$.ajax({
+					type: 'POST',
+					url: url_,
+					data: data_,
+					success:  function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+							reset_discount_form();
+							$('#txtItem').focus();
+						} else {
+							callDanger(obj.msg_);
+							$('#txtItem').focus();
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					} 
+				});
+			}
+		});
+
+		$('body').on('click', '.ModifyDiscount', function(){
+			var temp = this.id;
+			var xarr = temp.split('~');
+			var data_ = "did="+xarr[1];
+			if(xarr[0] == 'Edit'){
+				var url_ = site_url_ + "/discount/get_specific_discount";
+				$.ajax({
+					type: 'POST',
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						$('#txtBool').val('edit');
+						$('#txtDiscountID').val(obj.DID);
+						$('#txtItem').val(obj.ITEM_);
+						$('#cmdStatus').val(obj.STATUS_);
+						$('#s2id_cmdStatus span').text(obj.STATUS_);
+						$('#txtAmount').val(obj.AMOUNT);
+						$('#txtDesc').val(obj.DESC_);
+					}
+				});
+			} else if(xarr[0] == 'Delete'){
+				var url_ = site_url_ + "/discount/deleted_specific_discount";
+				$.ajax({
+					type: 'POST',
+					url: url_,
+					data: data_,
+					success: function(data){
+						callSuccess("Discounted Item Successfully deleted.");
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					} 
+				});
+			}
+		});
+
+		function reset_discount_form(){
+			$('#reset_disccount').click();
+		}
+	// ----------------------------------------
 	// Master Fee -----------------------------
 		/**/// Static Heads below
 		function rest_static_head_form(){
