@@ -39,6 +39,24 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label">How many times</label>
+                    <div class="controls">
+                        <?php
+                            $data = array(
+                                'name' => 'cmbDuration_felxi',
+                                'id' => 'cmbDuration_felxi',
+                                'class' => 'span12',
+                                'required' => 'required'
+                            );
+                            $options = array();
+                            foreach ($duration as $itemduration) {
+                                $options[$itemduration->DURATION] = $itemduration->ITEM;
+                            }
+                        ?>
+                        <?php echo form_dropdown($data, $options, 'n'); ?>
+                    </div>
+                </div>
+                <div class="control-group">
                     <div class="controls">
                         <input type="button" value="Add" class="btn btn-success" id="add_flexible_head">
                     </div>
@@ -57,6 +75,7 @@
                 <tr>
                   <th style="text-align: left">Flexible Heads</th>
                   <th style="text-align: right">Amount (INR)</th>
+                  <th style="text-align: left">How many times</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -65,8 +84,9 @@
                 <tr>
                   <td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i> <?php echo $itemflexiheads->FEE_HEAD; ?></td>
                   <td  style="text-align: right" class="taskDesc"> <?php echo $itemflexiheads->AMOUNT; ?></td>
+                  <td style="text-align: left" class="taskDesc"><?php echo $itemflexiheads->ITEM; ?></td>
                   <td class="taskOptions">
-                  <a href="#" class="tip edit_flexible_head_" id="<?php echo 'EditFlexibleHead'. "~" . $itemflexiheads->FLX_HD_ID . "~" . $itemflexiheads->FEE_HEAD . "~" . $itemflexiheads->AMOUNT;?>"><i class="icon-pencil"></i></a> |
+                  <a href="#" class="tip edit_flexible_head_" id="<?php echo 'EditFlexibleHead'. "~" . $itemflexiheads->FLX_HD_ID . "~" . $itemflexiheads->FEE_HEAD . "~" . $itemflexiheads->AMOUNT . "~" . $itemflexiheads->DURATION . "~" . $itemflexiheads->ITEM;?>"><i class="icon-pencil"></i></a> |
                   <a href="#" class="tip-top delete_flexible_head_" id="<?php echo $itemflexiheads->FLX_HD_ID;?>"><i class="icon-remove"></a></td>
                 </tr>
                 <?php } ?>
@@ -123,6 +143,24 @@
                             );
                             echo form_input($data);
                         ?>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">How many times</label>
+                    <div class="controls">
+                        <?php
+                            $data = array(
+                                'name' => 'cmbDuration_felxi_edit',
+                                'id' => 'cmbDuration_felxi_edit',
+                                'class' => 'span12',
+                                'required' => 'required'
+                            );
+                            $options = array();
+                            foreach ($duration as $itemduration) {
+                                $options[$itemduration->DURATION] = $itemduration->ITEM;
+                            }
+                        ?>
+                        <?php echo form_dropdown($data, $options, 'n'); ?>
                     </div>
                 </div>
                 <div class="control-group">

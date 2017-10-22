@@ -145,11 +145,11 @@
                                         <tbody id="static_fee_heads_here">
                                             <?php foreach ($discounted_items as $discountItems) { ?>
                                                 <tr class="gradeX">
-                                                    <td><?php echo $discountItems->ITEM_;?></td>
-                                                    <td><?php echo $discountItems->STATUS_;?></td>
-                                                    <td><?php echo $discountItems->AMOUNT;?></td>
-                                                    <td><?php echo $discountItems->DESC_;?></td>
-                                                    <td class="center">
+                                                    <td class="taskDesc"><i class="icon-info-sign"></i> <?php echo $discountItems->ITEM_;?></td>
+                                                    <td class="taskDesc"><?php echo $discountItems->STATUS_;?></td>
+                                                    <td class="taskDesc"><?php echo $discountItems->AMOUNT;?></td>
+                                                    <td class="taskDesc"><?php echo $discountItems->DESC_;?></td>
+                                                    <td class="taskDesc">
                                                         <a href="#" class="ModifyDiscount" id="Edit~<?php echo $discountItems->DID; ?>"><i class="icon-pencil"></i></a> | 
                                                         <a href="#" class="ModifyDiscount" id="Delete~<?php echo $discountItems->DID; ?>"><i class="icon-remove"></i></a> 
                                                     </td>

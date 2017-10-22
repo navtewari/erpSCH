@@ -305,19 +305,19 @@ $(function(){
 					var str_html = '';
 					for(i=0; i<obj.discounts.length; i++){
 						str_html = str_html + '<tr>';
-						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i> ';
 						str_html = str_html + obj.discounts[i].ITEM_;
 						str_html = str_html + '</td>';
-						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
 						str_html = str_html + obj.discounts[i].STATUS_;
 						str_html = str_html + '</td>';
-						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
 						str_html = str_html + obj.discounts[i].AMOUNT;
 						str_html = str_html + '</td>';
-						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
 						str_html = str_html + obj.discounts[i].DESC_;
 						str_html = str_html + '</td>';
-						str_html = str_html + '<td class="taskOptions">';
+						str_html = str_html + '<td class="taskDesc">';
 						str_html = str_html + '<a href="#" class="tip ModifyDiscount" id="Edit~'+ obj.discounts[i].DID + '"><i class="icon-pencil"></i></a> | ';
 						str_html = str_html + '<a href="#" class="tip ModifyDiscount" id="Delete~'+ obj.discounts[i].DID + '"><i class="icon-remove"></i></a>';
 						str_html = str_html + '</td>';
@@ -484,7 +484,7 @@ $(function(){
 						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
 						str_html = str_html + obj.static_heads[i].FEE_HEAD;
 						str_html = str_html + '</td>';
-						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
 						str_html = str_html + obj.static_heads[i].ITEM;
 						str_html = str_html + '</td>';
 						str_html = str_html + '<td class="taskOptions">';
@@ -575,7 +575,7 @@ $(function(){
 		$('#add_flexible_head').click(function(){
 			if($.trim($('#txtFeeFlexibleHead').val()) != '' && $.trim($('#txtFeeFlexibleHeadAmt').val()) != '' && isNaN($('#txtFeeFlexibleHeadAmt').val()) == false){
 				url_ = site_url_ + "/master_fee/submit_flexible_fee_head";
-				data_ = 'txtFeeFlexibleHead='+$('#txtFeeFlexibleHead').val()+'&txtFeeFlexibleHeadAmt='+$.trim($('#txtFeeFlexibleHeadAmt').val());
+				data_ = 'txtFeeFlexibleHead='+$('#txtFeeFlexibleHead').val()+'&txtFeeFlexibleHeadAmt='+$.trim($('#txtFeeFlexibleHeadAmt').val())+'&cmbDuration_felxi='+$('#cmbDuration_felxi').val();
 				$.ajax({
 					type: "POST",
 					url: url_,
@@ -620,6 +620,8 @@ $(function(){
 						str_html = str_html + '</td>';
 						str_html = str_html + '<td  style="text-align: right" class="taskDesc">'+ obj.flexi_heads[i].AMOUNT;
 						str_html = str_html + '</td>'
+						str_html = str_html + '<td class="taskDesc">'+ obj.flexi_heads[i].ITEM;
+						str_html = str_html + '</td>'
 						str_html = str_html + '<td class="taskOptions">';
 						str_html = str_html + '<a href="#" class="tip edit_flexible_head_" id="EditFlexibleHead~'+ obj.flexi_heads[i].FLX_HD_ID + '~'+ obj.flexi_heads[i].FEE_HEAD + '~' + obj.flexi_heads[i].AMOUNT + '"><i class="icon-pencil"></i></a> | ';
 						str_html = str_html + '<a href="#" class="tip delete_flexible_head_" id="'+ obj.flexi_heads[i].FLX_HD_ID + '"><i class="icon-remove"></i></a>';
@@ -642,13 +644,15 @@ $(function(){
 			$('#txtFlexibleHead_edit').val(arr_str[2]);
 			$('#txtFlexibleHeadAmt_edit').val(arr_str[3])
 			$('#txtFlexID_edit').val(arr_str[1]);
+			$('#cmbDuration_felxi_edit').val(arr_str[4]);
+			$('#s2id_cmbDuration_felxi_edit span').text(arr_str[5]);
 			$('#txtFlexibleHead_edit').focus();
 		});
 
 		$('#update_flexible_head').click(function(){
 			if($.trim($('#txtFlexibleHead_edit').val()) != '' && $.trim($('#txtFlexibleHeadAmt_edit').val()) != '' && isNaN($('#txtFlexibleHeadAmt_edit').val()) == false){
 				url_ = site_url_ + "/master_fee/update_flexible_head";
-				data_ = "txtFlexibleHead_edit="+$('#txtFlexibleHead_edit').val()+"&txtFlexID_edit="+$('#txtFlexID_edit').val()+"&txtFlexibleHeadAmt_edit="+$('#txtFlexibleHeadAmt_edit').val();
+				data_ = "txtFlexibleHead_edit="+$('#txtFlexibleHead_edit').val()+"&txtFlexID_edit="+$('#txtFlexID_edit').val()+"&txtFlexibleHeadAmt_edit="+$('#txtFlexibleHeadAmt_edit').val()+'&cmbDuration_felxi_edit='+$('#cmbDuration_felxi_edit').val();
 				$.ajax({
 					type: "POST",
 					url: url_,

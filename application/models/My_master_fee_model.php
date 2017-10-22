@@ -77,7 +77,10 @@ class My_master_fee_model extends CI_Model {
     
     //------------------------------------FLEXIBLE HEADS--------------------------------------
     function get_flexible_heads(){
-        $query = $this -> db -> get('fee_4_flexible_heads');
+        $this->db->select('a.ITEM, b.*');
+        $this->db->from('fee_0_duration a');
+        $this->db->join('fee_4_flexible_heads b', 'a.DURATION = b.DURATION');
+        $query = $this -> db -> get();
         return $query->result();
     }
     
@@ -102,6 +105,7 @@ class My_master_fee_model extends CI_Model {
             $data = array(
                 'FEE_HEAD' => strtoupper($this -> input -> post('txtFeeFlexibleHead')),
                 'AMOUNT' => strtoupper($this -> input -> post('txtFeeFlexibleHeadAmt')),
+                'DURATION' => $this->input->post('cmbDuration_felxi'),
                 'USERNAME' => $this -> session -> userdata('_user___'),
                 'DATE_' => date('Y-m-d H:i:s')
                 );
@@ -119,6 +123,7 @@ class My_master_fee_model extends CI_Model {
         $data = array(
             'FEE_HEAD' => trim(strtoupper($this->input->post('txtFlexibleHead_edit'))),
             'AMOUNT' => trim(strtoupper($this->input->post('txtFlexibleHeadAmt_edit'))),
+            'DURATION' => $this->input->post('cmbDuration_felxi_edit'),
             'USERNAME' => $this -> session -> userdata('_user___'),
             'DATE_' => date('Y-m-d H:i:s')
         );
