@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2017 at 07:02 AM
+-- Generation Time: Oct 22, 2017 at 09:06 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -1067,6 +1067,26 @@ CREATE TABLE `exam_9_result_remarks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fee_0_duration`
+--
+
+CREATE TABLE `fee_0_duration` (
+  `DURATION` varchar(2) NOT NULL,
+  `ITEM` varchar(25) NOT NULL,
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `fee_0_duration`
+--
+
+INSERT INTO `fee_0_duration` (`DURATION`, `ITEM`, `DATE_`) VALUES
+('1', 'One time', '2017-10-22 05:54:43'),
+('n', 'As per selected months', '2017-10-22 05:54:43');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `fee_1_type`
 --
 
@@ -1551,13 +1571,13 @@ CREATE TABLE `fee_3_static_heads` (
 --
 
 INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `DURATION`, `USERNAME`, `DATE_`) VALUES
-(1, 'REGISTRATION', 'n', 'nitin', '2017-08-29 13:01:42'),
-(2, 'ADMISSION', 'n', 'nitin', '2016-02-15 16:16:15'),
-(9, 'WITHDRAWL', 'n', 'nitin', '2016-02-15 16:28:39'),
+(1, 'REGISTRATION', '1', 'nitin', '2017-10-22 06:19:04'),
+(2, 'ADMISSION', '1', 'nitin', '2017-10-22 06:12:53'),
+(9, 'WITHDRAWL', 'n', 'nitin', '2017-10-22 06:14:14'),
 (10, 'TUITION', 'n', 'nitin', '2016-03-12 06:16:59'),
-(11, 'BOOK BANK', 'n', 'nitin', '2016-03-12 06:18:04'),
-(12, 'MEDICAL', 'n', 'nitin', '2016-03-13 18:06:44'),
-(13, 'SPORTS', 'n', 'nitin', '2017-05-25 11:51:14');
+(11, 'BOOK BANK', '1', 'nitin', '2017-10-22 06:17:17'),
+(12, 'MEDICAL', 'n', 'nitin', '2017-10-22 06:15:06'),
+(13, 'SPORTS', '1', 'nitin', '2017-10-22 06:19:11');
 
 -- --------------------------------------------------------
 
@@ -5073,9 +5093,9 @@ CREATE TABLE `master_16_discount` (
 
 INSERT INTO `master_16_discount` (`DID`, `ITEM_`, `STATUS_`, `AMOUNT`, `DESC_`, `DATE_`) VALUES
 (1, 'SIBLINGS', 'Percentage', '5', 'x', '2017-10-21 17:13:01'),
-(2, 'OBC', 'Percentage', '10', 'x', '2017-10-21 19:35:26'),
-(3, 'SC', 'Percentage', '8', 'x', '2017-10-21 17:21:18'),
-(6, 'ST', 'Percentage', '8', 'x', '2017-10-21 18:52:54');
+(6, 'ST', 'Percentage', '8', 'x', '2017-10-21 18:52:54'),
+(8, 'SC', 'Percentage', '8', 'x', '2017-10-22 06:54:35'),
+(10, 'OBC', 'Percentage', '11', 'x', '2017-10-22 07:02:17');
 
 -- --------------------------------------------------------
 
@@ -5789,6 +5809,12 @@ ALTER TABLE `exam_9_result_remarks`
   ADD PRIMARY KEY (`resultsubtotalID`);
 
 --
+-- Indexes for table `fee_0_duration`
+--
+ALTER TABLE `fee_0_duration`
+  ADD PRIMARY KEY (`DURATION`);
+
+--
 -- Indexes for table `fee_1_type`
 --
 ALTER TABLE `fee_1_type`
@@ -6176,7 +6202,7 @@ ALTER TABLE `master_15_subject_marks`
 -- AUTO_INCREMENT for table `master_16_discount`
 --
 ALTER TABLE `master_16_discount`
-  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `menu_1`
 --
