@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2017 at 09:37 PM
+-- Generation Time: Oct 22, 2017 at 07:02 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -1541,6 +1541,7 @@ INSERT INTO `fee_2` (`feeID`, `regID`, `date`, `Amount`, `username`, `feetype`, 
 CREATE TABLE `fee_3_static_heads` (
   `ST_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
+  `DURATION` varchar(2) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1549,14 +1550,14 @@ CREATE TABLE `fee_3_static_heads` (
 -- Dumping data for table `fee_3_static_heads`
 --
 
-INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `USERNAME`, `DATE_`) VALUES
-(1, 'REGISTRATION', 'nitin', '2017-08-29 13:01:42'),
-(2, 'ADMISSION', 'nitin', '2016-02-15 16:16:15'),
-(9, 'WITHDRAWL', 'nitin', '2016-02-15 16:28:39'),
-(10, 'TUITION', 'nitin', '2016-03-12 06:16:59'),
-(11, 'BOOK BANK', 'nitin', '2016-03-12 06:18:04'),
-(12, 'MEDICAL', 'nitin', '2016-03-13 18:06:44'),
-(13, 'SPORTS', 'nitin', '2017-05-25 11:51:14');
+INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `DURATION`, `USERNAME`, `DATE_`) VALUES
+(1, 'REGISTRATION', 'n', 'nitin', '2017-08-29 13:01:42'),
+(2, 'ADMISSION', 'n', 'nitin', '2016-02-15 16:16:15'),
+(9, 'WITHDRAWL', 'n', 'nitin', '2016-02-15 16:28:39'),
+(10, 'TUITION', 'n', 'nitin', '2016-03-12 06:16:59'),
+(11, 'BOOK BANK', 'n', 'nitin', '2016-03-12 06:18:04'),
+(12, 'MEDICAL', 'n', 'nitin', '2016-03-13 18:06:44'),
+(13, 'SPORTS', 'n', 'nitin', '2017-05-25 11:51:14');
 
 -- --------------------------------------------------------
 
@@ -1567,6 +1568,7 @@ INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `USERNAME`, `DATE_`) V
 CREATE TABLE `fee_4_flexible_heads` (
   `FLX_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
+  `DURATION` varchar(2) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -1576,10 +1578,10 @@ CREATE TABLE `fee_4_flexible_heads` (
 -- Dumping data for table `fee_4_flexible_heads`
 --
 
-INSERT INTO `fee_4_flexible_heads` (`FLX_HD_ID`, `FEE_HEAD`, `AMOUNT`, `USERNAME`, `DATE_`) VALUES
-(1, 'EXAM FEE', '500', 'nitin', '2017-08-29 17:23:16'),
-(2, 'BUS FEE', '1000', 'nitin', '2016-03-21 16:12:59'),
-(3, 'EXAM FEE (1 CLASS)', '400', 'nitin', '2017-08-29 17:31:11');
+INSERT INTO `fee_4_flexible_heads` (`FLX_HD_ID`, `FEE_HEAD`, `DURATION`, `AMOUNT`, `USERNAME`, `DATE_`) VALUES
+(1, 'EXAM FEE', 'n', '500', 'nitin', '2017-08-29 17:23:16'),
+(2, 'BUS FEE', 'n', '1000', 'nitin', '2016-03-21 16:12:59'),
+(3, 'EXAM FEE (1 CLASS)', 'n', '400', 'nitin', '2017-08-29 17:31:11');
 
 -- --------------------------------------------------------
 
