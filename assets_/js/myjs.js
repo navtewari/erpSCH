@@ -294,7 +294,42 @@ $(function(){
 		// -----------------------
 	// ----------------------------------------
 	// Master Discount ------------------------
-
+		function fill_discounts(){
+			url_ = site_url_ + "/discount/get_discounts";
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.discounts.length; i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + obj.discounts[i].ITEM_;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + obj.discounts[i].STATUS_;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + obj.discounts[i].AMOUNT;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
+						str_html = str_html + obj.discounts[i].DESC_;
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td class="taskOptions">';
+						str_html = str_html + '<a href="#" class="tip ModifyDiscount" id="Edit~'+ obj.discounts[i].DID + '"><i class="icon-pencil"></i></a> | ';
+						str_html = str_html + '<a href="#" class="tip ModifyDiscount" id="Delete~'+ obj.discounts[i].DID + '"><i class="icon-remove"></i></a>';
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>'
+					}
+					$('#static_fee_heads_here').html(str_html);
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
 		$('#update_master_Discount').click(function(){
 			if($('#txtItem').val() == ''){
 				callDanger("Please fill the name of discounted item !!");
@@ -310,11 +345,20 @@ $(function(){
 					url: url_,
 					data: data_,
 					success:  function(data){
+						$('#discount_head').html('Add Discount');
+						$('#discount_head').removeClass('edit_color_head');
+						$('#txtItem').removeClass('edit_color_content');
+						$('#s2id_cmdStatus span').removeClass('edit_color_content');
+						$('#txtAmount').removeClass('edit_color_content');
+						$('#txtDesc').removeClass('edit_color_content');
 						var obj = JSON.parse(data);
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
-							reset_discount_form();
-							$('#txtItem').focus();
+							$('#reset_discount').click();
+							fill_discounts();
+							if($('#txtBool').val() == 'new'){
+								$('#txtItem').focus();
+							}
 						} else {
 							callDanger(obj.msg_);
 							$('#txtItem').focus();
@@ -337,15 +381,29 @@ $(function(){
 					url: url_,
 					data: data_,
 					success: function(data){
+						$('#discount_head').html('Update Discount');
+						$('#discount_head').addClass('edit_color_head');
+						$('#txtItem').addClass('edit_color_content');
+						$('#s2id_cmdStatus span').addClass('edit_color_content');
+						$('#txtAmount').addClass('edit_color_content');
+						$('#txtDesc').addClass('edit_color_content');
+						$('#update_master_Discount').val('Update');
+						$('#update_master_Discount').removeClass('btn-success');
+						$('#update_master_Discount').addClass('btn-primary');
+
 						var obj = JSON.parse(data);
 						$('#txtBool').val('edit');
 						$('#txtDiscountID').val(obj.DID);
 						$('#txtItem').val(obj.ITEM_);
+
 						$('#cmdStatus').val(obj.STATUS_);
 						$('#s2id_cmdStatus span').text(obj.STATUS_);
 						$('#txtAmount').val(obj.AMOUNT);
 						$('#txtDesc').val(obj.DESC_);
-					}
+						$('#txtItem').focus();
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					} 
 				});
 			} else if(xarr[0] == 'Delete'){
 				var url_ = site_url_ + "/discount/deleted_specific_discount";
@@ -354,6 +412,7 @@ $(function(){
 					url: url_,
 					data: data_,
 					success: function(data){
+						fill_discounts();
 						callSuccess("Discounted Item Successfully deleted.");
 					}, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
@@ -361,9 +420,21 @@ $(function(){
 				});
 			}
 		});
-
+		$('#reset_discount').click(function(){
+			reset_discount_form();
+		});
 		function reset_discount_form(){
-			$('#reset_disccount').click();
+			$('#discount_head').html('Add Discount');
+			$('#discount_head').removeClass('edit_color_head');
+			$('#txtItem').removeClass('edit_color_content');
+			$('#cmdStatus').val('x');
+			$('#s2id_cmdStatus span').removeClass('edit_color_content');
+			$('#s2id_cmdStatus span').text('Select Status');
+			$('#txtAmount').removeClass('edit_color_content');
+			$('#txtDesc').removeClass('edit_color_content');
+			$('#update_master_Discount').val('Add');
+			$('#update_master_Discount').removeClass('btn-primary');
+			$('#update_master_Discount').addClass('btn-success');
 		}
 	// ----------------------------------------
 	// Master Fee -----------------------------
@@ -413,8 +484,11 @@ $(function(){
 						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
 						str_html = str_html + obj.static_heads[i].FEE_HEAD;
 						str_html = str_html + '</td>';
+						str_html = str_html + '<td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i>';
+						str_html = str_html + obj.static_heads[i].ITEM;
+						str_html = str_html + '</td>';
 						str_html = str_html + '<td class="taskOptions">';
-						str_html = str_html + '<a href="#" class="tip edit_static_head_" id="EditStaticHead~'+ obj.static_heads[i].ST_HD_ID + '~'+ obj.static_heads[i].FEE_HEAD + '"><i class="icon-pencil"></i></a> | ';
+						str_html = str_html + '<a href="#" class="tip edit_static_head_" id="EditStaticHead~'+ obj.static_heads[i].ST_HD_ID + '~'+ obj.static_heads[i].FEE_HEAD + '~'+ obj.static_heads[i].DURATION + '~'+ obj.static_heads[i].ITEM + '"><i class="icon-pencil"></i></a> | ';
 						str_html = str_html + '<a href="#" class="tip delete_static_head_" id="'+ obj.static_heads[i].ST_HD_ID + '"><i class="icon-remove"></i></a>';
 						str_html = str_html + '</td>';
 						str_html = str_html + '</tr>'
@@ -434,6 +508,8 @@ $(function(){
 			$('#edit_static_head_panel').css('display', 'block');
 			$('#txtFeeStaticHead_edit').val(arr_str[2]);
 			$('#txtID_edit').val(arr_str[1]);
+			$('#cmbDuration_edit').val(arr_str[3]);
+			$('#s2id_cmbDuration_edit span').text(arr_str[4]);
 			$('#txtFeeStaticHead_edit').focus();
 		});
 
@@ -463,13 +539,15 @@ $(function(){
 		$('#update_static_head').click(function(){
 			if($.trim($('#txtFeeStaticHead_edit').val()) != ''){
 				url_ = site_url_ + "/master_fee/update_static_head";
-				data_ = "txtFeeStaticHead_edit="+$('#txtFeeStaticHead_edit').val()+"&txtID_edit="+$('#txtID_edit').val();
+				data_ = "txtFeeStaticHead_edit="+$('#txtFeeStaticHead_edit').val()+"&txtID_edit="+$('#txtID_edit').val()+"&cmbDuration_edit="+$('#cmbDuration_edit').val();
 				$.ajax({
 					type: "POST",
 					url: url_,
 					data: data_,
 					success: function(data){
 						$('#txtFeeStaticHead_edit').val("");
+						$('#cmbDuration_edit').val("n");
+						$('#s2id_cmbDuration_edit span').text("As per selected months");
 						$('#txtID_edit').val("");
 						$('#edit_static_head_panel').css('display', 'none');
 						var obj = JSON.parse(data);

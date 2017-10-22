@@ -23,6 +23,24 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label">How many times</label>
+                    <div class="controls">
+                        <?php
+                            $data = array(
+                                'name' => 'cmbDuration',
+                                'id' => 'cmbDuration',
+                                'class' => 'span12',
+                                'required' => 'required'
+                            );
+                            $options = array();
+                            foreach ($duration as $itemduration) {
+                                $options[$itemduration->DURATION] = $itemduration->ITEM;
+                            }
+                        ?>
+                        <?php echo form_dropdown($data, $options, 'n'); ?>
+                    </div>
+                </div>
+                <div class="control-group">
                     <div class="controls">
                         <input type="button" value="Add" class="btn btn-success" id="add_static_head">
                     </div>
@@ -40,6 +58,7 @@
                     <thead>
                         <tr>
                             <th style="text-align: left">Static Heads</th>
+                            <th style="text-align: left">How many times</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -47,8 +66,9 @@
                         <?php foreach ($static_heads__ as $itemstaticheads) { ?>
                             <tr>
                                 <td style="text-align: left" class="taskDesc"><i class="icon-info-sign"></i> <?php echo $itemstaticheads->FEE_HEAD; ?></td>
+                                <td style="text-align: left" class="taskDesc"><?php echo $itemstaticheads->ITEM; ?></td>
                                 <td class="taskOptions">
-                                    <a href="#" class="tip edit_static_head_" id="<?php echo 'EditStaticHead' . "~" . $itemstaticheads->ST_HD_ID . "~" . $itemstaticheads->FEE_HEAD; ?>"><i class="icon-pencil"></i></a> |
+                                    <a href="#" class="tip edit_static_head_" id="<?php echo 'EditStaticHead' . "~" . $itemstaticheads->ST_HD_ID . "~" . $itemstaticheads->FEE_HEAD . "~" . $itemstaticheads->DURATION . "~" . $itemstaticheads->ITEM; ?>"><i class="icon-pencil"></i></a> |
                                     <a href="#" class="tip-top delete_static_head_" id="<?php echo $itemstaticheads->ST_HD_ID; ?>"><i class="icon-remove"></a></td>
                             </tr>
                         <?php } ?>
@@ -89,6 +109,24 @@
                         );
                         echo form_input($data);
                         ?>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">How many times</label>
+                    <div class="controls">
+                        <?php
+                            $data = array(
+                                'name' => 'cmbDuration_edit',
+                                'id' => 'cmbDuration_edit',
+                                'class' => 'span12',
+                                'required' => 'required'
+                            );
+                            $options = array();
+                            foreach ($duration as $itemduration) {
+                                $options[$itemduration->DURATION] = $itemduration->ITEM;
+                            }
+                        ?>
+                        <?php echo form_dropdown($data, $options, 'n'); ?>
                     </div>
                 </div>
                 <div class="control-group">

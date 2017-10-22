@@ -68,6 +68,7 @@ class Web extends CI_Controller {
             case 8:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / Fee';
+                $data['duration'] = $this->mmm->get_duration();
                 $data['static_heads__'] = $this->mmm->get_static_heads();
                 $data['flexible_heads__'] = $this->mmm->get_flexible_heads();
                 $data['classes_'] = $this->mmm->get_class_in_session($this->session->userdata('_current_year___'));

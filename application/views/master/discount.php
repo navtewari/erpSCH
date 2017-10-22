@@ -1,3 +1,11 @@
+<style>
+    .edit_color_head{
+        color: #ff0000 !important;
+    }
+    .edit_color_content{
+        color: #0000ff !important;
+    }
+</style>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-box">
@@ -21,7 +29,7 @@
                             <div class="widget-box">
                                 <div  style="border: #ff0000 solid 0px; width: 50px; height:50px; float: right; right: 0px; z-index: 2222; position: absolute;" id="student_photo_here"></div>
                                 <div class="widget-title"> <span class="icon"> <i class="icon-certificate"></i> </span>
-                                    <h5>Add Discount</h5>
+                                    <h5 id="discount_head">Add Discount</h5>
                                 </div>
                                 <div class="widget-content" style="overflow: hidden">
                                     <div class="control-group">
@@ -111,8 +119,8 @@
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <input type="button" value="Update" class="btn btn-success" id="update_master_Discount">
-                                            <input type="reset" value="Cancel" id="reset_disccount">
+                                            <input type="button" value="Add" class="btn btn-success" id="update_master_Discount">
+                                            <input type="reset" value="Cancel" class="btn btn-danger" id="reset_discount">
                                         </div>
                                     </div>
                                 </div>
@@ -120,33 +128,32 @@
                         </div>
                         <div class="controls span7">
                             <div class="widget-box">
-                                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                    <h5>Existing Discount(s)</h5>
-                                    <h5 style="float: right; color:#900000" id="reload_me">Reload</h5>
+                                <div class="widget-title"> <span class="icon"><i class="icon-time"></i></span>
+                                    <h5>Existing Discounts</h5>
                                 </div>
                                 <div class="widget-content nopadding">
-                                    <table class="table table-bordered data-table">
+                                    <table class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                            <th style="text-align: left">Discounted Item</th>
-                                            <th style="text-align: left">Status</th>
-                                            <th style="text-align: left">Amt/ Percentage</th>
-                                            <th style="text-align: left">Description</th>
-                                            <th style="text-align: left">Action</th>
+                                                <th style="text-align: left">Discounted Item</th>
+                                                <th style="text-align: left">Status</th>
+                                                <th style="text-align: left">Amt/ Percentage</th>
+                                                <th style="text-align: left">Description</th>
+                                                <th style="text-align: left">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="student_data_here">
+                                        <tbody id="static_fee_heads_here">
                                             <?php foreach ($discounted_items as $discountItems) { ?>
-                                            <tr class="gradeX">
-                                                <td><?php echo $discountItems->ITEM_;?></td>
-                                                <td><?php echo $discountItems->STATUS_;?></td>
-                                                <td><?php echo $discountItems->AMOUNT;?></td>
-                                                <td><?php echo $discountItems->DESC_;?></td>
-                                                <td class="center">
-                                                    <a href="#" class="ModifyDiscount" id="Edit~<?php echo $discountItems->DID; ?>">Edit</a> | 
-                                                    <a href="#" class="ModifyDiscount" id="Delete~<?php echo $discountItems->DID; ?>">Delete</a> 
-                                                </td>
-                                            </tr>
+                                                <tr class="gradeX">
+                                                    <td><?php echo $discountItems->ITEM_;?></td>
+                                                    <td><?php echo $discountItems->STATUS_;?></td>
+                                                    <td><?php echo $discountItems->AMOUNT;?></td>
+                                                    <td><?php echo $discountItems->DESC_;?></td>
+                                                    <td class="center">
+                                                        <a href="#" class="ModifyDiscount" id="Edit~<?php echo $discountItems->DID; ?>"><i class="icon-pencil"></i></a> | 
+                                                        <a href="#" class="ModifyDiscount" id="Delete~<?php echo $discountItems->DID; ?>"><i class="icon-remove"></i></a> 
+                                                    </td>
+                                                </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>

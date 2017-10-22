@@ -23,4 +23,9 @@ class Discount extends CI_Controller {
         $data = $this->mdm->deleted_specific_discount();
         echo json_encode($data);   
     }
+
+    function get_discounts(){
+        $data['discounts'] = $this->mdm->get_discounts();
+        echo json_encode($data);
+    }
 }

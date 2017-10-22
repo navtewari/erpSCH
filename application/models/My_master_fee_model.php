@@ -11,6 +11,10 @@ class My_master_fee_model extends CI_Model {
         // --------------------
     }
 
+    function get_duration(){
+        $query = $this->db->get('fee_0_duration');
+        return $query->result();
+    }
     function submit_static_fee_head(){
         $this -> db -> where('FEE_HEAD', trim($this->input->post('txtFeeStaticHead')));
         $query = $this -> db -> get('fee_3_static_heads');
@@ -21,6 +25,7 @@ class My_master_fee_model extends CI_Model {
         } else {
             $data = array(
                 'FEE_HEAD' => strtoupper($this -> input -> post('txtFeeStaticHead')),
+                'DURATION' => $this->input->post('cmbDuration'),
                 'USERNAME' => $this -> session -> userdata('_user___'),
                 'DATE_' => date('Y-m-d H:i:s')
                 );
@@ -35,13 +40,16 @@ class My_master_fee_model extends CI_Model {
     }
 
     function get_static_heads(){
-        $query = $this -> db -> get('fee_3_static_heads');
-
+        $this->db->select('a.ITEM, b.*');
+        $this->db->from('fee_0_duration a');
+        $this->db->join('fee_3_static_heads b', 'a.DURATION = b.DURATION');
+        $query = $this -> db -> get();
         return $query->result();
     }
     function update_static_head(){
         $data = array(
             'FEE_HEAD' => trim(strtoupper($this->input->post('txtFeeStaticHead_edit'))),
+            'DURATION' => $this->input->post('cmbDuration_edit'),
             'USERNAME' => $this -> session -> userdata('_user___'),
             'DATE_' => date('Y-m-d H:i:s')
         );
