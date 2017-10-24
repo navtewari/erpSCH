@@ -96,6 +96,11 @@ class Web extends CI_Controller {
                 $data['discounts'] = ' active';
                 $data['discounted_items'] = $this->mdm->get_discounts();
                 break;
+            case 12:
+                $data['page_'] = 'fee';
+                $data['title_'] = 'Manage Invoice';
+                $data['fetch_month'] = array(1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July', 8=>'August', 9=>'September', 10=>'October', 11=>'November', 12=>'December');
+                break;
             default:
                 $data['page_'] = 'erorrs';
         }
