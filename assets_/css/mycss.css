@@ -8,3 +8,10 @@
 .gritter-success .gritter-title {
     text-shadow: none;
 }
+
+.show_message{
+	float: right !important;
+	color: #ff0000 !important;
+	background: #FFFF9D !important;
+	display: none;
+}

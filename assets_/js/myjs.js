@@ -1100,6 +1100,184 @@ $(function(){
 			});
 		}
 		// --------------------------------------------------
+
+		// Invoice code below -------------------------------
+		$('#cmbYearFromForInvoice').change(function(){$('#cmbClassForInvoice').change();});
+	    $('#cmbMonthFromForInvoice').change(function(){$('#cmbClassForInvoice').change();});
+	    $('#cmbYearToForInvoice').change(function(){$('#cmbClassForInvoice').change();});
+	    $('#cmbMonthToForInvoice').change(function(){$('#cmbClassForInvoice').change();});
+	    
+		$('#cmbClassForInvoice').change(function(){
+			$('#show_message').css('display', 'none');
+			$('#show_message').html("");
+			data_ = $('#cmbClassForInvoice').serialize();
+	        if($('#cmbClassForInvoice').val()!='x'){
+	            url__1 = site_url_ + "/fee/fetch_last_invoice_month";
+                $.ajax({
+                    type : 'POST',
+                        url : url__1,
+                        data : data_,
+                        success : function(data){
+                            var obj = JSON.parse(data);
+                            $('#prev_invoice_month_info').html(obj.fetch_invoice_for_receipt);
+                        }, error: function(xhr, status, error){
+							callDanger(xhr.responseText);
+						}
+                });
+                // Fetching form data
+                var year_from = parseInt($('#cmbYearFromForInvoice').val(),10);
+                var month_from = parseInt($('#cmbMonthFromForInvoice').val(),10);
+                var year_to = parseInt($('#cmbYearToForInvoice').val(),10);
+                var month_to = parseInt($('#cmbMonthToForInvoice').val(),10);
+                var total_amount_for_class = 0;;
+                //-------------------
+                //alert(year_from + " - " + month_from + " - " + year_to + " - " + month_to + " - " + $('#cmbClassForInvoice').val());
+				if($('#cmbClassForInvoice').val() != "x" && year_from != "" && month_from != "" && year_to != "" && month_to != ""){
+			        if(year_from <= year_to){
+			        	if(year_from  == year_to && month_from > month_to){
+			        		$("#class_invoices_here").html("<div style='text-align: center; padding: 5px'><b>Month-from</b> should be less than or equals to <b>Month-to</b></div>");
+			        	} else {
+			        		total_months = calculate_no_months(year_from, month_from, year_to, month_to);
+				            data_ = $('#frmInvoice').serialize();
+				            url_ = site_url_ + "/fee/show_invoice_needs_to_be_generated";
+				            loading_process();
+				            $.ajax({
+				                type : 'POST',
+				                url : url_,
+				                data : data_,
+				                success : function(data){
+				                    var str_html = '';
+				                    var obj = JSON.parse(data);
+				                    $('#show_message').css('display', 'block');
+				                    $('#show_message').html(obj.prev_invoice_generated_month_year);
+				                    //str_html = str_html + obj.previous_invoice.length;
+				                    str_html = str_html + '<table class="table table-bordered table-striped">';
+	                    			str_html = str_html + '<tbody>';
+
+				                    if(obj.fetch_class_students.length != 0 && obj.static_fee_to_class.length != 0){
+				                    	$('#total_students').html(obj.fetch_class_students.length+ " Student");	 
+				                        var fixHeads = '';
+				                        var fixHeadsAmount = obj.static_fee_to_class[0].TOTFEE;
+				                        var totalFixHeadsAmount = fixHeadsAmount*parseFloat(total_months);
+				                        var invoice_already_generated = false;
+				                        for(i=0;i<obj.static_fee_to_class.length;i++){
+				                            if(i == obj.static_fee_to_class.length-1){
+				                                //fixHeads = fixHeads + obj.static_fee_to_class[i].FEE_HEAD + "{" + obj.static_fee_to_class[i].AMOUNT + "}";
+				                                fixHeads = fixHeads + "<div class='fee_heads_static' title='"+obj.static_fee_to_class[i].AMOUNT+"'>"+obj.static_fee_to_class[i].FEE_HEAD+'</div>';
+				                            } else {
+				                                fixHeads = fixHeads + "<div class='fee_heads_static' title='"+obj.static_fee_to_class[i].AMOUNT+"'>"+obj.static_fee_to_class[i].FEE_HEAD+'</div> ';
+				                            }
+				                        }
+
+				                            str_html = str_html + "<tr style='background: #ffffff'>";
+				                            str_html = str_html + "<td colspan='6' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
+				                            str_html = str_html + "<div style='float: left'><b>Note: </b>Generate/ Print Invoice for "+total_months+" month(s). </div></td>"
+				                            str_html = str_html + "<td colspan='2' style='text-align: right; vertical-align: middle'><a href='#' class='btn btn-danger' id='generate_invoice'> <i class='icon-lock' title='Generate Invoice'></i> Generate Invoice</a></td></tr>";
+				                            str_html = str_html + "<tr>";
+				                            
+				                            str_html = str_html + "<tr class='gradeX'>";
+				                            str_html = str_html + "<th>Registration No</th>";
+				                            str_html = str_html + "<th>Name</th>";      
+				                            str_html = str_html + "<th style='text-align: right !important'>Fix Fee Amount</th>";
+				                                str_html = str_html + "<th style='min-width: 100px; max-width: 200px'>Opted Fee</th>";
+				                                str_html = str_html + "<th style='text-align: right !important'>Amount</th>";
+				                            str_html = str_html + "<th width='100' style='text-align: right !important'>Total Fee</th>";
+				                            str_html = str_html + "<th width='100' style='text-align: center !important'>Invoice</th>";
+				                            str_html = str_html + "<th width='100' style='text-align: center !important'>Pay Fee</th>";
+				                            str_html = str_html + "</tr>";
+				                        for(loop1=0;loop1<obj.fetch_class_students.length; loop1++){
+				                        	invoice_already_generated = false;
+				                        	for(prev_invoice=0;prev_invoice<obj.previous_invoice.length;prev_invoice++){
+				                        		if(obj.previous_invoice[prev_invoice].REGID == obj.fetch_class_students[loop1].regid){
+				                        			invoice_already_generated = true;
+				                        			break;
+				                        		}
+				                        	}
+				                            str_html = str_html + "<tr class='gradeX'>";
+				                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].regid+"</td>";
+				                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].FNAME+"</td>";
+				                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText' title='"+fixHeadsAmount+" x "+total_months+"'>"+totalFixHeadsAmount+"</span></td>";
+				                            flexifee = ''
+				                            flexiAmount = 0;
+				                            	// Calculation of Flexi-Heads and its amount opted-by student individually
+				                                for(j=0;j<obj.flexible_head_to_class.length; j++){
+				                                    if(obj.fetch_class_students[loop1].regid == obj.flexible_head_to_class[j].regid){
+				                                        flexifee = flexifee + '<div class="cover_heads"><div class="fee_heads_flexi" title="'+obj.flexible_head_to_class[j].AMOUNT+'">'+obj.flexible_head_to_class[j].FEE_HEAD+'</div></div>'
+				                                        flexiAmount = flexiAmount + parseInt(obj.flexible_head_to_class[j].AMOUNT);
+				                                    }
+				                                }
+				                                // -----------------------------------------------------------------------
+				                                flxmt =flexiAmount; 
+
+				                                str_html = str_html + "<td>"+flexifee+"</td>";
+				                                total_flexiAmount = flexiAmount*total_months;
+				                                str_html = str_html + "<td style='text-align: right !important'><span class='highlightText' title='"+flxmt+" x "+total_months+"'>"+total_flexiAmount+"</span></td>";
+
+				                            totalAmount = parseInt(totalFixHeadsAmount,10)+parseInt(total_flexiAmount,10);
+				                            total_amount_for_class = parseInt(total_amount_for_class, 10)+parseInt(totalAmount,10);
+				                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText' title='"+totalFixHeadsAmount+" + "+total_flexiAmount+"'>"+totalAmount+"</span></td>";
+				                            if(invoice_already_generated == true){
+				                            	str_html = str_html + "<td style='text-align: center !important'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></td>";
+				                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-play' title='Pay Fee'></i></a></td>";
+				                        	} else {
+				                        		str_html = str_html + "<td style='text-align: center !important'><a href=''><span class='generate_invoice'><i class='icon-lock' title='Generate Invoice'></i></span></a></td>";
+				                        		str_html = str_html + "<td></td>";
+				                        	}
+				                            str_html = str_html + "</tr>";
+				                        }
+				                        str_html = str_html + "<tr class='gradeX'>";
+			                            str_html = str_html + "<td colspan='5' style='text-align: right !important'>Total Fee for the class</td>";
+										str_html = str_html + "<td style='text-align: right !important; color: #0000ff; font-weight: bold'>"+total_amount_for_class+"</td>";
+			                            str_html = str_html + "<td colspan='2'></td>";
+			                            str_html = str_html + "</tr>";
+				                    } else {
+				                    	$('#total_students').html('');
+				                        str_html = "<div style='text-align: center; padding: 5px'><b>No Fee</b> adjusted for the <b>class</b> yet.</div>";
+				                    }
+				                    str_html = str_html + '</tbody>';
+	                				str_html = str_html + '</table>';
+				                    $("#class_invoices_here").html(str_html);
+				                    hide_loading_process();
+				                },
+				                error: function (xhr, ajaxOptions, thrownError) {       
+				                    //alert(xhr.responseText);
+				                    hide_loading_process();
+				                    str_for_html = thrownError;
+				                    $("#class_invoices_here").empty();
+				                    $("#class_invoices_here").append(str_html);
+				                }
+				            });
+			        	}
+			        } else {
+			            $("#class_invoices_here").html("<div style='text-align: center; padding: 5px'><b>Year-from</b> should be less than or equals to <b>Year-to</b></div>");
+			        }
+		        } else {
+		            $("#class_invoices_here").html("");
+		        }
+		    }
+	        return false;
+		});
+		function calculate_no_months(yrfrom, mnthfrom, yr2, mnth2){
+	        yrfrom = parseInt(yrfrom);
+	        mnthfrom = parseInt(mnthfrom);
+	        yr2 = parseInt(yr2);
+	        mnth2 = parseInt(mnth2);
+	        if(yrfrom<yr2){
+	            count_1 = 12 - mnthfrom;
+	            count_2 = mnth2 - 1;
+	            total = count_1 + count_2 + 2;
+	        } else if(yrfrom == yr2){
+	            if(mnthfrom<=mnth2){
+
+	                total = mnth2 - mnthfrom + 1;
+	            } else {
+	                total = 0;
+	            }
+	        }
+	        return total;
+	    }
+		// --------------------------------------------------
+		
 	// ----------
 	// Popup boxes
 		function callDanger(message){

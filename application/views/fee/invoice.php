@@ -9,9 +9,9 @@ invoice<div class="row-fluid">
     ?>
     <div class="span12">
         <div class="widget-box">
-            <div  style="border: #ff0000 solid 0px; width: 50px; height:50px; float: right; right: 0px; z-index: 2222; position: absolute;" id="student_photo_here"></div>
             <div class="widget-title"> <span class="icon"> <i class="icon-briefcase"></i> </span>
                 <h5><?php echo $title_;?></h5>
+                <h5 class="show_message" id="show_message">asd</h5>
             </div>
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group span2">
@@ -26,8 +26,11 @@ invoice<div class="row-fluid">
                             );
                             $options = array();
                             $options['x'] = 'Class';
+                            foreach ($class_in_session as $item) {
+                                $options[$item->CLSSESSID] = 'Class ' . $item->CLASSID;
+                            }
+                            echo form_dropdown($data, $options, '');
                         ?>
-                        <?php echo form_dropdown($data, $options, 'x'); ?>
                     </div>
                 </div>
                 <div class="control-group span1"></div>
