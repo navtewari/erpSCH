@@ -340,7 +340,7 @@ class My_fee_model extends CI_Model {
             $this->db->select('DUE_AMOUNT');
             $this->db->where('INVDETID', $invdetid);
             $query = $this->db->get('fee_6_invoice_detail');
-            echo $this->db->last_query();
+            //echo $this->db->last_query();
             $r = $query->row();
             $bool_ = $r->DUE_AMOUNT;
         } else {

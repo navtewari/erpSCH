@@ -1232,7 +1232,7 @@ $(function(){
 					                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText' title='"+totalFixHeadsAmount+" + "+total_flexiAmount+"'>"+totalAmount+"</span></td>";
 					                            if(invoice_already_generated == true){
 					                            	str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></td>";
-					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-play' title='Pay Fee'></i></a></td>";
+					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-pencil' title='Delete Invoice'></i></a></td>";
 					                        	} else {
 					                        		str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><span class='generate_invoice' id='"+obj.fetch_class_students[loop1].regid+"'><i class='icon-lock' title='Generate Invoice'></i></span></td>";
 					                        		str_html = str_html + "<td></td>";
@@ -1281,7 +1281,6 @@ $(function(){
             	url:url_,
             	data:data_,
             	success: function(data){
-            		callSuccess(data);
             		$('#'+regid_+"_for_invoice_print").html("<span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span>");
             		hide_loading_process();
             	},
