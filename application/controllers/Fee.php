@@ -35,4 +35,34 @@ class Fee extends CI_Controller {
 
         echo json_encode($data);
     }
+
+    function generateInvoice(){
+        $class__ = $this->input->post('cmbClassForInvoice');
+        $yr_from = $this->input->post('cmbYearFromForInvoice');
+        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+        $yr_to = $this->input->post('cmbYearToForInvoice');
+        $mnth_to = $this->input->post('cmbMonthToForInvoice');
+        $regid_ = $this->input->post('regid');
+
+        $no_of_months = $this->calculate_no_months($yr_from, $mnth_from, $yr_to, $mnth_to);
+        
+        $data['status'] = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
+    }
+
+    function calculate_no_months($yrfrom, $mnthfrom, $yr2, $mnth2){
+        if($yrfrom<$yr2){
+            $count_1 = 12 - $mnthfrom;
+            $count_2 = $mnth2 - 1;
+            $total = $count_1 + $count_2 + 2;
+        } else if($yrfrom == $yr2){
+            if($mnthfrom<=$mnth2){
+                $total = $mnth2 - $mnthfrom + 1;
+            } else {
+                $total = 0;
+            }
+        } else {
+            $total = 0;
+        }
+        return $total;
+    }
 }
