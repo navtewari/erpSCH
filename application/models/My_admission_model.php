@@ -61,6 +61,7 @@ class My_admission_model extends CI_Model {
                 'F_EMAIL' => $this->input->post('txtFatherEmail'),
                 'F_PROFESSION' => $this->input->post('txtFatherProfession'),
                 'MOTHER' => $this->input->post('txtMotherName'),
+                'CATEGORY'=> $this->input->post('cmbCategory'),
                 'M_MOBILE' => $this->input->post('txtMotherMobile'),
                 'M_EMAIL' => $this->input->post('txtMotherEmail'),
                 'M_PROFESSION' => $this->input->post('txtMotherProfession'),
@@ -169,6 +170,7 @@ class My_admission_model extends CI_Model {
             'F_EMAIL' => $this->input->post('txtFatherEmail'),
             'F_PROFESSION' => $this->input->post('txtFatherProfession'),
             'MOTHER' => $this->input->post('txtMotherName'),
+            'CATEGORY'=> $this->input->post('cmbCategory'),
             'M_MOBILE' => $this->input->post('txtMotherMobile'),
             'M_EMAIL' => $this->input->post('txtMotherEmail'),
             'M_PROFESSION' => $this->input->post('txtMotherProfession'),
@@ -345,7 +347,7 @@ class My_admission_model extends CI_Model {
     }
 
     function get_admission_detail_1($regid_){
-        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
+        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session e', 'b.CLASS_OF_ADMISSION=e.CLSSESSID');
@@ -370,6 +372,16 @@ class My_admission_model extends CI_Model {
         $this->db->where('regid', $regid_);
         $query = $this->db->get('register_sibling');
         return $query->row();   
+    }
+    function get_category(){
+        $this->db->where('CATEGORY', 'CATEG');
+        $query = $this->db->get('master_16_discount');
+        return $query->result();
+    }
+    function get_student_category($regid){
+        $this->db->where('CATEGORY', $regid);
+        $query = $this->db->get('master_7_stud_personal');
+        return $query->result();
     }
     function _db_error(){
         //exception handling ------------------

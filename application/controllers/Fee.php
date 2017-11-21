@@ -20,6 +20,13 @@ class Fee extends CI_Controller {
         $data['prev_invoice'] = $this->fm->check_previous_invoice_generation($class__);
         echo json_encode($data);
     }
+    function check_selected_month_year_invoice(){
+        $class__ = $this->input->post('cmbClassForInvoice');
+        $yr_from = $this->input->post('cmbYearFromForInvoice');
+        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+        $data['check_selected_year_month_'] = $this->fm->check_previous_invoice($class__, $yr_from, $mnth_from);
+        echo json_encode($data);
+    }
     function show_invoice_needs_to_be_generated() {
         $class__ = $this->input->post('cmbClassForInvoice');
         $yr_from = $this->input->post('cmbYearFromForInvoice');
@@ -37,6 +44,15 @@ class Fee extends CI_Controller {
     }
 
     function generateInvoice(){
+        /**//*
+        $class__ = '405';
+        $yr_from = '2017';
+        $mnth_from = 9;
+        $yr_to = '2018';
+        $mnth_to = 8;
+        $regid_ = '2017041078';
+        /**/
+
         $class__ = $this->input->post('cmbClassForInvoice');
         $yr_from = $this->input->post('cmbYearFromForInvoice');
         $mnth_from = $this->input->post('cmbMonthFromForInvoice');
@@ -44,9 +60,12 @@ class Fee extends CI_Controller {
         $mnth_to = $this->input->post('cmbMonthToForInvoice');
         $regid_ = $this->input->post('regid');
 
+        /**/
+
         $no_of_months = $this->calculate_no_months($yr_from, $mnth_from, $yr_to, $mnth_to);
         
-        $data['status'] = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
+        $data = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
+        echo json_encode($data);
     }
 
     function calculate_no_months($yrfrom, $mnthfrom, $yr2, $mnth2){

@@ -131,6 +131,7 @@ $(function(){
 				fillStates('cmbPState');
 				fillStates('cmbCState');
 				fillSiblings();
+				reset_discount_form();
 			// --------------------
 		}
 		$('#reload_me').click(function(){
@@ -214,6 +215,10 @@ $(function(){
 									$('#show_siblings').html($('#show_siblings').html()+design_cover_for_sibling_representation(arrSibling[i]));
 								}
 							}
+						}
+						if(jQuery.isEmptyObject(obj.personal_academics) == false){
+							$('#cmbCategory').val(obj.personal_academics.CATEGORY);
+							$('#s2id_cmbCategory span').text(obj.personal_academics.CATEGORY);
 						}
 						hide_loading_process();
 					}, error: function(xhr, status, error){
@@ -310,6 +315,8 @@ $(function(){
 						str_html = str_html + '</td>';
 						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
 						str_html = str_html + obj.discounts[i].STATUS_;
+						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
+						str_html = str_html + obj.discounts[i].CATEGORY;
 						str_html = str_html + '</td>';
 						str_html = str_html + '<td style="text-align: left" class="taskDesc">';
 						str_html = str_html + obj.discounts[i].AMOUNT;
@@ -385,6 +392,7 @@ $(function(){
 						$('#discount_head').addClass('edit_color_head');
 						$('#txtItem').addClass('edit_color_content');
 						$('#s2id_cmdStatus span').addClass('edit_color_content');
+						$('#s2id_cmdCategory span').addClass('edit_color_content');
 						$('#txtAmount').addClass('edit_color_content');
 						$('#txtDesc').addClass('edit_color_content');
 						$('#update_master_Discount').val('Update');
@@ -398,6 +406,8 @@ $(function(){
 
 						$('#cmdStatus').val(obj.STATUS_);
 						$('#s2id_cmdStatus span').text(obj.STATUS_);
+						$('#cmbCategory').val(obj.CATEGORY);
+						$('#s2id_cmbCategory span').text(obj.CATEGORY);
 						$('#txtAmount').val(obj.AMOUNT);
 						$('#txtDesc').val(obj.DESC_);
 						$('#txtItem').focus();
@@ -430,6 +440,9 @@ $(function(){
 			$('#cmdStatus').val('x');
 			$('#s2id_cmdStatus span').removeClass('edit_color_content');
 			$('#s2id_cmdStatus span').text('Select Status');
+			$('#cmbCategory').val('GENERAL');
+			$('#s2id_cmbCategory span').removeClass('edit_color_content');
+			$('#s2id_cmbCategory span').text('GENERAL');
 			$('#txtAmount').removeClass('edit_color_content');
 			$('#txtDesc').removeClass('edit_color_content');
 			$('#update_master_Discount').val('Add');
@@ -1109,19 +1122,19 @@ $(function(){
 	    
 		$('#cmbClassForInvoice').change(function(){
 			var year_upto=0, month_upto=0;
+			var global_bool;
 			$('#show_message').css('display', 'none');
 			$('#show_message').html("");
-			data_ = $('#cmbClassForInvoice').serialize();
+			data_ = $('#frmInvoice').serialize();
 	        if($('#cmbClassForInvoice').val()!='x'){
-	            url__1 = site_url_ + "/fee/fetch_last_invoice_month";
+	            url__1 = site_url_ + "/fee/check_selected_month_year_invoice";
                 $.ajax({
                     type : 'POST',
                         url : url__1,
                         data : data_,
                         success : function(data){
-                            var obj = JSON.parse(data);
-                            $('#show_message').css('display', 'block');
-					        $('#show_message').html(obj.prev_invoice.msg);
+                            var objPrevInvoice = JSON.parse(data);
+                            global_bool = objPrevInvoice.check_selected_year_month_.bool_;
                         }, error: function(xhr, status, error){
 							callDanger(xhr.responseText);
 						}
@@ -1154,7 +1167,7 @@ $(function(){
 				                    var obj = JSON.parse(data);
 				                    $('#show_message').css('display', 'block');
 				                    $('#show_message').html(obj.prev_invoice_generated_month_year.msg);
-
+				                    //if(global_bool == false){ if does not want to see the already generated invoice
 					                    //str_html = str_html + obj.previous_invoice.length;
 					                    str_html = str_html + '<table class="table table-bordered table-striped">';
 		                    			str_html = str_html + '<tbody>';
@@ -1182,7 +1195,7 @@ $(function(){
 					                            str_html = str_html + "<tr style='background: #ffffff'>";
 					                            str_html = str_html + "<td colspan='6' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
 					                            str_html = str_html + "<div style='float: left'><b>Note: </b>Generate/ Print Invoice for "+total_months+" month(s). </div></td>"
-					                            str_html = str_html + "<td colspan='2' style='text-align: right; vertical-align: middle'><a href='#' class='btn btn-danger' id='generate_invoice'> <i class='icon-lock' title='Generate Invoice'></i> Generate Invoice</a></td></tr>";
+					                            str_html = str_html + "<td colspan='2' style='text-align: right; vertical-align: middle'></td></tr>";
 					                            str_html = str_html + "<tr>";
 					                            
 					                            str_html = str_html + "<tr class='gradeX'>";
@@ -1193,7 +1206,7 @@ $(function(){
 					                                str_html = str_html + "<th style='text-align: right !important'>Amount</th>";
 					                            str_html = str_html + "<th width='100' style='text-align: right !important'>Total Fee</th>";
 					                            str_html = str_html + "<th width='100' style='text-align: center !important'>Invoice</th>";
-					                            str_html = str_html + "<th width='100' style='text-align: center !important'>Pay Fee</th>";
+					                            str_html = str_html + "<th width='100' style='text-align: center !important'>Undo Invoice</th>";
 					                            str_html = str_html + "</tr>";
 					                        for(loop1=0;loop1<obj.fetch_class_students.length; loop1++){
 					                        	invoice_already_generated = false;
@@ -1232,10 +1245,10 @@ $(function(){
 					                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText' title='"+totalFixHeadsAmount+" + "+total_flexiAmount+"'>"+totalAmount+"</span></td>";
 					                            if(invoice_already_generated == true){
 					                            	str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></td>";
-					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-pencil' title='Delete Invoice'></i></a></td>";
+					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undo_"+obj.fetch_class_students[loop1].regid+"'></i></span></td>";
 					                        	} else {
 					                        		str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><span class='generate_invoice' id='"+obj.fetch_class_students[loop1].regid+"'><i class='icon-lock' title='Generate Invoice'></i></span></td>";
-					                        		str_html = str_html + "<td></td>";
+					                        		str_html = str_html + "<td style='text-align: center !important' class='place_for_undo' id='place_for_undo_"+obj.fetch_class_students[loop1].regid+"'></td>";
 					                        	}
 					                            str_html = str_html + "</tr>";
 					                        }
@@ -1246,12 +1259,16 @@ $(function(){
 				                            str_html = str_html + "</tr>";
 					                    } else {
 					                    	$('#total_students').html('');
-					                        str_html = "<div style='text-align: center; padding: 5px'><b>No Fee</b> adjusted for the <b>class</b> yet.</div>";
+					                        str_html = "<div class='rear_message'><i class='icon-ban-circle'></i> <b>No Fee</b> adjusted for the <b>class</b> yet.</div>";
 					                    }
 					                    str_html = str_html + '</tbody>';
 		                				str_html = str_html + '</table>';
 					                    $("#class_invoices_here").html(str_html);
 					                    hide_loading_process();
+					                //} else {
+					                	//hide_loading_process();
+					                	//$("#class_invoices_here").html("<div class='rear_message'><i class='icon-ban-circle'></i> Invoice for the selected (<b>year from &amp; month from</b>) was already generated. </div>");
+					                //}
 				                },
 				                error: function (xhr, ajaxOptions, thrownError) {       
 				                    //alert(xhr.responseText);
@@ -1263,7 +1280,7 @@ $(function(){
 				            });
 			        	}
 			        } else {
-			            $("#class_invoices_here").html("<div style='text-align: center; padding: 5px'><b>Year-from</b> should be less than or equals to <b>Year-to</b></div>");
+			            $("#class_invoices_here").html("<div class='rear_message'><i class='icon-ban-circle'></i> <b>Year-from</b> should be less than or equals to <b>Year-to</b></div>");
 			        }
 		        } else {
 		            $("#class_invoices_here").html("");
@@ -1281,13 +1298,22 @@ $(function(){
             	url:url_,
             	data:data_,
             	success: function(data){
-            		$('#'+regid_+"_for_invoice_print").html("<span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span>");
+            		var obj = JSON.parse(data);
+            		if(obj.bool__ == 3){
+            			callDanger(obj.msg_);
+            		} else {
+            			$('#'+regid_+"_for_invoice_print").html("<span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span>");
+            			$('#place_for_undo_'+regid_).html("<span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undo_"+regid_+"'></i></span>");
+            		}
             		hide_loading_process();
             	},
             	error: function (xhr, ajaxOptions, thrownError) {       
                     callDanger(xhr.responseText);
                 }
             });
+		});
+		$('body').on('click', '.undoinvoice', function(){
+			alert(this.id);
 		});
 		function calculate_no_months(yrfrom, mnthfrom, yr2, mnth2){
 	        yrfrom = parseInt(yrfrom);

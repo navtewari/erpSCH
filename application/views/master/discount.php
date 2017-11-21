@@ -32,7 +32,25 @@
                                     <h5 id="discount_head">Add Discount</h5>
                                 </div>
                                 <div class="widget-content" style="overflow: hidden">
-                                    <div class="control-group">
+                                    <div class="control-group span4">
+                                        <label class="control-label">Category</label>
+                                        <div class="controls">
+                                            <?php
+                                                $data = array(
+                                                    'class' => 'span12 text',
+                                                    'name' => 'cmbCategory',
+                                                    'id' => 'cmbCategory',
+                                                    'required' => 'required'
+                                                );
+                                                $options = array();
+                                                $options['x'] = 'Select Category';
+                                                $options['OTHER'] = 'OTHER';
+                                                $options['CATEG'] = 'CATEGORY';
+                                            ?>
+                                            <?php echo form_dropdown($data, $options, ''); ?>
+                                        </div>
+                                    </div>
+                                    <div class="control-group span8">
                                         <label class="control-label">Item for discount</label>
                                         <div class="controls">
                                             <?php
@@ -129,7 +147,7 @@
                         <div class="controls span7">
                             <div class="widget-box">
                                 <div class="widget-title"> <span class="icon"><i class="icon-time"></i></span>
-                                    <h5>Existing Discounts</h5>
+                                    <h5>Existing Discounts/ Category discounts</h5>
                                 </div>
                                 <div class="widget-content nopadding">
                                     <table class="table table-striped table-bordered">
@@ -137,6 +155,7 @@
                                             <tr>
                                                 <th style="text-align: left">Discounted Item</th>
                                                 <th style="text-align: left">Status</th>
+                                                <th style="text-align: left">Category of Discount</th>
                                                 <th style="text-align: left">Amt/ Percentage</th>
                                                 <th style="text-align: left">Description</th>
                                                 <th style="text-align: left">Action</th>
@@ -147,6 +166,7 @@
                                                 <tr class="gradeX">
                                                     <td class="taskDesc"><i class="icon-info-sign"></i> <?php echo $discountItems->ITEM_;?></td>
                                                     <td class="taskDesc"><?php echo $discountItems->STATUS_;?></td>
+                                                    <td class="taskDesc"><?php echo $discountItems->CATEGORY;?></td>
                                                     <td class="taskDesc"><?php echo $discountItems->AMOUNT;?></td>
                                                     <td class="taskDesc"><?php echo $discountItems->DESC_;?></td>
                                                     <td class="taskDesc">

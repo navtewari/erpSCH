@@ -80,6 +80,7 @@
                     <li class="<?php echo $Parents;?>"><a data-toggle="tab" href="#Parents">Parent's Detail</a></li>
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#Address">Address</a></li>
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#siblings">Any Sibling(s) ?</a></li>
+                    <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#category">Category</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -94,6 +95,9 @@
                 </div>
                 <div id="siblings" class="tab-pane<?php echo $siblings;?>">
                     <?php $this->load->view('reg_adm/tabs/anysiblings'); ?>
+                </div>
+                <div id="category" class="tab-pane<?php echo $category;?>">
+                    <?php $this->load->view('reg_adm/tabs/category'); ?>
                 </div>
             </div>
         </div>

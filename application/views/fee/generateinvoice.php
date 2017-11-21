@@ -7,6 +7,7 @@
     .highlightText{ color: #555555 !important; font-weight: bold }
     .generate_invoice{ background: #f0f0f0; color: #ff0000; padding: 2px 5px; border-radius: 5px; font-size: 15px; }
     .print_invoice {background: #f0f0f0; color: #009000; padding: 2px 5px; border-radius: 5px; font-size: 15px;}
+    .rear_message{color:#ff0000; text-align: center; padding: 3px;}
 </style>
 <div class="widget-box">
     <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>

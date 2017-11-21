@@ -14,6 +14,7 @@ class My_discount_model extends CI_Model {
     function submit_discount(){
     	$item_ = strtoupper($this->input->post('txtItem'));
     	$status_ = $this->input->post('cmdStatus');
+        $category = $this->input->post('cmbCategory');
     	$amount_ = $this->input->post('txtAmount');
     	$desc_ = $this->input->post('txtDesc');
 
@@ -27,6 +28,7 @@ class My_discount_model extends CI_Model {
     			$Discount = array(
 	    			'ITEM_' => $item_,
 	    			'STATUS_' =>$status_,
+                    'CATEGORY'=>$category,
 	    			'AMOUNT' =>$amount_,
 	    			'DESC_'=>$desc_,
 	    			'DATE_'=> date('Y-m-d H:i:s')
@@ -45,6 +47,7 @@ class My_discount_model extends CI_Model {
     		$Discount = array(
     			'ITEM_' => $item_,
     			'STATUS_' =>$status_,
+                'CATEGORY'=>$category,
     			'AMOUNT' =>$amount_,
     			'DESC_'=>$desc_,
     			'DATE_'=> date('Y-m-d H:i:s')
@@ -64,7 +67,7 @@ class My_discount_model extends CI_Model {
 
     function get_discounts(){
     	$this->db->distinct();
-    	$this->db->select('DID, ITEM_, STATUS_, AMOUNT, DESC_');
+    	$this->db->select('DID, ITEM_, STATUS_, CATEGORY, AMOUNT, DESC_');
     	$query = $this->db->get('master_16_discount');
     	return $query->result();
     }
