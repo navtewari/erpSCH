@@ -1,4 +1,4 @@
-invoice<div class="row-fluid">
+<div class="row-fluid">
     <?php
         $attrib_ = array(
             'class' => 'form-vertical',
@@ -11,7 +11,7 @@ invoice<div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-briefcase"></i> </span>
                 <h5><?php echo $title_;?></h5>
-                <h5 class="show_message" id="show_message">asd</h5>
+                <h5 class="show_message" id="show_message"></h5>
             </div>
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group span2">

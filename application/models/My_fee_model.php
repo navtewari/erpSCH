@@ -44,7 +44,7 @@ class My_fee_model extends CI_Model {
         $query = $this->db->get('fee_6_invoice');
         if($query->num_rows()!=0){
             $R = $query->row();
-            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*');
+            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, C.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT');
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
             $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
@@ -52,8 +52,9 @@ class My_fee_model extends CI_Model {
             $this->db->where('a.YEAR_TO',$R->YEAR_TO);
             $this->db->where('a.MONTH_TO',$R->MONTH_TO);
             $this->db->from('fee_6_invoice a');
-            $this->db->join('master_7_stud_personal b', 'a.REGID=b.regid');
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->join('fee_6_invoice_detail c', 'a.INVID = c.INVID');
+            $this->db->join('master_7_stud_personal b', 'c.REGID=b.regid');
+            $this->db->order_by('cast(c.REGID AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
             $data = $query->result();
         } else {
@@ -200,6 +201,7 @@ class My_fee_model extends CI_Model {
                     'DESCRIPTION_IFANY' => 'X',
                     'REGID'=>$regid_,
                     'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
+                    'PREV_DUE_AMOUNT'=>$due_amount,
                     'DUE_AMOUNT'=>$total_amount_due,
                     'DATE_'=> date('Y-m-d H:i:s')
                 );
@@ -402,6 +404,7 @@ class My_fee_model extends CI_Model {
         }
         return $data;
     }
+
     function fetch_static_heads_to_class($class__, $regid_){
         $data['static_heads_to_class'] = $this->get_static_heads_to_class($class__);
         $_static_heads__ = '';
@@ -508,6 +511,31 @@ class My_fee_model extends CI_Model {
             $bool_ = 0;
         }
         return $bool_;
+    }
+
+    function get_student_receipt($invdetid_, $clssessid){
+
+            $this->db->select('d.REGID, b.FNAME, b.MNAME, b.LNAME, b.GENDER, b.FATHER, b.CATEGORY, a.*, c.CLASSID, d.INVDETID, d.STATIC_HEADS_1_TIME, d.STATIC_SPLIT_AMT_1_TIME, d.STATIC_HEADS_N_TIMES, d.STATIC_SPLIT_AMT_N_TIME, d.FLEXIBLE_HEADS_1_TIME, d.FLEXI_SPLIT_AMT_1_TIME, d.FLEXIBLE_HEADS_N_TIMES, d.FLEXI_SPLIT_AMT_N_TIMES, d.ACTUAL_AMOUNT, d.DESCRIPTION_IFANY, d.ACTUAL_DUE_AMOUNT, d.PREV_DUE_AMOUNT, d.DUE_AMOUNT, d.DATE_');
+            $this->db->where('a.CLSSESSID', $clssessid);
+            $this->db->where('d.INVDETID', $invdetid_);
+            $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+            $this->db->from('fee_6_invoice a');
+            $this->db->join('fee_6_invoice_detail d', 'a.INVID = d.INVID');
+            $this->db->join('master_7_stud_personal b', 'd.REGID = b.regid');
+            $this->db->join('class_2_in_session c', 'a.CLSSESSID = c.CLSSESSID');
+            $query = $this->db->get();
+            
+        return $query->result();
+    }
+    function get_specific_sibling_for_fee_discount($regid_){
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('register_sibling');
+        return $query->row();
+    }
+    function get_student_discount($item_){
+        $this->db->where('ITEM_', $item_);
+        $query = $this->db->get('master_16_discount');
+        return $query->row();
     }
     // ---------------------------
 

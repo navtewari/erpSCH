@@ -6,15 +6,11 @@ class Fee extends CI_Controller {
     function __construct() {
         parent::__construct();    
         $this->load->model('my_model', 'mm');    
+        $this->load->model('my_admission_model', 'mam');
         $this->load->model('My_master_fee_model', 'mmm');
         $this->load->model('My_fee_model', 'fm');
     }
 
-    function show_class_for_receipt(){
-        $class__ = $this->input->post('cmbClassForInvoice');
-        $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_for_receipt($class__);
-        echo json_encode($data);
-    }
     function fetch_last_invoice_month(){
         $class__ = $this->input->post('cmbClassForInvoice');
         $data['prev_invoice'] = $this->fm->check_previous_invoice_generation($class__);
@@ -83,5 +79,68 @@ class Fee extends CI_Controller {
             $total = 0;
         }
         return $total;
+    }
+
+    function show_class_for_receipt(){
+        $class__ = $this->input->post('class_in_session_for_Receipt');
+        $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_for_receipt($class__);
+        $data['fetch_class_students'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'), $class__);
+        echo json_encode($data);
+    }
+    function show_student_data_for_receipt(){
+        $invdetid_ =  $this->input->post('invdetid');
+        $clssessid = $this->input->post('clssessid');
+        $regid_ = $this->input->post('regid_');
+        $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
+        $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
+        if(count($data['sibling_discount']) != 0){
+            $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+        } else {
+            $data['fetch_discount_data'] = NULL;
+        }
+        if($data['fetch_receipt_data'][0]->CATEGORY != ''){
+            $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
+        } else {
+            $data['fetch_category_discount_data'] = NULL;
+        }
+        //$invid = $data['fetch_receipt_data'][0]->INVID;
+        $data['date_'] = array(date('d/m/Y')); 
+        $data['sch_name'] = array(_SCHOOL_);
+        $data['sch_address'] = array(_ADDRESS_);
+        $data['sch_contact'] = array(_CONTACT_);
+        $data['sch_email'] = array(_EMAIL_);
+        echo json_encode($data);
+    }
+    function createReceipt(){
+        //echo $this->input->post('cmbPaymentMode');
+        $rid = $this->fm->submitfee();
+
+        if($rid != 'x'){
+            $data['receipt_link'] =  array("<div style='float: right; color: #ff0000; padding: 0px 0px 0px 0px'><a href='".site_url('fee/fee_print/'.$rid)."' class='btn btn-danger' target='_blank'>Print Fee</a></div>");
+            $data['receipt_msg'] = array("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>Fee Submitted Successfully.</div>");
+            $data['receipt_id'] = array($rid);
+        } else {
+            $data['receipt_link'] = array('');
+            $data['receipt_msg'] = array("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>Fee can't be submitted as no due amount is left in current invoice.</div>");
+            $data['receipt_id'] = array($rid);
+        }
+        echo json_encode($data);
+    }
+    function fee_print($receipt_id){
+        $this -> check_login();
+
+        $data['breadCrumb'] = 'Receipt';
+        $data['title'] = 'Print Receipt';
+
+        $data['date_'] = array(date('d/m/Y')); 
+        $data['sch_name'] = _SCHOOL_;
+        $data['sch_address'] = _ADDRESS_;
+        $data['sch_contact'] = _CONTACT_;
+        $data['sch_email'] = _EMAIL_;
+
+
+        $data['receipt'] = $this->fm->get_receipt($receipt_id);
+
+        $this -> load -> view('fees/feereceipt', $data);
     }
 }

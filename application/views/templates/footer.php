@@ -12,7 +12,7 @@
 <script src="<?php echo base_url('assets_/js/jquery.gritter.min.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/bootstrap-colorpicker.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-datepicker.js');?>"></script> 
-<script src="<?php echo base_url('assets_/js/jquery.toggle.buttons.js');?>"></script> 
+<!--script src="<?php echo base_url('assets_/js/jquery.toggle.buttons.js');?>"></script--> 
 <script src="<?php echo base_url('assets_/js/masked.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.uniform.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/select2.min.js');?>"></script> 
@@ -49,6 +49,13 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+    if (!isChrome){
+        document.getElementById("doc__").innerHTML = "<div style='padding: 25px; text-align: center; font-size: 25px; color: #900000; font-weight: bold'>- Please switch to <span style='color: #ff0000'>google { chrome } browser</span> to use this school application. -</div>"; 
+    } 
 </script>
 </body>
 </html>

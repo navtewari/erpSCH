@@ -32,7 +32,7 @@
         <link  rel="stylesheet" href="<?PHP echo base_url() . 'assets_/multiSelect/css/style.css'; ?>">
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>" />
     </head>
-    <body>
+    <body id="doc__">
         <div style="text-align: center; width: 100%">
             <div id="loading_process" style="font-weight: bold; font-family: verdana; display: inline-block; opacity: 0; left:auto; right: auto; position: fixed; min-width: 100px; width: auto; height: auto; border-radius: 5px; padding: 5px; background: #F0F0F0; border: #808080 dotted 1px; color: 000000; margin-top: 2%; z-index: 99999"></div>
         </div>

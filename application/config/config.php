@@ -504,3 +504,11 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+define('_SCHOOL_', "SCHOOL NAME, CITY");
+define('_SCHOOL_ABREV_', "SCH");
+define('_ADDRESS_', "ABC Phase 2, XYZ Nagar, Haldwani - 263139, UK");
+define('_CONTACT_', "9760020667, 9690173666");
+define('_EMAIL_', "nitin.d12@gmail.com, info@gmail.com");
+define('_logo_1', 'logo.jpg');
+define('_logo_2', 'logo.jpg');

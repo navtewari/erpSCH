@@ -8,9 +8,9 @@ class Web extends CI_Controller {
         parent::__construct();
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
-        $this->load->model('My_master_fee_model', 'mmm');
+        $this->load->model('my_master_fee_model', 'mmm');
         $this->load->model('my_discount_model', 'mdm');
-        $this->load->model('My_fee_model', 'fm');
+        $this->load->model('my_fee_model', 'fm');
     }
 
     public function dashboard($active = 1, $subno = 1, $submenu = 'index') {
@@ -103,7 +103,12 @@ class Web extends CI_Controller {
                 $data['page_'] = 'fee';
                 $data['title_'] = 'Manage Invoice';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
-                $data['fetch_month'] = array(1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July', 8=>'August', 9=>'September', 10=>'October', 11=>'November', 12=>'December');
+                $data['fetch_month'] = $this->getMonths();
+                break;
+            case 13:
+                $data['page_'] = 'fee';
+                $data['title_'] = 'Pay Fee';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
             default:
                 $data['page_'] = 'erorrs';
@@ -121,6 +126,11 @@ class Web extends CI_Controller {
         $nextyr = date('y')+1;
         $live_ = $thisyr . "-" . $nextyr;
         $this->session->set_userdata('live__' , $live_);
+    }
+
+    function getMonths(){
+        $data = array(1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July', 8=>'August', 9=>'September', 10=>'October', 11=>'November', 12=>'December');
+        return $data;
     }
 
 }

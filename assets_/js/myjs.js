@@ -1145,7 +1145,7 @@ $(function(){
                 var month_from = parseInt($('#cmbMonthFromForInvoice').val(),10);
                 var year_to = parseInt($('#cmbYearToForInvoice').val(),10);
                 var month_to = parseInt($('#cmbMonthToForInvoice').val(),10);
-                var total_amount_for_class = 0;;
+                var total_amount_for_class = 0;
                 //-------------------
                 //alert(year_from + " - " + month_from + " - " + year_to + " - " + month_to + " - " + $('#cmbClassForInvoice').val());
 
@@ -1316,27 +1316,577 @@ $(function(){
 			alert(this.id);
 		});
 		function calculate_no_months(yrfrom, mnthfrom, yr2, mnth2){
-	        yrfrom = parseInt(yrfrom);
-	        mnthfrom = parseInt(mnthfrom);
-	        yr2 = parseInt(yr2);
-	        mnth2 = parseInt(mnth2);
-	        if(yrfrom<yr2){
-	            count_1 = 12 - mnthfrom;
-	            count_2 = mnth2 - 1;
-	            total = count_1 + count_2 + 2;
-	        } else if(yrfrom == yr2){
-	            if(mnthfrom<=mnth2){
+		        yrfrom = parseInt(yrfrom,10);
+		        mnthfrom = parseInt(mnthfrom,10);
+		        yr2 = parseInt(yr2,10);
+		        mnth2 = parseInt(mnth2,10);
+		        if(yrfrom<yr2){
+		            count_1 = 12 - mnthfrom;
+		            count_2 = mnth2 - 1;
+		            total = count_1 + count_2 + 2;
+		        } else if(yrfrom == yr2){
+		            if(mnthfrom<=mnth2){
 
-	                total = mnth2 - mnthfrom + 1;
-	            } else {
-	                total = 0;
-	            }
-	        }
-	        return total;
-	    }
-		// --------------------------------------------------
-		
+		                total = mnth2 - mnthfrom + 1;
+		            } else {
+		                total = 0;
+		            }
+		        }
+		        return total;
+		    }
+			// --------------------------------------------------
+
+			// Paying Fee & Receipt code below
+			$('#class_in_session_for_Receipt').change(function(){
+	        	if($('#class_in_session_for_Receipt').val() != ""){
+		            class_ = $('#class_in_session_for_Receipt').find('option:selected').text();
+		            data_ = $('#class_in_session_for_Receipt').serialize();
+		            url_ = site_url_ + "/fee/show_class_for_receipt";
+
+		            loading_process();
+		            $.ajax({
+		                type : 'POST',
+		                url : url_,
+		                data : data_,
+		                success : function(data){
+		                	var tot_fixAmount_1_time = 0, tot_fixAmount_n_time = 0, fixHeads_1='',fixHeads_n='';
+		                    var obj = JSON.parse(data);
+		                    var len_ = obj.fetch_invoice_for_receipt.length;
+		                    
+		                    if(len_ != 0){
+		                    	var total_months= parseInt(obj.fetch_invoice_for_receipt[0].NOM,10);
+			                    var str_html 	= '';
+			                    // For static or fix heads '1' and 'n' times
+			                    var fixheads_1_time = obj.fetch_invoice_for_receipt[0].STATIC_HEADS_1_TIME;
+			                    if(fixheads_1_time != ''){
+			                    	var fixamt_1_time = obj.fetch_invoice_for_receipt[0].STATIC_SPLIT_AMT_1_TIME;
+			                    	var fixH1 = fixheads_1_time.split(',');
+			                    	var fixH1_amt = fixamt_1_time.split(',');
+			                    	for(i=0; i<fixH1.length;i++){
+			                    		fixHeads_1 = fixHeads_1 + "<div class='fee_heads_static' title='"+parseInt(fixH1_amt[i],10)+"'>"+fixH1[i]+'</div>';
+			                    		tot_fixAmount_1_time = tot_fixAmount_1_time + parseInt(fixH1_amt[i],10);
+			                    	}
+			                	} else {
+			                		fixHeads_1 = '';
+			                	}
+
+			                	var fixheads_n_times = obj.fetch_invoice_for_receipt[0].STATIC_HEADS_N_TIMES;
+			                    if(fixheads_n_times != ''){
+				                    var fixamt_n_time = obj.fetch_invoice_for_receipt[0].STATIC_SPLIT_AMT_N_TIME;
+				                    var fixHn = fixheads_n_times.split(',');
+				                    var fixHn_amt = fixamt_n_time.split(',');
+			                    	for(i=0;i<fixHn.length;i++){
+			                    		fixHeads_n = fixHeads_n + "<div class='fee_heads_static' title='"+parseInt(fixHn_amt[i],10)+"'>"+fixHn[i]+'</div>';
+			                    		tot_fixAmount_n_time = tot_fixAmount_n_time + parseInt(fixHn_amt[i],10);	
+			                    	}
+			                    	tot_fixAmount_n_time = parseInt(parseInt(tot_fixAmount_n_time,10)*total_months,10);
+				                } else {
+				                	fixHeads_n = '';
+				                }
+
+				                var totalFixHeadsAmount =  parseInt(tot_fixAmount_n_time,10) + parseInt(tot_fixAmount_1_time,10);
+			                    // -----------------------
+
+		                    	// Fetching Period data from the first record as period is same for all the records fetched
+		                    	var year_from 	= obj.fetch_invoice_for_receipt[0].YEAR_FROM;
+                				var month_from 	= obj.fetch_invoice_for_receipt[0].MONTH_FROM;
+                				var year_to 	= obj.fetch_invoice_for_receipt[0].YEAR_TO;
+                				var month_to 	= obj.fetch_invoice_for_receipt[0].MONTH_TO;
+                				// ----------------------------------------------------------------------------------------
+
+		                        str_html = str_html + '<table class="table table-bordered table-striped">';
+	                    		str_html = str_html + '<tbody>';
+		                        $('#class_here_for_fee').html(class_);
+		                        $('#total_students_payfee').html(len_+ " student(s) can pay fee");
+		                        
+		                        str_html = str_html + "<tr style='background: #ffffff'>";
+	                            str_html = str_html + "<td colspan='6' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads_1+fixHeads_n+'<div style="clear: both"></div>';
+	                            str_html = str_html + "<div style='float: left'>Note: Collection of FEE for "+total_months+" month(s) i.e. ["+get_months(month_from)+", "+year_from+" -to- "+get_months(month_to)+", "+year_to+"]";
+	                            str_html = str_html + "</td>";
+	                            str_html = str_html + "<td colspan='2' style='text-align: right; vertical-align: middle'></td></tr>";
+	                            str_html = str_html + "<tr>";
+	                            
+	                            str_html = str_html + "<tr class='gradeX'>";
+	                            str_html = str_html + "<th>Registration No</th>";
+	                            str_html = str_html + "<th>Name</th>";      
+	                            str_html = str_html + "<th style='text-align: right !important'>Fix Fee Amount</th>";
+                                str_html = str_html + "<th style='min-width: 100px; max-width: 200px'>Opted Fee</th>";
+                                str_html = str_html + "<th style='text-align: right !important'>Amount</th>";
+	                            str_html = str_html + "<th width='100' style='text-align: right !important'>Previous Dues</th>";
+	                            str_html = str_html + "<th width='80' style='text-align: right !important'>Total Dues</th>";
+	                            str_html = str_html + "<th width='100' style='text-align: center !important'>Pay Fee</th>";
+	                            str_html = str_html + "</tr>";
+	                            
+	                            var total_amount_for_class = 0;
+
+ 		                        for(loop1=0;loop1<obj.fetch_class_students.length; loop1++){
+ 		                        	var flexifee = '', flexiHeads_1 = '', flexiHeads_n = '';
+			                        var flexiAmount = 0;
+			                        var total_flexiAmount = 0, tot_flexiAmount_1_time = 0, tot_flexiAmount_n_time = 0;
+		                        	var index = findIndex(obj.fetch_class_students[loop1].regid,obj.fetch_invoice_for_receipt);
+
+		                            str_html = str_html + "<tr class='gradeX'>";
+		                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].regid+"</td>";
+		                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].FNAME+"</td>";
+
+		                            if(index != -1){
+		                            		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'>"+totalFixHeadsAmount+"</span></td>";
+			                            	// Calculation of Flexi-Heads and its amount opted-by student individually
+			                            	var due_amount = obj.fetch_invoice_for_receipt[index].DUE_AMOUNT;
+			                            	var prev_dues = obj.fetch_invoice_for_receipt[index].PREV_DUE_AMOUNT;
+			                                var flexiheads_1_time = obj.fetch_invoice_for_receipt[index].FLEXIBLE_HEADS_1_TIME;
+						                    if(flexiheads_1_time != ''){
+						                    	var flexiamt_1_time = obj.fetch_invoice_for_receipt[index].FLEXI_SPLIT_AMT_1_TIME;
+						                    	var flexiH1 = flexiheads_1_time.split(',');
+						                    	var flexiH1_amt = flexiamt_1_time.split(',');
+						                    	for(i=0; i<flexiH1.length;i++){
+						                    		flexiHeads_1 = flexiHeads_1 + "<div class='fee_heads_static' title='"+parseInt(flexiH1_amt[i],10)+"'>"+flexiH1[i]+'</div>';
+						                    		tot_flexiAmount_1_time = tot_flexiAmount_1_time + parseInt(flexiH1_amt[i],10);
+						                    	}
+						                	} else {
+						                		flexiHeads_1 = '';
+						                	}
+						                	
+						                	
+						                	var flexiheads_n_times = obj.fetch_invoice_for_receipt[index].FLEXIBLE_HEADS_N_TIMES;
+						                    
+						                    if(flexiheads_n_times != ''){
+							                    var flexiamt_n_time = obj.fetch_invoice_for_receipt[index].FLEXI_SPLIT_AMT_N_TIMES;
+							                    var flexiHn = flexiheads_n_times.split(',');
+							                    var flexiHn_amt = flexiamt_n_time.split(',');
+						                    	for(i=0;i<flexiHn.length;i++){
+						                    		flexiHeads_n = flexiHeads_n + "<div class='fee_heads_static' title='"+parseInt(flexiHn_amt[i],10)+"'>"+flexiHn[i]+'</div>';
+						                    		tot_flexiAmount_n_time = tot_flexiAmount_n_time + parseInt(flexiHn_amt[i],10);	
+						                    	}
+						                    	tot_flexiAmount_n_time = parseInt(parseInt(tot_flexiAmount_n_time,10)*total_months,10);
+							                } else {
+							                	flexiHeads_n = '';
+							                }
+							                //*/
+			                                // -----------------------------------------------------------------------
+			                                str_html = str_html + "<td>"+flexiHeads_1+flexiHeads_n+"</td>";
+			                                total_flexiAmount = parseInt(tot_flexiAmount_1_time,10)+parseInt(tot_flexiAmount_n_time, 10);
+			                                if(total_flexiAmount != 0){
+			                                	str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'>"+total_flexiAmount+"</span></td>";
+			                            	} else {
+			                            		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'></span></td>";
+			                            	}
+
+
+			                            totalAmount = parseInt(totalFixHeadsAmount,10)+parseInt(total_flexiAmount,10);
+			                            total_amount_for_class = parseInt(total_amount_for_class, 10)+parseInt(totalAmount,10) + parseInt(prev_dues,10);
+
+			                            str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'>"+prev_dues+"</span></td>";
+			                            
+			                            if(due_amount <= 0){
+			                            	str_html = str_html + "<td style='text-align: right !important'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
+			                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-play' style='color: #DE9797'></i></td>";
+			                            } else {
+			                            	str_html = str_html + "<td style='text-align: right !important'><span class='red_' title='"+due_amount+"'>"+due_amount+"</span></td>";
+			                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-play myreceipt' id='pay_fee~"+obj.fetch_invoice_for_receipt[index].INVDETID+"~"+obj.fetch_class_students[loop1].regid+"' style='color: #ff0000'></i></td>";
+			                            }
+
+			                            str_html = str_html + "</tr>";
+		                        	} else {
+		                        		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'></span></td>";
+		                        		str_html = str_html + "<td></td>";
+		                        		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'></span></td>";
+		                        		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext'></span></td>";
+
+		                        		str_html = str_html + "<td style='text-align: center !important'></td>";
+		                        		str_html = str_html + "<td style='text-align: center !important'></td>";
+
+			                            str_html = str_html + "</tr>";
+		                        	}
+		                        }
+
+		                        str_html = str_html + "<tr class='gradeX'>";
+	                            str_html = str_html + "<td colspan='6' style='text-align: right !important'>Total Fee for the class</td>";
+	                            str_html = str_html + "<td style='text-align: right !important; color: #0000ff; font-weight: bold'>"+total_amount_for_class+"</td>";
+	                            str_html = str_html + "<td></td>";
+	                            str_html = str_html + "</tr>";
+		                    	str_html = str_html + '</tbody>';
+	                			str_html = str_html + '</table>';
+			                    $('#class_PayFee_here').html(str_html);
+		                    } else {
+		                        //$('#prev_receipt_month_info').html("");
+		                        $('#class_PayFee_here').html('<div class="rear_message">No Invoice generated for the selected class.</div>');
+		                    }
+			                hide_loading_process();
+		                }, error: function(xhr, status, error){
+		                    callDanger(xhr.responseText);
+		                }
+		            });
+	        	}
+	    	return false;
+	    	});
+			
+			$('body').on('click', '.myreceipt', function(){
+		        var id_ = this.id;
+		        var arr = id_.split('~');
+		        var invdetid = arr[1];
+		        var regid_ = arr[2];
+		        
+		        data_ = "invdetid="+invdetid+"&clssessid="+$('#class_in_session_for_Receipt').val()+"&regid_="+regid_;
+		        url_ = site_url_ + "/fee/show_student_data_for_receipt";
+		        
+		        $.ajax({
+		            type: 'post',
+		            url: url_,
+		            data: data_,
+		            success: function(data){
+		                var obj = JSON.parse(data);
+
+		                var name_ = ((obj.fetch_receipt_data[0].FNAME == "-x-") ? "":obj.fetch_receipt_data[0].FNAME);
+		                name_ = name_ + ((obj.fetch_receipt_data[0].MNAME == "-x-") ? "":" "+obj.fetch_receipt_data[0].MNAME);
+		                name_ = name_ + ((obj.fetch_receipt_data[0].LNAME == "-x-") ? "":obj.fetch_receipt_data[0].LNAME);
+		                
+		                //amount_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT)/parseInt(obj.fetch_receipt_data[0].NOM);
+		                amount_ = parseFloat(obj.fetch_receipt_data[0].DUE_AMOUNT);
+		                pay_amount = obj.fetch_receipt_data[0].DUE_AMOUNT;
+		                actual_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
+		                due_actual = amount_ - parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
+		                
+		                if(due_actual < 0){
+		                    due_actual = 0;
+		                }
+		                var fixed_heads = '';
+		                if(obj.fetch_receipt_data[0].STATIC_HEADS_1_TIME != ''){
+		                	fixed_heads = fixed_heads + obj.fetch_receipt_data[0].STATIC_HEADS_1_TIME;
+		            	}
+		                if(obj.fetch_receipt_data[0].STATIC_HEADS_N_TIMES != ''){
+		                	fixed_heads = fixed_heads + ", " + obj.fetch_receipt_data[0].STATIC_HEADS_N_TIMES;
+		            	}
+
+		            	var flexi_heads = '';
+		                if(obj.fetch_receipt_data[0].FLEXIBLE_HEADS_1_TIME != ''){
+		                	flexi_heads = flexi_heads + obj.fetch_receipt_data[0].FLEXIBLE_HEADS_1_TIME;
+		            	}
+		                if(obj.fetch_receipt_data[0].FLEXIBLE_HEADS_N_TIMES != ''){
+		                	flexi_heads = flexi_heads + ", " + obj.fetch_receipt_data[0].FLEXIBLE_HEADS_N_TIMES;
+		            	}
+		                
+		                // Calculation of discount for category or sibling
+		                	if(obj.sibling_discount != null){
+		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
+		                		var sibling_length = parseInt(sibling_arr.length);
+		                		var discount_sibling_value = obj.fetch_discount_data.AMOUNT;
+
+		                		if(obj.fetch_discount_data.STATUS_ == 'Percentage'){
+		                			var discount_amt = parseInt(parseInt(actual_)*(parseInt(discount_sibling_value)/100));
+		                			var total_discount_amount = parseInt(discount_amt) * sibling_length;
+		                		} else {
+		                			var total_discount_amount = parseInt(discount_sibling_value) * parseInt(sibling_length);
+		                		}
+		                	} else {
+		                		var total_sibling = 0;
+		                		var total_discount_amount = 0;
+		                	}
+		                	if(obj.fetch_category_discount_data != null){
+		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
+		                		if(obj.fetch_category_discount_data.STATUS_ == 'Percentage'){
+		                			var total_categ_discount_amount = parseInt(parseInt(actual_)*(parseInt(categ_discount_amnt)/100));
+		                		} else {
+		                			var total_categ_discount_amount = categ_discount_amnt;
+		                		}
+		                	} else {
+		                		var total_categ_discount_amount = 0;
+		                	}
+		                	var discount_if_any = 0;
+		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_discount_amount) + parseInt(total_categ_discount_amount);
+		                // -----------------------------------------------
+		                var fine_if_any = 0;
+		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
+		                if(total_amount < 0){
+		                    total_amount = 0;
+		                }
+		                var str_html='';
+		                var words = inWords(total_amount);
+
+		                str_html = "<center>";
+		                str_html = str_html + "<form name='frmReceiptCreation' id='frmReceiptCreation'>";
+		                str_html = str_html + "<input type='hidden' name='txtINVID' id='txtINVID' value='"+obj.fetch_receipt_data[0].INVID+"' />";
+		                str_html = str_html + "<input type='hidden' name='txtREGID' id='txtREGID' value='"+obj.fetch_receipt_data[0].REGID+"' />";
+		                str_html = str_html + "<input type='hidden' name='txtFlexiHeads' id='txtFlexiHeads' value='"+flexi_heads+"' />";
+		                str_html = str_html + "<table style='width: 800px; font-size: 13px; font-family: verdana; border:#808080 solid 1px; background: #ffffff' class='table print_me'><tr height='100'>";
+		                str_html = str_html + "<td align='left' style='width: 150px; padding: 0px 0px 0px 8px; vertical-align: middle'>Date: <u>"+obj.date_+"</u></td>";
+		                str_html = str_html + "<td align='center' style='width: 500px;padding: 0px 0px 0px 8px; vertical-align: middle'><h4 align='center'><b>"+obj.sch_name+"</b><br />Receipt</h4></td>";
+		                str_html = str_html + "<td align='right' style='width: 150px;font-size: 13px; padding: 0px 8px 0px 0px; vertical-align: middle'>Receipt No. <span style='border-radius: 5px; border: #000000 solid 1px; padding: 5px;' id='receiptNo'>?</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td colspan='3'>";
+		                str_html = str_html + "<table class='table'>";
+		                str_html = str_html + "<tr><td>";
+		                str_html = str_html + "<table class='table' style='border:#ff0000 solid 0px; width: 360px;'>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td width='100'>Reg. No. </td>";
+		                str_html = str_html + "<td width='260'>: "+obj.fetch_receipt_data[0].REGID+"</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td>Name </td>";
+		                str_html = str_html + "<td>: "+name_+"</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td>Class </td>";
+		                str_html = str_html + "<td>: "+obj.fetch_receipt_data[0].CLASSID+"</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td>Session </td>";
+		                str_html = str_html + "<td>: "+obj.fetch_receipt_data[0].SESSID+"</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td>Father </td>";
+		                str_html = str_html + "<td>: "+obj.fetch_receipt_data[0].FATHER+"</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td colspan='2' style='color: #900000; text-decoration: underline; padding: 10px 0px 0px 0px'>Fee Detail Below:</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr style='background: #f0f0f0; color: #900000'>";
+		                str_html = str_html + "<td>Actual Fee </td>";
+		                str_html = str_html + "<td>: Rs. "+actual_+"/-</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr style='background: #f0f0f0; color: #900000'>";
+		                str_html = str_html + "<td>Previous Due </td>";
+		                str_html = str_html + "<td>: Rs. "+due_actual+"/-</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr style='background: #f0f0f0; color: #900000'>";
+		                str_html = str_html + "<td><b>Total Due</b> </td>";
+		                str_html = str_html + "<td>: <b>Rs. "+amount_+"/-</b></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "</table>";
+		                str_html = str_html + "</td>";
+		                str_html = str_html + "<td>";
+		                str_html = str_html + "<table class='table' style='border-bottom: #000000 solid 1px; border:#ff0000 solid 0px; width: 360px; float: right'>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td width='200px'>Pay <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-plus'></span></td>";
+		                str_html = str_html + "<td width='160px'><label class='receipt_label'>: Rs. </label><span class='receipt_content'><input type='text' id='due_amnt_input' name='due_amnt_input' value="+pay_amount+" style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px' />/-</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
+		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff'>";
+		                str_html = str_html + "Sibling: "+total_discount_amount+" + "+"Category: "+total_categ_discount_amount+".";
+		                str_html = str_html + "</div>";
+		                str_html = str_html + "</td>"
+		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_discount_' name='_discount_' value="+discount_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td style='color: #909000'>Fine? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-plus'></span></td>";
+		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_fine_' name='_fine_' value="+fine_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr style='font-weight: bold'>"
+		                str_html = str_html + "<td>Total </td>";
+		                str_html = str_html + "<td><label class='receipt_label'>: Rs. </label><span class='receipt_content'><span class='total_amnt' id='total_amnt_display'>"+total_amount+"</span><input type='hidden' id='total_amnt' name='total_amnt' value='"+total_amount+"' style='width: 100px; padding: 0px; border:#000000 solid 0px; font-weight: bold' />/-</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>"
+		                str_html = str_html + "<td><input type='button' class='btn btn-danger' style='border-radius: 3px; padding: 1px 3px; font-size: 11px' id='update_total' value='Update' /></td>";
+		                str_html = str_html + "<td style='font-size: 10px; text-align: right; width: 200px'><span id='total_amnt_in_words'>"+words.toUpperCase()+"</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td style='font-size: 13px; color: #0000ff; padding:8px 0px 0px 8px'>Payment Mode </td>";
+		                str_html = str_html + "<td>";
+		                str_html = str_html + ": <select name='cmbPaymentMode' id='cmbPaymentMode' style='color: #0000ff; font-size: 13px; width: 100px'>";
+		                str_html = str_html + "<option value='cash'>Cash</option>";
+		                str_html = str_html + "<option value='cheque'>Cheque</option>";
+		                str_html = str_html + "<option value='DD'>Demand Draft</option>";
+		                str_html = str_html + "</select><br />";
+		                str_html = str_html + "<div style='border-radius: 5px; background: #505050; color: #ffffff; padding: 0px 3px; width: 100%; float: left; display: none; border: #ff0000 solid 0px' id='_noncashdetail'>";
+		                str_html = str_html + "<div style='float: left'>";
+		                str_html = str_html + "<b id='_ccdd_no' style='font-size: 9px'></b> No.<br /><input type='text' style='width: 75px; padding: 0px' name='txtCCDDNumber' id='txtCCDDNumber' />&nbsp;";
+		                str_html = str_html + "</div>";
+		                str_html = str_html + "<div style='float: right'>";
+		                str_html = str_html + "<b id='_ccdd_dt' style='font-size: 9px'></b> Date<br /><input type='text' style='width: 75px; padding: 0px' name='txtCCDDDate' id='txtCCDDDate' />";
+		                str_html = str_html + "</div>";
+		                str_html = str_html + "</div>";
+		                str_html = str_html + "</td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "</table>";
+		                str_html = str_html + "</td></tr>";
+		                
+		                str_html = str_html + "<tr><td colspan='2'>";
+		                str_html = str_html + "<label>Any Remark?</label><div style='clear: both'></div><textarea name='txtDesc' id='txtDesc' style='width: 360px; height:80px' /></textarea>";
+		                str_html = str_html + "</td></tr>";
+		                str_html = str_html + "<tr><td colspan='2' style='font-size: 12px; text-align: center'>";
+		                str_html = str_html + "<b>Address</b>: " + obj.sch_address + "<br />";
+		                str_html = str_html + "<b>Mob.</b>: " + obj.sch_contact + " - ";
+		                str_html = str_html + "<b>Email.</b>: " + obj.sch_email;
+		                str_html = str_html + "</td></tr>";
+		                str_html = str_html + "<tr><td colspan='2' style='font-size: 10px'>";
+		                if(fixed_heads.trim() != ''){
+		                	str_html = str_html + "<sup>*</sup>Fee Heads: "+fixed_heads;
+		            	} else {
+		            		str_html = str_html + "<sup>*</sup>Fee Heads: ";
+		            	}
+		                if(flexi_heads.trim() != ''){
+		                    str_html = str_html + ", "+flexi_heads;
+		                }
+		                str_html = str_html + "</td></tr>";
+		                if(total_amount > 0){
+		                    display_ = 'visibility:visible;';
+		                } else {
+		                    display_ = 'visibility:hidden;';
+		                }
+		                str_html = str_html + "<tr><td colspan='2'>";
+		                str_html = str_html + "<div class='col-sm-5' style='"+display_+"font-size: 10px; text-align: right' id='submit_print'>";
+		                str_html = str_html + "<input type='button' value='Submit Fee' class='btn btn-primary' id='cmbReceiptButton' />";
+		                str_html = str_html + "</div>";
+		                str_html = str_html + "</td></tr></table>";
+		                
+		                str_html = str_html + "</form>";
+		                str_html = str_html + "<center>";
+		                
+		                $('#class_PayFee_here').html(str_html);    
+		                $('#class_in_session_for_Receipt').val("Class");
+		                $('#s2id_class_in_session_for_Receipt span').text("Class");   
+		            }, error: function (xhr, ajaxOptions, thrownError) {       
+	                    $("#class_PayFee_here").append(xhr.responseText);
+	                }
+		        });
+		    });
+			$('body').on('change', '#cmbPaymentMode', function(){
+		        if($('#cmbPaymentMode').val() != 'cash'){
+		            if($('#cmbPaymentMode').val() == 'cheque'){
+		                $('#_ccdd_no').html('Cheque');
+		                $('#_ccdd_dt').html('Cheque');
+		            } else {
+		                $('#_ccdd_no').html('DD');
+		                $('#_ccdd_dt').html('DD');
+		            }
+		            $('#_noncashdetail').css({
+		                'display':'block'
+		            });
+		        } else {
+		            $('#_noncashdetail').css({
+		                'display':'none'
+		            });
+		        }
+		    });
+		    $('body').on('click', '#update_total', function(){
+		        if($.trim($('#due_amnt_input').val()) != '' && $.trim($('#_discount_').val()) != '' && $.trim($('#_fine_').val()) != ''){
+		            var due_amnt = parseInt($('#due_amnt_input').val());
+		            var dis_ = parseInt($('#_discount_').val());
+		            var fine = parseInt($('#_fine_').val());
+		            var total_amnt = (due_amnt + fine) - dis_;
+		            if(total_amnt < 0){
+		                total_amnt = 0;
+		            }
+		            $('#total_amnt').val(total_amnt);
+		            $('#total_amnt_display').html(total_amnt);
+		            words_ = inWords(total_amnt);
+		            $('#total_amnt_in_words').html(words_.toUpperCase());
+		            if(total_amnt > 0){
+		                //desc_ = $('#txtDesc').val();
+		                $('#submit_print').css({'visibility':'visible'});
+		            }
+		        } else {
+		            $('#total_amnt_in_words').html('Please Check all values.');
+		            $('#submit_print').css({'visibility':'hidden'});
+		        }
+		    });
+
+		    $('body').on('keypress', '#actual_amnt_input', function(){
+		        $('#actual_amnt_input').css({'border': '#f0f0f0 solid 1px'});
+		        $('#submit_print').css({'visibility':'hidden'});
+		    });
+		    $('body').on('keypress', '#due_amnt_input', function(){
+		        $('#due_amnt_input').css({'border': '#f0f0f0 solid 1px'});
+		        $('#submit_print').css({'visibility':'hidden'});
+		    });
+		    
+		    $('body').on('keypress', '#_discount_', function(){
+		        $('#_discount_').css({'border': '#f0f0f0 solid 1px'});
+		        $('#submit_print').css({'visibility':'hidden'});
+		    });
+		    $('body').on('keypress', '#_fine_', function(){
+		        $('#_fine_').css({'border': '#f0f0f0 solid 1px'});
+		        $('#submit_print').css({'visibility':'hidden'});
+		    });
+		    $('body').on('click', '#cmbReceiptButton', function(){
+		        if($.trim($('#txtDesc').val()) == ""){
+		            $('#txtDesc').val('x');
+		        }
+		        if($.trim($('#due_amnt_input').val()) == ''){
+		            $('#due_amnt_input').focus();
+		            $('#due_amnt_input').css({'border':'#ff0000 solid 1px'});
+		        } else if($.trim($('#_discount_').val()) == ''){
+		            $('#_discount_').focus();
+		            $('#_discount_').css({'border':'#ff0000 solid 1px'});
+		        } else if($.trim($('#_fine_').val()) == ''){
+		            $('#_fine_').focus();
+		            $('#_fine_').css({'border':'#ff0000 solid 1px'});
+		        } else if($('#cmbPaymentMode').val()!='cash' && $.trim($('#txtCCDDNumber').val()) ==''){
+		            $('#txtCCDDNumber').focus();
+		                $('#txtCCDDNumber').css({'border':'#ff0000 solid 1px'});
+		        } else if($('#cmbPaymentMode').val()!='cash' && $.trim($('#txtCCDDDate').val()) ==''){
+		                $('#txtCCDDDate').focus();
+		                $('#txtCCDDDate').css({'border':'#ff0000 solid 1px'});
+		        } else {
+		            data_ = $('#frmReceiptCreation').serialize();
+		            url_ = site_url_ + "/fee/createReceipt";
+		            $('#submit_print').html('Loading...');
+		            $.ajax({
+		                url: url_,
+		                type: "POST",
+		                data: data_,
+		                success: function(data){
+		                    obj = JSON.parse(data);
+		                    $('#receiptNo').html(obj.receipt_id);
+		                    $('#submit_print').html(obj.receipt_link + obj.receipt_msg);
+		                }, error: function (xhr, ajaxOptions, thrownError) {       
+		                    $("#submit_print").append(xhr.responseText);
+		                }
+		            });
+		        }
+		    return false;
+		    });
+			// -------------------------------
 	// ----------
+	// Common Functions
+		function get_months(num){
+	        data = {
+	                1 : 'January',
+	                2 : 'February',
+	                3 : 'March',
+	                4 : 'April',
+	                5 : 'May',
+	                6 : 'June',
+	                7 : 'July',
+	                8 : 'August',
+	                9 : 'September',
+	                10: 'October',
+	                11: 'November',
+	                12: 'December'
+	            };
+	        return data[num];
+	    }
+
+	    function findIndex(key,arr) {
+		    for(var i=0; i<arr.length; i++) {
+		        if(arr[i].REGID == key) {
+		            return i;
+		        }
+		    }
+		    return -1;
+		}
+
+		var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+		var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+
+		function inWords (num) {
+		    if(num == 0){
+		        str = "ZERO ONLY";
+		    } else {
+		        if ((num = num.toString()).length > 9) return 'overflow';
+		        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+		        if (!n) return; var str = '';
+		        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+		        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+		        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+		        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+		        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only' : '';
+		    }
+		    return str;
+		}
+	// ----------------
 	// Popup boxes
 		function callDanger(message){
 			$.gritter.add({

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2017 at 06:13 PM
+-- Generation Time: Nov 29, 2017 at 07:26 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -599,7 +599,8 @@ INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`
 (426, '2017041425', 0, 424, 'nitin', '0000-00-00 00:00:00', '2017-18'),
 (427, '2017041426', 0, 424, 'nitin', '0000-00-00 00:00:00', '2017-18'),
 (428, '2017041427', 0, 424, 'nitin', '0000-00-00 00:00:00', '2017-18'),
-(429, '2017051251', 0, 424, 'nitin', '2017-07-20 10:30:37', '2017-18');
+(429, '2017051251', 0, 424, 'nitin', '2017-07-20 10:30:37', '2017-18'),
+(433, '2017111451', 0, 406, 'nitin', '0000-00-00 00:00:00', '2017-18');
 
 -- --------------------------------------------------------
 
@@ -1737,7 +1738,10 @@ CREATE TABLE `fee_6_invoice` (
 INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH_FROM`, `YEAR_TO`, `MONTH_TO`, `NOM`, `DESCRIPTION_IFANY`, `DATE_`) VALUES
 (664, '2017-18', 405, '2017', '11', '2017', '11', 1, 'X', '2017-11-21 14:09:38'),
 (665, '2017-18', 405, '2017', '12', '2017', '12', 1, 'X', '2017-11-21 14:36:29'),
-(668, '2017-18', 405, '2017', '9', '2018', '8', 12, 'X', '2017-11-21 17:04:04');
+(669, '2017-18', 409, '2017', '11', '2017', '11', 1, 'X', '2017-11-23 06:05:42'),
+(670, '2017-18', 424, '2017', '11', '2017', '11', 1, 'X', '2017-11-23 06:06:39'),
+(671, '2017-18', 409, '2017', '12', '2018', '2', 3, 'X', '2017-11-23 06:12:48'),
+(672, '2017-18', 406, '2017', '11', '2017', '11', 1, 'X', '2017-11-29 18:24:09');
 
 -- --------------------------------------------------------
 
@@ -1760,6 +1764,7 @@ CREATE TABLE `fee_6_invoice_detail` (
   `DESCRIPTION_IFANY` text NOT NULL,
   `REGID` varchar(25) NOT NULL,
   `ACTUAL_DUE_AMOUNT` int(11) NOT NULL,
+  `PREV_DUE_AMOUNT` int(11) NOT NULL,
   `DUE_AMOUNT` int(11) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1768,30 +1773,50 @@ CREATE TABLE `fee_6_invoice_detail` (
 -- Dumping data for table `fee_6_invoice_detail`
 --
 
-INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, `STATIC_SPLIT_AMT_1_TIME`, `STATIC_HEADS_N_TIMES`, `STATIC_SPLIT_AMT_N_TIME`, `FLEXIBLE_HEADS_1_TIME`, `FLEXI_SPLIT_AMT_1_TIME`, `FLEXIBLE_HEADS_N_TIMES`, `FLEXI_SPLIT_AMT_N_TIMES`, `ACTUAL_AMOUNT`, `DESCRIPTION_IFANY`, `REGID`, `ACTUAL_DUE_AMOUNT`, `DUE_AMOUNT`, `DATE_`) VALUES
-(93, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041041', 10000, 10000, '2017-11-21 14:09:38'),
-(94, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', 'BUS FEE', '1000', 11500.00, 'X', '2017041042', 11500, 11500, '2017-11-21 14:09:40'),
-(95, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041043', 10500, 10500, '2017-11-21 14:09:42'),
-(96, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041044', 10500, 10500, '2017-11-21 14:31:46'),
-(97, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041050', 10000, 10000, '2017-11-21 14:31:49'),
-(98, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041051', 10000, 10000, '2017-11-21 14:31:51'),
-(99, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041041', 10000, 20000, '2017-11-21 14:36:29'),
-(103, 668, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041078', 10000, 10000, '2017-11-21 17:04:04'),
-(104, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041049', 11000, 11000, '2017-11-21 17:06:44'),
-(105, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041048', 10000, 10000, '2017-11-21 17:06:46'),
-(106, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041047', 10000, 10000, '2017-11-21 17:06:47'),
-(107, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041046', 10000, 10000, '2017-11-21 17:06:47'),
-(108, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041045', 10000, 10000, '2017-11-21 17:06:48'),
-(109, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041053', 10000, 10000, '2017-11-21 17:06:50'),
-(110, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041054', 10000, 10000, '2017-11-21 17:06:50'),
-(111, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041055', 11000, 11000, '2017-11-21 17:06:51'),
-(112, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041056', 10000, 10000, '2017-11-21 17:06:52'),
-(113, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041052', 10000, 10000, '2017-11-21 17:06:53'),
-(114, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041057', 10000, 10000, '2017-11-21 17:06:55'),
-(115, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041058', 10000, 10000, '2017-11-21 17:06:55'),
-(116, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041059', 10000, 10000, '2017-11-21 17:06:56'),
-(117, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041081', 10000, 10000, '2017-11-21 17:06:58'),
-(118, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041044', 10500, 21000, '2017-11-21 17:11:33');
+INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, `STATIC_SPLIT_AMT_1_TIME`, `STATIC_HEADS_N_TIMES`, `STATIC_SPLIT_AMT_N_TIME`, `FLEXIBLE_HEADS_1_TIME`, `FLEXI_SPLIT_AMT_1_TIME`, `FLEXIBLE_HEADS_N_TIMES`, `FLEXI_SPLIT_AMT_N_TIMES`, `ACTUAL_AMOUNT`, `DESCRIPTION_IFANY`, `REGID`, `ACTUAL_DUE_AMOUNT`, `PREV_DUE_AMOUNT`, `DUE_AMOUNT`, `DATE_`) VALUES
+(93, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041041', 10000, 0, 10000, '2017-11-21 14:09:38'),
+(94, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', 'BUS FEE', '1000', 11500.00, 'X', '2017041042', 11500, 0, 11500, '2017-11-21 14:09:40'),
+(95, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041043', 10500, 0, 10500, '2017-11-21 14:09:42'),
+(96, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041044', 10500, 0, 10500, '2017-11-21 14:31:46'),
+(97, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041050', 10000, 0, 10000, '2017-11-21 14:31:49'),
+(98, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041051', 10000, 0, 10000, '2017-11-21 14:31:51'),
+(99, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041041', 10000, 10000, 20000, '2017-11-21 14:36:29'),
+(104, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041049', 11000, 0, 11000, '2017-11-21 17:06:44'),
+(105, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041048', 10000, 0, 10000, '2017-11-21 17:06:46'),
+(106, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041047', 10000, 0, 10000, '2017-11-21 17:06:47'),
+(107, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041046', 10000, 0, 10000, '2017-11-21 17:06:47'),
+(108, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041045', 10000, 0, 10000, '2017-11-21 17:06:48'),
+(109, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041053', 10000, 0, 10000, '2017-11-21 17:06:50'),
+(110, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041054', 10000, 0, 10000, '2017-11-21 17:06:50'),
+(111, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041055', 11000, 0, 11000, '2017-11-21 17:06:51'),
+(112, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041056', 10000, 0, 10000, '2017-11-21 17:06:52'),
+(113, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041052', 10000, 0, 10000, '2017-11-21 17:06:53'),
+(114, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041057', 10000, 0, 10000, '2017-11-21 17:06:55'),
+(115, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041058', 10000, 0, 10000, '2017-11-21 17:06:55'),
+(116, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041059', 10000, 0, 10000, '2017-11-21 17:06:56'),
+(117, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041081', 10000, 0, 10000, '2017-11-21 17:06:58'),
+(118, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041044', 10500, 10500, 0, '2017-11-21 17:11:33'),
+(119, 664, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041078', 10000, 10000, 20000, '2017-11-22 08:39:03'),
+(120, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041058', 10000, 10000, 20000, '2017-11-22 09:28:38'),
+(121, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041057', 10000, 10000, 20000, '2017-11-22 09:28:38'),
+(122, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041055', 11000, 11000, 22000, '2017-11-22 09:28:39'),
+(123, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041053', 10000, 10000, 20000, '2017-11-22 09:28:40'),
+(124, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041062', 10000, 0, 10000, '2017-11-22 09:28:41'),
+(125, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041065', 10000, 0, 10000, '2017-11-22 09:28:42'),
+(126, 669, 'ADMISSION', '5000', '', '', '', '', '', '', 5000.00, 'X', '2017041164', 5000, 0, 5000, '2017-11-23 06:05:42'),
+(127, 669, 'ADMISSION', '5000', '', '', '', '', '', '', 5000.00, 'X', '2017041165', 5000, 0, 5000, '2017-11-23 06:05:43'),
+(128, 669, 'ADMISSION', '5000', '', '', '', '', '', '', 5000.00, 'X', '2017041166', 5000, 0, 5000, '2017-11-23 06:05:45'),
+(129, 670, 'ADMISSION', '5000', 'WITHDRAWL', '1000', '', '', '', '', 6000.00, 'X', '2017041400', 6000, 0, 6000, '2017-11-23 06:06:39'),
+(130, 670, 'ADMISSION', '5000', 'WITHDRAWL', '1000', '', '', '', '', 6000.00, 'X', '2017041401', 6000, 0, 6000, '2017-11-23 06:06:40'),
+(131, 671, 'ADMISSION', '5000', 'MEDICAL', '500', '', '', '', '', 6500.00, 'X', '2017041164', 6500, 5000, 11500, '2017-11-23 06:12:48'),
+(132, 671, 'ADMISSION', '5000', 'MEDICAL', '500', '', '', '', '', 6500.00, 'X', '2017041165', 6500, 5000, 11500, '2017-11-23 06:12:49'),
+(133, 671, 'ADMISSION', '5000', 'MEDICAL', '500', '', '', '', '', 6500.00, 'X', '2017041166', 6500, 5000, 11500, '2017-11-23 06:12:50'),
+(134, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', 'BUS FEE', '1000', 11500.00, 'X', '2017041042', 11500, 11500, 23000, '2017-11-26 16:57:12'),
+(135, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', 'EXAM FEE', '500', '', '', 10500.00, 'X', '2017041043', 10500, 10500, 21000, '2017-11-26 16:57:15'),
+(136, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', 'BUS FEE', '1000', 11000.00, 'X', '2017041049', 11000, 11000, 22000, '2017-11-26 16:57:19'),
+(137, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041045', 10000, 10000, 20000, '2017-11-26 17:36:41'),
+(138, 665, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041046', 10000, 10000, 20000, '2017-11-27 04:47:46'),
+(139, 672, 'ADMISSION', '5000', '', '', '', '', '', '', 5000.00, 'X', '2017111451', 5000, 0, 5000, '2017-11-29 18:24:09');
 
 -- --------------------------------------------------------
 
@@ -1858,7 +1883,7 @@ INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DAT
 (61, 406, '5000', 'nitin', '2017-08-30 18:29:51'),
 (62, 407, '5000', 'nitin', '2017-08-30 18:29:51'),
 (63, 408, '5000', 'nitin', '2017-08-30 18:29:51'),
-(64, 409, '5000', 'nitin', '2017-08-30 18:29:51');
+(64, 409, '5500', 'nitin', '2017-11-23 06:12:18');
 
 -- --------------------------------------------------------
 
@@ -1893,7 +1918,8 @@ INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUN
 (81, 63, 2, '5000', '12', 'nitin', '2017-08-30 18:29:51'),
 (82, 64, 2, '5000', '12', 'nitin', '2017-08-30 18:29:51'),
 (83, 60, 10, '5000', '12', 'nitin', '2017-11-05 11:47:58'),
-(84, 56, 10, '2000', '12', 'nitin', '2017-11-07 05:18:34');
+(84, 56, 10, '2000', '12', 'nitin', '2017-11-07 05:18:34'),
+(85, 64, 12, '500', '12', 'nitin', '2017-11-23 06:12:18');
 
 -- --------------------------------------------------------
 
@@ -2862,7 +2888,8 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (479, 'Vihaan Mathur', '-x-', '-x-', '2017081447.JPG', '05/29/2014', 'M', '', '', '', '', '', '', '', '', '', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
 (480, 'Neeraj Punetha', '-x-', '-x-', '', '29-08-2017', 'M', '', '', '', '', '', '', '', '', '', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
 (481, 'Umesh', '-x-', '-x-', '2017101449.png', '07/15/1999', 'M', '', '', '', '', '', '', '', '', '', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
-(482, 'raani', '-x-', '-x-', '', '20-10-2017', 'F', '', '', '', '', '', '', '', '', '', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
+(482, 'raani', '-x-', '-x-', '', '20-10-2017', 'F', '', '', '', '', '', '', '', '', '', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43'),
+(483, 'x', '-x-', '-x-', '', '29-11-2017', 'M', '', '', '', '', '', '', '', '', 'GENERAL', '2017111451', '2017-18', 'nitin', '2017-11-29 18:17:30');
 
 -- --------------------------------------------------------
 
@@ -3339,7 +3366,8 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (500, '27-08-2017', 391, 0, '-x-', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59', NULL, 1),
 (501, '29-08-2017', 405, 0, '-x-', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57', NULL, 1),
 (502, '10/20/2017', 425, 0, '-x-', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16', NULL, 1),
-(503, '20-10-2017', 425, 0, '-x-', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43', NULL, 1);
+(503, '20-10-2017', 425, 0, '-x-', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43', NULL, 1),
+(504, '29-11-2017', 406, 0, '-x-', '2017111451', '2017-18', 'nitin', '2017-11-29 18:17:30', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -4272,7 +4300,9 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (931, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:16', 1, 'CORRESPONDANCE', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
 (932, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:16', 1, 'PERMANENT', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
 (933, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:43', 1, 'CORRESPONDANCE', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43'),
-(934, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:43', 1, 'PERMANENT', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
+(934, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-10-20 16:48:43', 1, 'PERMANENT', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43'),
+(935, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-11-29 23:47:30', 1, 'CORRESPONDANCE', '2017111451', '2017-18', 'nitin', '2017-11-29 18:17:30'),
+(936, '', '', '', '', 'UTTARAKHAND', 'INDIA', '2017-11-29 23:47:30', 1, 'PERMANENT', '2017111451', '2017-18', 'nitin', '2017-11-29 18:17:30');
 
 -- --------------------------------------------------------
 
@@ -4750,7 +4780,8 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (449, '(976) 002-0667', '-x-', 'vahan@gmail.com', '2017-08-27 15:19:59', 1, 'CORRESPONDANCE', '2017081447', '2017-18', 'nitin', '2017-08-27 09:49:59'),
 (450, '', '-x-', '', '2017-08-29 14:00:57', 1, 'CORRESPONDANCE', '2017081448', '2017-18', 'nitin', '2017-08-29 08:30:57'),
 (451, '(999) 999-9999', '-x-', 'umesh@gmail.com', '2017-10-20 16:48:16', 1, 'CORRESPONDANCE', '2017101449', '2017-18', 'nitin', '2017-10-20 11:18:16'),
-(452, '(888) 888-8888', '-x-', 'rani@gmail.com', '2017-10-20 16:48:43', 1, 'CORRESPONDANCE', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43');
+(452, '(888) 888-8888', '-x-', 'rani@gmail.com', '2017-10-20 16:48:43', 1, 'CORRESPONDANCE', '2017101450', '2017-18', 'nitin', '2017-10-20 11:18:43'),
+(453, '(999) 999-9999', '-x-', 'x@gmail.com', '2017-11-29 23:47:30', 1, 'CORRESPONDANCE', '2017111451', '2017-18', 'nitin', '2017-11-29 18:17:30');
 
 -- --------------------------------------------------------
 
@@ -4963,7 +4994,7 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (8, 'fa fa-sitemap', 'Promote Students', 'students/promote', 1, 5),
 (9, 'fa fa-sitemap', 'Switch Students', 'students/switch', 2, 5),
 (10, 'fa fa-user', 'Invoice/ Fee', 'web/dashboard/10/12/invoice', 6, 6),
-(11, 'fa fa-user', 'Pay Fee', 'fee/payfee', 7, 6),
+(11, 'fa fa-user', 'Pay Fee', 'web/dashboard/11/13/payfee', 7, 6),
 (12, 'fa fa-user', 'New Attendance', 'attendance/attendance', 1, 7),
 (13, 'fa fa-user', 'View Attendance', 'attendance/viewattendance', 2, 7),
 (14, 'fa fa-user', 'Subject Marks', 'marks/subjectmarks', 8, 8),
@@ -4998,10 +5029,10 @@ CREATE TABLE `register_sibling` (
 
 INSERT INTO `register_sibling` (`regid`, `SIBLINGS`, `DISCOUNT_OFFERED`, `DATE_`, `USERNAME_`, `STATUS`) VALUES
 ('2017041001', '', 1, '2017-10-20 09:50:00', 'nitin', 1),
-('2017041002', '2017041005,2017041001', 1, '2017-11-05 14:01:55', 'nitin', 1),
 ('2017041003', '2017041003,2017041015', 1, '2017-10-22 07:44:59', 'nitin', 1),
 ('2017041007', '2017041003,2017041006', 1, '2017-10-20 10:02:03', 'nitin', 1),
 ('2017041025', '2017041001,2017081429,2017041006', 1, '2017-10-20 10:03:48', 'nitin', 1),
+('2017041042', '2017041005,2017041001,2017041006', 1, '2017-11-05 14:01:55', 'nitin', 1),
 ('2017081429', '2017041003,2017041015', 1, '2017-10-22 07:44:23', 'nitin', 1),
 ('2017101450', '2017041002,2017041007', 1, '2017-10-20 11:18:43', 'nitin', 1);
 
@@ -5528,7 +5559,7 @@ CREATE TABLE `_id_` (
 --
 
 INSERT INTO `_id_` (`ID_`, `regid_`, `SESSIONID`) VALUES
-(1450, '2017101450', '2017-18');
+(1451, '2017111451', '2017-18');
 
 --
 -- Indexes for dumped tables
@@ -5874,7 +5905,7 @@ ALTER TABLE `class_2_in_session`
 -- AUTO_INCREMENT for table `class_3_class_wise_students`
 --
 ALTER TABLE `class_3_class_wise_students`
-  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=430;
+  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=434;
 --
 -- AUTO_INCREMENT for table `class_4_class_wise_attendance`
 --
@@ -5949,12 +5980,12 @@ ALTER TABLE `fee_5_add_flexi_head_to_students`
 -- AUTO_INCREMENT for table `fee_6_invoice`
 --
 ALTER TABLE `fee_6_invoice`
-  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=669;
+  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=673;
 --
 -- AUTO_INCREMENT for table `fee_6_invoice_detail`
 --
 ALTER TABLE `fee_6_invoice_detail`
-  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 --
 -- AUTO_INCREMENT for table `fee_7_receipts`
 --
@@ -5969,27 +6000,27 @@ ALTER TABLE `fee_8_class_fee`
 -- AUTO_INCREMENT for table `fee_9_class_fee_split`
 --
 ALTER TABLE `fee_9_class_fee_split`
-  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 --
 -- AUTO_INCREMENT for table `master_7_stud_personal`
 --
 ALTER TABLE `master_7_stud_personal`
-  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
+  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=484;
 --
 -- AUTO_INCREMENT for table `master_8_stud_academics`
 --
 ALTER TABLE `master_8_stud_academics`
-  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=504;
+  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=505;
 --
 -- AUTO_INCREMENT for table `master_9_stud_address`
 --
 ALTER TABLE `master_9_stud_address`
-  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=935;
+  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=937;
 --
 -- AUTO_INCREMENT for table `master_10_stud_contact`
 --
 ALTER TABLE `master_10_stud_contact`
-  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=453;
+  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=454;
 --
 -- AUTO_INCREMENT for table `master_11_grading`
 --
@@ -6050,8 +6081,8 @@ ALTER TABLE `class_2_in_session`
 -- Constraints for table `class_3_class_wise_students`
 --
 ALTER TABLE `class_3_class_wise_students`
-  ADD CONSTRAINT `class_3_class_wise_students_ibfk_1` FOREIGN KEY (`CLSSESSID`) REFERENCES `class_2_in_session` (`CLSSESSID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `class_3_class_wise_students_ibfk_2` FOREIGN KEY (`regid`) REFERENCES `register_with_us` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `class_3_class_wise_students_ibfk_2` FOREIGN KEY (`regid`) REFERENCES `master_7_stud_personal` (`regid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `class_3_class_wise_students_ibfk_1` FOREIGN KEY (`CLSSESSID`) REFERENCES `class_2_in_session` (`CLSSESSID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `fee_2`
