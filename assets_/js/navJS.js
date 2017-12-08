@@ -1,5 +1,9 @@
 $(function () {
     $(window).on("load", function () {
+        if ($("#frmSchool").length != 0) {
+            fillStates('cmbPState');
+        }
+
         if ($("#frmSession").length != 0) {
             fillSessions();
         }
@@ -24,6 +28,57 @@ $(function () {
             fillClasses_teacher();
         }
     });
+    //-------------------------------------------General
+    function fillStates(selector) {
+        $('#s2id_' + selector + ' span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getState";
+        $('#' + selector).empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.state.length; i++) {
+                    if (obj.state[i].NAME_ == 'UTTARAKHAND') {
+                        str_html = str_html + "<option value='" + obj.state[i].NAME_ + "' selected='selected'>" + obj.state[i].NAME_ + "</option>";
+                    } else {
+                        str_html = str_html + "<option value='" + obj.state[i].NAME_ + "'>" + obj.state[i].NAME_ + "</option>";
+                    }
+                }
+                $('#s2id_' + selector + ' span').text("UTTARAKHAND");
+                $('#' + selector).html(str_html);
+            }
+        });
+    }
+    
+    $('.schoolSubmit').click(function () {        
+        if ($('#startYear').val() === $('#endYear').val()) {
+            callDanger("Please select Different Dates for Session Start and Session End!!");
+        } else {
+            data_ = $('#frmSession').serialize();
+            url_ = site_url_ + "/master/create_Session";
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    //alert(obj.res_);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillSessions();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
     //-------------------------------------------Session
     function fillSessions() {
         url_ = site_url_ + "/master/getsession";
@@ -759,9 +814,9 @@ $(function () {
             success: function (data) {
                 var obj = JSON.parse(data);
                 var str_html = '';
-                str_html = str_html + "<option value=''>Choose Class</option>";
+                str_html = str_html + "<option value=''>Choose Teacher</option>";
                 for (i = 0; i < obj.Teacher.length; i++) {
-                    str_html = str_html + "<option value='" + obj.Teacher[i].teacherID + "'>Class " + obj.Teacher[i].name + "</option>";
+                    str_html = str_html + "<option value='" + obj.Teacher[i].teacherID + "'> " + obj.Teacher[i].name + "</option>";
                 }
                 $('#s2id_txtTeacherID span').text("Choose Teacher");
                 $('#txtTeacherID').html(str_html);
@@ -868,7 +923,7 @@ $(function () {
                 var obj = JSON.parse(data);
                 if (obj.class_subject.length > 0) {
                     var str_html = '';
-                    str_html = str_html + "<option value=''>Choose Class</option>";
+                    str_html = str_html + "<option value=''>Choose Subject</option>";
                     for (i = 0; i < obj.class_subject.length; i++) {
                         str_html = str_html + "<option value='" + obj.class_subject[i].subjectID + "'>" + obj.class_subject[i].subName + " " + obj.class_subject[i].status + "</option>";
                     }
@@ -880,7 +935,7 @@ $(function () {
             }
         });
     });
-    
+
     $('body').on('click', '.deleteAssoicatedSubject', function () {
         var str = this.id;
         var arr_str = str.split('~');
