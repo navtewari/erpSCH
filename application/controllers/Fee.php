@@ -40,14 +40,14 @@ class Fee extends CI_Controller {
     }
 
     function generateInvoice(){
-        /**//*
-        $class__ = '405';
+        /*//*
+        $class__ = '406';
         $yr_from = '2017';
-        $mnth_from = 9;
-        $yr_to = '2018';
-        $mnth_to = 8;
-        $regid_ = '2017041078';
-        /**/
+        $mnth_from = 12;
+        $yr_to = '2017';
+        $mnth_to = 11;
+        $regid_ = '2017041028';
+        /*/
 
         $class__ = $this->input->post('cmbClassForInvoice');
         $yr_from = $this->input->post('cmbYearFromForInvoice');
@@ -63,7 +63,10 @@ class Fee extends CI_Controller {
         $data = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
         echo json_encode($data);
     }
-
+    function print_invoice($invdetid_){
+        $data['fetch_invoice'] = $this->fm->fetch_invoice_data_for_receipt($invdetid_);
+        $this -> load -> view('fees/printinvoice', $data);
+    }
     function calculate_no_months($yrfrom, $mnthfrom, $yr2, $mnth2){
         if($yrfrom<$yr2){
             $count_1 = 12 - $mnthfrom;
@@ -92,18 +95,23 @@ class Fee extends CI_Controller {
         $clssessid = $this->input->post('clssessid');
         $regid_ = $this->input->post('regid_');
         $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
-        $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
-        if(count($data['sibling_discount']) != 0){
-            $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+        if($this->fm->chkDiscountStatus($invdetid_) == false){
+            $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
+
+            if(count($data['sibling_discount']) != 0){
+                $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+            } else {
+                $data['fetch_discount_data'] = NULL;
+            }
+            if($data['fetch_receipt_data'][0]->CATEGORY != ''){
+                $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
+            } else {
+                $data['fetch_category_discount_data'] = NULL;
+            }
         } else {
             $data['fetch_discount_data'] = NULL;
-        }
-        if($data['fetch_receipt_data'][0]->CATEGORY != ''){
-            $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
-        } else {
             $data['fetch_category_discount_data'] = NULL;
         }
-        //$invid = $data['fetch_receipt_data'][0]->INVID;
         $data['date_'] = array(date('d/m/Y')); 
         $data['sch_name'] = array(_SCHOOL_);
         $data['sch_address'] = array(_ADDRESS_);
@@ -112,16 +120,13 @@ class Fee extends CI_Controller {
         echo json_encode($data);
     }
     function createReceipt(){
-        //echo $this->input->post('cmbPaymentMode');
         $rid = $this->fm->submitfee();
 
         if($rid != 'x'){
-            $data['receipt_link'] =  array("<div style='float: right; color: #ff0000; padding: 0px 0px 0px 0px'><a href='".site_url('fee/fee_print/'.$rid)."' class='btn btn-danger' target='_blank'>Print Fee</a></div>");
-            $data['receipt_msg'] = array("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>Fee Submitted Successfully.</div>");
+            $data['receipt_msg'] = array("Fee Submitted Successfully");
             $data['receipt_id'] = array($rid);
         } else {
-            $data['receipt_link'] = array('');
-            $data['receipt_msg'] = array("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>Fee can't be submitted as no due amount is left in current invoice.</div>");
+            $data['receipt_msg'] = array("Fee can't be submitted as no due amount is left in current invoice.");
             $data['receipt_id'] = array($rid);
         }
         echo json_encode($data);
@@ -141,6 +146,15 @@ class Fee extends CI_Controller {
 
         $data['receipt'] = $this->fm->get_receipt($receipt_id);
 
-        $this -> load -> view('fees/feereceipt', $data);
+        $this -> load -> view('fee/printreceipt', $data);
+    }
+    function print_latest_receipt($invdetid){
+        $receipt_id = $this->fm->get_latest_receipt($invdetid);
+        redirect('fee/fee_print/'.$receipt_id);
+    }
+    function check_login() {
+        if (!$this->session->userdata('_user___')) {
+            redirect('login/logout');
+        }
     }
 }

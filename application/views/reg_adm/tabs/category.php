@@ -9,12 +9,12 @@
                         'required' => 'required'
                     );
                     $options = array();
-                    $options['GENERAL'] = 'Select Sibling';
+                    $options['GENERAL'] = 'GENERAL';
                     foreach($category_ as $itemcateg){
                         $options[$itemcateg->ITEM_] = $itemcateg->ITEM_;
                     }
                 ?>
-                <?php echo form_dropdown($data, $options, ''); ?>
+                <?php echo form_dropdown($data, $options, 'GENERAL'); ?>
             </div>
 		</div>
 		<div class="control-group">

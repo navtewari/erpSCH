@@ -139,7 +139,7 @@ class My_fee_model extends CI_Model {
 
     // Fetch Previous Invoice data
     function get_invoice_data($class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
-        $this->db->select('a.INVID, b.REGID');
+        $this->db->select('a.INVID, b.REGID, b.INVDETID');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
         $this->db->where('a.CLSSESSID', $class__);
@@ -154,96 +154,83 @@ class My_fee_model extends CI_Model {
     function generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months){
         $s = 'x';
         $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
-        //print_r($data);
-        //exit();
-        if($data['bool_'] == false){
-            $data = $this->check_invoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
-            if($data['bool_'] == false){
-                $data1 = array(
-                    'SESSID' => $this->session->userdata('_current_year___'),
-                    'CLSSESSID' => $class__,
-                    'YEAR_FROM' => $yr_from,
-                    'MONTH_FROM'=> $mnth_from,
-                    'YEAR_TO'=> $yr_to,
-                    'MONTH_TO'=> $mnth_to,
-                    'NOM'=>$no_of_months,
-                    'DESCRIPTION_IFANY'=> 'X',
-                    'DATE_' => date('Y-m-d H:i:s')
-                );
-                $query = $this->db->insert('fee_6_invoice', $data1);
-                if($query == true){
-                    $invoiceid = $this->db->insert_id();
-                    $data_['bool__'] = 1;
-                } else {
-                    $data_['bool__'] = 0;
-                }
+
+        if($data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
+            $data1 = array(
+                'SESSID' => $this->session->userdata('_current_year___'),
+                'CLSSESSID' => $class__,
+                'YEAR_FROM' => $yr_from,
+                'MONTH_FROM'=> $mnth_from,
+                'YEAR_TO'=> $yr_to,
+                'MONTH_TO'=> $mnth_to,
+                'NOM'=>$no_of_months,
+                'DESCRIPTION_IFANY'=> 'X',
+                'DATE_' => date('Y-m-d H:i:s')
+            );
+            $query = $this->db->insert('fee_6_invoice', $data1);
+            if($query == true){
+                $invoiceid = $this->db->insert_id();
+                $data_['bool__'] = 1;
             } else {
-                $invoiceid = $data['invid'];
+                $data_['bool__'] = 0;
             }
-            $data_ = $this->check_invoice_detail($invoiceid, $regid_);
-            if($data_['bool_'] == false){
-                $data_static = $this->fetch_static_heads_to_class($class__, $regid_,$no_of_months);
-                $data_flexi = $this->fetch_flexi_heads_to_students($class__, $regid_,$no_of_months);
-                $total_actual_amount = $data_static['static_amount'] + ($data_static['n_static_amount']*$no_of_months) + $data_flexi['_flexi_amount'] + ($data_flexi['n_flexi_amount']*$no_of_months);
-                $due_amount = $this->fetch_due_amount_in_invoice($regid_);
-                $total_amount_due = $due_amount+$total_actual_amount;
-                $data1 = array(
-                    'INVID'=>$invoiceid,
-                    'STATIC_HEADS_1_TIME'=>$data_static['static_heads'],
-                    'STATIC_SPLIT_AMT_1_TIME'=>$data_static['static_heads_amount'],
-                    'STATIC_HEADS_N_TIMES'=>$data_static['n_static_heads'],
-                    'STATIC_SPLIT_AMT_N_TIME'=>$data_static['n_static_heads_amount'],
-                    'FLEXIBLE_HEADS_1_TIME'=>$data_flexi['flexi_heads'],
-                    'FLEXI_SPLIT_AMT_1_TIME'=>$data_flexi['flexi_heads_amount'],
-                    'FLEXIBLE_HEADS_N_TIMES'=>$data_flexi['n_flexi_heads'],
-                    'FLEXI_SPLIT_AMT_N_TIMES'=>$data_flexi['n_flexi_heads_amount'],
-                    'ACTUAL_AMOUNT'=> $total_actual_amount,
-                    'DESCRIPTION_IFANY' => 'X',
-                    'REGID'=>$regid_,
-                    'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
-                    'PREV_DUE_AMOUNT'=>$due_amount,
-                    'DUE_AMOUNT'=>$total_amount_due,
-                    'DATE_'=> date('Y-m-d H:i:s')
-                );
-                $query = $this->db->insert('fee_6_invoice_detail', $data1);
-                if($query == true){
-                    $data_['bool__'] = 1; // Invoice Successfully generated
-                    $s = "Invoice Successfully generated";
-                } else {
-                    $data_['bool__'] = 0; // Something goes wrong. Please try again
-                    $s = "Something goes wrong. Please try again";
-                }
+        } else if($data['bool_'] == 4){
+            $invoiceid = $data['invid_'];
+        }
+
+        if($data['bool_'] == 4 || $data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
+            $data_static = $this->fetch_static_heads_to_class($class__, $regid_,$no_of_months);
+            $data_flexi = $this->fetch_flexi_heads_to_students($class__, $regid_,$no_of_months);
+            $total_actual_amount = $data_static['static_amount'] + ($data_static['n_static_amount']*$no_of_months) + $data_flexi['_flexi_amount'] + ($data_flexi['n_flexi_amount']*$no_of_months);
+            $due_amount = $this->fetch_due_amount_in_invoice($regid_);
+            $total_amount_due = $due_amount+$total_actual_amount;
+            $data1 = array(
+                'INVID'=>$invoiceid,
+                'STATIC_HEADS_1_TIME'=>$data_static['static_heads'],
+                'STATIC_SPLIT_AMT_1_TIME'=>$data_static['static_heads_amount'],
+                'STATIC_HEADS_N_TIMES'=>$data_static['n_static_heads'],
+                'STATIC_SPLIT_AMT_N_TIME'=>$data_static['n_static_heads_amount'],
+                'FLEXIBLE_HEADS_1_TIME'=>$data_flexi['flexi_heads'],
+                'FLEXI_SPLIT_AMT_1_TIME'=>$data_flexi['flexi_heads_amount'],
+                'FLEXIBLE_HEADS_N_TIMES'=>$data_flexi['n_flexi_heads'],
+                'FLEXI_SPLIT_AMT_N_TIMES'=>$data_flexi['n_flexi_heads_amount'],
+                'ACTUAL_AMOUNT'=> $total_actual_amount,
+                'DESCRIPTION_IFANY' => 'X',
+                'REGID'=>$regid_,
+                'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
+                'PREV_DUE_AMOUNT'=>$due_amount,
+                'DUE_AMOUNT'=>$total_amount_due,
+                'DATE_'=> date('Y-m-d H:i:s')
+            );
+            $query = $this->db->insert('fee_6_invoice_detail', $data1);
+            if($query == true){
+                $data['bool__'] = 1; // Invoice Successfully generated
+                $s = "Invoice Successfully generated";
             } else {
-                $data_['bool__'] = 2; // Already Exists
-                $s = "Invoice Already Exists.";
+                $data['bool__'] = 0; // Something goes wrong. Please try again
+                $s = "Something goes wrong. Please try again";
             }
         } else {
-            $data_['bool__'] = 3; // 
+            $data['bool__'] = 2; // Invoice already exists
         }
-        if($s != 'x'){
-            $data_['msg_'] = $s;
-        } else {
-            $data_['msg_'] = $data['msg_'];
-        }
-        return $data_;
+
+        return $data;
     }
     function check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
         $this->db->order_by('INVID', 'desc');
         $this->db->where('CLSSESSID', $class__);
-        $this->db->where('YEAR_TO>=', (int)$yr_from);
-        $this->db->where('MONTH_TO>=', (int)$mnth_from);
+        $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
+        //$this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")));
         $this->db->limit(1);
         $query = $this->db->get('fee_6_invoice');
-        //echo $this->db->last_query();
-        //echo " - " . $query->num_rows()."<br>";
 
         $str = 'x';
-        if($query->num_rows()!=0){ //checking year_from-month_from for which invoice are already generated
+        if($query->num_rows()!=0){ //checking year_from-month_from for which invoice already generated for a class
 
-            /* This below code is checking for already generated invoice year and month for those students 
-                not generated their invoices for the selected period
+            /* This below code is checking for already generated invoice year and month for the student
+                not generated his/her invoice for the selected period
             */
-            $data['bool_'] = true; // true means invoice for year from-month from selection was already exists
+            /*(1) */ $data['bool_'] = 1; // true means invoice for year from-month from selection was already exists
 
             // Below is to find last invoice for a student 
             $this->db->select('b.INVDETID, a.INVID, a.CLSSESSID, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, b.REGID');
@@ -255,12 +242,11 @@ class My_fee_model extends CI_Model {
             $this->db->order_by('b.INVDETID', 'desc');
             $this->db->limit(1);
             $querylast = $this->db->get();
-            //$str = $this->db->last_query();
 
             if($querylast->num_rows()!=0){ // Last invoice exists for selected student information
-                $data['bool_'] = true;
+            /*(2) */$data['bool_'] = 2;
 
-                $this->db->select('INVID');
+                $this->db->select('INVID, MONTH_TO');
                 $this->db->where('CLSSESSID', $class__);
                 $this->db->where('YEAR_FROM', $yr_from);
                 $this->db->where('MONTH_FROM', $mnth_from);
@@ -271,46 +257,53 @@ class My_fee_model extends CI_Model {
                 if($query_selected_period->num_rows()!=0){ // if condition true means the invoice of selected period for the selected class is already exits
 
                     // Below query is to find the student invoice for the same selected period if exists or not?
-                    $row = $query_selected_period->row();
-                    $invid = $row->INVID;
-                    $this->db->where('INVID', $invid);
-                    $this->db->where('REGID', $regid_);
-                    $q = $this->db->get('fee_6_invoice_detail');
-                    // ---------------------------------
-                    if($q->num_rows() != 0){
-                        $data['bool_'] = true;
-                        $str = "Invoice already exists for the selected period.";
+                    $rs = $query_selected_period->row();
+                    if($mnth_from > $rs->MONTH_TO){
+                        $invid = $row->INVID;
+                        $this->db->where('INVID', $invid);
+                        $this->db->where('REGID', $regid_);
+                        $q = $this->db->get('fee_6_invoice_detail');
+                        // ---------------------------------
+                        if($q->num_rows() != 0){
+                        /*(3) */$data['bool_'] = 3;
+                            $str = "Code-3: Invoice already exists for the selected period.";
+                            $final_invid_ = 'x';
+                        } else {
+                        /*(4) */$data['bool_'] = 4;
+                        $final_invid_ = $invid;
+                        $str = "Code-4: Invoice generated successfully.";
+                        }
                     } else {
-                        $data['bool_'] = false;
-                        $str = "Generate Invoice.";
+                        $res = $querylast->row();
+                        /*(14) */$data['bool_'] = 14;
+                            $final_invid_ = 'x';
+                        $str = "Code-14: Invoice upto [<b style='color: #ffff00'>" . $res->YEAR_FROM . ", " . $this->getMonths($res->MONTH_FROM) . " -to- ". $res->YEAR_TO . ", ". $this->getMonths($res->MONTH_TO) . "</b>] for the selected student is already generated.";
                     }
                 } else {
                     /* 
-                        Invoice will not be generated as the selected period is ofcourse lesser than the latest invoice already generated.
+                        Invoice will not be generated as the selected period is ofcourse lesser than the latest invoice of a class already generated.
+                        Now check the difference between months if 1 generate otherwise not
                     */
-                    $data['bool_'] = true;
-                    $rlast = $querylast->row();
-                    $str = "Invoice already generated upto <br><b style=''>".$rlast->YEAR_TO.", ".$this->getMonths($rlast->MONTH_TO)."</b>.";
+                    $res = $querylast->row();
+                    $diff = $res->MONTH_TO - $mnth_from;
+                    if($diff == 1){
+                        /*(13) */$data['bool_'] = 13;
+                                $final_invid_ = 'x';
+                        $str = 'Code-13: Invoice generated successfully.';
+                    } else {
+                        /*(5) */$data['bool_'] = 5;
+                        $final_invid_ = 'x';
+                        $str = "Code-5: Invoice upto [<b style='color: #ffff00'>" . $res->YEAR_FROM . ", " . $this->getMonths($res->MONTH_FROM) . " -to- ". $res->YEAR_TO . ", ". $this->getMonths($res->MONTH_TO) . "</b>] for the selected student is already generated..";
+                    }
                 }
                 
-            } else { // No invoice generated yet for the selected student but still need to find the correct period of generating the invoice
+            } else { // No invoice generated yet for the selected student 
                 /*
-                    Means if already generated invoice period is pending for the student to generate the invoice, then first generate the previous invoice then proceed for the another period.
+                    Means generate invoice for the selected period
                 */
-
-                $this->db->order_by('INVID');
-                $this->db->where('CLSSESSID', $class__);
-                $this->db->limit(1);
-                $qfirstInvoiceForClass = $this->db->get('fee_6_invoice');
-
-                if($query->num_rows()!=0){
-                    $res = $qfirstInvoiceForClass->row();
-
-                    $str = "First generate the Invoice for [<b style='color: #ffff00'>" . $res->YEAR_FROM . ", " . $this->getMonths($res->MONTH_FROM) . " -to- ". $res->YEAR_TO . ", ". $this->getMonths($res->MONTH_TO) . "</b>] of the selected student.";
-                } else {
-                    $str = "First generate the first Invoice of the selected student.";
-                }
-                $data['bool_'] = false;
+            /*(6) */$data['bool_'] = 6;
+                    $final_invid_ = 'x';
+                    $str = "Code-6: Invoice generated successfully.";
             }
             
         } else {
@@ -328,7 +321,7 @@ class My_fee_model extends CI_Model {
             //$str = $this->db->last_query();
 
             if($querylast->num_rows() != 0){
-                $data['bool_'] = true;
+            /*(7) */$data['bool_'] = 7;
                 $r = $querylast->row();
                     $yr_from_r = (int)$r->YEAR_FROM;
                     $mnth_from_r = (int)$r->MONTH_FROM;
@@ -338,32 +331,37 @@ class My_fee_model extends CI_Model {
                     if(($yr_from - $yr_to_r) == 0 || ($yr_from - $yr_to_r) == 1){
                         $diff_month = (($yr_from - $yr_to_r) * 12) + ($mnth_from - $mnth_to_r);
                         if($diff_month == 1){ // This condition true means we can generate the invoice for the selected period
-                            $data['bool_'] = false;
-                            $str = "Invoice can be generated";
+                        /*(8) */$data['bool_'] = 8;
+                                $final_invid_ = 'x';
+                            $str = "Code-8: Invoice generated successfully.";
                         } else if($diff_month > 1) { // This condition true means user is selecting a period by skipping some months means Error!!
-                            $bool_['bool_'] = true;
-                            $str = "You cannot skip months";
+                        /*(9) */$bool_['bool_'] = 9;
+                                $final_invid_ = 'x';
+                            $str = "Code-9: You cannot skip months";
                         } else if ($diff_month <= 0){ // This condition true means user is selecting a period for which invoice is already being generated
-                            $data['bool_'] = true;
-                            $str = "Invoice Already exists.";
+                        /*(10)*/$data['bool_'] = 10;
+                                $final_invid_ = 'x';
+                            $str = "Code-10: Invoice Already exists.";
                         }
                     } else {
-                        $data['bool_'] = true;
-                        $str = "Invoice Already exists.";
+                    /*(11) */$data['bool_'] = 11;
+                            $final_invid_ = 'x';
+                        $str = "Code-11: Invoice Already exists.";
                     }
             } else {
-                // Now check the last invoice of a class then check the difference from the selected period [If 1 generate otherwise not]
-                $data['bool_'] = false;
-                $str = 'Incoice can be generated';
+                // No last invoice found for the selected student then generate the invoice for the selected period
+                /* (12) */$data['bool_'] = 12;
+                        $final_invid_ = 'x';
+                $str = 'Code-12: Invoice generated successfully.';
             }
         }
         $data['msg_'] = $str;
+        $data['invid_'] = $final_invid_;
         return $data;
     }
     function check_previous_invoice($class__, $yr_from, $mnth_from){
         $this->db->where('CLSSESSID', $class__);
-        $this->db->where('YEAR_TO>=', (int)$yr_from);
-        $this->db->where('MONTH_TO>=', (int)$mnth_from);
+        $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
         $query = $this->db->get('fee_6_invoice');
         if($query->num_rows()!=0){
             $data['bool_'] = true;
@@ -404,7 +402,13 @@ class My_fee_model extends CI_Model {
         }
         return $data;
     }
-
+    function fetch_invoice_data_for_receipt($invdetid_){
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->where('b.INVDETID', $invdetid_);
+        $query = $this->db->get();
+        return $query->row();
+    }
     function fetch_static_heads_to_class($class__, $regid_){
         $data['static_heads_to_class'] = $this->get_static_heads_to_class($class__);
         $_static_heads__ = '';
@@ -536,6 +540,122 @@ class My_fee_model extends CI_Model {
         $this->db->where('ITEM_', $item_);
         $query = $this->db->get('master_16_discount');
         return $query->row();
+    }
+    function chkDiscountStatus($invdetid_){
+        $this->db->where('INVDETID', $invdetid_);
+        $this->db->where('DISCOUNT', 1);
+        $this->db->where('DISCOUNT_CATEGORY <>', 'x');
+        $query = $this->db->get('fee_7_receipts');
+        if($query->num_rows()!=0){
+            $bool_ = true;
+        } else {
+            $bool_ = false;
+        }
+        return $bool_;
+    }
+    function submitfee(){
+        $invdetid = $this->input->post('txtINVDETID');
+        $regid = $this->input->post('txtREGID');
+        $flexiheads = trim($this->input->post('txtFlexiHeads'));
+        $discount_category = trim($this->input->post('txtDiscountCategory'));
+        $desc_ = $this->input->post('txtDesc');
+
+        $fine = $this->input->post('_fine_');
+        $due_amnt_input = $this->input->post('due_amnt_input');
+        $discount_amount = trim($this->input->post('_discount_'));
+        $mode = $this->input->post('cmbPaymentMode');
+        if($mode != 'cash'){
+            $ddcq_no = $this->input->post('txtCCDDNumber');
+            $ddcq_date = $this->input->post('txtCCDDDate');
+        } else {
+            $ddcq_no = 'x';
+            $ddcq_date = 'x';
+        }
+            
+        // Calculation to reduce due amount from invoice against the receipt payment
+        $this->db->select('DUE_AMOUNT');
+        $this->db->where('INVDETID', $invdetid);
+        $query = $this->db->get('fee_6_invoice_detail');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            $due_amount = $r->DUE_AMOUNT;
+        } else {
+            $this->db->set_flashdata('blunder_error', 'OH NO!! Invoice Record is deleted. You should have to maintain the fee detail for '.$this->session->userdata('_current_year___')." against the registration id - ". $regid);
+            $due_amount = 0;
+        }
+        $new_due_amount = $due_amount - $due_amnt_input;
+        // -------------------------------------------------------------------------
+        if($due_amount > 0){
+
+            if($flexiheads != ''){
+                $flexistatus = true;
+            } else {
+                $flexistatus = false;
+            }
+            if($discount_amount != 0 && $discount_amount != ''){
+                $discount = true;
+            } else {
+                $discount = false;
+            }
+
+            $data = array(
+                'FLEXI_FEE_STATUS' =>$flexistatus,
+                'ADFLXFEESTUDID' =>$flexiheads,
+                'DISCOUNT' =>$discount,
+                'DISCOUNT_CATEGORY' => $discount_category,
+                'DISCOUNT_AMOUNT'=>$discount_amount,
+                'DESCRIPTION_IFANY'=>$desc_,
+                'ACTUAL_PAID_AMT'=>$due_amnt_input,
+                'FINE'=>$fine,
+                'MODE'=>$mode,
+                'DD_CQ_NO' =>$ddcq_no,
+                'DD_CQ_DATE'=>$ddcq_date,
+                'regid'=>$regid,
+                'INVDETID'=>$invdetid,
+                'DATE_'=> date('Y-m-d H:i:s')
+                );
+            $this->db->insert('fee_7_receipts', $data);
+            $id_ = $this->db->insert_id();
+            // Update the due amount ----------------------
+                $data = array(
+                    'DUE_AMOUNT' => $new_due_amount
+                    );
+                $this->db->where('INVDETID', $invdetid);
+                $this->db->update('fee_6_invoice_detail', $data);
+            // --------------------------------------------
+        } else {
+            $id_ = 'x';
+        }
+        return $id_;
+    }
+
+    function get_receipt($receipt_id){
+        $this->db->distinct();
+        $this->db->select('e.FNAME, e.MNAME, e.LNAME, e.FATHER, b.YEAR_FROM, b.MONTH_FROM, b.YEAR_TO, b.MONTH_TO, b.NOM, a.DUE_AMOUNT, a.STATIC_HEADS_1_TIME,a.STATIC_SPLIT_AMT_1_TIME, a.STATIC_HEADS_N_TIMES, a.STATIC_SPLIT_AMT_N_TIME, a.FLEXIBLE_HEADS_1_TIME, a.FLEXI_SPLIT_AMT_1_TIME, a.FLEXIBLE_HEADS_N_TIMES, a.FLEXI_SPLIT_AMT_N_TIMES, c.MODE, c.DD_CQ_NO, c.DD_CQ_DATE, c.*, d.CLASSID, d.SESSID');
+        $this->db->from('fee_6_invoice b');
+        $this->db->join('fee_6_invoice_detail a', 'b.INVID=a.INVID');
+        $this->db->join('fee_7_receipts c', 'a.INVDETID = c.INVDETID');
+        $this->db->join('class_2_in_session d', 'd.CLSSESSID=b.CLSSESSID');
+        $this->db->join('master_7_stud_personal e', 'a.REGID=e.regid');
+        $this->db->where('c.RECPTID', $receipt_id);
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        $data = $query->row();
+        return $data;
+    }
+
+    function get_latest_receipt($invdetid){
+        $this->db->where('INVDETID', $invdetid);
+        $this->db->order_by('RECPTID', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get('fee_7_receipts');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            $id_ = $r->RECPTID;
+        } else {
+            $id_ = 'x';
+        }
+        return $id_;
     }
     // ---------------------------
 

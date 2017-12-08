@@ -1,0 +1,23 @@
+Code 4: (When selected period is not as per the class invoice means wrong selection)
+Invoice for the selected period => exists 
+but 
+invoice not found for the student for the selected period
+	Result => Generate invoice by fetching invid for existing same period
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+case 6:  (When selected period is not as per the class invoice means wrong selection)
+No invoice generated for the selected period
+No invoice for the selected student
+	Result => Generate new invoice for the selected student and period
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+case 8: (When the selected period is approx correct)
+No invoice generated for the selected period and the selected period is appropriate
+No invoice for the selected student for the selected period and the selected period is appropriate as per the last invoice of the student
+	Result => Generate new invoice for the selected student and period
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+case 12: (When the selected period is approx correct)
+No invoice generated for the selected period 
+No invoice found for the selected student
+	Result => Generate new invoice for the selected student and period
