@@ -54,7 +54,7 @@
             $data = array(
                 'type' => 'text',
                 'class' => "span11",
-                'placeholder' => 'Profession',
+                'placeholder' => 'Pin',
                 'autocomplete' => 'off',
                 'required' => 'required',
                 'name' => 'txtPPinCode',
@@ -150,7 +150,7 @@
             $data = array(
                 'type' => 'text',
                 'class' => "span11",
-                'placeholder' => 'Profession',
+                'placeholder' => 'Pin',
                 'autocomplete' => 'off',
                 'required' => 'required',
                 'name' => 'txtCPinCode',
