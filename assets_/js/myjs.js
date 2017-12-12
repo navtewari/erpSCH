@@ -19,6 +19,14 @@ $(function(){
 			fillClasses_to_find_students();
 			view_classes_to_view_students();
 		}
+		if(('#frmPromoteStudents').length != 0){
+			loading_process();
+			$('input[type=radio]').css('opacity', '1');
+			$('._select').css('display', 'block');
+			fillClassesforPromoteStudent('cmbAdmFor');
+			fillClassesforPromoteStudent('cmbAdmittedStudents');
+			hide_loading_process();
+		}
 	});
 	// Common Function to reload the current Page via http
 	function reloadme(){
@@ -133,6 +141,24 @@ $(function(){
 				fillSiblings();
 				reset_discount_form();
 			// --------------------
+		}
+		function fillClassesforPromoteStudent(objstr){
+			url_ = site_url_ + "/reg_adm/getClasses_in_session";
+			$('#'+objstr).empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Choose Class</option>";
+					for(i=0;i<obj.class_in_session.length; i++){
+						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
+					}
+					$('#s2id_'+objstr+' span').text("Choose Class");
+					$('#'+objstr).html(str_html);
+				}
+			});
 		}
 		$('#reload_me').click(function(){
 			reloadme();
@@ -1234,7 +1260,7 @@ $(function(){
 					                            
 					                            if(invoice_already_generated == true){
 					                            	str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><a href='"+site_url_+"/fee/print_invoice/"+invdetid+"'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></a></td>";
-					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undo_"+obj.fetch_class_students[loop1].regid+"'></i></span></td>";
+					                            	str_html = str_html + "<td style='text-align: center !important'><span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undoinvoice_"+invdetid+"_"+obj.fetch_class_students[loop1].regid+"'></i></span></td>";
 					                        	} else {
 					                        		str_html = str_html + "<td style='text-align: center !important' id='"+obj.fetch_class_students[loop1].regid+"_for_invoice_print'><span class='generate_invoice' id='"+obj.fetch_class_students[loop1].regid+"'><i class='icon-lock' title='Generate Invoice'></i></span></td>";
 					                        		str_html = str_html + "<td style='text-align: center !important' class='place_for_undo' id='place_for_undo_"+obj.fetch_class_students[loop1].regid+"'></td>";
@@ -1290,7 +1316,7 @@ $(function(){
             			callDanger(obj.msg_);
             		} else {
             			$('#'+regid_+"_for_invoice_print").html("<span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span>");
-            			$('#place_for_undo_'+regid_).html("<span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undo_"+regid_+"'></i></span>");
+            			$('#place_for_undo_'+regid_).html("<span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undoinvoice_"+obj.invdetid+"_"+regid_+"'></i></span>");
             		}
             		hide_loading_process();
             	},
@@ -1300,7 +1326,28 @@ $(function(){
             });
 		});
 		$('body').on('click', '.undoinvoice', function(){
-			alert(this.id);
+			var str = this.id;
+			var arr_ = str.split("_");
+			var regid_ = arr_[2];
+			var url_ = site_url_ + '/fee/undo_invoice/'+arr_[1]+'/'+regid_;
+			loading_process();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.bool_ == 2){
+						$('#place_for_undo_'+regid_).html('');
+						$('#'+regid_+"_for_invoice_print").html("<span class='generate_invoice' id='"+regid_+"'><i class='icon-lock' title='Generate Invoice'></i></span>");	
+					} else {
+						callDanger(obj.msg_);
+					}
+					hide_loading_process();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+					hide_loading_process();
+				}
+			});
 		});
 		function calculate_no_months(yrfrom, mnthfrom, yr2, mnth2){
 		        yrfrom = parseInt(yrfrom,10);
@@ -1891,6 +1938,91 @@ $(function(){
 		    }
 		    return str;
 		}
+	// ----------------
+	// Promote Students
+		$('#promote_student_optAdmission_').click(function(){
+	        $("#undo_redo").empty();
+	        $('#promotionFor').val($('#promote_student_optAdmission_').val());
+	        url_ = site_url_ + '/promote/getClassForCurrentSessionAdmission';
+	        data_ = 'PromotionFor='+$('#promotionFor').val();
+	        $('#s2id_promote_student_cmbAdmFor span').text("...");
+	        loading_process();
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                var obj = JSON.parse(data);
+	                var str_html = "<option value=''>Select</option>";
+	                for(loop1 = 0; loop1<obj.length; loop1++){
+	                    str_html = str_html + "<option value='"+ obj[loop1].CLSSESSID +"'>Class "+ obj[loop1].CLASSID +"</option>"
+	                }
+	                $("#promote_student_cmbAdmFor").empty();
+	                $('#s2id_promote_student_cmbAdmFor span').text("Select");
+	                $("#promote_student_cmbAdmFor").html(str_html);
+	                $('#promote_student_cmbAdmFor').removeAttr('disabled');
+	                $('#forcmbprevAdmSession').html("Select Admitted Students for (" + _current_year___ + ")");
+	                hide_loading_process();
+	            },
+	            error: function(xhr, status, error){
+	            	callDanger(xhr.responseText);
+	            }
+	        });
+	    });
+	    
+	    $('#promote_student_optPreviousSession_').click(function(){
+	        $("#undo_redo").empty();
+	        $('#promotionFor').val($('#promote_student_optPreviousSession_').val());
+	        url_ = site_url_ + '/promote/getClassForCurrentSessionAdmission';
+	        data_ = 'PromotionFor='+$('#promotionFor').val();
+	        $('#s2id_promote_student_cmbAdmFor span').text("...");
+	        loading_process();
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                var obj = JSON.parse(data);
+	                var str_html = "<option value=''>Select</option>";
+	                for(loop1 = 0; loop1<obj.length; loop1++){
+	                    str_html = str_html + "<option value='"+ obj[loop1].CLSSESSID +"'>Class "+ obj[loop1].CLASSID +"</option>"
+	                }
+	                $('#s2id_undo_redo').text('');
+	                $("#promote_student_cmbAdmFor").empty();
+	                $('#s2id_promote_student_cmbAdmFor span').text("Select");
+	                $("#promote_student_cmbAdmFor").html(str_html);
+	                $('#promote_student_cmbAdmFor').removeAttr('disabled');
+	                $('#forcmbprevAdmSession').html("Select Students to Promote (" + _previous_year___ + ")");
+	                hide_loading_process();
+	            },
+	            error: function(xhr, status, error){
+	            	callDanger(xhr.responseText);
+	            }
+	        });
+	    });
+
+	    $('#promote_student_cmbAdmFor').change(function(){
+	        url_ = site_url_ + '/promote/getStudentForCurrentSession';
+	        data_ = 'PromotionFor='+$('#promotionFor').val()+'&ClassSessid_='+$('#promote_student_cmbAdmFor').val();
+	        $("#undo_redo").empty();
+	        loading_process();
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                var obj = JSON.parse(data);
+	                
+	                var str_html = "";
+	                for(loop1 = 0; loop1<obj.length; loop1++){
+	                    str_html = str_html + "<option value='"+ obj[loop1].regid +"'>"+ obj[loop1].FNAME +"</option>"
+	                }
+	                $("#undo_redo").empty();
+	                $("#undo_redo").append(str_html);
+	                hide_loading_process();
+	            }
+	        });
+	    });
 	// ----------------
 	// Popup boxes
 		function callDanger(message){

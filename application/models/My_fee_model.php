@@ -206,12 +206,15 @@ class My_fee_model extends CI_Model {
             if($query == true){
                 $data['bool__'] = 1; // Invoice Successfully generated
                 $s = "Invoice Successfully generated";
+                $data['invdetid'] = $this->db->insert_id();
             } else {
                 $data['bool__'] = 0; // Something goes wrong. Please try again
+                $data['invdetid'] = 'x';
                 $s = "Something goes wrong. Please try again";
             }
         } else {
             $data['bool__'] = 2; // Invoice already exists
+            $data['invdetid'] = 'x';
         }
 
         return $data;
@@ -220,7 +223,6 @@ class My_fee_model extends CI_Model {
         $this->db->order_by('INVID', 'desc');
         $this->db->where('CLSSESSID', $class__);
         $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
-        //$this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")));
         $this->db->limit(1);
         $query = $this->db->get('fee_6_invoice');
 
@@ -237,29 +239,37 @@ class My_fee_model extends CI_Model {
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
             $this->db->where('b.REGID', $regid_);
+            $this->db->where('a.CLSSESSID', $class__);
             $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('b.INVDETID', 'desc');
             $this->db->limit(1);
             $querylast = $this->db->get();
-
+            
             if($querylast->num_rows()!=0){ // Last invoice exists for selected student information
             /*(2) */$data['bool_'] = 2;
 
-                $this->db->select('INVID, MONTH_TO');
+                $this->db->select('INVID, YEAR_TO, MONTH_TO');
                 $this->db->where('CLSSESSID', $class__);
-                $this->db->where('YEAR_FROM', $yr_from);
-                $this->db->where('MONTH_FROM', $mnth_from);
-                $this->db->where('YEAR_TO', $yr_to);
-                $this->db->where('MONTH_TO', $mnth_to);
+                $this->db->where("DATE_FORMAT(CONCAT(YEAR_FROM,'-',MONTH_FROM,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
+                $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")));
                 $query_selected_period = $this->db->get('fee_6_invoice');
+                
+                /* 
+                    First calculate the difference in months between last invoice of student with the selected period, 
+                    if difference is 1 then check the last invoice of student is not equals to the selected period then
+                    generate the invoice.
+                */
+                $rs = $querylast->row();
+                $date1 = mktime(0,0,0,$rs->MONTH_TO,0,$rs->YEAR_TO);
+                $date2 = mktime(0,0,0,$mnth_from,0,$yr_from);
+                $diff_ = round((($date2-$date1)/60/60/24/30),0,PHP_ROUND_HALF_UP);
+                // -------------------------------------------------------------------------------------------------------
 
                 if($query_selected_period->num_rows()!=0){ // if condition true means the invoice of selected period for the selected class is already exits
-
-                    // Below query is to find the student invoice for the same selected period if exists or not?
-                    $rs = $query_selected_period->row();
-                    if($mnth_from > $rs->MONTH_TO){
-                        $invid = $row->INVID;
+                    if($diff_ == 1){
+                        $row_ = $query_selected_period->row();
+                        $invid = $row_->INVID;
                         $this->db->where('INVID', $invid);
                         $this->db->where('REGID', $regid_);
                         $q = $this->db->get('fee_6_invoice_detail');
@@ -274,26 +284,19 @@ class My_fee_model extends CI_Model {
                         $str = "Code-4: Invoice generated successfully.";
                         }
                     } else {
-                        $res = $querylast->row();
                         /*(14) */$data['bool_'] = 14;
                             $final_invid_ = 'x';
-                        $str = "Code-14: Invoice upto [<b style='color: #ffff00'>" . $res->YEAR_FROM . ", " . $this->getMonths($res->MONTH_FROM) . " -to- ". $res->YEAR_TO . ", ". $this->getMonths($res->MONTH_TO) . "</b>] for the selected student is already generated.";
+                        $str = "Code-14: Invoice upto [<b style='color: #ffff00'>" . $rs->YEAR_FROM . ", " . $this->getMonths($rs->MONTH_FROM) . " -to- ". $rs->YEAR_TO . ", ". $this->getMonths($rs->MONTH_TO) . "</b>] for the selected student is already generated. And you cannot skip months";
                     }
                 } else {
-                    /* 
-                        Invoice will not be generated as the selected period is ofcourse lesser than the latest invoice of a class already generated.
-                        Now check the difference between months if 1 generate otherwise not
-                    */
-                    $res = $querylast->row();
-                    $diff = $res->MONTH_TO - $mnth_from;
-                    if($diff == 1){
+                    if($diff_ == 1){
                         /*(13) */$data['bool_'] = 13;
                                 $final_invid_ = 'x';
                         $str = 'Code-13: Invoice generated successfully.';
                     } else {
                         /*(5) */$data['bool_'] = 5;
                         $final_invid_ = 'x';
-                        $str = "Code-5: Invoice upto [<b style='color: #ffff00'>" . $res->YEAR_FROM . ", " . $this->getMonths($res->MONTH_FROM) . " -to- ". $res->YEAR_TO . ", ". $this->getMonths($res->MONTH_TO) . "</b>] for the selected student is already generated..";
+                        $str = "Code-5: Invoice upto [<b style='color: #ffff00'>" . $rs->YEAR_FROM . ", " . $this->getMonths($rs->MONTH_FROM) . " -to- ". $rs->YEAR_TO . ", ". $this->getMonths($rs->MONTH_TO) . "</b>] for the selected student is already generated..";
                     }
                 }
                 
@@ -313,6 +316,7 @@ class My_fee_model extends CI_Model {
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
             $this->db->where('b.REGID', $regid_);
+            $this->db->where('a.CLSSESSID', $class__);
             $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('b.INVDETID', 'desc');
@@ -516,7 +520,43 @@ class My_fee_model extends CI_Model {
         }
         return $bool_;
     }
-
+    function undo_invoice($invdetid_, $regid_){
+        $this->db->select('regid');
+        $this->db->where('INVDETID', $invdetid_);
+        $this->db->limit(1);
+        $query = $this->db->get('fee_7_receipts');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            /*(1)*/$data['bool_'] = 1;
+            $data['msg_'] = "Code-1: Connot undo this invoice of Stud ID -".$r->regid." as he/ she already paid some fee against the same.";
+        } else{
+            $this->db->where('INVDETID', $invdetid_);
+            $query = $this->db->get('fee_6_invoice_detail');
+            if($query->num_rows()!=0){
+                $r1 = $query->row();
+                $invid = $r1->INVID;
+                $this->db->where('INVDETID', $invdetid_);
+                $res = $this->db->delete('fee_6_invoice_detail');
+                if($res == true){
+                    $this->db->where('INVID', $invid);
+                    $query = $this->db->get('fee_6_invoice_detail');
+                    if($query->num_rows()==0){
+                        $this->db->where('INVID', $invid);
+                        $this->db->delete('fee_6_invoice');
+                    }
+                    /*(2)*/$data['bool_'] = 2;
+                    $data['msg_'] = "Code-2: Invoice Deleted Successfully.";
+                } else {
+                    /*(3)*/$data['bool_'] = 3;
+                    $data['msg_'] = "Code-3: Something goes wrong. Please try again.";
+                }
+            } else {
+                /*(4)*/$data['bool_'] = 4;
+                $data['msg_'] = "Code-4: Something goes wrong. Please try again.";
+            }
+        }
+        return $data;
+    }
     function get_student_receipt($invdetid_, $clssessid){
 
             $this->db->select('d.REGID, b.FNAME, b.MNAME, b.LNAME, b.GENDER, b.FATHER, b.CATEGORY, a.*, c.CLASSID, d.INVDETID, d.STATIC_HEADS_1_TIME, d.STATIC_SPLIT_AMT_1_TIME, d.STATIC_HEADS_N_TIMES, d.STATIC_SPLIT_AMT_N_TIME, d.FLEXIBLE_HEADS_1_TIME, d.FLEXI_SPLIT_AMT_1_TIME, d.FLEXIBLE_HEADS_N_TIMES, d.FLEXI_SPLIT_AMT_N_TIMES, d.ACTUAL_AMOUNT, d.DESCRIPTION_IFANY, d.ACTUAL_DUE_AMOUNT, d.PREV_DUE_AMOUNT, d.DUE_AMOUNT, d.DATE_');

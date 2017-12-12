@@ -63,6 +63,10 @@ class Fee extends CI_Controller {
         $data = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
         echo json_encode($data);
     }
+    function undo_invoice($invdetid_, $regid_){
+        $data = $this->fm->undo_invoice($invdetid_, $regid_);
+        echo json_encode($data);
+    }
     function print_invoice($invdetid_){
         $data['fetch_invoice'] = $this->fm->fetch_invoice_data_for_receipt($invdetid_);
         $this -> load -> view('fees/printinvoice', $data);
