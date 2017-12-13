@@ -25,6 +25,7 @@ $(function(){
 			$('._select').css('display', 'block');
 			fillClassesforPromoteStudent('cmbAdmFor');
 			fillClassesforPromoteStudent('cmbAdmittedStudents');
+			$('#undo_redo').multiselect();
 			hide_loading_process();
 		}
 	});
@@ -1961,7 +1962,7 @@ $(function(){
 	                $('#s2id_promote_student_cmbAdmFor span').text("Select");
 	                $("#promote_student_cmbAdmFor").html(str_html);
 	                $('#promote_student_cmbAdmFor').removeAttr('disabled');
-	                $('#forcmbprevAdmSession').html("Select Admitted Students for (" + _current_year___ + ")");
+	                $('#forcmbprevAdmSession').html("New Admitted Students for (" + _current_year___ + ")");
 	                hide_loading_process();
 	            },
 	            error: function(xhr, status, error){
@@ -2023,6 +2024,61 @@ $(function(){
 	            }
 	        });
 	    });
+	    $('.update_promotion').click(function(){
+	    	$("#undo_redo_to option").prop("selected",true);
+
+	    	if($('#cmbAdmFor').val() != ''){
+	    		$("#undo_redo_to option").prop("selected",true);
+	    		data_ = $('#frmPromoteToSelectedClass').serialize();
+	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
+
+	    		$.ajax({
+	    			type: "POST",
+	    			url: url_,
+	    			data: data_,
+	    			success: function(data){
+	    				var obj = JSON.parse(data);
+	    				callSuccess(obj.msg_);
+	    			}, error: function(xhr, status, error){
+	    				callDanger(xhr.ResponseText);
+	    			}
+	    		});
+	    	} else {
+	    		callDanger('Please choose class to promote');
+	    		$('#cmbAdmFor').focus();
+	    		$('#s2id_cmbAdmFor span').text('Choose Class');
+	    	}
+	    });
+	    $('#cmbAdmittedStudents').change(function(){
+	        url_ = site_url_ + '/promote/getStudentsofCurrentSession';
+	        data_ = 'ClassSessid_='+$('#cmbAdmittedStudents').val();
+
+	        $("#undo_redo1").empty();
+	        $("#undo_redo1").append('Loading...');
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                var obj = JSON.parse(data);
+	                var str_html = "";
+	                for(loop1 = 0; loop1<obj.length; loop1++){
+	                    str_html = str_html + "<option value='"+ obj[loop1].regid +"'>"+ obj[loop1].FNAME +"</option>"
+	                }
+	                $("#undo_redo1").empty();
+	                $("#undo_redo1").append(str_html);
+	            },
+	            error: function (xhr, ajaxOptions, thrownError) {
+	                //alert(xhr.responseText);
+	                str_html = "<option>"+thrownError+" !!</option>";
+	                $("#undo_redo1").empty();
+	                $("#undo_redo1").append(str_html);
+	            }
+	        });
+	    });
+	    function resetPromoteForm(){
+
+	    }
 	// ----------------
 	// Popup boxes
 		function callDanger(message){

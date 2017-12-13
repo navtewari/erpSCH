@@ -47,6 +47,18 @@ class Promote extends CI_Controller {
         echo "Select Students to Promote (".$fst."-".$scnd.")";
     }
 
+    function promote_admit_Students_to_class(){
+        $this -> check_login();
+        $option = $this->input->post('PromotionFor');//'PreviousSession' or 'Admission' 
+        if($option == 'Admission'){
+        } else if($option == 'PreviousSession') {
+            $data = $this->clsm->promote_admit_prev_students($this->session->userdata('_current_year___'));
+        } else {
+            $data = $this->clsm->promote_admit_admission_students($this->session->userdata('_current_year___'));   
+        }
+        echo json_encode($data);
+    }
+    
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

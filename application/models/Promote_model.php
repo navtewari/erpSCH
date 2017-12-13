@@ -276,7 +276,7 @@ class Promote_model extends CI_Model {
             $class__ = "-NA-";
         }
         //-------------------------------------------
-        $bool_ = array('res_'=>TRUE, 'msg_'=>'Student(s) for Class <span style="color: #0000ff; font-weight: bold">'.$class__.'</span> are added successfully.');
+        $bool_ = array('res_'=>TRUE, 'msg_'=>'Student(s) for Class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> are added successfully.');
 
         return $bool_;
     }
