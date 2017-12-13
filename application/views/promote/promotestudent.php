@@ -133,7 +133,7 @@
                         <?php
                         $data = array(
                             'class' => 'span12 selectMe',
-                            'name' => 'to[]',
+                            'name' => 'to',
                             'id' => 'undo_redo_to',
                             'style' => 'height:260px;',
                             'multiple' => 'multiple'

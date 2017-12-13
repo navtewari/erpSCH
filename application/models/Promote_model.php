@@ -238,15 +238,14 @@ class Promote_model extends CI_Model {
     }
 
     function promote_admit_admission_students($year__){
-        $promote_students = $this->input->post('to');
+        $x = $this->input->post('to');
+        $promote_students = explode(',',$x);
         $clssessid = $this->input->post('cmbAdmFor');
-
         for($i=0; $i<count($promote_students); $i++){
-            
             $this->db->where('SESSID', $year__);
             $this->db->where('regid',$promote_students[$i]);
             $query = $this->db->get('class_3_class_wise_students');
-
+            
             if($query->num_rows() == 0){
                 $data = array(
                     'regid' => $promote_students[$i],
@@ -256,7 +255,9 @@ class Promote_model extends CI_Model {
                     'DATE_' => date('Y-m-d H:i:s'),
                     'SESSID' => $year__
                     );
+                
                 $q = $this->db->insert('class_3_class_wise_students', $data);
+                
                 if($q == true){
                     $data = array(
                         'STATUS_OF_ADMISSION' => 1,
@@ -272,11 +273,12 @@ class Promote_model extends CI_Model {
         if($classquery->num_rows() != 0){
             $row = $classquery->row();
             $class__ = $row->CLASSID;
+            $bool_ = array('res_'=>true, 'msg_'=>'Student(s) for Class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> are added successfully.');
         } else {
             $class__ = "-NA-";
+            $bool_ = array('res_'=>false, 'msg_'=>'Something goes wrong. Please try again.');
         }
         //-------------------------------------------
-        $bool_ = array('res_'=>TRUE, 'msg_'=>'Student(s) for Class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> are added successfully.');
 
         return $bool_;
     }

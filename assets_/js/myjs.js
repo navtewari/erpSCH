@@ -2025,20 +2025,25 @@ $(function(){
 	        });
 	    });
 	    $('.update_promotion').click(function(){
-	    	$("#undo_redo_to option").prop("selected",true);
-
 	    	if($('#cmbAdmFor').val() != ''){
 	    		$("#undo_redo_to option").prop("selected",true);
-	    		data_ = $('#frmPromoteToSelectedClass').serialize();
-	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
+	    		var x = $('#undo_redo_to').val();
+	    		for(i=0; i<x.length;i++){ alert(x[i]); }
 
+	    		data_ = "cmbAdmFor="+$('#cmbAdmFor').val()+"&to="+x.join();
+	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
 	    		$.ajax({
 	    			type: "POST",
 	    			url: url_,
 	    			data: data_,
 	    			success: function(data){
 	    				var obj = JSON.parse(data);
-	    				callSuccess(obj.msg_);
+	    				if(obj.res_ == true){
+	    					callSuccess(obj.msg_);
+	    					resetPromoteForm();
+	    				} else {
+	    					callDanger(obj.msg_);
+	    				}
 	    			}, error: function(xhr, status, error){
 	    				callDanger(xhr.ResponseText);
 	    			}
@@ -2077,7 +2082,9 @@ $(function(){
 	        });
 	    });
 	    function resetPromoteForm(){
-
+	    	$("#undo_redo_to").empty();
+	    	$('#promote_student_cmbAdmFor').change();
+	    	$("#undo_redo_to span").text('');
 	    }
 	// ----------------
 	// Popup boxes
