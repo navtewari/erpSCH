@@ -67,9 +67,9 @@ class Fee extends CI_Controller {
         $data = $this->fm->undo_invoice($invdetid_, $regid_);
         echo json_encode($data);
     }
-    function print_invoice($invdetid_){
-        $data['fetch_invoice'] = $this->fm->fetch_invoice_data_for_receipt($invdetid_);
-        $this -> load -> view('fees/printinvoice', $data);
+    function print_invoice($invdetid_, $clssessid){
+        $data = $this->fm->get_invoice($clssessid, $invdetid_);
+        $this -> load -> view('fee/printinvoice', $data);
     }
     function calculate_no_months($yrfrom, $mnthfrom, $yr2, $mnth2){
         if($yrfrom<$yr2){

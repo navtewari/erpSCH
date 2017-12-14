@@ -557,6 +557,48 @@ class My_fee_model extends CI_Model {
         }
         return $data;
     }
+    function get_invoice($clssessid, $invdetid_ = ''){
+        $this->db->select('*');
+        if($invdetid_!=''){
+            $this->db->where('b.INVDETID', $invdetid_);
+        }
+        $this->db->where('CLSSESSID', $clssessid);
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
+        $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows()!=0){
+            $R = $query->row();
+
+            //$this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, c.CLASSID');
+            if($invdetid_!=''){
+                $this->db->where('aa.INVDETID', $invdetid_);
+            }
+            $this->db->where('a.CLSSESSID', $clssessid);
+            $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+            $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
+            $this->db->where('a.MONTH_FROM',$R->MONTH_FROM); 
+            $this->db->where('a.YEAR_TO',$R->YEAR_TO);
+            $this->db->where('a.MONTH_TO',$R->MONTH_TO);
+            $this->db->from('fee_6_invoice a');
+            $this->db->join('fee_6_invoice_detail aa', 'a.INVID=aa.INVID');
+            $this->db->join('master_7_stud_personal b', 'aa.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'a.CLSSESSID = c.CLSSESSID');
+            $this->db->order_by('cast(aa.regid AS SIGNED INT)', 'ASC');
+            $query = $this->db->get();
+            //echo $this->db->last_query() . "<br />";
+            $data['invoice'] = $query->result();
+            $data['status'] = true;
+        } else {
+            //echo $this->db->last_query() . "<br />";
+            $data['invoice'] = array();
+            $data['status'] = false;
+        }
+        return $data;
+    }
     function get_student_receipt($invdetid_, $clssessid){
 
             $this->db->select('d.REGID, b.FNAME, b.MNAME, b.LNAME, b.GENDER, b.FATHER, b.CATEGORY, a.*, c.CLASSID, d.INVDETID, d.STATIC_HEADS_1_TIME, d.STATIC_SPLIT_AMT_1_TIME, d.STATIC_HEADS_N_TIMES, d.STATIC_SPLIT_AMT_N_TIME, d.FLEXIBLE_HEADS_1_TIME, d.FLEXI_SPLIT_AMT_1_TIME, d.FLEXIBLE_HEADS_N_TIMES, d.FLEXI_SPLIT_AMT_N_TIMES, d.ACTUAL_AMOUNT, d.DESCRIPTION_IFANY, d.ACTUAL_DUE_AMOUNT, d.PREV_DUE_AMOUNT, d.DUE_AMOUNT, d.DATE_');

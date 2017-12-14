@@ -1,10 +1,9 @@
 <?php
-	if($invoice['status'] == true){
-		unset($invoice->res_);
-	if(count($invoice['invoice'])!=0){
+	if($status == true){
+	if(count($invoice)!=0){
 		$fee_ = new My_library();
 		$inwords = new Numbertowords();
-		foreach($invoice['invoice']  as $item) {
+		foreach($invoice  as $item) {
 			$class = $item->CLASSID;
 			break;
 		}
@@ -34,7 +33,8 @@
         		border-radius: 5px; 
         	}
         	.label_{
-        		font-weight: bold;
+        		font-weight: normal;
+        		text-decoration: underline;
         		font-size:13px;
         	}
         	.content{
@@ -82,6 +82,7 @@
 				border: #ff0000 solid 0px;
 				width: 70px;
 				text-align: center;
+				vertical-align: top;
 			}
 			.particular_{
 				border: #009000 solid 0px;
@@ -103,6 +104,28 @@
 				background: #f0f0f0;
 				padding: 5px;
 			}
+			.times_{
+				padding: 0px 0px 0px 10px; 
+				font-size: 8px
+			}
+			.content_{
+				float: left; 
+				text-align: left; 
+				padding: 0px 0px 0px 0px; 
+				border-bottom: #c0c0c0 solid 0px; 
+				width: 47%;
+			}
+			.content_r{
+				float: right; 
+				text-align: right; 
+				padding: 0px 0px 0px 0px; 
+				border-bottom: #c0c0c0 solid 0px; 
+				width: 47%;
+			}
+			sup{
+				color: #000000;
+				font-size: 8px;
+			}
         </style>
 	</head>
 	<body>
@@ -111,8 +134,8 @@
 		<div class="col-sm-12 hide_button" style="margin-top: 10px">
             <button class="btn btn-danger print_button" onclick="window.print();">Print</button>
         </div>
-        <div style="clear: both; height: 45px"></div>
-		<?php foreach($invoice['invoice']  as $item) {
+        <div style="clear: both; height: 5px"></div>
+		<?php foreach($invoice  as $item) {
 				$name_ = (($item->FNAME == "-x-") ? "" : $item->FNAME);
 		    	$name_ = $name_ . (($item->MNAME == "-x-") ? "" : " ".$item->MNAME);
 		    	$name_ = $name_ . (($item->LNAME == "-x-") ? "" : $item->LNAME);
@@ -123,6 +146,7 @@
 					<td>
 						<table border="0" class="myfont table_" style='border:#009900 solid 0px'>
 							<tr>
+			
 								<td align="left">
 									<img src='<?php echo base_url("/nitnav/img/"._logo_1); ?>' width="100" / >
 								</td>
@@ -161,10 +185,10 @@
 								<td class="myline_" colspan="3"></td>
 							</tr>
 							<tr>
-								<td style="height: 25px" colspan="3"></td>
+								<td style="height: 5px" colspan="3"></td>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="3" valign="top">
 									<table border="0" class="myfont table_" style='border:#009900 solid 0px; font-size: 12px; font-family: "Times New Roman"'>
 										<tr>
 											<td valign="top">
@@ -192,76 +216,166 @@
 								</td>
 							</tr>
 							<tr>
-								<td style="height: 10px" colspan="3"></td>
+								<td style="height: 5px" colspan="3"></td>
 							</tr>
 							<tr>
 								<td colspan="3">
-									<table border="0" class="myfont table_" width="700" height="25" style='border:#009900 solid 0px; font-size: 13px; font-weight: bold'>
+									<table border="0" class="myfont table_" width="700" height="25" style='border:#009900 solid 0px; font-size: 13px;'>
 										<tr>
-											<td class="sno_ bgcolor_"align="center">SNO</td>
-											<td class="particular_ bgcolor_" style="width: 475px">Particulars</td>
-											<td class="amount_ bgcolor_" align="right">Amount (Rs.)</td>
+											<th class="myline_" colspan="3"></th>
+										</tr>
+										<tr style="font-weight: bold">
+											<th class="sno_ bgcolor_">SNO</th>
+											<th class="particular_ bgcolor_" style="width: 475px; padding: 0px 3px">Particulars</th>
+											<th class="amount_ bgcolor_" align="right" style="padding: 0px 3px">Amount (Rs.)</th>
 										</tr>
 										<?php 
-											$static = explode("~", $item->STATIC_HEADS);
-											$static_amount = explode(",", $item->STATIC_SPLIT_AMT);
-											$flexible = explode("~", $item->FLEXIBLE_HEADS);
-											$flexible_amount = explode(",", $item->FLEXI_SPLIT_AMT)
+											$static_heads_1_time = explode(",", $item->STATIC_HEADS_1_TIME);
+											$static_split_amt_1_time = explode(",", $item->STATIC_SPLIT_AMT_1_TIME);
+											$static_heads_n_times = explode(",", $item->STATIC_HEADS_N_TIMES);
+											$static_split_amt_n_time = explode(",", $item->STATIC_SPLIT_AMT_N_TIME);
+											
+											$flexible_heads_1_time = explode(",", $item->FLEXIBLE_HEADS_1_TIME);
+											$flexi_split_amt_1_time = explode(",", $item->FLEXI_SPLIT_AMT_1_TIME);
+											$flexible_heads_n_times = explode(",", $item->FLEXIBLE_HEADS_N_TIMES);
+											$flexi_split_amt_n_times = explode(",", $item->FLEXI_SPLIT_AMT_N_TIMES);
 
 										?>
-										<tr>
-											<td valign="top" align="center" colspan="3" style="font-weight: 100; height: 250px">
-												<?php $sno = 0; $index_ = 0;?>
+											<?php /* $height is taken to maintain the height of invoice in print */ ?>
+											<?php $s_heads1 = ''; $s_headsN = ''; $s_amnt1 = ''; $s_amntN = ''; $height = 100; ?>
+											<?php $sno = 0; $index_ = 0; $s_total_amount=0; $total_amount=0;?>
 
-												<?PHP foreach($static as $val){ ?>
-													<div class="sno_" style="float: left;"><?php echo $sno+1;?></div>
-													<div class="particular_" style="float: left;"><?php echo $val;?></div>
-													<div class="particular_amt" style="float: left; border: #009000 solid 0px">
-														<?php echo number_format(($static_amount[$index_]), 2, '.', '')." x ".$item->NOM;?>
-													</div>
-													<div class="amount_" style="float: left;"><?php echo number_format($static_amount[$index_]*$item->NOM, 2, '.', '');?></div>
-													<div style="float: left; clear: both; width: 100%; height: 5px"></div>
-													<?php $sno++; $index_++;?>
+											<?php if($item->STATIC_HEADS_1_TIME!=''){?>
+												<?PHP foreach($static_heads_1_time as $val){ ?>
+													<?php $s_heads1 = $s_heads1 . $val . "<span class='times_'>(1 time)</span><br>";?>
+													<?php $s_amnt1 = $s_amnt1 . number_format((int)$static_split_amt_1_time[$index_], 2, '.', ''). "<br>";?>
+													<?php $s_total_amount = $s_total_amount + (int)$static_split_amt_1_time[$index_]; ?>
+													<?php $index_++; ?>
 												<?php } ?>
-												<?php $index_=0;?>
-												<?php if(trim($item->FLEXIBLE_HEADS) != ''){  ?>
-												<div style="float: left; clear: both; width: 100%; height: 5px"></div>
-												<?PHP foreach($flexible as $val){ ?>
-													<div class="sno_" style="float: left; border: #009000 solid 0px"><?php echo $sno+1;?></div>
-													<div class="particular_" style="float: left; border: #009000 solid 0px">
-														<?php echo $val;?>
-													</div>
-													<div class="particular_amt" style="float: left; border: #009000 solid 0px">
-														<?php echo number_format(($flexible_amount[$index_]), 0, '.', '')." x ".$item->NOM;?>
-													</div>
-													<div class="amount_" style="float: left; border: #009000 solid 0px"><?php echo number_format(($flexible_amount[$index_]* $item->NOM), 2, '.', '');?></div>
-													<div style="float: left; clear: both; width: 100%; height: 5px"></div>
-													<?php $sno++; $index_++;?>
+											<?php } ?>
+											
+											<?php if($item->STATIC_HEADS_N_TIMES!=''){?>
+												<?php $index_ = 0;?>
+												<?PHP foreach($static_heads_n_times as $val){ ?>
+													<?php $s_headsN = $s_headsN . $val . "<span class='times_'>(". $static_split_amt_n_time[$index_] . " x ". $item->NOM.")</span><br>";?>
+													<?php $s_amntN = $s_amntN . number_format((int)$static_split_amt_n_time[$index_]*(int)$item->NOM, 2, '.', ''). "<br>";?>
+													<?php $s_total_amount = $s_total_amount + ((int)$static_split_amt_n_time[$index_]*(int)$item->NOM); ?>
+													<?php $index_++; ?>
 												<?php } ?>
-												<?php } ?>
-												<?php
-													if(trim($item->ACTUAL_DUE_AMOUNT) != '' || trim($item->ACTUAL_DUE_AMOUNT) > 0){
-														$due_ = $item->ACTUAL_DUE_AMOUNT - $item->ACTUAL_AMOUNT;
-													} else { ?>
-													<?php } ?>
-													<?php if($due_ > 0) {?>
-													<div style="float: left; clear: both; width: 100%; height: 25px"></div>
-													<div style="float: right; width: 140px; text-align: right"><?php echo number_format($due_, 2, '.', '');?></div>
-													<div style="float: right; width: 545px; text-align: right; font-style: italic;">Previous Dues</div>
-													<?php }?>
-											</td>
+											<?php } ?>
+
+											<?php $total_amount = $total_amount + (int)$s_total_amount; ?>
+
+											<?php if($item->STATIC_HEADS_1_TIME!='' || $item->STATIC_HEADS_N_TIMES!=''){?>
+												<tr>
+													<td class="sno_"><?php echo ++$sno;?></td>
+													<td style="width:60px; text-align: right;">
+														<div class="content_"><?php echo "<span class='label_'>Compulsory Heads</span><br />".$s_heads1.$s_headsN; ?></div>
+														<div class="content_r"><?php echo "<br>".$s_amnt1.$s_amntN; ?></div>
+													</td>
+													<td style="text-align: right; vertical-align: bottom;"><?php echo number_format($s_total_amount, 2, '.', ''); ?></td>
+												</tr>	
+											<?php } else { ?>
+												<?php $height+=20; ?>
+												<tr style="height: 50px;">
+													<td colspan="3"></td>
+												</tr>
+											<?php } ?>
+										<tr>
+											<td colspan="3" style="padding:10px 0px"></td>
 										</tr>
+											<?php $f_heads1 = ''; $f_headsN = ''; $f_amnt1 = ''; $f_amntN = ''; ?>
+											<?php $index_ = 0; $f_total_amount=0;?>
+											<?php if($item->FLEXIBLE_HEADS_1_TIME!=''){?>
+											<?PHP foreach($flexible_heads_1_time as $val){ ?>
+												<?php $f_heads1 = $f_heads1 . $val . "<span class='times_'>(1 time)</span><br>";?>
+												<?php $f_amnt1 = $f_amnt1 . number_format((int)$flexi_split_amt_1_time[$index_], 2, '.', ''). "<br>";?>
+												<?php $f_total_amount = $f_total_amount + (int)$flexi_split_amt_1_time[$index_]; ?>
+												<?php $index_++; ?>
+											<?php } ?>
+											<?php } ?>
+											
+											<?php if($item->FLEXIBLE_HEADS_N_TIMES!=''){?>
+											<?php $index_ = 0;?>
+											<?PHP foreach($flexible_heads_n_times as $val){ ?>
+												<?php $f_headsN = $f_headsN . $val . "<span class='times_'>(". $flexi_split_amt_n_times[$index_] . " x ". $item->NOM.")</span><br>";?>
+												<?php $f_amntN = $f_amntN . number_format((int)$flexi_split_amt_n_times[$index_]*(int)$item->NOM, 2, '.', ''). "<br>";?>
+												<?php $f_total_amount = $f_total_amount + ((int)$flexi_split_amt_n_times[$index_]*(int)$item->NOM); ?>
+												<?php $index_++; ?>
+											<?php } ?>
+											<?php } ?>
+
+											<?php $total_amount = $total_amount + (int)$f_total_amount; ?>
+
+											<?php if($item->FLEXIBLE_HEADS_1_TIME!='' || $item->FLEXIBLE_HEADS_N_TIMES!=''){?>
+											<tr>
+												<td class="sno_"><?php echo ++$sno;?></td>
+												<td style="width:60px; text-align: right;">
+													<div class="content_"><?php echo "<span class='label_'>Optional Heads</span><sup>*</sup><br />".$f_heads1.$f_headsN; ?></div>
+													<div class="content_r"><?php echo "<br>".$f_amnt1.$f_amntN; ?></div>
+												</td>
+												<td style="text-align: right; vertical-align: bottom;"><?php echo number_format($f_total_amount, 2, '.', ''); ?></td>
+											</tr>
+											<?php } else { ?>
+												<?php $height+=20; ?>
+												<tr style="height: 50px;">
+													<td colspan="3">&nbsp;</td>
+												</tr>
+											<?php } ?>
+										<?php if($item->PREV_DUE_AMOUNT != 0){ ?>
+										<tr>
+											<td style="height: <?php echo $height;?>px; text-align: right; vertical-align: bottom" colspan="2">
+													Previous Dues
+											</td>
+											<td style="text-align: right; vertical-align: bottom;"><?php echo number_format($item->PREV_DUE_AMOUNT, 2, '.', ''); ?></td>
+										</tr>
+										<?PHP $total_amount = $total_amount + (int)$item->PREV_DUE_AMOUNT; ?>
+										<?php } else { ?>
+										<tr>
+											<td colspan="3" style="height: <?php echo $height;?>px"></td>
+										</tr>
+										<?PHP } ?>
 										<tr>
 											<td class="myline_" colspan="3"></td>
 										</tr>
 										<tr>
 											<td colspan="3">
 												<div style="float: left; width: 545px; text-align: right; font-weight: bold">Total</div>
-												<div style="float: right; width: 140px; text-align: right"><?php echo number_format($item->ACTUAL_DUE_AMOUNT, 2, '.', '');?></div>
+												<div style="float: right; width: 140px; text-align: right;font-weight: bold"><?php echo number_format($total_amount, 2, '.', '');?></div>
 											</td>
 										</tr>
 										<tr>
+											<td colspan="3" style="height: 10px; text-align: right; vertical-align: top; font-size: 9px">(<?php echo $inwords->convert_number($total_amount); ?>)</td>
+										</tr>
+										<tr>
 											<td class="myline_" colspan="3"></td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 10px;"></td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<table border="0" cellpadding="5" class="table_" style='border:#009900 solid 0px'>
+													<tr>
+														<td colspan="2" class="address_contact" width="50%">
+															<b>Address</b><br /> 
+															<?php echo _ADDRESS_; ?>
+															<BR />
+															<b>Contact</b>: <?php echo _CONTACT_; ?><br />
+															<b>Email</b>: <?php echo _EMAIL_; ?><br />
+														</td>
+														<td colspan="2" width="50%" align="right" valign="bottom" style="font-size: 12px">Authorized Signatory</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr>
+											<td class="myline_" colspan="4"></td>
+										</tr>
+										<tr>
+											<td colspan="3" class="optionalNote">
+												*Optional fee is not compulsory for student. Those student enrolled for additional facilities are required to submit the same.
+											</td>
 										</tr>
 									</table>
 								</td>
@@ -271,7 +385,7 @@
 				</tr>
 				<tr>
 					<td align="right" style="font-size: 10px">
-						*This Invoice is generated for <?php echo $item->NOM; ?> Month<?php if($item->NOM > 1){ echo "s"; } ?>.
+						<b>Note</b>: This Invoice is generated for <?php echo $item->NOM; ?> Month<?php if($item->NOM > 1){ echo "s"; } ?>.
 					</td>
 				</tr>
 			</table>
