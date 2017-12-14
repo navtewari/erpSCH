@@ -13,13 +13,14 @@ class My_admission_model extends CI_Model {
 
     function getstudents_for_dropdown($session, $classessid=''){
     	if($classessid!=''){
-    		$this->db->where('CLASS_OF_ADMISSION', 	$classessid);
+    		$this->db->where('c.CLSSESSID',$classessid);
     	}
-        $this->db->where('a.SESSID', $session);
-    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, C.CLASSID');
+        $this->db->where('c.SESSID', $session);
+    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, d.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
-        $this->db->join('class_2_in_session c', 'b.CLASS_OF_ADMISSION=c.CLSSESSID');
+        $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
+        $this->db->join('class_2_in_session d', 'c.CLSSESSID=d.CLSSESSID');
         $query = $this->db->get();
         return $query->result();
     }
@@ -146,15 +147,15 @@ class My_admission_model extends CI_Model {
                 if ($query == true) {
                     $i = $this->updateID___($pid_, $newid_, $regid_);
                     if($i == true){
-                        $bool_ = array('res_' => TRUE, 'msg_' => 'Submitted Successfully..!!');
+                        $bool_ = array('res_' => true, 'msg_' => 'Submitted Successfully..!!');
                     } else {
-                        $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
+                        $bool_ = array('res_' => true, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
                     }
                 } else {
-                    $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again...!!');
+                    $bool_ = array('res_' => false, 'msg_' => 'Something goes wrong. Please try again...!!');
                 }
             } else {
-                $bool_ = array('res_' => FALSE, 'msg_' => 'Student can take admission only for the Session ' . $this->session->userdata('live__'));
+                $bool_ = array('res_' => false, 'msg_' => 'Student can take admission only for the Session ' . $this->session->userdata('live__'));
             }
 
         } else {
@@ -266,9 +267,9 @@ class My_admission_model extends CI_Model {
             // -----------------
 
             if ($query == true) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Updated Successfully..!!');
+                $bool_ = array('res_' => true, 'msg_' => 'Updated Successfully..!!');
             } else {
-                $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again...!!');
+                $bool_ = array('res_' => false, 'msg_' => 'Something goes wrong. Please try again...!!');
             }
         }
 

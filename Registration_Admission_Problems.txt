@@ -3,3 +3,4 @@ Registration Module need to encorporate
 
 1. Table data is not working via ajax (Need to resolve later)
 2. Date of Admission should not be less than 5 days  from todays date.
+3. If need to update the record of old student (student admitted not in current year) then 'class of admission' and 'date of admission' should not be changed in current session for older ones.

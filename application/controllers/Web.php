@@ -117,6 +117,11 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Promote students';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
+            case 15:
+                $data['page_'] = 'promote';
+                $data['title_'] = 'Switch students';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
             default:
                 $data['page_'] = 'erorrs';
         }

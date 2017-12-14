@@ -241,6 +241,7 @@ class Promote_model extends CI_Model {
         $x = $this->input->post('to');
         $promote_students = explode(',',$x);
         $clssessid = $this->input->post('cmbAdmFor');
+        $count_ = 0;
         for($i=0; $i<count($promote_students); $i++){
             $this->db->where('SESSID', $year__);
             $this->db->where('regid',$promote_students[$i]);
@@ -265,6 +266,7 @@ class Promote_model extends CI_Model {
                     $this->db->where('regid', $promote_students[$i]);
                     $this->db->update('master_8_stud_academics', $data);    
                 }     
+                $count_++;
             }
         }
         // Fetching class for printing proper message
@@ -273,7 +275,11 @@ class Promote_model extends CI_Model {
         if($classquery->num_rows() != 0){
             $row = $classquery->row();
             $class__ = $row->CLASSID;
-            $bool_ = array('res_'=>true, 'msg_'=>'Student(s) for Class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> are added successfully.');
+            if($count_ > 0){
+                $bool_ = array('res_'=>true, 'msg_'=>$count_.' student(s) to Class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> added successfully.');
+            } else {
+                $bool_ = array('res_'=>false, 'msg_'=>' Seleted student(s) in class <span style="background: #ffff00; color: #ff0000; padding: 2px; border-radius: 5px; font-weight: bold">'.$class__.'</span> already promoted/ exists.');
+            }
         } else {
             $class__ = "-NA-";
             $bool_ = array('res_'=>false, 'msg_'=>'Something goes wrong. Please try again.');

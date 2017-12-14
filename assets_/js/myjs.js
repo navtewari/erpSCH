@@ -26,6 +26,7 @@ $(function(){
 			fillClassesforPromoteStudent('cmbAdmFor');
 			fillClassesforPromoteStudent('cmbAdmittedStudents');
 			$('#undo_redo').multiselect();
+			$('#s2id_undo_redo ul').css('display', 'none');
 			hide_loading_process();
 		}
 	});
@@ -281,7 +282,11 @@ $(function(){
 					success: function(data){
 						var obj = JSON.parse(data);
 						reset_admission_form();
-						callSuccess(obj.msg_);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+						} else{
+							callDanger(obj.msg_);
+						}
 					}, error: function(xhr, status, error){
 						callSuccess(xhr.responseText);
 					}
@@ -1958,6 +1963,7 @@ $(function(){
 	                for(loop1 = 0; loop1<obj.length; loop1++){
 	                    str_html = str_html + "<option value='"+ obj[loop1].CLSSESSID +"'>Class "+ obj[loop1].CLASSID +"</option>"
 	                }
+	                $('#s2id_undo_redo').text('');
 	                $("#promote_student_cmbAdmFor").empty();
 	                $('#s2id_promote_student_cmbAdmFor span').text("Select");
 	                $("#promote_student_cmbAdmFor").html(str_html);
@@ -2057,7 +2063,7 @@ $(function(){
 	    $('#cmbAdmittedStudents').change(function(){
 	        url_ = site_url_ + '/promote/getStudentsofCurrentSession';
 	        data_ = 'ClassSessid_='+$('#cmbAdmittedStudents').val();
-
+	        loading_process();
 	        $("#undo_redo1").empty();
 	        $("#undo_redo1").append('Loading...');
 	        $.ajax({
@@ -2070,21 +2076,23 @@ $(function(){
 	                for(loop1 = 0; loop1<obj.length; loop1++){
 	                    str_html = str_html + "<option value='"+ obj[loop1].regid +"'>"+ obj[loop1].FNAME +"</option>"
 	                }
-	                $("#undo_redo1").empty();
 	                $("#undo_redo1").append(str_html);
+	                hide_loading_process();
 	            },
 	            error: function (xhr, ajaxOptions, thrownError) {
 	                //alert(xhr.responseText);
 	                str_html = "<option>"+thrownError+" !!</option>";
 	                $("#undo_redo1").empty();
 	                $("#undo_redo1").append(str_html);
+	                hide_loading_process();
 	            }
 	        });
 	    });
 	    function resetPromoteForm(){
 	    	$("#undo_redo_to").empty();
 	    	$('#promote_student_cmbAdmFor').change();
-	    	$("#undo_redo_to span").text('');
+	    	$("#undo_redo").text('');
+	    	
 	    }
 	// ----------------
 	// Popup boxes
