@@ -585,7 +585,7 @@ class My_Master_model extends CI_Model {
         if ($query->num_rows() != 0) {
             $bool_ = array('res_' => FALSE, 'msg_' => 'This Subject already Assoicated');
         } else {
-            
+
             $this->db->where('teacherID <>', $techID);
             $this->db->where('subjectID', $subID);
             $this->db->where('sessID', $sessID);
@@ -624,6 +624,78 @@ class My_Master_model extends CI_Model {
         }
 
         return $bool_;
+    }
+
+    function mgetGeneralStatus() {
+        $query = $this->db->get('master_17_general');
+        return $query->result();
+    }
+
+    function msubmitSchool() {
+        $schName_ = trim($this->input->post('txtSchName'));
+        $contact_ = trim($this->input->post('txtSchContact'));
+        $email_ = trim($this->input->post('txtSchEmail'));
+        $add_ = trim($this->input->post('txtSchAdd'));
+        $city_ = trim($this->input->post('txtPCity'));
+        $disitt_ = trim($this->input->post('txtPDistt'));
+        $state_ = trim($this->input->post('cmbPState'));
+        $country_ = trim($this->input->post('txtCountry'));
+
+
+        $data = array(
+            'SCH_NAME' => $schName_,
+            'SCH_LOGO' => 'teamFree.png',
+            'SCH_CONTACT' => $contact_,
+            'SCH_EMAIL' => $email_,
+            'SCH_ADD' => $add_,
+            'SCH_CITY' => $city_,
+            'SCH_DISITT' => $disitt_,
+            'SCH_STATE' => $state_,
+            'SCH_COUNTRY' => $country_,
+            'DATE_' => date('Y-m-d H:i:s'),
+            'USERNAME' => $this->session->userdata('_user___')
+        );
+        $query = $this->db->insert('master_17_general', $data);
+        $sch_id = $this->db->insert_id();
+        // logo
+        $path_ = $this->upload_logo($sch_id);
+        if ($path_ != 'x') {
+            $data = array(
+                'SCH_LOGO' => $path_
+            );
+            $this->db->where('SCH_ID', $sch_id);
+            $this->db->update('master_17_general', $data);
+        }
+        // --------------------------------------------
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> added successfully.');
+        } else {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> is already exists. Please check and try again.');
+        }
+
+        return $bool_;
+    }
+
+    function upload_logo($id) {
+        clearstatcache();
+        $config = array(
+            'upload_path' => './assets_/logo',
+            'allowed_types' => 'jpg|png',
+            'max_size' => 250,
+            'file_name' => $id,
+            'overwrite' => TRUE,
+        );
+        $file_element_name = 'txtLogoUpload';
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload($file_element_name)) {
+            $path_ji = $this->upload->data();
+            $path_ = $path_ji['file_name'];
+        } else {
+            $path_ = 'x';
+        }
+        return $path_;
     }
 
     function _db_error() {

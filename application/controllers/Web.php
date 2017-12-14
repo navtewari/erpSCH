@@ -9,6 +9,7 @@ class Web extends CI_Controller {
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('my_master_fee_model', 'mmm');
+        $this->load->model('my_master_model', 'mmm_');
         $this->load->model('my_discount_model', 'mdm');
         $this->load->model('my_fee_model', 'fm');
     }
@@ -62,7 +63,7 @@ class Web extends CI_Controller {
                 break;
             case 6:
                 $data['page_'] = 'master';
-                $data['title_'] = 'Master / grading';
+                $data['title_'] = 'Master / grading';               
                 break;
             case 7:
                 $data['page_'] = 'master';
@@ -83,6 +84,7 @@ class Web extends CI_Controller {
             case 9:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / General';
+                $data['status_'] = $this->mmm_->mgetGeneralStatus();
                 break;
             case 10:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));

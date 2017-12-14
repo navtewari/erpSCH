@@ -1,7 +1,10 @@
 $(function () {
     $(window).on("load", function () {
-        if ($("#frmSchool").length != 0) {
-            fillStates('cmbPState');
+        if ($("#frmGenSchool").length != 0) {
+            fillStates('cmbPState');            
+        }
+        if ($("#frmGenSchoolEdit").length != 0) {
+            fillStates('cmbPState');           
         }
 
         if ($("#frmSession").length != 0) {
@@ -51,13 +54,14 @@ $(function () {
             }
         });
     }
-    
-    $('.schoolSubmit').click(function () {        
-        if ($('#startYear').val() === $('#endYear').val()) {
-            callDanger("Please select Different Dates for Session Start and Session End!!");
+
+    $('.schoolSubmit').click(function () {
+        if ($('#txtSchName').val() === '') {
+            callDanger("Please Enter School Name !!");
+            $('#txtName').focus();
         } else {
-            data_ = $('#frmSession').serialize();
-            url_ = site_url_ + "/master/create_Session";
+            data_ = $('#frmGenSchool').serializeArray();
+            url_ = site_url_ + "/master/submitSchool";
 
             $.ajax({
                 type: 'POST',
@@ -65,12 +69,11 @@ $(function () {
                 data: data_,
                 success: function (data) {
                     var obj = JSON.parse(data);
-                    //alert(obj.res_);
                     if (obj.res_ === false) {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillSessions();
+                        fillTeacher();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -78,7 +81,81 @@ $(function () {
             });
         }
     });
+
+    $('#editPhoto').click(function () {
+        if ($('.txtSchLogoEdit:visible').length == 0)
+        {
+            $('.txtSchLogoEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchLogoEdit').css({'display': 'none'});
+        }
+    });
+    $('#editName').click(function () {
+        if ($('.txtSchNameEdit:visible').length == 0)
+        {
+            $('.txtSchNameEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchNameEdit').css({'display': 'none'});
+        }
+    });
+    $('#editContact').click(function () {
+        if ($('.txtSchContactEdit:visible').length == 0)
+        {
+            $('.txtSchContactEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchContactEdit').css({'display': 'none'});
+        }
+    });
+    $('#editEmail').click(function () {
+        if ($('.txtSchEmailEdit:visible').length == 0)
+        {
+            $('.txtSchEmailEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchEmailEdit').css({'display': 'none'});
+        }
+    });
     
+    $('#editAdd').click(function () {
+        if ($('.txtSchAddEdit:visible').length == 0)
+        {
+            $('.txtSchAddEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchAddEdit').css({'display': 'none'});
+        }
+    });
+    $('#editCity').click(function () {
+        if ($('.txtSchCityEdit:visible').length == 0)
+        {
+            $('.txtSchCityEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchCityEdit').css({'display': 'none'});
+        }
+    });
+    $('#editDisitt').click(function () {
+        if ($('.txtSchDisittEdit:visible').length == 0)
+        {
+            $('.txtSchDisittEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchDisittEdit').css({'display': 'none'});
+        }
+    });
+    $('#editState').click(function () {
+        if ($('.txtSchStateEdit:visible').length == 0)
+        {
+            $('.txtSchStateEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchStateEdit').css({'display': 'none'});
+        }
+    });
+    $('#editCountry').click(function () {
+        if ($('.txtSchCountryEdit:visible').length == 0)
+        {
+            $('.txtSchCountryEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchCountryEdit').css({'display': 'none'});
+        }
+    });
+
     //-------------------------------------------Session
     function fillSessions() {
         url_ = site_url_ + "/master/getsession";
