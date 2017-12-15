@@ -157,11 +157,11 @@ class Master extends CI_Controller {
 
     function getGeneralStatus() {
         $data = $this->mmm->mgetGeneralStatus();
-        return $data;
+        echo json_encode($data);
     }
 
-    function submitSchool() {
-        $data = $this->mmm->msubmitSchool();
+    function submitSchool($opt) {
+        $data = $this->mmm->msubmitSchool($opt);
         echo json_encode($data);
     }
 

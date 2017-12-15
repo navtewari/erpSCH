@@ -84,7 +84,6 @@ class Web extends CI_Controller {
             case 9:
                 $data['page_'] = 'master';
                 $data['title_'] = 'Master / General';
-                $data['status_'] = $this->mmm_->mgetGeneralStatus();
                 break;
             case 10:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));

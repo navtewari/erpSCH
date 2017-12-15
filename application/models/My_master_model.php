@@ -628,23 +628,38 @@ class My_Master_model extends CI_Model {
 
     function mgetGeneralStatus() {
         $query = $this->db->get('master_17_general');
-        return $query->result();
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => TRUE, 'msg_' => $query->result());
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'x');
+        }
+        return $bool_;
     }
 
-    function msubmitSchool() {
-        $schName_ = trim($this->input->post('txtSchName'));
-        $contact_ = trim($this->input->post('txtSchContact'));
-        $email_ = trim($this->input->post('txtSchEmail'));
-        $add_ = trim($this->input->post('txtSchAdd'));
-        $city_ = trim($this->input->post('txtPCity'));
-        $disitt_ = trim($this->input->post('txtPDistt'));
-        $state_ = trim($this->input->post('cmbPState'));
-        $country_ = trim($this->input->post('txtCountry'));
-
+    function msubmitSchool($opt) {
+        if ($opt == '1') {
+            $schName_ = trim($this->input->post('txtSchName1'));
+            $contact_ = trim($this->input->post('txtSchContact1'));
+            $email_ = trim($this->input->post('txtSchEmail1'));
+            $add_ = trim($this->input->post('txtSchAdd1'));
+            $city_ = trim($this->input->post('txtPCity1'));
+            $disitt_ = trim($this->input->post('txtPDistt1'));
+            $state_ = trim($this->input->post('cmbPState1'));
+            $country_ = trim($this->input->post('txtCountry1'));
+        } else {
+            $sch_id = trim($this->input->post('txtSchID'));
+            $schName_ = trim($this->input->post('txtSchName'));
+            $contact_ = trim($this->input->post('txtSchContact'));
+            $email_ = trim($this->input->post('txtSchEmail'));
+            $add_ = trim($this->input->post('txtSchAdd'));
+            $city_ = trim($this->input->post('txtPCity'));
+            $disitt_ = trim($this->input->post('txtPDistt'));
+            $state_ = trim($this->input->post('cmbPState'));
+            $country_ = trim($this->input->post('txtCountry'));
+        }
 
         $data = array(
-            'SCH_NAME' => $schName_,
-            'SCH_LOGO' => 'teamFree.png',
+            'SCH_NAME' => $schName_,            
             'SCH_CONTACT' => $contact_,
             'SCH_EMAIL' => $email_,
             'SCH_ADD' => $add_,
@@ -655,29 +670,57 @@ class My_Master_model extends CI_Model {
             'DATE_' => date('Y-m-d H:i:s'),
             'USERNAME' => $this->session->userdata('_user___')
         );
-        $query = $this->db->insert('master_17_general', $data);
-        $sch_id = $this->db->insert_id();
-        // logo
-        $path_ = $this->upload_logo($sch_id);
-        if ($path_ != 'x') {
-            $data = array(
-                'SCH_LOGO' => $path_
-            );
-            $this->db->where('SCH_ID', $sch_id);
-            $this->db->update('master_17_general', $data);
-        }
-        // --------------------------------------------
 
-        if ($query == TRUE) {
-            $bool_ = array('res_' => TRUE, 'msg_' => 'School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> added successfully.');
+        if ($opt == '1') {
+            $query = $this->db->insert('master_17_general', $data);
+            $sch_id = $this->db->insert_id();
+            // --------------------------------------------logo
+            if (isset($_FILES['txtLogoUpload1']) && is_uploaded_file($_FILES['txtLogoUpload1']['tmp_name'])) {
+                $path_ = $this->upload_logo($sch_id, $opt);
+                if ($path_ != 'x') {
+                    $data = array(
+                        'SCH_LOGO' => $path_
+                    );
+                    $this->db->where('SCH_ID', $sch_id);
+                    $this->db->update('master_17_general', $data);
+                }
+            }
+            // --------------------------------------------
         } else {
-            $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> is already exists. Please check and try again.');
+            $this->db->where('SCH_ID', $sch_id);
+            $query1 = $this->db->update('master_17_general', $data);
+            // --------------------------------------------logo           
+            if (isset($_FILES['txtLogoUpload']) && is_uploaded_file($_FILES['txtLogoUpload']['tmp_name'])) {
+                $path_ = $this->upload_logo($sch_id, $opt);
+                if ($path_ != 'x') {
+                    $data = array(
+                        'SCH_LOGO' => $path_
+                    );
+                    $this->db->where('SCH_ID', $sch_id);
+                    $this->db->update('master_17_general', $data);
+                }
+            }
+            // --------------------------------------------
+        }
+
+        if ($opt == '1') {
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> added successfully.');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> is already exists. Please check and try again.');
+            }
+        } else {
+            if ($query1 == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> updated successfully.');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> is already exists. Please check and try again.');
+            }
         }
 
         return $bool_;
     }
 
-    function upload_logo($id) {
+    function upload_logo($id, $op) {
         clearstatcache();
         $config = array(
             'upload_path' => './assets_/logo',
@@ -686,7 +729,11 @@ class My_Master_model extends CI_Model {
             'file_name' => $id,
             'overwrite' => TRUE,
         );
-        $file_element_name = 'txtLogoUpload';
+        if ($op == '1') {
+            $file_element_name = 'txtLogoUpload1';
+        } else {
+            $file_element_name = 'txtLogoUpload';
+        }
         $this->load->library('upload', $config);
 
         if ($this->upload->do_upload($file_element_name)) {

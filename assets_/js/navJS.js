@@ -1,10 +1,12 @@
 $(function () {
     $(window).on("load", function () {
         if ($("#frmGenSchool").length != 0) {
-            fillStates('cmbPState');            
+            fillStates('cmbPState1');
+            fillGeneralPage();
         }
+
         if ($("#frmGenSchoolEdit").length != 0) {
-            fillStates('cmbPState');           
+            fillStates('cmbPState');
         }
 
         if ($("#frmSession").length != 0) {
@@ -55,33 +57,98 @@ $(function () {
         });
     }
 
-    $('.schoolSubmit').click(function () {
-        if ($('#txtSchName').val() === '') {
-            callDanger("Please Enter School Name !!");
-            $('#txtName').focus();
-        } else {
-            data_ = $('#frmGenSchool').serializeArray();
-            url_ = site_url_ + "/master/submitSchool";
+    function fillGeneralPage() {
+        url_ = site_url_ + "/master/getGeneralStatus";
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === true) {
 
-            $.ajax({
-                type: 'POST',
-                url: url_,
-                data: data_,
-                success: function (data) {
-                    var obj = JSON.parse(data);
-                    if (obj.res_ === false) {
-                        callDanger(obj.msg_);
-                    } else {
-                        callSuccess(obj.msg_);
-                        fillTeacher();
-                    }
-                }, error: function (xhr, status, error) {
-                    callSuccess(xhr.responseText);
+                    $('.submitSchoolData').css({'display': 'none'});
+                    $('.editSchoolData').css({'display': 'block'});
+                    $('#schoolLogo').attr("src", '');
+                    logo = base_url_ + 'assets_/logo/' + obj.msg_[0].SCH_LOGO;
+                    $('#schoolLogo').attr("src", logo);
+
+                    $('#labelschName').html(obj.msg_[0].SCH_NAME);
+                    $('#labelschContact').html(obj.msg_[0].SCH_CONTACT);
+                    $('#labelschEmail').html(obj.msg_[0].SCH_EMAIL);
+                    $('#labelschAdd').html(obj.msg_[0].SCH_ADD);
+                    $('#labelschCity').html(obj.msg_[0].SCH_CITY);
+                    $('#labelschDisitt').html(obj.msg_[0].SCH_DISITT);
+                    $('#labelschState').html(obj.msg_[0].SCH_STATE);
+                    $('#labelschCountry').html(obj.msg_[0].SCH_COUNTRY);
+
+                    $('#txtSchID').val(obj.msg_[0].SCH_ID);
+                    $('#txtSchName').val(obj.msg_[0].SCH_NAME);
+                    $('#txtSchContact').val(obj.msg_[0].SCH_CONTACT);
+                    $('#txtSchEmail').val(obj.msg_[0].SCH_EMAIL);
+                    $('#txtSchAdd').val(obj.msg_[0].SCH_ADD);
+                    $('#txtPCity').val(obj.msg_[0].SCH_CITY);
+                    $('#txtPDistt').val(obj.msg_[0].SCH_DISITT);
+                    $('#txtCountry').val(obj.msg_[0].SCH_COUNTRY);
+                } else {
+                    $('.submitSchoolData').css({'display': 'block'});
+                    $('.editSchoolData').css({'display': 'none'});
                 }
-            });
-        }
-    });
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
 
+    function sch_Submit(opt) {
+        if (opt === '1') {
+            if ($('#txtSchName1').val() === '') {
+                callDanger("Please Enter School Name !!");
+                $('#txtSchName1').focus();
+            } else {
+                data_ = new FormData($('#frmGenSchool')[0]);                
+            }
+            //data_ = $('#frmGenSchool').serializeArray();           
+        } else {
+            data_ = new FormData($('#frmGenSchoolEdit')[0]);
+            //data_ = $('#frmGenSchoolEdit').serializeArray();
+        }
+        url_ = site_url_ + "/master/submitSchool/" + opt;        
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    fillGeneralPage();
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });        
+    }
+    $('.schoolSubmit').click(function () {
+        sch_Submit('1');
+    });
+    $('.updateMe').click(function () {
+        sch_Submit('2');
+        $('.txtSchLogoEdit').css({'display': 'none'});
+        $('.txtSchNameEdit').css({'display': 'none'});
+        $('.txtSchContactEdit').css({'display': 'none'});
+        $('.txtSchEmailEdit').css({'display': 'none'});
+        $('.txtSchAddEdit').css({'display': 'none'});
+        $('.txtSchDisittEdit').css({'display': 'none'});
+        $('.txtSchCityEdit').css({'display': 'none'});
+        $('.txtSchStateEdit').css({'display': 'none'});
+        $('.txtSchCountryEdit').css({'display': 'none'});
+    });
     $('#editPhoto').click(function () {
         if ($('.txtSchLogoEdit:visible').length == 0)
         {
@@ -114,7 +181,6 @@ $(function () {
             $('.txtSchEmailEdit').css({'display': 'none'});
         }
     });
-    
     $('#editAdd').click(function () {
         if ($('.txtSchAddEdit:visible').length == 0)
         {
@@ -155,7 +221,6 @@ $(function () {
             $('.txtSchCountryEdit').css({'display': 'none'});
         }
     });
-
     //-------------------------------------------Session
     function fillSessions() {
         url_ = site_url_ + "/master/getsession";
@@ -164,7 +229,6 @@ $(function () {
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
-
                 var str_html = '';
                 for (i = 0; i < obj.session.length; i++) {
                     str_html = str_html + "<tr class='gradeX'>";
@@ -188,7 +252,6 @@ $(function () {
         } else {
             data_ = $('#frmSession').serialize();
             url_ = site_url_ + "/master/create_Session";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -208,7 +271,6 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.deleteSession', function () {
         var sessid = this.id;
         url_ = site_url_ + "/master/delete_Session/" + sessid;
@@ -230,7 +292,6 @@ $(function () {
             });
         }
     });
-
     //---------------------------------------------Classes
     function fillClasses() {
         url_ = site_url_ + "/master/getclasses";
@@ -262,7 +323,6 @@ $(function () {
         } else {
             data_ = $('#frmClasses').serialize();
             url_ = site_url_ + "/master/create_Class";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -282,7 +342,6 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.deleteClasses', function () {
         var classid = this.id;
         url_ = site_url_ + "/master/delete_Class/" + classid;
@@ -304,7 +363,6 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.editClasses', function () {
         var classid = this.id;
         url_ = site_url_ + "/master/get_Class_for_update/" + classid;
@@ -326,11 +384,9 @@ $(function () {
             }
         });
     });
-
     $('body').on('click', '.classUpdateCancel', function () {
         $('#editClass').css({'display': 'none'});
     });
-
     $('body').on('click', '.classUpdate', function () {
         var classid = $('#txtEditClass_ID').val();
         if ($('#txtEditClass_').val() == '') {
@@ -341,7 +397,6 @@ $(function () {
 
                 data_ = $('#frmClasses_Edit').serialize();
                 url_ = site_url_ + "/master/update_Class/" + classid;
-
                 $.ajax({
                     type: 'POST',
                     url: url_,
@@ -364,7 +419,6 @@ $(function () {
             }
         }
     });
-
 //---------------------------------------session Wise Class
     function fillTotalClasses() {
         url_ = site_url_ + "/master/getTotalClasses";
@@ -431,7 +485,6 @@ $(function () {
         $('#undo_redo_to option').prop('selected', true);
         data_ = $('#frmClassInSession').serializeArray();
         url_ = site_url_ + "/master/setClassInSession";
-
         $.ajax({
             type: 'POST',
             url: url_,
@@ -475,7 +528,6 @@ $(function () {
     $('#cmbClassofGrading').change(function () {
         fillGradeinTable();
     });
-
     function fillGradeinTable() {
         var classSessID = $('#cmbClassofGrading').val();
         var className = $("#cmbClassofGrading option:selected").text();
@@ -523,7 +575,6 @@ $(function () {
         } else {
             data_ = $('#frmGrades').serializeArray();
             url_ = site_url_ + "/master/submitGrades";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -542,13 +593,11 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.deleteGrade', function () {
         var str = this.id;
         var arr_str = str.split('~');
         var gradeid = arr_str[0];
         var gradeName = arr_str[1];
-
         url_ = site_url_ + "/master/deleteGrade/" + gradeid;
         if (confirm('Are you sure you want to delete Grade ' + gradeName)) {
             $.ajax({
@@ -568,12 +617,9 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.editGrade', function () {
         var gradeID = this.id;
-
         var className = $("#cmbClassofGrading option:selected").text();
-
         url_ = site_url_ + "/master/get_grade_for_update/" + gradeID;
         $.ajax({
             type: 'POST',
@@ -587,7 +633,6 @@ $(function () {
                 $('#maxMarks_Edit').val(obj.class_grade[0].maxMarks);
                 $('#txtGrade_Edit').val(obj.class_grade[0].grade);
                 $('#txtDesc_Edit').val(obj.class_grade[0].description);
-
                 $('#editGrade').css({'display': 'block'});
                 $('#minMarks_Edit').focus();
             }, error: function (xhr, status, error) {
@@ -595,7 +640,6 @@ $(function () {
             }
         });
     });
-
     $('.gradingEdit').click(function () {
         if ($('#minMarks_Edit').val() === '') {
             callDanger("Please Enter Minimum Marks !!");
@@ -609,7 +653,6 @@ $(function () {
         } else {
             data_ = $('#frmGrades_Edit').serializeArray();
             url_ = site_url_ + "/master/editGrades";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -628,7 +671,6 @@ $(function () {
             });
         }
     });
-
     $('.gradingEditCancel').click(function () {
         $('#editGrade').css({'display': 'none'});
     });
@@ -657,7 +699,6 @@ $(function () {
     $('#subClassID').change(function () {
         fillSubjectinTable();
     });
-
     function fillSubjectinTable() {
         var classID = $('#subClassID').val();
         var className = $("#subClassID option:selected").text();
@@ -700,7 +741,6 @@ $(function () {
         } else {
             data_ = $('#frmSubject').serializeArray();
             url_ = site_url_ + "/master/submitSubject";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -719,13 +759,11 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.deleteSubject', function () {
         var str = this.id;
         var arr_str = str.split('~');
         var subjectid = arr_str[0];
         var subjectName = arr_str[1];
-
         url_ = site_url_ + "/master/deleteSubject/" + subjectid;
         if (confirm('Are you sure you want to delete Grade ' + subjectName)) {
             $.ajax({
@@ -753,7 +791,6 @@ $(function () {
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
-
                 var str_html = '';
                 for (i = 0; i < obj.Teacher.length; i++) {
                     str_html = str_html + "<tr class='gradeX'>";
@@ -780,7 +817,6 @@ $(function () {
         } else {
             data_ = $('#frmTeacher').serializeArray();
             url_ = site_url_ + "/master/submitTeacher";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -799,13 +835,11 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.deleteTeacher', function () {
         var str = this.id;
         var arr_str = str.split('~');
         var teacherid = arr_str[0];
         var teacherName = arr_str[1];
-
         url_ = site_url_ + "/master/deleteTeacher/" + teacherid;
         if (confirm('Are you sure you want to delete Teacher ' + teacherName)) {
             $.ajax({
@@ -825,10 +859,8 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.editTeacher', function () {
         var teacherID = this.id;
-
         url_ = site_url_ + "/master/get_teacher_for_update/" + teacherID;
         $.ajax({
             type: 'POST',
@@ -838,7 +870,6 @@ $(function () {
                 $('#txtName_Edit').val(obj.Teacher_data[0].name);
                 $('#teachID_Edit').val(obj.Teacher_data[0].teacherID);
                 $('#txtUname_Edit').val(obj.Teacher_data[0].username);
-
                 $('#editTeacher').css({'display': 'block'});
                 $('#txtName_Edit').focus();
             }, error: function (xhr, status, error) {
@@ -846,7 +877,6 @@ $(function () {
             }
         });
     });
-
     $('.teacherEdit').click(function () {
         if ($('#txtName_Edit').val() === '') {
             callDanger("Please Enter Teacher Name !!");
@@ -857,7 +887,6 @@ $(function () {
         } else {
             data_ = $('#frmUpdateTeacher').serializeArray();
             url_ = site_url_ + "/master/updateTeacher";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -876,11 +905,9 @@ $(function () {
             });
         }
     });
-
     $('.cancelUpdateTeacher').click(function () {
         $('#editTeacher').css({'display': 'none'});
     });
-
     function fillTeacher_combo() {
         $('#s2id_txtTeacherID span').text("Loading...");
         url_ = site_url_ + "/master/getTeachers";
@@ -904,11 +931,9 @@ $(function () {
     $('#txtTeacherID').change(function () {
         fillTeacherAssociatedSubject();
     });
-
     function fillTeacherAssociatedSubject() {
         var teacherID = $('#txtTeacherID').val();
         var teacherName = $("#txtTeacherID option:selected").text();
-
         url_ = site_url_ + "/master/getTeacherAssociatedSubject/" + teacherID;
         $.ajax({
             type: "POST",
@@ -947,7 +972,6 @@ $(function () {
         } else {
             data_ = $('#frmAssociateSubject').serializeArray();
             url_ = site_url_ + "/master/AssociatedSubject";
-
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -966,7 +990,6 @@ $(function () {
             });
         }
     });
-
     function fillClasses_teacher() {
         $('#s2id_subClassTeacherID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -990,7 +1013,6 @@ $(function () {
     $('#subClassTeacherID').change(function () {
         var classID = $('#subClassTeacherID').val();
         url_ = site_url_ + "/master/getClassSubject/" + classID;
-
         $('#s2id_cmbSubject span').text("Loading...");
         $('#cmbSubject').empty();
         $.ajax({
@@ -1012,13 +1034,11 @@ $(function () {
             }
         });
     });
-
     $('body').on('click', '.deleteAssoicatedSubject', function () {
         var str = this.id;
         var arr_str = str.split('~');
         var tasid = arr_str[0];
         var subName = arr_str[1];
-
         url_ = site_url_ + "/master/deleteAssoicatedSubject/" + tasid;
         if (confirm('Are you sure you want to delete Associated Subject ' + subName)) {
             $.ajax({
@@ -1038,7 +1058,6 @@ $(function () {
             });
         }
     });
-
 //------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
