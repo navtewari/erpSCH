@@ -59,25 +59,11 @@
                     </div>
                 </div>
             </div>
-            <div class="form-actions">
-                <span class="pull-left"><a href="#" class="flip-link btn btn-info" id="to-recover">Lost password?</a></span>
-                <span class="pull-right"><input type="submit" class="btn btn-success" value="Login" /></span>
-            </div>
-        </form>
-        <form id="recoverform" action="#" class="form-vertical">
-            <p class="normal_text">Enter your e-mail address below and we will send you instructions how to recover a password.</p>
-
-            <div class="controls">
-                <div class="main_input_box">
-                    <span class="add-on bg_lo"><i class="icon-envelope"></i></span><input type="text" placeholder="E-mail address" />
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; Back to login</a></span>
-                <span class="pull-right"><a class="btn btn-info"/>Reecover</a></span>
-            </div>
-        </form>
+            <div class="form-actions">                
+                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;margin-left: 18px;"/>                
+                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:right; margin-right:20px;"/>                
+            </div> 
+            <?php echo form_close();?>
     </div>
 
     <script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script>  
