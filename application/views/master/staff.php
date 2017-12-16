@@ -3,8 +3,7 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#newClassEntry">New Teachers</a></li>
-                    <li><a data-toggle="tab" href="#sessionClass">Associate Subjects to Teacher for session <?php echo $this->session->userdata('_current_year___'); ?></a></li>                    
+                    <li class="active"><a data-toggle="tab" href="#newClassEntry">New Staff Members</a></li>                    
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -12,7 +11,7 @@
                     <div class="span4">
                         <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5>New Teacher</h5>
+                                <h5>New Staff Member</h5>
                             </div>
                             <div class="widget-content padding">
                                 <div class="control-group">
@@ -25,7 +24,21 @@
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
                                     <div class="control-group">
-                                        <label class="control-label">Teacher Name</label>
+                                        <label class="control-label">Select Category</label>
+                                        <div class="controls">
+                                            <?php
+                                            $data = array(
+                                                'name' => 'CategoryID',
+                                                'id' => 'CategoryID',
+                                                'required' => 'required'
+                                            );
+                                            $options = array();
+                                            ?>
+                                            <?php echo form_dropdown($data, $options, ''); ?>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Member Name</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -55,13 +68,13 @@
                     <div class="span5">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                <h5>Existing Teachers</h5>
+                                <h5 id="exitHeading">Existing Staff Members</h5>
                             </div>
                             <div class="widget-content nopadding" style="min-height:200px;max-height:400px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
-                                            <th style="text-align:left;width:55%">Teacher Name</th>                                           
+                                            <th style="text-align:left;width:55%">Name</th>                                           
                                             <th style="text-align:left;width:25%">Status</th> 
                                             <th style="text-align: center">Actions</th>         
                                         </tr>
@@ -77,7 +90,7 @@
                     <div class="span3">                       
                         <div class="widget-box" id="editTeacher" style="display:none;">
                             <div class="widget-title"  style="color: #cc3300"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5 style="color: #cc3300">Edit Teacher</h5>
+                                <h5 style="color: #cc3300">Edit Staff Member</h5>
                             </div>
                             <div class="widget-content padding">
                                 <div class="control-group">
@@ -90,7 +103,7 @@
                                     ?>
                                     <?php echo form_open('#', $attrib_); ?>
                                     <div class="control-group">
-                                        <label class="control-label" style="color: #cc3300">Teacher Name</label>
+                                        <label class="control-label" style="color: #cc3300">Name</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -137,10 +150,7 @@
                             </div>           
                         </div>
                     </div>
-                </div>
-                <div id="sessionClass" class="tab-pane">
-                    <?php $this->load->view('master/AssociateTeacherSubject'); ?>
-                </div>                
+                </div>                               
             </div>
         </div>
     </div>    

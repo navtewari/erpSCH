@@ -67,7 +67,7 @@ class Web extends CI_Controller {
                 break;
             case 7:
                 $data['page_'] = 'master';
-                $data['title_'] = 'Master / Teachers';
+                $data['title_'] = 'Master / Staff Members';
                 break;
             case 8:
                 $data['page_'] = 'master';

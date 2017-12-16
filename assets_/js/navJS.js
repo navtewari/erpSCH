@@ -28,9 +28,10 @@ $(function () {
         }
 
         if ($("#frmTeacher").length != 0) {
-            fillTeacher();
-            fillTeacher_combo();
-            fillClasses_teacher();
+            //fillTeacher();
+            //fillTeacher_combo();
+            fillStaffCategory_combo();
+            //fillClasses_teacher();
         }
     });
     //-------------------------------------------General
@@ -105,14 +106,14 @@ $(function () {
                 callDanger("Please Enter School Name !!");
                 $('#txtSchName1').focus();
             } else {
-                data_ = new FormData($('#frmGenSchool')[0]);                
+                data_ = new FormData($('#frmGenSchool')[0]);
             }
             //data_ = $('#frmGenSchool').serializeArray();           
         } else {
             data_ = new FormData($('#frmGenSchoolEdit')[0]);
             //data_ = $('#frmGenSchoolEdit').serializeArray();
         }
-        url_ = site_url_ + "/master/submitSchool/" + opt;        
+        url_ = site_url_ + "/master/submitSchool/" + opt;
         $.ajax({
             type: 'POST',
             url: url_,
@@ -132,7 +133,7 @@ $(function () {
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
             }
-        });        
+        });
     }
     $('.schoolSubmit').click(function () {
         sch_Submit('1');
@@ -722,7 +723,8 @@ $(function () {
                     $('#tabSubjects').html(str_html);
                     $('#exitHeading').html('Existing Subjects for ' + className);
                 } else {
-                    $('#tabSubjects').html('NO Subject Present for ' + className);
+                     $('#exitHeading').html('Existing Subjects for ' + className);
+                    $('#tabSubjects').html("<font color='red'>NO Subject Present </font>");
                 }
             }
         });
@@ -784,25 +786,44 @@ $(function () {
         }
     });
 //-----------------------------------------Teachers-----------------------------------
+    $('#CategoryID').change(function () {
+        fillTeacher();
+    });
+
     function fillTeacher() {
-        url_ = site_url_ + "/master/getTeachers";
+        var staffCatID = $('#CategoryID').val();
+        var staffCatgory = $("#CategoryID option:selected").text();
+
+        url_ = site_url_ + "/master/getTeachers/" + staffCatID;
         $.ajax({
             type: "POST",
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
                 var str_html = '';
-                for (i = 0; i < obj.Teacher.length; i++) {
-                    str_html = str_html + "<tr class='gradeX'>";
-                    str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Teacher[i].name + "</b></td>";
-                    str_html = str_html + "<td>" + obj.Teacher[i].username + "</td>";
-                    str_html = str_html + '<td class="taskOptions">';
-                    str_html = str_html + "<a href='#' class='tip editTeacher' id='" + obj.Teacher[i].teacherID + "'><i class='icon-pencil'></i></a> | ";
-                    str_html = str_html + "<a href='#' class='tip deleteTeacher' id='" + obj.Teacher[i].teacherID + '~' + obj.Teacher[i].name + "'><i class='icon-remove'></i></a>";
-                    str_html = str_html + '</td>';
-                    str_html = str_html + "</tr>";
+                var tStatus;
+                if (obj.Teacher.length > 0) {
+                    for (i = 0; i < obj.Teacher.length; i++) {
+                        if (obj.Teacher[i].STATUS_ === '1') {
+                            tStatus = 'working';
+                        } else {
+                            tStatus = 'not working';
+                        }
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Teacher[i].name + "</b></td>";
+                        str_html = str_html + "<td>" + tStatus + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip editTeacher' id='" + obj.Teacher[i].teacherID + "'><i class='icon-pencil'></i></a> | ";
+                        str_html = str_html + "<a href='#' class='tip deleteTeacher' id='" + obj.Teacher[i].teacherID + '~' + obj.Teacher[i].name + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#tabTeacher').html(str_html);
+                    $('#exitHeading').html("Existing Staff Members for " + staffCatgory);
+                } else {
+                    $('#exitHeading').html("Existing Staff Members for " + staffCatgory);
+                    $('#tabTeacher').html("<font color='red'>No Staff Member is available yet</font>");
                 }
-                $('#tabTeacher').html(str_html);
             }
         });
     }
@@ -859,6 +880,7 @@ $(function () {
             });
         }
     });
+
     $('body').on('click', '.editTeacher', function () {
         var teacherID = this.id;
         url_ = site_url_ + "/master/get_teacher_for_update/" + teacherID;
@@ -869,7 +891,11 @@ $(function () {
                 var obj = JSON.parse(data);
                 $('#txtName_Edit').val(obj.Teacher_data[0].name);
                 $('#teachID_Edit').val(obj.Teacher_data[0].teacherID);
-                $('#txtUname_Edit').val(obj.Teacher_data[0].username);
+                if (obj.Teacher_data[0].STATUS_ === '1') {
+                    $("input[type=radio][value=1]").attr("checked", true);
+                } else {
+                    $("input[type=radio][value=0]").attr("checked", true);
+                }
                 $('#editTeacher').css({'display': 'block'});
                 $('#txtName_Edit').focus();
             }, error: function (xhr, status, error) {
@@ -877,13 +903,11 @@ $(function () {
             }
         });
     });
+
     $('.teacherEdit').click(function () {
         if ($('#txtName_Edit').val() === '') {
             callDanger("Please Enter Teacher Name !!");
             $('#txtName_Edit').focus();
-        } else if ($('#txtUname_Edit').val() === '') {
-            callDanger("Please Enter User Name for Teacher !!");
-            $('#txtUname_Edit').focus();
         } else {
             data_ = $('#frmUpdateTeacher').serializeArray();
             url_ = site_url_ + "/master/updateTeacher";
@@ -908,9 +932,10 @@ $(function () {
     $('.cancelUpdateTeacher').click(function () {
         $('#editTeacher').css({'display': 'none'});
     });
+
     function fillTeacher_combo() {
         $('#s2id_txtTeacherID span').text("Loading...");
-        url_ = site_url_ + "/master/getTeachers";
+        url_ = site_url_ + "/master/getExistingTeachers";
         $('#txtTeacherID').empty();
         $.ajax({
             type: "POST",
@@ -928,9 +953,29 @@ $(function () {
         });
     }
 
+    function fillStaffCategory_combo() {
+        $('#s2id_CategoryID span').text("Loading...");
+        url_ = site_url_ + "/master/getExistingStaffCategory";
+        $('#CategoryID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Category</option>";
+                for (i = 0; i < obj.Staff.length; i++) {
+                    str_html = str_html + "<option value='" + obj.Staff[i].ST_ID + "'> " + obj.Staff[i].STATUS + "</option>";
+                }
+                $('#s2id_CategoryID span').text("Choose Category");
+                $('#CategoryID').html(str_html);
+            }
+        });
+    }
     $('#txtTeacherID').change(function () {
         fillTeacherAssociatedSubject();
     });
+
     function fillTeacherAssociatedSubject() {
         var teacherID = $('#txtTeacherID').val();
         var teacherName = $("#txtTeacherID option:selected").text();

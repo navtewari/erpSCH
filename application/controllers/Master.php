@@ -115,11 +115,16 @@ class Master extends CI_Controller {
         echo json_encode($data);
     }
 
-    function getTeachers() {
-        $data['Teacher'] = $this->mmm->getAll_teacher();
+    function getTeachers($catID) {
+        $data['Teacher'] = $this->mmm->getAll_teacher($catID);
         echo json_encode($data);
     }
-
+    
+    function getExistingTeachers() {
+        $data['Teacher'] = $this->mmm->getAll_existingteacher();
+        echo json_encode($data);
+    }
+    
     function submitTeacher() {
         $data = $this->mmm->mcreate_teacher();
         echo json_encode($data);
@@ -162,6 +167,11 @@ class Master extends CI_Controller {
 
     function submitSchool($opt) {
         $data = $this->mmm->msubmitSchool($opt);
+        echo json_encode($data);
+    }
+    
+    function getExistingStaffCategory(){
+        $data['Staff'] = $this->mmm->mgetExistingStaffCategory();
         echo json_encode($data);
     }
 

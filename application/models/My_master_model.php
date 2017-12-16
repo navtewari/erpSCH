@@ -451,32 +451,50 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
-    function getAll_teacher() {
-        $query = $this->db->get('master_13_teacher');
+    function getAll_teacher($catID) {
+        $this->db->where('CATEGORY_ID', $catID);
+        $this->db->order_by('name', 'asc');
+        $query = $this->db->get('master_13_staff');
+        return $query->result();
+    }
+
+    function mgetExistingStaffCategory() {
+        $this->db->order_by('STATUS', 'asc');
+        $query = $this->db->get('master_5_user_status');
+        return $query->result();
+    }
+
+    function getAll_existingteacher() {
+        $this->db->where('STATUS_', 1);
+        $this->db->where('CATEGORY_ID', 'fc');
+        $this->db->order_by('name', 'asc');
+        $query = $this->db->get('master_13_staff');
         return $query->result();
     }
 
     function mcreate_teacher() {
+        $catID = $this->input->post('CategoryID');
         $techName = $this->input->post('txtName');
-        $techUname = $this->input->post('txtUname');
 
         $this->db->where('name', $techName);
-        $this->db->where('username', $techUname);
+        $this->db->where('CATEGORY_ID', $catID);
 
-        $query = $this->db->get('master_13_teacher');
+        $query = $this->db->get('master_13_staff');
 
         if ($query->num_rows() != 0) {
-            $bool_ = array('res_' => FALSE, 'msg_' => 'Teacher already present');
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Staff Member already present in this Category');
         } else {
             $data = array(
                 'name' => $techName,
-                'username' => $techUname,
+                'CATEGORY_ID' => $catID,
+                'STATUS_' => 1,
+                'USERNAME_' => $this->session->userdata('_user___')
             );
 
-            $query = $this->db->insert('master_13_teacher', $data);
+            $query = $this->db->insert('master_13_staff', $data);
 
             if ($query == TRUE) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Submitted Successfully');
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Staff Member Submitted Successfully');
             } else {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }
@@ -484,7 +502,7 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
-    function mdelete_teacher($tID) {
+    function mdelete_teacher($tID) {        
         $this->db->where('teacherID', $tID);
         $query = $this->db->get('master_14_teacher_wise_subject');
 
@@ -493,48 +511,47 @@ class My_Master_model extends CI_Model {
         } else {
 
             $this->db->where('teacherID', $tID);
-            $query = $this->db->delete('master_13_teacher');
+            $query = $this->db->delete('master_13_staff');
 
             if ($query == TRUE) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Deleted Successfully');
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Staff Member Deleted Successfully');
             } else {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }
         }
-
         return $bool_;
     }
 
     function get_teacher_id($teacherID) {
         $this->db->where('teacherID', $teacherID);
-        $query = $this->db->get('master_13_teacher');
+        $query = $this->db->get('master_13_staff');
         return $query->result();
     }
 
     function mupdate_teacher() {
         $techName = $this->input->post('txtName_Edit');
-        $techUname = $this->input->post('txtUname_Edit');
+        $techStatus = $this->input->post('optTeacherStatus');
         $teachID = $this->input->post('teachID_Edit');
 
         $this->db->where('name', $techName);
-        $this->db->where('username', $techUname);
-
-        $query = $this->db->get('master_13_teacher');
+        $this->db->where('teacherID<>', $teachID);
+        $query = $this->db->get('master_13_staff');
 
         if ($query->num_rows() != 0) {
-            $bool_ = array('res_' => FALSE, 'msg_' => 'Teacher already present');
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Staff Member already present in Selected Category');
         } else {
 
             $data = array(
                 'name' => $techName,
-                'username' => $techUname,
+                'STATUS_' => $techStatus,
+                'USERNAME_' => $this->session->userdata('_user___')
             );
 
             $this->db->where('teacherID', $teachID);
-            $query = $this->db->update('master_13_teacher', $data);
+            $query = $this->db->update('master_13_staff', $data);
 
             if ($query == TRUE) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Teacher Updated Successfully');
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Staff Member Updated Successfully');
             } else {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }
@@ -659,7 +676,7 @@ class My_Master_model extends CI_Model {
         }
 
         $data = array(
-            'SCH_NAME' => $schName_,            
+            'SCH_NAME' => $schName_,
             'SCH_CONTACT' => $contact_,
             'SCH_EMAIL' => $email_,
             'SCH_ADD' => $add_,
