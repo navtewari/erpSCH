@@ -29,6 +29,12 @@ $(function(){
 			$('#s2id_undo_redo ul').css('display', 'none');
 			hide_loading_process();
 		}
+		if(('#frmUserManagement').length != 0){
+			loading_process();
+			fillUserStatus('cmbUserStatus');
+			fillexistingUsers();
+			hide_loading_process();
+		}
 	});
 	// Common Function to reload the current Page via http
 	function reloadme(){
@@ -36,7 +42,7 @@ $(function(){
 	}
 	// ---------------------------------------------------
 
-	// Registration and Admission Forms scripts
+	// Function definitions need to call when needed
 		function fillStudents_in_table(){
 			//student_data_here
 			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
@@ -62,7 +68,7 @@ $(function(){
 					$('#s2id_cmbRegistrationID span').text("New | New Student");
 					$('#cmbRegistrationID').html(str_html);
 				}, error: function(xhr, status, error){
-					alert(xhr.responseText);
+					callDanger(xhr.responseText);
 				}
 			});
 		}
@@ -83,7 +89,7 @@ $(function(){
 					$('#s2id_cmbSiblingRegistrationID span').text("Select Sibling");
 					$('#cmbSiblingRegistrationID').html(str_html);
 				}, error: function(xhr, status, error){
-					alert(xhr.responseText);
+					callDanger(xhr.responseText);
 				}
 			});
 		}
@@ -103,6 +109,8 @@ $(function(){
 					}
 					$('#s2id_cmbClassofAdmission span').text("Choose Class");
 					$('#cmbClassofAdmission').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
 				}
 			});
 		}
@@ -125,9 +133,11 @@ $(function(){
 					}
 					$('#s2id_'+selector+' span').text("UTTARAKHAND");
 					$('#'+selector).html(str_html);
-				}
+				}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
 			});
-		}
+		}	
 		function reset_admission_form(){
 			// Resetting whole Form
 				$('#reset_me').click();
@@ -159,9 +169,75 @@ $(function(){
 					}
 					$('#s2id_'+objstr+' span').text("Choose Class");
 					$('#'+objstr).html(str_html);
+				}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
 				}
 			});
 		}
+		function fillexistingUsers(){
+			url_ = site_url_ + "/userManagement/getUsers";
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.length != 0){
+						var str_html = '';
+						for(i=0; i<obj.length; i++){
+							str_html = str_html + "<tr>";
+							str_html = str_html + "<td>"+obj[i].USERNAME_+"</td>";
+							str_html = str_html + "<td>"+obj[i].name+"</td>";
+							str_html = str_html + "<td>"+obj[i].STATUS+"</td>";
+							if(obj[i].ACTIVE == 1){
+								str_html = str_html + "<td style='text-align: center; font-size: 15px;'><div style='color: #009000' id='action_user_"+obj[i].USERNAME_+"'><span class='icon-thumbs-up active-deactive-user' id='activedeactive_"+0+"_"+obj[i].USERNAME_+"'></span> | <span class='icon-pencil edituser' id='edit_"+obj[i].USERNAME_+"'></span></div></td>";
+							} else {
+								str_html = str_html + "<td style='text-align: center; font-size: 15px;'><div style='color: #ff0000' id='action_user_"+obj[i].USERNAME_+"'><span class='icon-thumbs-down active-deactive-user' id='activedeactive_"+1+"_"+obj[i].USERNAME_+"'></span> | <span class='icon-pencil edituser' id='edit_"+obj[i].USERNAME_+"'></span></div></td>";
+							}
+						}
+						$('#view_users_in_createUserMgnt').html(str_html);
+					} else {
+
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		function fillUserStatus(objstr){
+			url_ = site_url_ + "/userManagement/getuserstatus";
+			$('#'+objstr).empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Select User Status</option>";
+					for(i=0;i<obj.userstatus.length; i++){
+						str_html = str_html + "<option value='"+obj.userstatus[i].ST_ID+"'>"+obj.userstatus[i].STATUS+"</option>";
+					}
+					$('#s2id_'+objstr+' span').text("Select User Status");
+					$('#'+objstr).html(str_html);
+				}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+				}
+			});
+		}
+		function reset_createUserForm(){
+			loading_process();
+			$('#resetCreateUser').click();
+			fillUserStatus('cmbUserStatus');
+			$("#cmbStaff").empty();
+			$("#s2id_cmbStaff span").text('Select Member');
+			hide_loading_process();
+		}
+		$('#resetCreateUser').click(function(){
+			loading_process();
+			fillUserStatus('cmbUserStatus');
+			$("#cmbStaff").empty();
+			$("#s2id_cmbStaff span").text('Select Member');
+			hide_loading_process();
+		});
 		$('#reload_me').click(function(){
 			reloadme();
 		});
@@ -250,7 +326,7 @@ $(function(){
 						}
 						hide_loading_process();
 					}, error: function(xhr, status, error){
-						alert(xhr.responseText);
+						callDanger(xhr.responseText);
 					}
 				});
 			}
@@ -2029,14 +2105,15 @@ $(function(){
 	                $("#undo_redo").empty();
 	                $("#undo_redo").append(str_html);
 	                hide_loading_process();
-	            }
+	            }, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
 	        });
 	    });
 	    $('.update_promotion').click(function(){
 	    	if($('#cmbAdmFor').val() != ''){
 	    		$("#undo_redo_to option").prop("selected",true);
 	    		var x = $('#undo_redo_to').val();
-	    		for(i=0; i<x.length;i++){ alert(x[i]); }
 
 	    		data_ = "cmbAdmFor="+$('#cmbAdmFor').val()+"&to="+x.join();
 	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
@@ -2097,6 +2174,97 @@ $(function(){
 	    	
 	    }
 	// ----------------
+	// User Management Modules
+		$('#cmbUserStatus').change(function(){
+			$id_ = $('#'+this.id).val();
+			$("#cmbStaff").empty();
+			$('#s2id_cmbStaff span').text("Loading...");
+			url_ = site_url_ + "/userManagement/getStaffData/"+$id_;
+			loading_process();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = "";
+					$("#s2id_cmbStaff span").text('Select Member');
+					str_html = str_html + "<option value=''>Select Member</option>";
+	                for(loop1 = 0; loop1<obj.length; loop1++){
+	                    str_html = str_html + "<option value='"+ obj[loop1].teacherID +"'>"+ obj[loop1].name +"</option>"
+	                }
+	                $("#cmbStaff").append(str_html);
+	                hide_loading_process();
+				}, error: function (xhr, ajaxOptions, thrownError) {
+	                //alert(xhr.responseText);
+	                str_html = "<option>"+thrownError+" !!</option>";
+	                $("#cmbStaff").empty();
+	                $("#cmbStaff").append(str_html);
+	                $("#s2id_cmbStaff span").text(str_html);
+	                hide_loading_process();
+	            }
+			});
+		});
+		$('.create-new-user').click(function(){
+			if($.trim($('#cmbUserStatus').val()) == ''){
+				callDanger('Select User Status.');
+			} else if($.trim($('#cmbStaff').val()) == '') {
+				callDanger('Select Staff.');
+			} else if($.trim($('#txtUser_').val()) == ''){
+				callDanger('Enter User.');
+			} else {
+				url_ = site_url_ + "/userManagement/createuser";
+				data_ = $('#frmUserManagement').serialize();
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success:  function(data){
+						var obj = JSON.parse(data);
+						alert(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+						} else {
+							callDanger(obj.msg_);
+							reset_createUserForm();
+						}
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
+			}
+		});
+		$('body').on('click', '.active-deactive-user', function(){
+			var str = this.id;
+			var arr = str.split('_');
+			var modified_id = "action_user_"+arr[2];
+			loading_process();
+			arr[1]
+			arr[2]
+			url_ = site_url_+"/userManagement/activeDeactiveUser/"+arr[2]+"/"+arr[1];
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == true){
+						if(arr[1] == 0){
+							$('#'+modified_id).css('color', '#ff0000');
+							$('#'+modified_id).html("<span class='icon-thumbs-down active-deactive-user' id='activedeactive_"+1+"_"+arr[2]+"'></span> | <span class='icon-pencil edituser' id='edit_"+arr[2]+"'></span>");
+						} else {
+							$('#'+modified_id).css('color', '#009000');
+							$('#'+modified_id).html("<span class='icon-thumbs-up active-deactive-user' id='activedeactive_"+0+"_"+arr[2]+"'></span> | <span class='icon-pencil edituser' id='edit_"+arr[2]+"'></span>");
+						}
+						hide_loading_process();
+					} else {
+
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+
+		});
+	// ---------------
 	// Popup boxes
 		function callDanger(message){
 			$.gritter.add({

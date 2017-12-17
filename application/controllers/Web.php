@@ -34,6 +34,10 @@ class Web extends CI_Controller {
 
     function get_page($subno) {
         switch ($subno) {
+            case 0:
+                $data['page_'] = 'createuser';
+                $data['title_'] = 'Create User';
+                break;
             case 1:
                 $data['page_'] = 'dashboard';
                 $data['title_'] = 'Dashboard';

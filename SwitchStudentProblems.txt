@@ -1,0 +1,2 @@
+1. If student swtiches to different class then how the previous data and the new data onwards of the student will be managed.
+2. Old and new data are: fee, attendance, exam etc.

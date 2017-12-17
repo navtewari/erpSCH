@@ -1,0 +1,91 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class UserManagement_model extends CI_Model {
+
+    function __construct() {
+        parent::__construct();
+    }
+    function getUsers(){
+    	$this->db->select('b.USERNAME_, a.name, b.ACTIVE, c.STATUS');
+    	$this->db->from('master_13_staff a');
+    	$this->db->join('login b', 'a.teacherID = b.STAFFID');
+    	$this->db->join('master_5_user_status c', 'c.ST_ID=a.CATEGORY_ID');
+    	//$this->db->where('b.ACTIVE', 1);
+		//$this->db->where('a.STATUS_', 1);
+    	$query = $this->db->get();
+    	return $query->result();
+    }
+    function getuserstatus(){
+    	$query=$this->db->get('master_5_user_status');
+    	return $query->result();
+    }
+    function getStaffData($categ_status = 'x'){
+    	if($categ_status != 'x'){
+    		$this->db->where('CATEGORY_ID', $categ_status);
+    	}
+    	$query = $this->db->get('master_13_staff');
+    	return $query->result();
+    }
+    function createuser(){
+    	$user = $this->input->post('txtUser_');
+    	$pwd = $this->input->post('txtPwd_');
+    	$status = $this->input->post('cmbUserStatus');
+    	$staffid = $this->input->post('cmbStaff');
+    	$active = 0;
+
+    	$this->db->where('USERNAME_', $user);
+    	$query = $this->db->get('login');
+
+    	if($query->num_rows() != 0){
+    		$data['res_']=false;
+    		$data['msg_']= 'Username already Exists.';
+    	} else {
+    		$data = array(
+    			'USERNAME_'=>$user,
+    			'PASSWORD_'=>$pwd,
+    			'STAFFID' => $staffid,
+    			'ACTIVE' => 0
+    		);
+    		if($this->db->insert('login', $data) == true){
+    			$data['res_'] = true;
+    			$data['msg_'] = 'New User successfully created.';
+    		} else {
+    			$data['res_'] = false;
+    			$data['msg_'] = 'Something goes wrong. Please try again';
+    		}
+    	}
+    	return $data;
+    }
+    function updateuser(){
+    	$user = $this->input->post('txtUser_');
+    	$status = $this->input->post('cmbUserStatus');
+    	$staffid = $this->input->post('cmbStaff');
+
+    	$this->db->where('USERNAME_', $user);
+    	$data = array(
+    		'STAFFID' => $staffid
+    	);
+    	if($this->db->update('login', $data)){
+			$data['res_'] = true;
+			$data['msg_'] = 'User successfully updated.';
+		} else {
+			$data['res_'] = false;
+			$data['msg_'] = 'Something goes wrong. Please try again';
+		}
+		return $data;
+    }
+    function activeDeactiveUser($user, $active_status){
+    	$this->db->where('USERNAME_', $user);
+    	$data = array(
+    		'ACTIVE' => $active_status
+    	);
+    	if($this->db->update('login', $data) == true){
+    		$data['res_'] = true;
+    	} else {
+    		$data['res_'] = false;
+    	}
+    	return $data;
+    }
+}
