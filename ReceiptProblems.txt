@@ -1,0 +1,1 @@
+1. In receipt discount_category should also be printed.

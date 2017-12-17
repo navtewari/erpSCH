@@ -73,6 +73,9 @@
         		height: 1px; 
         		border-bottom: 1px solid #000000; 
         	}
+        	sup{
+        		font-size: 9px;
+        	}
         </style>
 	</head>
 	<body>
@@ -81,7 +84,7 @@
 		<div class="col-sm-12 hide_button" style="margin-top: 10px">
             <button class="btn btn-danger print_button" onclick="window.print();">Print</button>
         </div>
-        <div style="clear: both; height: 45px"></div>
+        <div style="clear: both; height: 10px"></div>
 		<?php for($i=1;$i<=2;$i++){ ?>
 			<table border="0" class="myfont table_" cellpadding="10"><tr><td>
 			<table border="0" class="myfont table_" style='border:#009900 solid 0px'>
@@ -206,7 +209,7 @@
 										<tr valign="top" style="background: #f0f0f0">
 											<td class="label_"></td>
 											<td class="content">
-												Discount - Rs.<?php echo $receipt->DISCOUNT_AMOUNT; ?>/-
+												Discount - Rs.<?php echo $receipt->DISCOUNT_AMOUNT; ?>/-<sup>**</sup>
 											</td>
 										</tr>
 										<?php } ?>
@@ -256,6 +259,13 @@
 							<tr>
 								<td colspan="4" class="optionalNote">
 									*Optional fee is not compulsory for student. Those student enrolled for additional facilities are required to submit the same.
+									<?php if($receipt->DISCOUNT_AMOUNT != 0){?>
+									<?php
+										$categ = explode('|', $receipt->DISCOUNT_CATEGORY);
+									?>
+									<br />
+									** Discount on behalf of - <?php echo $categ[0];?>
+									<?php } ?>
 								</td>
 							</tr>
 						</table>
@@ -264,7 +274,7 @@
 			</table>
 			</td></tr></table>
 			<div class="col-sm-2"></div>
-			<div style="clear: both; height: 45px"></div>
+			<div style="clear: both; height: 35px"></div>
 		<?php } ?>
 		<div class="col-sm-12 hide_button" style="margin-top: 10px">
             <button class="btn btn-danger print_button" onclick="window.print();">Print</button>

@@ -1725,6 +1725,16 @@ $(function(){
 		                	} else {
 		                		var total_categ_discount_amount = 0;
 		                	}
+		                	var category_amount_to_store = '';
+		                	if(total_discount_amount != 0){
+		                		category_amount_to_store = category_amount_to_store + total_discount_amount;
+		                	}
+		                	if(total_categ_discount_amount != 0 && category_amount_to_store != ''){
+		                		category_amount_to_store = category_amount_to_store + "," + total_categ_discount_amount;	
+		                	} else if(total_categ_discount_amount != 0){
+		                		category_amount_to_store = category_amount_to_store + total_categ_discount_amount;
+		                	}
+
 		                	var discount_if_any = 0;
 		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_discount_amount) + parseInt(total_categ_discount_amount);
 		                // -----------------------------------------------
@@ -1741,7 +1751,11 @@ $(function(){
 		                str_html = str_html + "<input type='hidden' name='txtINVDETID' id='txtINVDETID' value='"+obj.fetch_receipt_data[0].INVDETID+"' />";
 		                str_html = str_html + "<input type='hidden' name='txtREGID' id='txtREGID' value='"+obj.fetch_receipt_data[0].REGID+"' />";
 		                str_html = str_html + "<input type='hidden' name='txtFlexiHeads' id='txtFlexiHeads' value='"+flexi_heads+"' />";
-		                str_html = str_html + "<input type='hidden' name='txtDiscountCategory' id='txtDiscountCategory' value='"+discount_category+"' />";
+		                if(category_amount_to_store != ''){
+		                	str_html = str_html + "<input type='hidden' name='txtDiscountCategory' id='txtDiscountCategory' value='"+discount_category+"|"+category_amount_to_store+"' />";
+		            	} else {
+		            		str_html = str_html + "<input type='hidden' name='txtDiscountCategory' id='txtDiscountCategory' value='"+discount_category+"' />";
+		            	}
 		                str_html = str_html + "<table style='width: 800px; font-size: 13px; font-family: verdana; border:#808080 solid 1px; background: #ffffff' class='table print_me'><tr height='100'>";
 		                str_html = str_html + "<td align='left' style='width: 150px; padding: 0px 0px 0px 8px; vertical-align: middle'>Date: <u>"+obj.date_+"</u></td>";
 		                str_html = str_html + "<td align='center' style='width: 500px;padding: 0px 0px 0px 8px; vertical-align: middle'><h4 align='center'><b>"+obj.sch_name+"</b><br />Receipt</h4></td>";
