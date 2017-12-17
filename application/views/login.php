@@ -15,6 +15,7 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     </head>
     <body>
+        <?php echo $this->session->userdata('_status_'); ?>
         <div id="loginbox">            
             <?php
             $attrib_ = array(
@@ -60,8 +61,8 @@
                 </div>
             </div>
             <div class="form-actions">                
-                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;margin-left: 18px;"/>                
-                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:right; margin-right:20px;"/>                
+                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:left; margin-left:18px;"/>                
+                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;float:right;margin-right: 18px;"/>                
             </div> 
             <?php echo form_close();?>
     </div>

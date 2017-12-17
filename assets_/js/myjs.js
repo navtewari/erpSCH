@@ -2220,7 +2220,6 @@ $(function(){
 					data: data_,
 					success:  function(data){
 						var obj = JSON.parse(data);
-						alert(data);
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 						} else {
@@ -2262,6 +2261,9 @@ $(function(){
 					callDanger(xhr.responseText);
 				}
 			});
+
+		});
+		$('body').on('click', '.edituser', function(){
 
 		});
 	// ---------------

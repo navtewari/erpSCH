@@ -12,28 +12,32 @@ class My_model extends CI_Model {
     }    
 
     function authenticate(){
-        $this->db->where('USERNAME_', $this->input->post('txtUser__'));
-        $this->db->where('PASSWORD_', $this->input->post('txtPwd__'));
-        $query = $this->db->get('login');
-
+        $this->db->select('a.*, b.name, b.CATEGORY_ID');
+        $this->db->where('a.USERNAME_', $this->input->post('txtUser__'));
+        $this->db->where('a.PASSWORD_', $this->input->post('txtPwd__'));
+        $this->db->where('a.ACTIVE', 1);
+        $this->db->where('b.STATUS_', 1);
+        $this->db->from('login a');
+        $this->db->join('master_13_staff b', 'b.teacherID=a.STAFFID');
+        $query = $this->db->get();
         if ($query->num_rows() != 0) {
             $row_ = $query->row();
+            $this->session->set_userdata('_name_', $row_->name);
             $this->session->set_userdata('_user___', $row_->USERNAME_);
-            $this->session->set_userdata('_status_', $row_->USER_STATUS);
+            $this->session->set_userdata('_status_', $row_->CATEGORY_ID);
             $this->session->set_userdata('_current_year___', $this->input->post('cmbSession'));
             $sess_ = explode("-", $this->input->post('cmbSession'));
             $prevSess = ($sess_[0]-1)."-".($sess_[1]-1);
             $this->session->set_userdata('_previous_year___', $prevSess);
-            $flag_ = TRUE;
+            $flag_ = true;
         } else {
-            $flag_ = FALSE;
+            $flag_ = false;
             $this->session->set_flashdata('msg_', 'False Credentials !!');
         }
 
         // Exceptional Handling
             $this -> _db_error();
         // --------------------
-
         return $flag_;
     }
 
