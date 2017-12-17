@@ -35,6 +35,9 @@ $(function(){
 			fillexistingUsers();
 			hide_loading_process();
 		}
+		if($('#frmAddAttendance').length != 0){
+			fillClasses_for_attendance();
+		}
 	});
 	// Common Function to reload the current Page via http
 	function reloadme(){
@@ -43,6 +46,27 @@ $(function(){
 	// ---------------------------------------------------
 
 	// Function definitions need to call when needed
+		function fillClasses_for_attendance(){
+			$('#s2id_cmbClassesForStudents span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getClasses_in_session";
+			$('#cmbClassesForStudents').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Choose Class</option>";
+					for(i=0;i<obj.class_in_session.length; i++){
+						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
+					}
+					$('#s2id_cmbClassesForStudents span').text("Choose Class");
+					$('#cmbClassesForStudents').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
 		function fillStudents_in_table(){
 			//student_data_here
 			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";

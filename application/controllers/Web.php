@@ -125,6 +125,21 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Switch students';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
+            case 16:
+                $data['page_'] = 'attendance';
+                $data['title_'] = 'Add Attendance';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
+            case 17:
+                $data['page_'] = 'attendance';
+                $data['title_'] = 'View Consolidate Attendance';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
+            case 18:
+                $data['page_'] = 'attendance';
+                $data['title_'] = 'View Daywise Attendance';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
             default:
                 $data['page_'] = 'erorrs';
         }
