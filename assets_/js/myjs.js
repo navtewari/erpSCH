@@ -224,14 +224,16 @@ $(function(){
 			});
 		}
 		function reset_createUserForm(){
-			loading_process();
 			$('#resetCreateUser').click();
-			fillUserStatus('cmbUserStatus');
-			$("#cmbStaff").empty();
-			$("#s2id_cmbStaff span").text('Select Member');
 			hide_loading_process();
 		}
 		$('#resetCreateUser').click(function(){
+			$('.create-update-user-form div').removeClass('update_color');
+			$('#create_update_user').val('Create');
+			$('#create_update_user').removeClass('btn-danger');
+			$('#create_update_user').addClass('btn-success');
+			$('#txtUser_').removeAttr('disabled');
+			$('#txtUser_').css('opacity', '1');
 			loading_process();
 			fillUserStatus('cmbUserStatus');
 			$("#cmbStaff").empty();
@@ -2205,32 +2207,37 @@ $(function(){
 			});
 		});
 		$('.create-new-user').click(function(){
-			if($.trim($('#cmbUserStatus').val()) == ''){
-				callDanger('Select User Status.');
-			} else if($.trim($('#cmbStaff').val()) == '') {
-				callDanger('Select Staff.');
-			} else if($.trim($('#txtUser_').val()) == ''){
-				callDanger('Enter User.');
-			} else {
-				url_ = site_url_ + "/userManagement/createuser";
-				data_ = $('#frmUserManagement').serialize();
-				$.ajax({
-					type: "POST",
-					url: url_,
-					data: data_,
-					success:  function(data){
-						var obj = JSON.parse(data);
-						if(obj.res_ == true){
-							callSuccess(obj.msg_);
-						} else {
-							callDanger(obj.msg_);
-							reset_createUserForm();
-						}
-					}, error: function(xhr, status, error){
-						callDanger(xhr.responseText);
+				$('#txtUser_').removeAttr('disabled');
+				if($.trim($('#cmbUserStatus').val()) == ''){
+					callDanger('Select User Status.');
+				} else if($.trim($('#cmbStaff').val()) == '') {
+					callDanger('Select Staff.');
+				} else if($.trim($('#txtUser_').val()) == ''){
+					callDanger('Enter User.');
+				} else {
+					if($('.create-new-user').val() != 'Update'){
+						url_ = site_url_ + "/userManagement/createuser";
+					} else {
+						url_ = site_url_ + "/userManagement/updateuser";
 					}
-				});
-			}
+					data_ = $('#frmUserManagement').serialize();
+					$.ajax({
+						type: "POST",
+						url: url_,
+						data: data_,
+						success:  function(data){
+							var obj = JSON.parse(data);
+							if(obj.res_ == true){
+								callSuccess(obj.msg_);
+								reset_createUserForm();
+							} else {
+								callDanger(obj.msg_);
+							}
+						}, error: function(xhr, status, error){
+							callDanger(xhr.responseText);
+						}
+					});
+				}
 		});
 		$('body').on('click', '.active-deactive-user', function(){
 			var str = this.id;
@@ -2264,7 +2271,33 @@ $(function(){
 
 		});
 		$('body').on('click', '.edituser', function(){
-
+			var str = this.id;
+			var arr = str.split('_');
+			url_ = site_url_+"/userManagement/getUsers/"+arr[1];
+			loading_process();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					hide_loading_process();
+					$('.create-update-user-form div').addClass('update_color');
+					$('#cmbUserStatus').val(obj.CATEGORY_ID);
+					$('#s2id_cmbUserStatus span').text(obj.STATUS);
+					$('#cmbUserStatus').change();
+					$('#cmbStaff').val(obj.STAFFID);
+					$('#s2id_cmbStaff span').text(obj.name);
+					$('#txtUser_').val(obj.USERNAME_);
+					$('#txtUser_').attr('disabled', 'true');
+					$('#txtUser_').css('opacity', '.5');
+					$('#txtPwd_').val(obj.PASSWORD_);
+					$('#create_update_user').val('Update');
+					$('#create_update_user').removeClass('btn-success');
+					$('#create_update_user').addClass('btn-danger');
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
 		});
 	// ---------------
 	// Popup boxes

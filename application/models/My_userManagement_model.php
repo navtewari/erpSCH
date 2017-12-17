@@ -2,20 +2,28 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class UserManagement_model extends CI_Model {
+class My_userManagement_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
-    function getUsers(){
-    	$this->db->select('b.USERNAME_, a.name, b.ACTIVE, c.STATUS');
+    function getUsers($user = 'x'){
+    	$this->db->select('b.USERNAME_, b.PASSWORD_, a.name, b.ACTIVE, c.STATUS, a.CATEGORY_ID, b.STAFFID');
     	$this->db->from('master_13_staff a');
     	$this->db->join('login b', 'a.teacherID = b.STAFFID');
     	$this->db->join('master_5_user_status c', 'c.ST_ID=a.CATEGORY_ID');
+        if($user != 'x'){
+            $this->db->where('b.USERNAME_', $user);
+        }
     	//$this->db->where('b.ACTIVE', 1);
 		//$this->db->where('a.STATUS_', 1);
     	$query = $this->db->get();
-    	return $query->result();
+        if($user != 'x'){
+            $bool_ = $query->row();
+        } else {
+            $bool_ = $query->result();
+        }
+    	return $bool_;
     }
     function getuserstatus(){
     	$query=$this->db->get('master_5_user_status');
@@ -60,11 +68,12 @@ class UserManagement_model extends CI_Model {
     }
     function updateuser(){
     	$user = $this->input->post('txtUser_');
-    	$status = $this->input->post('cmbUserStatus');
+        $pwd_ = $this->input->post('txtPwd_');
     	$staffid = $this->input->post('cmbStaff');
 
     	$this->db->where('USERNAME_', $user);
     	$data = array(
+            'PASSWORD_'=> $pwd_,
     		'STAFFID' => $staffid
     	);
     	if($this->db->update('login', $data)){

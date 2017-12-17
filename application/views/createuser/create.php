@@ -1,3 +1,8 @@
+<style>
+    .update_color{
+        color: #FF5733;
+    }
+</style>
 <div class="row-fluid">
     <?php
         $attrib_ = array(
@@ -12,7 +17,7 @@
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5><?php echo $title_;?></h5>
             </div>
-            <div class="widget-content">
+            <div class="widget-content create-update-user-form">
             	<div class="control-group">
                     <label class="control-label">Status For</label>
                     <div class="controls">
