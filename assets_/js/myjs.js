@@ -2338,6 +2338,329 @@ $(function(){
 			});
 		});
 	// ---------------
+	// Attendance Module
+		$('#cmbClassesForStudents').change(function(){
+	        if($('#cmbClassesForStudents').val() != 'x' && $('#attendancedate').val() != 'x' && $('#attendanceHour').val() != 'x' && $('#attendanceMin').val() != 'x' && $('#attendanceAMPM').val() != 'x'){
+	            classid = $('#cmbClassesForStudents').val();
+	            class_ = $('#cmbClassesForStudents').find('option:selected').text();
+	            date_ = $('#attendancedate').val();
+	            time__ = $('#attendanceHour').val()+":"+$('#attendanceMin').val()+":"+$('#attendanceAMPM').val();
+
+	            url_ = site_url_ + '/attendance/checkExistingAttendance';
+	            checkdata_ = 'ClassSessid_='+classid+'&date_='+date_+'&time_='+time__;
+	            loading_process();
+	            $.ajax({
+	                type    : 'POST',
+	                url     : url_,
+	                data    : checkdata_,
+	                success : function(data){
+	                    if(data == 1){
+	                        if($('#cmbClassesForStudents').find('option:selected').text() == 'Select'){
+	                            $('#caption_for_class').html("STUDENTS FOR CLASS -");
+	                        } else {
+	                            $('#caption_for_class').html("STUDENTS FOR "+$('#cmbClassesForStudents').find('option:selected').text().toUpperCase());
+	                        }
+	                        url_ = site_url_ + '/attendance/getstudentsforclass';
+	                        data_ = 'ClassSessid_='+$('#cmbClassesForStudents').val();
+	                        $.ajax({
+	                            type    : 'POST',
+	                            url     : url_,
+	                            data    : data_,
+	                            success : function(data){
+	                            	var obj = JSON.parse(data);
+	                            	var str_html = '';
+	                            	for(i=0; i<obj.length; i++){
+		                            	str_html = str_html + "<tr>";
+		                            	str_html = str_html + "<td style='width:30px; text-align: left; background: #f0f0f0'>";
+		                            	str_html = str_html + "<input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj[i].regid+"' />";
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "<td style='width:120px; text-align: left; background: #ffffff'>";
+		                            	str_html = str_html + obj[i].regid;
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "<td style='width:auto; text-align: left; background: #f0f0f0'>";
+		                            	str_html = str_html + "<input type='hidden' class='attendance_0_1' name='hidden_attendance_status["+obj[i].regid+"]' id='"+obj[i].regid+"_' value='0' />"+obj[i].FNAME;
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "</tr>";
+	                            	}
+	                                $('#students_here').html(str_html);
+	                            }, error: function(xhr, status, error){
+									callDanger(xhr.responseText);
+								}
+	                        });
+	                    } else {
+	                    	var str_html = '';
+	                        str_html = str_html + "<tr><td colspan='3' style='color: #ff0000; background: #ffffff; width:100%; border-radius: 5px; padding: 10px; text-align: center; font-size: 15px'>Attendance for <b>Class "+class_+"</b> with selected date & time is already entered. Please Select another class/ date/ time.</td></tr>";
+	                        $('#students_here').html(str_html);
+	                    }
+	                }, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+	            });
+	            hide_loading_process();
+	        } else {
+	            $('#caption_for_class').html("STUDENTS FOR CLASS -");
+	            $('#students_here').html('');
+	        }
+	    });
+	    
+	    $('#frmAddAttendance').submit(function(){
+	            url_ = site_url_+'/attendance/takeattendance';
+	            data_ = $('#frmAddAttendance').serialize();
+	            class_ = $('#cmbClassesForStudents').find('option:selected').text();
+	            loading_process();
+	            $.ajax({
+	                type    : 'POST',
+	                url     : url_,
+	                data    : data_,
+	                success : function(data){
+	                    obj = JSON.parse(data);
+	                    if(obj.messageNo == 1){
+	                        if(obj.nos.length != 0){
+	                            str = '';
+	                            moblength = obj.nos.length;
+	                            /* // This below code will be used when you want to send sms to absantee's parents
+	                            for(i=0;i<moblength;i++){
+	                                if(i < moblength-1){
+	                                    str = str + $.trim(obj.nos[i].MOBILE_S) + ",";
+	                                    str = $.trim(str);
+	                                } else if(i == moblength-1){
+	                                    str = str + $.trim(obj.nos[i].MOBILE_S); 
+	                                    str = $.trim(str);   
+	                                }
+	                            }
+	                            $('#mobilenumbers').val(str);
+	                            d = obj.nos[0].DATE_;
+	                            dt = d.split('-');
+	                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
+	                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt_+"). Please motivate him/her to attend classes regularly.");
+	                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
+								//$('#myModal').modal('show');
+								*/
+	                            callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
+	                        }
+	                    } else if(obj.messageNo == 2){   
+	                        $('#msg_here').html("Something goes wrong. Please try again...");
+	                    } else if(obj.messageNo == 3){
+	                        $('#msg_here').html("Something goes wrong. Please try again...");
+	                    }
+	                    $('#students_here').html('');
+	                    resetAttendanceForm();
+	                }, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+	            });
+	            hide_loading_process();
+	        return false;
+	    });
+	    function resetAttendanceForm(){
+	    	$('#resetAttendForm').click();
+	    	fillClasses_for_attendance();
+	    	$('#s2id_attendanceHour span').text('HR');
+	    	$('#s2id_attendanceMin span').text('MIN');
+	    	$('#s2id_attendanceAMPM span').text('AM/PM');
+	    	$('#atten_check').prop('checked', false);
+			$('#uniform-atten_check span').removeClass('checked');
+	    }
+	    $('#frmSMS').submit(function(){ 
+	    	var url_ = site_url_ + "/attendance/sendSMS";
+	    	var data_ = $('#frmSMS').serialize();
+	    	loading_process();
+	    	$.ajax({
+	    		type: "POST",
+	    		url: url_,
+	    		data: data_,
+	    		success: function(data){
+	    			var obj = JSON.parse(data);
+	    			callSuccess(obj.msg_all);
+	    			$('#myModal').modal('hide');
+	    		}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+					$('#myModal').modal('hide');
+				}
+	    	});
+	    	hide_loading_process();
+	    	return false;
+	    });
+	    $('#atten_check').change(function(){
+	    	if($('#atten_check').prop('checked') == true){
+	    		$(".checkboxall").prop('checked', true);
+	        	$('.attendance_0_1').val('1');
+	    	} else {
+	    		$(".checkboxall").prop('checked', false);
+	        	$('.attendance_0_1').val('0');
+	    	}
+	    });
+	    
+
+	    $(".checkboxall").live('click', function(){
+	        if($('#'+this.id).prop( "checked" ) == true){
+	            $('#'+this.id+'_').val('1');
+	        } else {
+	            $('#'+this.id+'_').val('0');
+	        }
+	    });
+
+	    $('#attendancedate').change(function(){ 
+	        $('#cmbClassesForStudents').change();
+	    });
+
+	    $('#attendanceHour').change(function(){
+	        $('#cmbClassesForStudents').change();
+	    });
+
+	    $('#attendanceMin').change(function(){
+	        $('#cmbClassesForStudents').change();
+	    });
+
+	    $('#attendanceAMPM').change(function(){
+	        $('#cmbClassesForStudents').change();
+	    });
+
+	    $('#frmViewDaywiseAttendance').submit(function(){
+	        var str_html = '';
+	        class_ = $('#cmbClassesForStudents').find('option:selected').text();
+	        $('#view_day_wise_attendance').html('Loading...');
+	        url_ = site_url_+'/attendance/fetchdaywiseresult';
+	        data_ = $('#frmViewDaywiseAttendance').serialize();
+	        $('#view_day_wise_attendance').html("<img src='"+base_url_+"nitnav/img/loading.gif' /> <span style='color: #ff0000'>Please wait. Its Loading...</span>");
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                var obj = JSON.parse(data);
+	                 //$('#view_day_wise_attendance').html(data);
+	                if(obj.time_.length != 0){
+	                    count = obj.time_.length;
+	                    count = count + 3;
+
+	                    var data = $("#attendancedate").val();
+	                    var arr = data.split('-');
+	                    dt = arr[2]+"/"+arr[1]+"/"+arr[0];
+	                    
+	                    str_html = str_html + "<tr style='background: #ffffff'>";
+	                    str_html = str_html + "<td colspan='"+count+"' style='font-size: 20px; color:#000000; text-align: center'>Attendance for Class <b>"+class_+"</b> for the Date <b>"+dt+"</b> </td>";
+	                    str_html = str_html + "</tr>";
+	                    str_html = str_html + "<tr style='background: #ffffff'>";
+	                    str_html = str_html + "<th>Regid</th>";
+	                    str_html = str_html + "<th>Name</th>";
+	                    for(tm=0; tm<obj.time_.length; tm++){
+	                        str_html = str_html + "<th>"+obj.time_[tm].TIME_+"</th>";
+	                    }
+	                    str_html = str_html + "<th>Total</th>";
+	                    str_html = str_html + "</tr>";
+
+	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
+	                        str_html = str_html + "<tr>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].regid + "</td>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].FNAME + "</td>";
+	                        total = 0;
+	                        for(tm=0; tm<obj.time_.length; tm++){
+	                            for(loop2=0;loop2<obj.daywise.length; loop2++){
+	                                if(obj.time_[tm].TIME_ == obj.daywise[loop2].TIME_ && obj.students[loop1].regid == obj.daywise[loop2].regid){
+	                                    total = total + parseInt(obj.daywise[loop2].STATUS);
+	                                    str_html = str_html + "<td align='left'>" + obj.daywise[loop2].STATUS + "</td>";
+	                                }
+	                            }
+	                        }
+	                        str_html = str_html + "<td align='left'>" + total + "</td>";
+	                        str_html = str_html + "</tr>";
+	                    }
+	                    $('#my_print_btn').css('visibility', 'visible');
+	                } else {
+	                    str_html = "<span style='color: #ff0000; padding: 10px'>No Attendance found for the selected Date</span>";
+	                }   
+	                $('#view_day_wise_attendance').html(str_html);
+
+	            }
+	        });
+	    return false;
+	    });
+
+	    $('#frmViewConsolidateAttendance').submit(function(){
+	        var str_html = '';
+	        class_ = $('#cmbClassesForStudents').find('option:selected').text();
+	        $('#view_consolidate_attendance').html('Loading...');
+	        url_ = site_url_+'/attendance/fetchConsolidateresult';
+	        data_ = $('#frmViewConsolidateAttendance').serialize();
+	        $('#view_consolidate_attendance').html("<img src='"+base_url_+"nitnav/img/loading.gif' /> <span style='color: #ff0000'>Please wait. Its Loading...</span>");
+	        var count = 0;
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                obj = JSON.parse(data);
+	                totalClasses = obj.time_.length;
+	                limitpercentage = 75;
+	                if(obj.date_.length != 0){
+	                    count = obj.date_.length;
+	                    count = count + 5;
+
+	                    var data = $("#attendancedatefrom").val();
+	                    var arr = data.split('-');
+	                    dt1 = arr[2]+"/"+arr[1]+"/"+arr[0];
+
+	                    var data = $("#attendancedateto").val();
+	                    var arr = data.split('-');
+	                    dt2 = arr[2]+"/"+arr[1]+"/"+arr[0];
+
+	                    
+
+	                    str_html = str_html + "<tr style='background: #ffffff'>";
+	                    str_html = str_html + "<td colspan='"+count+"' style='font-size: 20px; color:#000000; text-align: center'>Attendance for Class <b>"+class_+"</b> from the <b>"+dt1+" - "+dt2+"</b> </td>";
+	                    str_html = str_html + "</tr>";
+	                    str_html = str_html + "<tr style='background: #ffffff'>";
+	                    str_html = str_html + "<th>Regid</th>";
+	                    str_html = str_html + "<th>Name</th>";
+
+	                    for(tm=0; tm<obj.date_.length; tm++){
+	                        data = obj.date_[tm].DATE_;
+	                        arr = data.split('-');
+	                        DT_ = arr[2]+"/"+arr[1]+"/"+arr[0];
+	                        str_html = str_html + "<th>"+DT_+"</th>";
+	                    }
+	                    str_html = str_html + "<th>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff'>Total</th>";
+	                    str_html = str_html + "<th style='color: #ff0000'>%age</th>";
+	                    str_html = str_html + "</tr>";
+
+	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
+	                        str_html = str_html + "<tr>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].regid + "</td>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].FNAME + "</td>";
+	                        total = 0;
+	                        for(tm=0; tm<obj.date_.length; tm++){
+	                            t_ = 0;
+	                            for(loop2=0;loop2<obj.consolidate.length; loop2++){
+	                                if(obj.date_[tm].DATE_ == obj.consolidate[loop2].DATE_ && obj.students[loop1].regid == obj.consolidate[loop2].regid){
+	                                   t_ = t_ + parseInt(obj.consolidate[loop2].STATUS);
+	                                }
+	                            }
+	                            str_html = str_html + "<td align='left'>" + t_ + "</td>";
+	                            total = total + t_;
+	                        }
+	                        str_html = str_html + "<td align='left'>" + total + "</td>";
+	                        str_html = str_html + "<td align='left' style='color: #0000ff'>" + totalClasses + "</td>";
+	                        per = (total/totalClasses)*100;
+	                        if(per < limitpercentage){
+	                            str_html = str_html + "<td align='left' style='color: #ff0000'>" + per.toFixed(2) + "</td>";
+	                        } else {
+	                            str_html = str_html + "<td align='left' style='color: #009000'>" + per.toFixed(2) + "</td>";
+	                        }
+	                        str_html = str_html + "</tr>";
+	                    }
+	                    $('#my_print_btn').css('visibility', 'visible');
+	                } else {
+	                    str_html = "<span style='color: #ff0000; padding: 10px'>No Attendance found for the selected Dates</span>";
+	                }
+	                $('#view_consolidate_attendance').html(str_html);
+	            }
+	        });
+	    return false;
+	    });
+	
+	// -----------------
 	// Popup boxes
 		function callDanger(message){
 			$.gritter.add({

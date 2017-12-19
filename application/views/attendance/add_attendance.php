@@ -30,7 +30,7 @@
                         </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Select Attendance Date <span style="font-size: 9px">(dd-mm-yyyy)</span></label>
+                    <label class="control-label">Select Attendance Date <span style="font-size: 9px">(-mm-yyyy)</span></label>
                     <div class="controls">
                         <div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
                         <?php
@@ -95,18 +95,19 @@
                                 $options['PM'] = 'PM';
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>
+                            <input type="reset" value="" id="resetAttendForm" name="resetAttendForm" style="display: none;" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-	<div class="controls span8">
+	<div class="controls span6">
 		<div class="control-group">
 			<div class="widget-box">
 				<div class="widget-title">
-					<div style="float: left; padding: 5px; border:#C0C0C0 solid 1px; width: 20px;height: 25px; text-align: center">
-						<input type="checkbox" id="classes_associates_students_for_flexibleHeads_check_boxes" />
+					<div>
+						
 					</div>
 					<h5 id="caption_for_class"></h5>
 					<div style="clear: both"></div>
@@ -115,8 +116,9 @@
 					<table class="table table-bordered table-striped with-check">
 						<thead>
 							<tr>
-								<th><i class="icon-resize-vertical"></i></th>
-								<th style="text-align: left">Select Classe(s)</th>
+								<th style="text-align: left; min-width: 10%;"><input type="checkbox" id="atten_check" /></th>
+								<th style="text-align: left; min-width: 10%">Reg. No.</th>
+								<th style="text-align: left; min-width: 80%">Student Name</th>
 							</tr>
 						</thead>
 						<tbody id="students_here">
@@ -128,10 +130,67 @@
 		</div>
 		<div class="control-group">
 		<div class="controls">
-		<input type="button" value="Add Fee to selected Student(s)" class="btn btn-success span9" id="associate_flexible_head_with_Students">
-		<input type="reset" value="X" class="btn btn-danger cancel_sassociate_flexible_head_with_Student span3" style="float: right">
+			<input type="submit" value="Submit Attendance" class="btn btn-success" name="cmbAddClassSubmit" id="cmbAddClassSubmit">
 		</div>
 		</div>
 	</div>
     <?php echo form_close();?>
 </div>
+            <div id="myModal" class="modal hide">
+              <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h3>Send SMS to the Absentees Parents</h3>
+              </div>
+              <div class="modal-body">
+                <?php echo form_open('#', array('name' => 'frmSMS', 'id' => 'frmSMS', 'role' => 'form')); ?>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label>Mobile Nos.</label>
+                            <?php
+                            $data = array(
+                                'autocomplete' => 'off',
+                                'required' => 'required',
+                                'placeholder' => 'Mobile Number(s)',
+                                'class' => 'required span5',
+                                'name' => 'mobilenumbers',
+                                'id' => 'mobilenumbers',
+                                'value' => '',
+                                'style' => 'height: 100px',
+                            );
+                            echo form_textarea($data);
+                            ?>
+                        </div>
+                        <div class="controls">
+                            <label>Message to be sent</label>
+                            <?php
+                            $data = array(
+                                'autocomplete' => 'off',
+                                'placeholder' => 'Message please',
+                                'required' => 'required',
+                                'class' => 'required span5',
+                                'name' => 'Absent_Message',
+                                'id' => 'Absent_Message',
+                                'value' => 'Your ward is Absent today.',
+                                'style' => 'height: 100px',
+                            );
+                            echo form_textarea($data);
+                            $data = array(
+                                'type' => 'hidden',
+                                'autocomplete' => 'off',
+                                'required' => 'required',
+                                'placeholder' => 'Mobile Number(s)',
+                                'class' => 'required',
+                                'name' => 'MessageToPrint',
+                                'id' => 'MessageToPrint',
+                                'value' => '',
+                                'style' => 'height: 100px',
+                            );
+                            echo form_input($data);
+                            ?>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" value="Submit" name="yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
+                    <button type="submit" class="btn btn-danger" value="No" name="no"><i class="fa fa-close"></i> Don't Send SMS </button>
+                <?php echo form_close(); ?>
+              </div>
+            </div>
