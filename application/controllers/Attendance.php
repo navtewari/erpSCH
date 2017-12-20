@@ -84,16 +84,16 @@ class Attendance extends CI_Controller {
     }
 
     function fetchdaywiseresult(){
-        $data['students'] = $this->mam->getstudentsforclass($this->session->userdata('_current_year___'));
-        $data['time_'] = $this->mam->fetchTime_for_day();
+        $data['students'] = $this->mam->getstudentsforclass_for_view($this->session->userdata('_current_year___'));
+        $data['time_'] = $this->mam->fetchTime_for_daywise();
         $data['daywise'] = $this->mam->fetchAttendance_daywise();
         echo json_encode($data);
     }
 
     function fetchConsolidateresult(){
-        $data['students'] = $this->mam->getstudentsforclass($this->session->userdata('_current_year___'));
+        $data['students'] = $this->mam->getstudentsforclass_for_view($this->session->userdata('_current_year___'));
         $data['date_'] = $this->mam->fetchAttendance_consolidate_date();
-        $data['time_'] = $this->mam->fetchTime_for_days();
+        $data['time_'] = $this->mam->fetchTime_for_days_for_consolidate();
         $data['consolidate'] = $this->mam->fetchAttendance_consolidate_attendance();
 
 

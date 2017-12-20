@@ -21,8 +21,8 @@
     <?php
         $attrib_ = array(
             'class' => 'form-vertical',
-            'name' => 'frmViewConsolidateAttendance',
-            'id' => 'frmViewConsolidateAttendance',
+            'name' => 'frmViewTotalAttendance',
+            'id' => 'frmViewTotalAttendance',
         );
         echo form_open('#', $attrib_); 
     ?>
@@ -105,7 +105,7 @@
         <?php $this->load->view('fee/feestyle'); ?>
 		<div class="widget-box" id="printTable">
 		    <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-		        <h5 id="printHead" class="printHead">Attendance -</h5>
+		        <h5 id="printHead" class="printHead">Total Attendance for - </h5>
 		        <h5 style="float:right;" class="hide_print">
 		        	<a href="#" style="visibility: hidden; color: #ffffff; background: #ff0000; padding: 0px 3px; border-radius: 3px" onclick="printData();" id="my_print_btn">Print</a>
 		    	</h5>

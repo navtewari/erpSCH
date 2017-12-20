@@ -123,9 +123,19 @@ class My_attendance_model extends CI_Model {
         //echo $this->db->last_query(); 
         return $query->result();
     }
-    
+    function getstudentsforclass_for_view($year__){
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
+        $this->db->select('a.regid, a.FNAME, a.MNAME, a.LNAME');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->where('b.CLSSESSID', $clssessid);
+        $this->db->where('b.SESSID', $year__);
+        $query = $this->db->get();
+        //echo $this->db->last_query(); 
+        return $query->result();
+    }
     function fetchAttendance_consolidate_date(){
-        $clssessid = $this->input->post('cmbClassesForStudents');
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
         $date_from = $this->input->post('attendancedatefrom');
         $date_upto = $this->input->post('attendancedateto');
 
@@ -135,13 +145,12 @@ class My_attendance_model extends CI_Model {
         $this->db->where('DATE_ >=', $date_from);   
         $this->db->where('DATE_ <=', $date_upto);
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
         return $query->result();
-
     }
 
     function fetchAttendance_consolidate_attendance(){
-        $clssessid = $this->input->post('cmbClassesForStudents');
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
         $date_from = $this->input->post('attendancedatefrom');
         $date_upto = $this->input->post('attendancedateto');
 
@@ -171,7 +180,34 @@ class My_attendance_model extends CI_Model {
         return $query->result();
     }
 
+    function fetchTime_for_days_for_consolidate(){
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
+        $date_from = $this->input->post('attendancedatefrom');
+        $date_upto = $this->input->post('attendancedateto');
+        $date_ = $this->input->post('attendancedate');
+        $this->db->select('DATE_, TIME_');
+        $this->db->group_by('DATE_,TIME_');
+        $this->db->where('DATE_ >=',  $date_from);   
+        $this->db->where('DATE_ <=',  $date_upto);   
+        $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
 
+        $query = $this->db->get('class_4_class_wise_attendance');
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
+    function fetchTime_for_daywise(){
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
+        $date_ = $this->input->post('attendancedate');
+        $this->db->select('DATE_, TIME_');
+        $this->db->group_by('TIME_');
+        $this->db->where('DATE_', $date_);   
+        $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
+
+        $query = $this->db->get('class_4_class_wise_attendance');
+        //echo $this->db->last_query();
+        return $query->result();
+    }
     function fetchTime_for_day(){
         $clssessid = $this->input->post('cmbClassesForStudents');
         $date_ = $this->input->post('attendancedate');
@@ -184,9 +220,8 @@ class My_attendance_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
-
     function fetchAttendance_daywise(){
-        $clssessid = $this->input->post('cmbClassesForStudents');
+        $clssessid = $this->input->post('cmbClassesForStudents_view');
         $date_ = $this->input->post('attendancedate');
         $this->db->select('b.regid, b.CLSSESSID, b.DATE_, b.TIME_, b.STATUS');
         $this->db->from('master_7_stud_personal a');

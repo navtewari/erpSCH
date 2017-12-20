@@ -16,7 +16,7 @@ class My_admission_model extends CI_Model {
     		$this->db->where('c.CLSSESSID',$classessid);
     	}
         $this->db->where('c.SESSID', $session);
-    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, d.CLASSID');
+    	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, d.CLASSID, a.CATEGORY');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
         $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');

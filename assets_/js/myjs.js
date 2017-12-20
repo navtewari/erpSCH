@@ -2518,43 +2518,42 @@ $(function(){
 
 	    $('#frmViewDaywiseAttendance').submit(function(){
 	        var str_html = '';
-	        class_ = $('#cmbClassesForStudents').find('option:selected').text();
-	        $('#view_day_wise_attendance').html('Loading...');
+	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
 	        url_ = site_url_+'/attendance/fetchdaywiseresult';
 	        data_ = $('#frmViewDaywiseAttendance').serialize();
-	        $('#view_day_wise_attendance').html("<img src='"+base_url_+"nitnav/img/loading.gif' /> <span style='color: #ff0000'>Please wait. Its Loading...</span>");
+	        $('#printHead').html('Attendance -');
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
 	            data    : data_,
 	            success : function(data){
 	                var obj = JSON.parse(data);
-	                 //$('#view_day_wise_attendance').html(data);
 	                if(obj.time_.length != 0){
 	                    count = obj.time_.length;
 	                    count = count + 3;
 
-	                    var data = $("#attendancedate").val();
-	                    var arr = data.split('-');
-	                    dt = arr[2]+"/"+arr[1]+"/"+arr[0];
+	                    var dt = $("#attendancedate").val();
 	                    
-	                    str_html = str_html + "<tr style='background: #ffffff'>";
-	                    str_html = str_html + "<td colspan='"+count+"' style='font-size: 20px; color:#000000; text-align: center'>Attendance for Class <b>"+class_+"</b> for the Date <b>"+dt+"</b> </td>";
-	                    str_html = str_html + "</tr>";
-	                    str_html = str_html + "<tr style='background: #ffffff'>";
-	                    str_html = str_html + "<th>Regid</th>";
-	                    str_html = str_html + "<th>Name</th>";
+	                    $('#printHead').html('Attendance for '+class_+' for ('+dt+')');
+
+	                    str_html = str_html + '<table class="table table-bordered" border="1" cellpadding="2" cellspacing="0" width="100%">';
+	                    str_html = str_html + '<thead>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="min-width: 10%">Reg. No.</th>'
+						str_html = str_html + '<th style="min-width: 80%">Student Name</th>';
+
 	                    for(tm=0; tm<obj.time_.length; tm++){
 	                        str_html = str_html + "<th>"+obj.time_[tm].TIME_+"</th>";
 	                    }
-	                    str_html = str_html + "<th>Total</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
 	                        str_html = str_html + "<tr>";
 	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].regid + "</td>";
 	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].FNAME + "</td>";
-	                        total = 0;
+	                        var total = 0;
 	                        for(tm=0; tm<obj.time_.length; tm++){
 	                            for(loop2=0;loop2<obj.daywise.length; loop2++){
 	                                if(obj.time_[tm].TIME_ == obj.daywise[loop2].TIME_ && obj.students[loop1].regid == obj.daywise[loop2].regid){
@@ -2572,81 +2571,79 @@ $(function(){
 	                }   
 	                $('#view_day_wise_attendance').html(str_html);
 
+	            }, error: function(xhr, status, error){
+	            	callDanger(xhr.responsetext);
 	            }
 	        });
+	        hide_loading_process();
 	    return false;
 	    });
 
+		$('#my_print_btn').click(function(){
+			var divToPrint=document.getElementById("printTable");
+		   newWin= window.open("");
+		   newWin.document.write(divToPrint.outerHTML);
+		   newWin.print();
+		   //newWin.close();
+		});
+
 	    $('#frmViewConsolidateAttendance').submit(function(){
 	        var str_html = '';
-	        class_ = $('#cmbClassesForStudents').find('option:selected').text();
-	        $('#view_consolidate_attendance').html('Loading...');
+	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewConsolidateAttendance').serialize();
-	        $('#view_consolidate_attendance').html("<img src='"+base_url_+"nitnav/img/loading.gif' /> <span style='color: #ff0000'>Please wait. Its Loading...</span>");
-	        var count = 0;
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
 	            data    : data_,
 	            success : function(data){
 	                obj = JSON.parse(data);
-	                totalClasses = obj.time_.length;
-	                limitpercentage = 75;
+
+	                var totalClasses = obj.time_.length; // It is used to store Total classes between the selected dates timewise
+	                var limitpercentage = 75;
 	                if(obj.date_.length != 0){
-	                    count = obj.date_.length;
-	                    count = count + 5;
+	                    var dt1 = $("#attendancedatefrom").val();
+	                    var dt2 = $("#attendancedateto").val();
+	                    $('#printHead').html('Attendance for '+class_+' from ('+dt1+') to ('+dt2+')');
 
-	                    var data = $("#attendancedatefrom").val();
-	                    var arr = data.split('-');
-	                    dt1 = arr[2]+"/"+arr[1]+"/"+arr[0];
-
-	                    var data = $("#attendancedateto").val();
-	                    var arr = data.split('-');
-	                    dt2 = arr[2]+"/"+arr[1]+"/"+arr[0];
-
-	                    
-
-	                    str_html = str_html + "<tr style='background: #ffffff'>";
-	                    str_html = str_html + "<td colspan='"+count+"' style='font-size: 20px; color:#000000; text-align: center'>Attendance for Class <b>"+class_+"</b> from the <b>"+dt1+" - "+dt2+"</b> </td>";
-	                    str_html = str_html + "</tr>";
-	                    str_html = str_html + "<tr style='background: #ffffff'>";
-	                    str_html = str_html + "<th>Regid</th>";
-	                    str_html = str_html + "<th>Name</th>";
+	                    str_html = str_html + '<table class="table table-bordered" border="1" cellpadding="2" cellspacing="0" width="100%">';
+	                    str_html = str_html + '<thead>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="min-width: 10%">Reg. No.</th>'
+						str_html = str_html + '<th style="min-width: 80%">Student Name</th>';
 
 	                    for(tm=0; tm<obj.date_.length; tm++){
-	                        data = obj.date_[tm].DATE_;
-	                        arr = data.split('-');
-	                        DT_ = arr[2]+"/"+arr[1]+"/"+arr[0];
-	                        str_html = str_html + "<th>"+DT_+"</th>";
+	                        DT_ = obj.date_[tm].DATE_;
+	                        str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
 	                    }
-	                    str_html = str_html + "<th>Attended</th>";
-	                    str_html = str_html + "<th style='color: #0000ff'>Total</th>";
-	                    str_html = str_html + "<th style='color: #ff0000'>%age</th>";
+	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
 	                        str_html = str_html + "<tr>";
 	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].regid + "</td>";
 	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].FNAME + "</td>";
-	                        total = 0;
+	                        var total = 0; // It is used to store the total classes attended by the student
 	                        for(tm=0; tm<obj.date_.length; tm++){
-	                            t_ = 0;
+	                            var t_ = 0; // It is a temporary variable to calculate the total attended classes datewise
 	                            for(loop2=0;loop2<obj.consolidate.length; loop2++){
 	                                if(obj.date_[tm].DATE_ == obj.consolidate[loop2].DATE_ && obj.students[loop1].regid == obj.consolidate[loop2].regid){
 	                                   t_ = t_ + parseInt(obj.consolidate[loop2].STATUS);
 	                                }
 	                            }
-	                            str_html = str_html + "<td align='left'>" + t_ + "</td>";
+	                            str_html = str_html + "<td style='text-align: center'>" + t_ + "</td>";
 	                            total = total + t_;
 	                        }
-	                        str_html = str_html + "<td align='left'>" + total + "</td>";
-	                        str_html = str_html + "<td align='left' style='color: #0000ff'>" + totalClasses + "</td>";
+	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
 	                        per = (total/totalClasses)*100;
 	                        if(per < limitpercentage){
-	                            str_html = str_html + "<td align='left' style='color: #ff0000'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
 	                        } else {
-	                            str_html = str_html + "<td align='left' style='color: #009000'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
 	                        }
 	                        str_html = str_html + "</tr>";
 	                    }
@@ -2657,6 +2654,79 @@ $(function(){
 	                $('#view_consolidate_attendance').html(str_html);
 	            }
 	        });
+	        hide_loading_process();
+	    return false;
+	    });
+
+		$('#frmViewTotalAttendance').submit(function(){
+	        var str_html = '';
+	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
+	        url_ = site_url_+'/attendance/fetchConsolidateresult';
+	        data_ = $('#frmViewTotalAttendance').serialize();
+	        $('#printHead').html('Total Attendance for - ');
+	        loading_process();
+	        $.ajax({
+	            type    : 'POST',
+	            url     : url_,
+	            data    : data_,
+	            success : function(data){
+	                obj = JSON.parse(data);
+
+	                var totalClasses = obj.time_.length; // It is used to store Total classes between the selected dates timewise
+	                var limitpercentage = 75;
+	                if(obj.date_.length != 0){
+	                    var dt1 = $("#attendancedatefrom").val();
+	                    var dt2 = $("#attendancedateto").val();
+	                    $('#printHead').html('Total Attendance for '+class_+' from ('+dt1+') to ('+dt2+')');
+
+	                    str_html = str_html + '<table class="table table-bordered" border="1" cellpadding="2" cellspacing="0" width="100%">';
+	                    str_html = str_html + '<thead>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="min-width: 10%">Reg. No.</th>'
+						str_html = str_html + '<th style="min-width: 80%">Student Name</th>';
+
+	                    for(tm=0; tm<obj.date_.length; tm++){
+	                        DT_ = obj.date_[tm].DATE_;
+	                        //str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
+	                    }
+	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
+	                    str_html = str_html + "</tr>";
+
+	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
+	                        str_html = str_html + "<tr>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].regid + "</td>";
+	                        str_html = str_html + "<td align='left'>" + obj.students[loop1].FNAME + "</td>";
+	                        var total = 0; // It is used to store the total classes attended by the student
+	                        for(tm=0; tm<obj.date_.length; tm++){
+	                            var t_ = 0; // It is a temporary variable to calculate the total attended classes datewise
+	                            for(loop2=0;loop2<obj.consolidate.length; loop2++){
+	                                if(obj.date_[tm].DATE_ == obj.consolidate[loop2].DATE_ && obj.students[loop1].regid == obj.consolidate[loop2].regid){
+	                                   t_ = t_ + parseInt(obj.consolidate[loop2].STATUS);
+	                                }
+	                            }
+	                            //str_html = str_html + "<td style='text-align: center'>" + t_ + "</td>";
+	                            total = total + t_;
+	                        }
+	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
+	                        per = (total/totalClasses)*100;
+	                        if(per < limitpercentage){
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                        } else {
+	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                        }
+	                        str_html = str_html + "</tr>";
+	                    }
+	                    $('#my_print_btn').css('visibility', 'visible');
+	                } else {
+	                    str_html = "<span style='color: #ff0000; padding: 10px'>No Attendance found for the selected Dates</span>";
+	                }
+	                $('#view_consolidate_attendance').html(str_html);
+	            }
+	        });
+	        hide_loading_process();
 	    return false;
 	    });
 	

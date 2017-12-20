@@ -91,12 +91,14 @@ class Web extends CI_Controller {
                 break;
             case 10:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
+                $data['category_'] = $this->mam->get_category();
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Admission';
                 $data['Personal'] = ' active';
                 $data['Parents'] = '';
                 $data['Address'] = '';
                 $data['siblings'] = '';
+                $data['category'] = '';
                 break;
             case 11:
                 $data['page_'] = 'master';
@@ -138,6 +140,11 @@ class Web extends CI_Controller {
             case 18:
                 $data['page_'] = 'attendance';
                 $data['title_'] = 'View Daywise Attendance';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
+            case 19:
+                $data['page_'] = 'attendance';
+                $data['title_'] = 'View Total Attendance';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
             default:
