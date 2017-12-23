@@ -21,7 +21,7 @@
                             $data = array(
                                 'type' => 'text',
                                 'class' => 'datepicker span11',
-                                'data-date-format' => 'mm-dd-yyyy',
+                                'data-date-format' => 'dd-mm-yyyy',
                                 'name' => 'startYear',
                                 'id' => 'startYear',
                                 'value' => date('d-m-Y'),
@@ -38,7 +38,7 @@
                             $data = array(
                                 'type' => 'text',
                                 'class' => 'datepicker span11',
-                                'data-date-format' => 'mm-dd-yyyy',
+                                'data-date-format' => 'dd-mm-yyyy',
                                 'name' => 'endYear',
                                 'id' => 'endYear',
                                 'value' => date('d-m-Y'),
