@@ -199,6 +199,7 @@ class My_attendance_model extends CI_Model {
     function fetchTime_for_daywise(){
         $clssessid = $this->input->post('cmbClassesForStudents_view');
         $date_ = $this->input->post('attendancedate');
+        $this->db->order_by('ATTID');
         $this->db->select('DATE_, TIME_');
         $this->db->group_by('TIME_');
         $this->db->where('DATE_', $date_);   
@@ -211,6 +212,7 @@ class My_attendance_model extends CI_Model {
     function fetchTime_for_day(){
         $clssessid = $this->input->post('cmbClassesForStudents');
         $date_ = $this->input->post('attendancedate');
+        $this->db->order_by('ATTID');
         $this->db->select('DATE_, TIME_');
         $this->db->group_by('TIME_');
         $this->db->where('DATE_', $date_);   

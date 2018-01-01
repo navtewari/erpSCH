@@ -30,10 +30,8 @@ $(function(){
 			hide_loading_process();
 		}
 		if(('#frmUserManagement').length != 0){
-			loading_process();
 			fillUserStatus('cmbUserStatus');
 			fillexistingUsers();
-			hide_loading_process();
 		}
 		if($('#frmAddAttendance').length != 0){
 			fillClasses_for_attendance();
@@ -200,6 +198,7 @@ $(function(){
 		}
 		function fillexistingUsers(){
 			url_ = site_url_ + "/userManagement/getUsers";
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -222,6 +221,7 @@ $(function(){
 					} else {
 
 					}
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -230,6 +230,7 @@ $(function(){
 		function fillUserStatus(objstr){
 			url_ = site_url_ + "/userManagement/getuserstatus";
 			$('#'+objstr).empty();
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -242,6 +243,7 @@ $(function(){
 					}
 					$('#s2id_'+objstr+' span').text("Select User Status");
 					$('#'+objstr).html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 				}
@@ -249,7 +251,6 @@ $(function(){
 		}
 		function reset_createUserForm(){
 			$('#resetCreateUser').click();
-			hide_loading_process();
 		}
 		$('#resetCreateUser').click(function(){
 			$('.create-update-user-form div').removeClass('update_color');
@@ -2259,6 +2260,7 @@ $(function(){
 						url_ = site_url_ + "/userManagement/updateuser";
 					}
 					data_ = $('#frmUserManagement').serialize();
+					loading_process();
 					$.ajax({
 						type: "POST",
 						url: url_,
@@ -2271,6 +2273,7 @@ $(function(){
 							} else {
 								callDanger(obj.msg_);
 							}
+							hide_loading_process();
 						}, error: function(xhr, status, error){
 							callDanger(xhr.responseText);
 						}
@@ -2318,7 +2321,6 @@ $(function(){
 				url: url_,
 				success: function(data){
 					var obj = JSON.parse(data);
-					hide_loading_process();
 					$('.create-update-user-form div').addClass('update_color');
 					$('#cmbUserStatus').val(obj.CATEGORY_ID);
 					$('#s2id_cmbUserStatus span').text(obj.STATUS);
@@ -2332,6 +2334,7 @@ $(function(){
 					$('#create_update_user').val('Update');
 					$('#create_update_user').removeClass('btn-success');
 					$('#create_update_user').addClass('btn-danger');
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -2383,6 +2386,7 @@ $(function(){
 		                            	str_html = str_html + "</tr>";
 	                            	}
 	                                $('#students_here').html(str_html);
+	                                hide_loading_process();
 	                            }, error: function(xhr, status, error){
 									callDanger(xhr.responseText);
 								}
@@ -2391,12 +2395,12 @@ $(function(){
 	                    	var str_html = '';
 	                        str_html = str_html + "<tr><td colspan='3' style='color: #ff0000; background: #ffffff; width:100%; border-radius: 5px; padding: 10px; text-align: center; font-size: 15px'>Attendance for <b>Class "+class_+"</b> with selected date & time is already entered. Please Select another class/ date/ time.</td></tr>";
 	                        $('#students_here').html(str_html);
+	                        hide_loading_process();
 	                    }
 	                }, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 					}
 	            });
-	            hide_loading_process();
 	        } else {
 	            $('#caption_for_class').html("STUDENTS FOR CLASS -");
 	            $('#students_here').html('');
@@ -2445,11 +2449,11 @@ $(function(){
 	                    }
 	                    $('#students_here').html('');
 	                    resetAttendanceForm();
+	                    hide_loading_process();
 	                }, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 					}
 	            });
-	            hide_loading_process();
 	        return false;
 	    });
 	    function resetAttendanceForm(){
@@ -2570,12 +2574,12 @@ $(function(){
 	                    str_html = "<span style='color: #ff0000; padding: 10px'>No Attendance found for the selected Date</span>";
 	                }   
 	                $('#view_day_wise_attendance').html(str_html);
+	                hide_loading_process();
 
 	            }, error: function(xhr, status, error){
 	            	callDanger(xhr.responsetext);
 	            }
 	        });
-	        hide_loading_process();
 	    return false;
 	    });
 

@@ -6,7 +6,7 @@ class UserManagement extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('my_userManagement_model', 'mumm');
+        $this->load->model('my_usermanagement_model', 'mumm');
     }
     function getUsers($user = 'x'){
         if($user != 'x'){

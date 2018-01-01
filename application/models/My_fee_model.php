@@ -47,7 +47,7 @@ class My_fee_model extends CI_Model {
         //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $R = $query->row();
-            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, C.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT');
+            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT');
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
             $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);

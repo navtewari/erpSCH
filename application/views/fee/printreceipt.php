@@ -92,7 +92,7 @@
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0" class="table_" style='border:#009900 solid 0px'>
 							<tr class="feeHeader">
-								<td width="100"><img src='<?php echo base_url(_logo_1); ?>' / ></td>
+								<td width="100"><img src='<?php echo base_url('assets_/logo/'._logo_1); ?>' / ></td>
 								<td width="500">
 									<span class='header_text'>
 									<b><?php echo $sch_name; ?></b><br />
