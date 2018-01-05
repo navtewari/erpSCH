@@ -10,6 +10,9 @@ class Login extends CI_Controller {
     }
 
     function index(){
+        //echo $this->security->get_csrf_token_name();
+        //echo $this->security->get_csrf_hash();
+
         $this->session->sess_destroy();
         $data['master_sessions'] = $this->mm->getsessions();
     	$this->load->view('login', $data);
