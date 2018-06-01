@@ -363,7 +363,6 @@ $(function(){
 		});
 		$('.submit_or_update_admission').click(function(e){
 			e.preventDefault();
-
 			if($('#cmbClassofAdmission').val() == ''){
 				callDanger("Please select Class of Admission !!");
 			} else if($('#txtFullName').val() == '') {
@@ -373,7 +372,6 @@ $(function(){
 			} else {
 				data_ = new FormData($('#frmAdmission')[0]);
 				url_ = site_url_ + "/reg_adm/update_Admission";
-
 				$.ajax({
 					type: 'POST',
 					url: url_,
@@ -391,7 +389,7 @@ $(function(){
 							callDanger(obj.msg_);
 						}
 					}, error: function(xhr, status, error){
-						callSuccess(xhr.responseText);
+						callDanger(xhr.responseText);
 					}
 				});
 			}

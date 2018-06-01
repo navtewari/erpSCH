@@ -1,0 +1,32 @@
+-withdrawl
+--switch student
+
+1. if student is promoted to any class then he/she should be veiwed in new admitted student listbox.
+
+Fee Problems:
+-----------------
+2. 1 time fee if submitted then it should be removed from the particular student.
+3. If march invoice generated the pay fee should be shown of march not feb and pending fee should be added in march fee.
+
+4. Set withdrawl in pay fee (fix the textfield for withdrawl amount, which is to be filled by the opt), show the total paid fee in the session for detail view receipt wise.
+
+5. in case of withdrawl or leaving school invoice generated but fee not paid then cancel invoice the same., then switch class or cancel admission (in case of cancel admission status of admission should be set to 0(means disable from the software presenting canceled admission)
+
+	5A. Now case for switching student from one section to another section. (class switching is between sections only). (Need to discuss more...)
+
+
+withdrawl 
+	1. Wrong entry
+	2. leaving school (
+
+reports for current session class wise
+	1. student detail class & section wise 
+	2. Fee detail class & section wise
+	3. Fee Amount head wise for all classes this month.
+	4. Fee Amount head wise class wise.
+	5. Fee due amout class wise for current invoice.
+	6. Total fee collected between dates class wise and also show due amount.
+	7. Total actual fee should be collected between dates.
+	8. Over all total fee collected in this session.
+
+reports for all

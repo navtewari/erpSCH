@@ -11,6 +11,18 @@ class My_admission_model extends CI_Model {
         // --------------------
     }  
 
+    function getstudents_for_dropdown_admission_form($session, $classessid=''){
+        if($classessid!=''){
+            $this->db->where('c.CLSSESSID',$classessid);
+        }
+        $this->db->where('b.SESSID', $session);
+        $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, b.CLASS_OF_ADMISSION as CLASSID, a.CATEGORY');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function getstudents_for_dropdown($session, $classessid=''){
     	if($classessid!=''){
     		$this->db->where('c.CLSSESSID',$classessid);
@@ -142,6 +154,7 @@ class My_admission_model extends CI_Model {
                 $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
                 if($siblings!=''){
                     $query = $this->db->insert('register_sibling', $dataSibling);
+                    $this->no_discount_to_other_siblings($siblings);
                 }
 
                 if ($query == true) {
@@ -163,7 +176,6 @@ class My_admission_model extends CI_Model {
             'FNAME' => $this->input->post('txtFullName'),
             'MNAME' => '-x-',
             'LNAME' => '-x-',
-            'PHOTO_' => 'no-image.jpg',
             'DOB_' => $this->input->post('txtStudDOB'),
             'GENDER' => $this->input->post('optStuGender'),
             'FATHER' => $this->input->post('txtFatherName'),
@@ -218,6 +230,7 @@ class My_admission_model extends CI_Model {
             );
 
             $siblings = trim($this->input->post('txtSiblings'));
+
             //return $bool_ = array('res_' => TRUE, 'msg_' => $siblings);
             $dataSibling = array(
                 'SIBLINGS' => $siblings,
@@ -264,6 +277,7 @@ class My_admission_model extends CI_Model {
                         $query = $this->db->insert('register_sibling', $dataSibling);
                     }
                 }
+                $this->no_discount_to_other_siblings($siblings);
             // -----------------
 
             if ($query == true) {
@@ -286,7 +300,19 @@ class My_admission_model extends CI_Model {
 
         return $bool_;
     }
-
+    function no_discount_to_other_siblings($siblings){
+        $arr = explode(",", $siblings);
+        $dataSibling = array(
+            'DISCOUNT_OFFERED'=>0,
+            'DATE_'=> date('Y-m-d H:i:s'),
+            'USERNAME_' => $this->session->userdata('_user___'),
+            'STATUS' => 0
+        );
+        for($i=0;$i<count($arr);$i++){
+            $this->db->where('regid', $arr[$i]);
+            $this->db->update('register_sibling', $dataSibling);
+        }
+    }
     function updateID___($pid_, $newid_, $regid_){
         $this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('_id_');
