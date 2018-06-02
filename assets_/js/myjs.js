@@ -370,6 +370,7 @@ $(function(){
 			} else if($("#optStuMale").prop("checked")==false && $("#optStuFemale").prop("checked") == false){
 				callDanger("Please select gender. !!");
 			} else {
+				loading_process();
 				data_ = new FormData($('#frmAdmission')[0]);
 				url_ = site_url_ + "/reg_adm/update_Admission";
 				$.ajax({
@@ -392,6 +393,7 @@ $(function(){
 						callDanger(xhr.responseText);
 					}
 				});
+				hide_loading_process();
 			}
 		});
 		// Sibling Module Code

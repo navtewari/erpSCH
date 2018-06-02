@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.3
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 01, 2018 at 11:26 AM
--- Server version: 5.6.11
--- PHP Version: 5.5.3
+-- Host: localhost:3306
+-- Generation Time: Jun 01, 2018 at 04:03 PM
+-- Server version: 5.6.36-cll-lve
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `erp_sch`
+-- Database: `teamfree_erpsch`
 --
 
 -- --------------------------------------------------------
@@ -46,6 +48,7 @@ INSERT INTO `class_1_classes` (`CLASSID`, `CLASS`, `SECTION`, `DATE_`) VALUES
 ('12A', '12', 'A', '2017-04-29 06:51:08'),
 ('12B', '12', 'B', '2017-04-29 06:51:13'),
 ('12C', '12', 'C', '2017-08-08 09:27:20'),
+('12S', '12', 'S', '2018-05-23 18:58:07'),
 ('1A', '1', 'A', '2016-03-08 15:00:37'),
 ('1B', '1', 'B', '2016-03-08 15:00:37'),
 ('1C', '1', 'C', '2017-02-16 10:24:40'),
@@ -93,7 +96,19 @@ CREATE TABLE `class_2_in_session` (
 --
 
 INSERT INTO `class_2_in_session` (`CLSSESSID`, `CLASSID`, `SESSID`, `STATUS_`, `DATE_`) VALUES
-(500, '1', '2017-18', 1, '2017-12-25 07:33:36');
+(500, '1', '2017-18', 1, '2017-12-25 07:33:36'),
+(522, '1', '2018-19', 1, '2018-05-23 18:58:41'),
+(523, '10', '2018-19', 1, '2018-05-23 18:58:41'),
+(524, '12C', '2018-19', 1, '2018-05-23 18:58:41'),
+(525, '12S', '2018-19', 1, '2018-05-23 18:58:41'),
+(526, '2', '2018-19', 1, '2018-05-23 18:58:41'),
+(527, '3', '2018-19', 1, '2018-05-23 18:58:41'),
+(528, '4', '2018-19', 1, '2018-05-23 18:58:41'),
+(529, '5', '2018-19', 1, '2018-05-23 18:58:41'),
+(530, '6', '2018-19', 1, '2018-05-23 18:58:41'),
+(531, '7', '2018-19', 1, '2018-05-23 18:58:41'),
+(532, '8', '2018-19', 1, '2018-05-23 18:58:41'),
+(533, '9', '2018-19', 1, '2018-05-23 18:58:41');
 
 -- --------------------------------------------------------
 
@@ -116,7 +131,8 @@ CREATE TABLE `class_3_class_wise_students` (
 --
 
 INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`, `USERNAME_`, `DATE_`, `SESSID`) VALUES
-(4, '20170410250', 0, 500, 'admin', '2017-12-25 09:53:01', '2017-18');
+(4, '20170410250', 0, 500, 'admin', '2017-12-25 09:53:01', '2017-18'),
+(5, '2017041001', 0, 500, 'nitin', '2018-01-01 15:24:15', '2017-18');
 
 -- --------------------------------------------------------
 
@@ -135,6 +151,18 @@ CREATE TABLE `class_4_class_wise_attendance` (
   `STATUS` tinyint(1) NOT NULL,
   `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `class_4_class_wise_attendance`
+--
+
+INSERT INTO `class_4_class_wise_attendance` (`ATTID`, `regid`, `ROLLNO`, `CLSSESSID`, `USERNAME_`, `DATE_`, `TIME_`, `STATUS`, `DOE_`) VALUES
+(1, '20170410250', 0, 500, 'nitin', '01/01/2018', '2:2:AM', 0, '2018-01-01 20:17:16'),
+(2, '2017041001', 0, 500, 'nitin', '01/01/2018', '2:2:AM', 1, '2018-01-01 20:17:16'),
+(3, '20170410250', 0, 500, 'gopal', '01/01/2018', '6:2:PM', 1, '2018-01-01 21:44:09'),
+(4, '2017041001', 0, 500, 'gopal', '01/01/2018', '6:2:PM', 0, '2018-01-01 21:44:09'),
+(5, '20170410250', 0, 500, 'gopal', '01/01/2018', '10:21:PM', 1, '2018-01-01 21:45:17'),
+(6, '2017041001', 0, 500, 'gopal', '01/01/2018', '10:21:PM', 1, '2018-01-01 21:45:17');
 
 -- --------------------------------------------------------
 
@@ -1141,7 +1169,9 @@ INSERT INTO `fee_5_add_flexi_head_to_students` (`ADFLXFEESTUDID`, `REGID`, `CLSS
 (254, '2017041042', 405, '2017-18', 1, 1, 'nitin', '2017-11-05 11:48:24'),
 (255, '2017041043', 405, '2017-18', 1, 1, 'nitin', '2017-11-05 11:48:24'),
 (256, '2017041044', 405, '2017-18', 1, 1, 'nitin', '2017-11-05 11:48:24'),
-(257, '2017041204', 391, '2017-18', 7, 1, 'nitin', '2017-11-07 05:22:33');
+(257, '2017041204', 391, '2017-18', 7, 1, 'nitin', '2017-11-07 05:22:33'),
+(258, '2017041001', 500, '2017-18', 1, 1, 'nitin', '2018-01-01 15:25:10'),
+(259, '2017041001', 500, '2017-18', 2, 1, 'nitin', '2018-01-01 15:25:15');
 
 -- --------------------------------------------------------
 
@@ -1189,7 +1219,8 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 (686, '2017-18', 405, '2018', '2', '2018', '2', 1, 'X', '2017-12-17 13:45:14'),
 (687, '2017-18', 405, '2018', '2', '2018', '2', 1, 'X', '2017-12-17 13:45:15'),
 (688, '2017-18', 405, '2018', '3', '2018', '3', 1, 'X', '2017-12-17 14:05:38'),
-(689, '2017-18', 405, '2018', '4', '2018', '4', 1, 'X', '2017-12-17 14:09:17');
+(689, '2017-18', 405, '2018', '4', '2018', '4', 1, 'X', '2017-12-17 14:09:17'),
+(690, '2017-18', 500, '2018', '1', '2018', '1', 1, 'X', '2018-01-01 15:25:36');
 
 -- --------------------------------------------------------
 
@@ -1311,7 +1342,8 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 (183, 688, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041071', 10000, 10000, 20000, '2017-12-17 14:05:40'),
 (184, 689, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041069', 10000, 0, 0, '2017-12-17 14:09:17'),
 (185, 689, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041070', 10000, 30000, 40000, '2017-12-17 14:09:18'),
-(186, 689, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041071', 10000, 20000, 30000, '2017-12-17 14:09:19');
+(186, 689, 'ADMISSION,TUITION', '5000, 5000', '', '', '', '', '', '', 10000.00, 'X', '2017041071', 10000, 20000, 30000, '2017-12-17 14:09:19'),
+(187, 690, '', '', 'REGISTRATION', '2000', 'EXAM FEE', '500', 'BUS FEE', '1000', 3500.00, 'X', '2017041001', 3500, 0, 1000, '2018-01-01 15:25:36');
 
 -- --------------------------------------------------------
 
@@ -1354,7 +1386,8 @@ INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `
 (57, '0', '', '1', 'ST', '800', 'x', 10000, 0, 'cash', 'x', 'x', '2017041069', 159, '2017-12-17 13:43:26'),
 (58, '0', '', '1', 'SIBLINGS,ST', '1300', 'x', 10000, 0, 'cash', 'x', 'x', '2017041069', 177, '2017-12-17 13:47:39'),
 (59, '0', '', '1', 'SIBLINGS,ST|500,800', '1300', 'x', 10000, 0, 'cash', 'x', 'x', '2017041069', 181, '2017-12-17 14:07:08'),
-(60, '0', '', '0', 'SIBLINGS,ST|500,800', '0', 'x', 10000, 0, 'cash', 'x', 'x', '2017041069', 184, '2017-12-17 14:09:46');
+(60, '0', '', '0', 'SIBLINGS,ST|500,800', '0', 'x', 10000, 0, 'cash', 'x', 'x', '2017041069', 184, '2017-12-17 14:09:46'),
+(61, '1', 'EXAM FEE, BUS FEE', '1', 'SIBLINGS|175', '175', 'xx', 2500, 0, 'cash', 'x', 'x', '2017041001', 187, '2018-01-01 15:30:11');
 
 -- --------------------------------------------------------
 
@@ -1369,6 +1402,13 @@ CREATE TABLE `fee_8_class_fee` (
   `USERNAME` varchar(100) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `fee_8_class_fee`
+--
+
+INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DATE_`) VALUES
+(1, 500, '2000', 'nitin', '2018-01-01 15:24:58');
 
 -- --------------------------------------------------------
 
@@ -1385,6 +1425,13 @@ CREATE TABLE `fee_9_class_fee_split` (
   `USERNAME` varchar(100) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `fee_9_class_fee_split`
+--
+
+INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUNT`, `PAYMENT_STATUS`, `USERNAME`, `DATE_`) VALUES
+(1, 1, 1, '2000', '12', 'nitin', '2018-01-01 15:24:58');
 
 -- --------------------------------------------------------
 
@@ -1419,6 +1466,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`USERNAME_`, `PASSWORD_`, `STAFFID`, `ACTIVE`) VALUES
+('gopal', '123', 7, 1),
 ('gunjan', '123', 9, 1),
 ('naveen', '123', 6, 1),
 ('nitin', '123', 8, 1);
@@ -1869,7 +1917,8 @@ INSERT INTO `master_6_session` (`SESSID`, `SESSSTART`, `SESSEND`, `DATE_`) VALUE
 ('2014-15', '2014', '2015', '2016-03-08 15:10:15'),
 ('2015-16', '2015', '2016', '2016-03-08 15:10:15'),
 ('2016-17', '2016', '2017', '2016-03-14 17:35:52'),
-('2017-18', '2017', '2018', '2016-03-14 17:35:52');
+('2017-18', '2017', '2018', '2016-03-14 17:35:52'),
+('2018-19', '23-05-2018', '23-05-2019', '2018-05-23 15:25:53');
 
 -- --------------------------------------------------------
 
@@ -2385,7 +2434,7 @@ CREATE TABLE `master_8_stud_academics` (
 --
 
 INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `STATUS_OF_ADMISSION`, `ANY_REMARK`, `regid`, `SESSID`, `USERNAME_`, `DATE_`, `DOL`, `STATUS_`) VALUES
-(1, '1/0/1900 0:00', 500, 0, '-x-', '2017041001', '2017-18', 'nitin', '2017-10-20 09:50:00', NULL, 1),
+(1, '1/0/1900 0:00', 500, 1, '-x-', '2017041001', '2017-18', 'nitin', '2017-10-20 09:50:00', NULL, 1),
 (2, '1/1/1900 0:00', 406, 0, '-x-', '2017041002', '2017-18', 'nitin', '2017-11-05 14:01:54', NULL, 1),
 (3, '1/2/1900 0:00', 406, 0, '-x-', '2017041003', '2017-18', 'nitin', '2017-10-22 07:44:59', NULL, 1),
 (4, '1/3/1900 0:00', 406, 0, '-x-', '2017041004', '2017-18', 'nitin', '2017-11-12 12:15:43', NULL, 1),
@@ -4433,7 +4482,7 @@ CREATE TABLE `master_17_general` (
 --
 
 INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`, `SCH_EMAIL`, `SCH_ADD`, `SCH_CITY`, `SCH_DISITT`, `SCH_STATE`, `SCH_COUNTRY`, `DATE_`, `USERNAME`) VALUES
-(4, 'teamFree.png', 'ST PAULS SR SEC SCHOOL', '8888888888', 'navtewari@gmail.com', 'SheeshMahal, Kathgodam', 'Haldwani', 'Nainital', 'DELHI', 'INDIA', '2017-12-14 04:05:37', 'nitin');
+(4, '4.png', 'Team freelancers', '8888888888', 'navtewari@gmail.com', 'SheeshMahal, Kathgodam', 'Haldwani', 'Nainital', 'UTTARAKHAND', 'INDIA', '2018-01-01 20:30:12', 'nitin');
 
 -- --------------------------------------------------------
 
@@ -5047,7 +5096,9 @@ INSERT INTO `user_menu` (`ID`, `MENU`, `USER_`) VALUES
 (15, 5, 'deo'),
 (16, 6, 'deo'),
 (17, 7, 'deo'),
-(18, 10, 'adm');
+(18, 10, 'adm'),
+(19, 7, 'fc'),
+(20, 8, 'fc');
 
 -- --------------------------------------------------------
 
@@ -5413,17 +5464,17 @@ ALTER TABLE `_id_`
 -- AUTO_INCREMENT for table `class_2_in_session`
 --
 ALTER TABLE `class_2_in_session`
-  MODIFY `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
+  MODIFY `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=534;
 --
 -- AUTO_INCREMENT for table `class_3_class_wise_students`
 --
 ALTER TABLE `class_3_class_wise_students`
-  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `class_4_class_wise_attendance`
 --
 ALTER TABLE `class_4_class_wise_attendance`
-  MODIFY `ATTID` bigint(22) NOT NULL AUTO_INCREMENT;
+  MODIFY `ATTID` bigint(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `exam_1_scholastic_items`
 --
@@ -5488,32 +5539,32 @@ ALTER TABLE `fee_4_flexible_heads`
 -- AUTO_INCREMENT for table `fee_5_add_flexi_head_to_students`
 --
 ALTER TABLE `fee_5_add_flexi_head_to_students`
-  MODIFY `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=260;
 --
 -- AUTO_INCREMENT for table `fee_6_invoice`
 --
 ALTER TABLE `fee_6_invoice`
-  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=690;
+  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=691;
 --
 -- AUTO_INCREMENT for table `fee_6_invoice_detail`
 --
 ALTER TABLE `fee_6_invoice_detail`
-  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 --
 -- AUTO_INCREMENT for table `fee_7_receipts`
 --
 ALTER TABLE `fee_7_receipts`
-  MODIFY `RECPTID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `RECPTID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT for table `fee_8_class_fee`
 --
 ALTER TABLE `fee_8_class_fee`
-  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `fee_9_class_fee_split`
 --
 ALTER TABLE `fee_9_class_fee_split`
-  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `master_7_stud_personal`
 --
@@ -5583,7 +5634,7 @@ ALTER TABLE `menu_2_submenu`
 -- AUTO_INCREMENT for table `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Constraints for dumped tables
 --
@@ -5639,6 +5690,7 @@ ALTER TABLE `menu_2_submenu`
 ALTER TABLE `user_menu`
   ADD CONSTRAINT `fk_mennu` FOREIGN KEY (`MENU`) REFERENCES `menu_1` (`ID_`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user` FOREIGN KEY (`USER_`) REFERENCES `master_5_user_status` (`ST_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
