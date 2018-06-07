@@ -294,12 +294,12 @@ $(function(){
 							if(obj.personal_academics.GENDER != ''){
 								//$('#uniform-optStuMale').removeClass('focus');
 								//$('#uniform-optStuFemale').removeClass('focus');
-								if(obj.personal_academics.GENDER == 'M'){
+								if(obj.personal_academics.GENDER == 'Male' || obj.personal_academics.GENDER == 'M'){
 									$('#optStuMale').prop('checked', true);
-									//$('#uniform-optStuMale').addClass('focus');
-								} else {
+									$('#uniform-optStuMale').addClass('focus');
+								} else if (obj.personal_academics.GENDER == 'Female' || obj.personal_academics.GENDER == 'F') {
 									$('#optStuFemale').prop('checked', true);
-									//$('#uniform-optStuFemale').addClass('focus');
+									$('#uniform-optStuFemale').addClass('focus');
 								}
 							}
 							// Filling Parents Detail

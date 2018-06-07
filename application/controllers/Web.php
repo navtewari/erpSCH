@@ -47,7 +47,7 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Master / Sessions';
                 break;
             case 3:
-                $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
+                $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
                 $data['category_'] = $this->mam->get_category();
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';

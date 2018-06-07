@@ -19,9 +19,17 @@
                         <tr class="gradeX">
                             <td><?php echo $studentitem->regid;?></td>
                             <td><?php echo $studentitem->FNAME;?></td>
-                            <td><?php echo $studentitem->GENDER;?></td>
-                            <td class="center"><?php echo $studentitem->CLASSID;?></td>
-                            <td class="center"><?php echo $studentitem->DOA;?></td>
+                            <td style="text-align: center">
+                                <?php if($studentitem->GENDER == 'M' || $studentitem->GENDER == 'Male' || $studentitem->GENDER == 'MALE'){ ?>
+                                    <div style="width: auto"><img src="<?php echo base_url('assets_/img/male.png');?>" style="width: 16px" title="<?php echo $studentitem->GENDER;?>"></div>
+                                    <div style="width: auto; display: none">1</div>
+                                <?php } else { ?>
+                                    <div style="width: auto"><img src="<?php echo base_url('assets_/img/female.png');?>" style="width: 16px" title="<?php echo $studentitem->GENDER;?>"></div>
+                                    <div style="width: auto; display: none">0</div>
+                                <?php } ?>
+                            </td>
+                            <td style="text-align: center;"><?php echo $studentitem->CLASSID;?></td>
+                            <td><?php echo $studentitem->DOA;?></td>
                         </tr>
                         <?php } ?>
                     </tbody>
