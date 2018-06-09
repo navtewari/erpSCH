@@ -12,6 +12,7 @@ class Web extends CI_Controller {
         $this->load->model('my_master_model', 'mmm_');
         $this->load->model('my_discount_model', 'mdm');
         $this->load->model('my_fee_model', 'fm');
+        $this->load->model('my_reports_model', 'repm');
     }
 
     public function dashboard($active = 1, $subno = 1, $submenu = 'index') {
@@ -25,6 +26,8 @@ class Web extends CI_Controller {
         // ----------------------------------------
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
+        $data['count_reg_students'] = $this->repm->total_reg_students($this->session->userdata('_current_year___'));
+        $data['count_classes_in_session'] = $this->repm->total_classes_in_a_session($this->session->userdata('_current_year___'));
 
         $this->load->view('templates/header');
         $this->load->view('templates/menu', $data);
