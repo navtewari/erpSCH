@@ -2153,10 +2153,11 @@ $(function(){
 	    });
 	    $('.update_promotion').click(function(){
 	    	if($('#cmbAdmFor').val() != ''){
+	    		loading_process();
 	    		$("#undo_redo_to option").prop("selected",true);
 	    		var x = $('#undo_redo_to').val();
-
-	    		data_ = "cmbAdmFor="+$('#cmbAdmFor').val()+"&to="+x.join();
+	    		data_ = "promotionFor="+$('#promotionFor').val()+"&cmbAdmFor="+$('#cmbAdmFor').val()+"&to="+x.join();
+	    		alert(data_);
 	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
 	    		$.ajax({
 	    			type: "POST",
@@ -2165,13 +2166,20 @@ $(function(){
 	    			success: function(data){
 	    				var obj = JSON.parse(data);
 	    				if(obj.res_ == true){
+	    					hide_loading_process();
 	    					callSuccess(obj.msg_);
 	    					resetPromoteForm();
+	    					if($('#promotionFor').val() == 'Admission'){
+	    						$('#promote_student_optAdmission_').click();
+	    					} else {
+	    						$('#promote_student_optPreviousSession_').click();
+	    					}
 	    				} else {
 	    					callDanger(obj.msg_);
 	    				}
 	    			}, error: function(xhr, status, error){
 	    				callDanger(xhr.ResponseText);
+	    				hide_loading_process();
 	    			}
 	    		});
 	    	} else {
