@@ -72,6 +72,7 @@ class My_Master_model extends CI_Model {
 
     function getclasses_() {
         $this->db->order_by('ABS(CLASS)');
+        $this->db->order_by('SECTION', 'asc');
         $query = $this->db->get('class_1_classes');
         return $query->result();
     }
@@ -168,6 +169,7 @@ class My_Master_model extends CI_Model {
 
     function get_totalClass_not_present_in_current_session($year__) {
         $this->db->order_by('ABS(a.CLASS)', 'asc');
+        $this->db->order_by('a.SECTION', 'asc');
         $this->db->select('a.*');
         $this->db->from('class_1_classes a');
         $this->db->join('class_2_in_session b', 'a.CLASSID=b.CLASSID AND b.SESSID="' . $year__ . '"', 'left');
@@ -186,6 +188,7 @@ class My_Master_model extends CI_Model {
           than it will not retrieve in this query from table 'a' [class_2_in_session].
          */
         $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->order_by('x.SECTION', 'asc');
         $this->db->select('a.*');
         $this->db->from('class_1_classes x');
         $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
@@ -200,6 +203,7 @@ class My_Master_model extends CI_Model {
 
     function get_Classes_in_current_session($year__) {
         $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->order_by('x.SECTION', 'asc');
         $this->db->select('a.*');
         $this->db->from('class_1_classes x');
         $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
@@ -217,6 +221,7 @@ class My_Master_model extends CI_Model {
           and ALSO PRRESENT in table b [class_3_class_wise_students].
          */
         $this->db->order_by('ABS(x.CLASS)', 'asc');
+        $this->db->order_by('x.SECTION', 'asc');
         $this->db->select('a.*');
         $this->db->from('class_1_classes x');
         $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
