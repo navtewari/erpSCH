@@ -104,12 +104,13 @@ class My_fee_model extends CI_Model {
     
     //------------------------------------Fetch class in selected session/ Year --------------------------------------
     function get_class_in_session($year__){
-        
         $year__ = $this->session->userdata('_current_year___');
-        $this -> db -> where ('SESSID', $year__);
-        $this -> db -> order_by('CLASSID');
-        $query = $this -> db -> get('class_2_in_session');
-
+        $this -> db -> where ('b.SESSID', $year__);
+        $this -> db -> order_by('ABS(a.CLASS)', 'asc');
+        $this -> db -> order_by('a.SECTION', 'asc');
+        $this -> db -> from('class_1_classes a');
+        $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
+        $query = $this -> db -> get();
         return $query -> result();
     }
     function get_class_fee_in_session($year__){

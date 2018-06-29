@@ -147,6 +147,7 @@ class Promote_model extends CI_Model {
     }
     function getClassesFromAdmission($year__){
         $this->db->order_by('ABS(a.CLASS)', 'asc');
+        $this -> db -> order_by('a.SECTION', 'asc');
         $this->db->distinct('a.CLASSID');
         $this->db->select('a.CLASSID, b.CLSSESSID');
         $this->db->from('class_1_classes a');

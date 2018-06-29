@@ -42,11 +42,14 @@ class My_admission_model extends CI_Model {
     }
 
     function getClasses_in_session($session){
-        $this->db->where('SESSID', $session);
-        $this->db->order_by('CLASSID','desc');
-        $this->db->select('CLSSESSID, CLASSID');
-        $query = $this->db->get('class_2_in_session');
-        return $query->result();
+        $year__ = $session;
+        $this -> db -> where ('b.SESSID', $year__);
+        $this -> db -> order_by('ABS(a.CLASS)', 'asc');
+        $this -> db -> order_by('a.SECTION', 'asc');
+        $this -> db -> from('class_1_classes a');
+        $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
+        $query = $this -> db -> get();
+        return $query -> result();
     }
 
     function getState(){
