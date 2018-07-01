@@ -1,17 +1,4 @@
 $(function(){
-
-	$(document).ajaxStart(function(){
-	    $('#loading_process').css('opacity', '1');
-		$('#loading_process').css('display', 'inline-block');
-		$('#loading_process').html('<img src="'+base_url_+'/assets_/img/spinner.gif" /> Its Loading...');
-	});
-
-	$(document).ajaxComplete(function(){
-	    $('#loading_process').css('opacity', '1');
-		$('#loading_process').css('display', 'none');
-		$('#loading_process').html('');	
-	});
-
 	$("#txtStudentPhone").mask("(999) 999-9999");
 	$( window ).on( "load", function(){
 		if($('#frmAdmission').length != 0){
@@ -33,12 +20,14 @@ $(function(){
 			view_classes_to_view_students();
 		}
 		if(('#frmPromoteStudents').length != 0){
+			loading_process();
 			$('input[type=radio]').css('opacity', '1');
 			$('._select').css('display', 'block');
 			fillClassesforPromoteStudent('cmbAdmFor');
 			fillClassesforPromoteStudent('cmbAdmittedStudents');
 			$('#undo_redo').multiselect();
 			$('#s2id_undo_redo ul').css('display', 'none');
+			hide_loading_process();
 		}
 		if(('#frmUserManagement').length != 0){
 			fillUserStatus('cmbUserStatus');
@@ -209,6 +198,7 @@ $(function(){
 		}
 		function fillexistingUsers(){
 			url_ = site_url_ + "/userManagement/getUsers";
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -231,6 +221,7 @@ $(function(){
 					} else {
 
 					}
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -239,6 +230,7 @@ $(function(){
 		function fillUserStatus(objstr){
 			url_ = site_url_ + "/userManagement/getuserstatus";
 			$('#'+objstr).empty();
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -251,6 +243,7 @@ $(function(){
 					}
 					$('#s2id_'+objstr+' span').text("Select User Status");
 					$('#'+objstr).html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 				}
@@ -266,9 +259,11 @@ $(function(){
 			$('#create_update_user').addClass('btn-success');
 			$('#txtUser_').removeAttr('disabled');
 			$('#txtUser_').css('opacity', '1');
+			loading_process();
 			fillUserStatus('cmbUserStatus');
 			$("#cmbStaff").empty();
 			$("#s2id_cmbStaff span").text('Select Member');
+			hide_loading_process();
 		});
 		$('#reload_me').click(function(){
 			reloadme();
@@ -278,6 +273,7 @@ $(function(){
 				reset_admission_form();
 			} else {
 				url_ = site_url_ + "/reg_adm/get_admision_detail/"+$('#cmbRegistrationID').val();
+				loading_process();
 				$.ajax({
 					type: 'post',
 					url: url_,
@@ -355,6 +351,7 @@ $(function(){
 							$('#cmbCategory').val(obj.personal_academics.CATEGORY);
 							$('#s2id_cmbCategory span').text(obj.personal_academics.CATEGORY);
 						}
+						hide_loading_process();
 					}, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 					}
@@ -373,6 +370,7 @@ $(function(){
 			} else if($("#optStuMale").prop("checked")==false && $("#optStuFemale").prop("checked") == false){
 				callDanger("Please select gender. !!");
 			} else {
+				loading_process();
 				data_ = new FormData($('#frmAdmission')[0]);
 				url_ = site_url_ + "/reg_adm/update_Admission";
 				$.ajax({
@@ -395,6 +393,7 @@ $(function(){
 						callDanger(xhr.responseText);
 					}
 				});
+				hide_loading_process();
 			}
 		});
 		// Sibling Module Code
@@ -437,6 +436,7 @@ $(function(){
 	// Master Discount ------------------------
 		function fill_discounts(){
 			url_ = site_url_ + "/discount/get_discounts";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -466,6 +466,7 @@ $(function(){
 						str_html = str_html + '</tr>'
 					}
 					$('#static_fee_heads_here').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -619,6 +620,7 @@ $(function(){
 
 		function fill_static_fee_heads(){
 			url_ = site_url_ + "/master_fee/get_static_fee_heads";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -640,6 +642,7 @@ $(function(){
 						str_html = str_html + '</tr>'
 					}
 					$('#static_fee_heads_here').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -751,6 +754,7 @@ $(function(){
 
 		function fill_flexible_fee_heads(){
 			url_ = site_url_ + "/master_fee/get_flexible_heads";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -773,6 +777,7 @@ $(function(){
 						str_html = str_html + '</tr>'
 					}
 					$('#flexible_fee_heads_here').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -940,6 +945,7 @@ $(function(){
 		});
 		function fillClasses_for_current_session(){
 			url_ = site_url_ + "/master_fee/get_class_in_session";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -957,6 +963,7 @@ $(function(){
 						str_html = str_html + '</tr>';
 					}
 					$('#classes_associates_staticHeads').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -975,6 +982,7 @@ $(function(){
 			    } else {
 			    	url_ = site_url_ + '/master_fee/submit_static_fee_to_class';
 			    	data_ = $('#frmAssociateStaticFee').serialize();
+			    	loading_process();
 			    	$.ajax({
 			    		type: 'POST',
 			    		url: url_,
@@ -988,6 +996,7 @@ $(function(){
 			    			} else {
 			    				callDanger(obj.msg_);
 			    			}
+			    			hide_loading_process();
 			    		}, error: function(xhr, status, error){
 							callDanger(xhr.responseText);
 						}
@@ -1009,6 +1018,7 @@ $(function(){
 
 		function fillFlexibleHeads_for_Associate_with_students(){
 			url_ = site_url_ + "/master_fee/get_flexible_heads";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -1026,6 +1036,7 @@ $(function(){
 						str_html = str_html + '</tr>';
 					}
 					$('#flexibleHeads_for_associating_Students').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -1034,6 +1045,7 @@ $(function(){
 
 		function fillClasses_to_find_students(){
 			url_ = site_url_ + "/master_fee/get_class_in_session";
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -1051,6 +1063,7 @@ $(function(){
 						str_html = str_html + '</tr>';
 					}
 					$('#classes_to_find_students').html(str_html);
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -1062,6 +1075,7 @@ $(function(){
 			var cls = clsid.split('~');
 			url_ = site_url_ + "/master_fee/getStduents_in_current_session/"+clssessid;
 			$('#name_of_class_for_students').html('Students for Class <b style="width: 15px; background: #808080; color: #ffff00; padding: 2px; border-radius: 5px;">'+cls[2]+'</b>');
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -1085,7 +1099,7 @@ $(function(){
 					$('#students_for_selected_class').html(str_html);
 					$('#classes_associates_students_for_flexibleHeads_check_boxes').attr('checked', false);
 					$('#uniform-classes_associates_students_for_flexibleHeads_check_boxes').removeClass('checked');
-					
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -1149,7 +1163,7 @@ $(function(){
 			arr = str.split('~');
 			clssessid = arr[1];
 			url_ = site_url_ + "/master_fee/get_flexible_fee_head_for_class/"+clssessid;
-			
+			loading_process();
 			$.ajax({
 				type:"POST",
 				url:url_,
@@ -1182,6 +1196,7 @@ $(function(){
 						str_html = str_html + '<tr><td colspan="3" style="color: #ff0000; font-family: verdana, Arial">X: No Student Found in this class !!</td></tr>';
 						$('#student_associated_flexibleheads_classwise').html(str_html);
 					}
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -1208,7 +1223,7 @@ $(function(){
 		});
 		function view_classes_to_view_students(){
 			url_ = site_url_ + "/master_fee/get_class_in_session";
-
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -1226,7 +1241,7 @@ $(function(){
 						str_html = str_html + '</tr>';
 					}
 					$('#classes_to_View_Students_status').html(str_html);
-					
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -1265,6 +1280,7 @@ $(function(){
 			        		total_months = calculate_no_months(year_from, month_from, year_to, month_to);
 				            data_ = $('#frmInvoice').serialize();
 				            url_ = site_url_ + "/fee/show_invoice_needs_to_be_generated";
+				            loading_process();
 				            $.ajax({
 				                type : 'POST',
 				                url : url_,
@@ -1373,13 +1389,14 @@ $(function(){
 					                    str_html = str_html + '</tbody>';
 		                				str_html = str_html + '</table>';
 					                    $("#class_invoices_here").html(str_html);
-					                    
+					                    hide_loading_process();
 					                //} else {
 					                	//hide_loading_process();
 					                //}
 				                },
 				                error: function (xhr, ajaxOptions, thrownError) {       
 				                    //alert(xhr.responseText);
+				                    hide_loading_process();
 				                    str_for_html = thrownError;
 				                    $("#class_invoices_here").empty();
 				                    $("#class_invoices_here").append(str_html);
@@ -1399,7 +1416,7 @@ $(function(){
 			var $class__ = $('#cmbClassForInvoice').val();
             var data_ = $('#frmInvoice').serialize() + '&regid='+this.id;
             var url_ = site_url_ + '/fee/generateInvoice';
-
+            loading_process();
             $.ajax({
             	type: "POST",
             	url:url_,
@@ -1412,7 +1429,7 @@ $(function(){
             			$('#'+regid_+"_for_invoice_print").html("<a href='"+site_url_+"/fee/print_invoice/"+obj.invdetid+"/"+$class__+"' target='_blank'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></a>");
             			$('#place_for_undo_'+regid_).html("<span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undoinvoice_"+obj.invdetid+"_"+regid_+"'></i></span>");
             		}
-            		
+            		hide_loading_process();
             	},
             	error: function (xhr, ajaxOptions, thrownError) {     
                     callDanger(xhr.responseText);
@@ -1424,7 +1441,7 @@ $(function(){
 			var arr_ = str.split("_");
 			var regid_ = arr_[2];
 			var url_ = site_url_ + '/fee/undo_invoice/'+arr_[1]+'/'+regid_;
-			
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -1436,10 +1453,10 @@ $(function(){
 					} else {
 						callDanger(obj.msg_);
 					}
-					
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
-					
+					hide_loading_process();
 				}
 			});
 		});
@@ -1471,7 +1488,7 @@ $(function(){
 		            data_ = $('#class_in_session_for_Receipt').serialize();
 		            url_ = site_url_ + "/fee/show_class_for_receipt";
 
-		            
+		            loading_process();
 		            $.ajax({
 		                type : 'POST',
 		                url : url_,
@@ -1480,7 +1497,7 @@ $(function(){
 		                	var tot_fixAmount_1_time = 0, tot_fixAmount_n_time = 0, fixHeads_1='',fixHeads_n='';
 		                    var obj = JSON.parse(data);
 		                    var len_ = obj.fetch_invoice_for_receipt.length;
-		                    //alert(len_);
+		                    
 		                    if(len_ != 0){
 		                    	var total_months= parseInt(obj.fetch_invoice_for_receipt[0].NOM,10);
 			                    var str_html 	= '';
@@ -1643,7 +1660,7 @@ $(function(){
 		                        //$('#prev_receipt_month_info').html("");
 		                        $('#class_PayFee_here').html('<div class="rear_message">No Invoice generated for the selected class.</div>');
 		                    }
-			                
+			                hide_loading_process();
 		                }, error: function(xhr, status, error){
 		                    callDanger(xhr.responseText);
 		                }
@@ -2054,7 +2071,7 @@ $(function(){
 	        url_ = site_url_ + '/promote/getClassForCurrentSessionAdmission';
 	        data_ = 'PromotionFor='+$('#promotionFor').val();
 	        $('#s2id_promote_student_cmbAdmFor span').text("...");
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2071,7 +2088,7 @@ $(function(){
 	                $("#promote_student_cmbAdmFor").html(str_html);
 	                $('#promote_student_cmbAdmFor').removeAttr('disabled');
 	                $('#forcmbprevAdmSession').html("New Admitted Students for (" + _current_year___ + ")");
-	                
+	                hide_loading_process();
 	            },
 	            error: function(xhr, status, error){
 	            	callDanger(xhr.responseText);
@@ -2085,7 +2102,7 @@ $(function(){
 	        url_ = site_url_ + '/promote/getClassForCurrentSessionAdmission';
 	        data_ = 'PromotionFor='+$('#promotionFor').val();
 	        $('#s2id_promote_student_cmbAdmFor span').text("...");
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2102,7 +2119,7 @@ $(function(){
 	                $("#promote_student_cmbAdmFor").html(str_html);
 	                $('#promote_student_cmbAdmFor').removeAttr('disabled');
 	                $('#forcmbprevAdmSession').html("Select Students to Promote (" + _previous_year___ + ")");
-	                
+	                hide_loading_process();
 	            },
 	            error: function(xhr, status, error){
 	            	callDanger(xhr.responseText);
@@ -2114,7 +2131,7 @@ $(function(){
 	        url_ = site_url_ + '/promote/getStudentForCurrentSession';
 	        data_ = 'PromotionFor='+$('#promotionFor').val()+'&ClassSessid_='+$('#promote_student_cmbAdmFor').val();
 	        $("#undo_redo").empty();
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2128,7 +2145,7 @@ $(function(){
 	                }
 	                $("#undo_redo").empty();
 	                $("#undo_redo").append(str_html);
-	                
+	                hide_loading_process();
 	            }, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -2136,10 +2153,11 @@ $(function(){
 	    });
 	    $('.update_promotion').click(function(){
 	    	if($('#cmbAdmFor').val() != ''){
-	    		
+	    		loading_process();
 	    		$("#undo_redo_to option").prop("selected",true);
 	    		var x = $('#undo_redo_to').val();
 	    		data_ = "promotionFor="+$('#promotionFor').val()+"&cmbAdmFor="+$('#cmbAdmFor').val()+"&to="+x.join();
+	    		alert(data_);
 	    		url_ = site_url_ + "/promote/promote_admit_Students_to_class";
 	    		$.ajax({
 	    			type: "POST",
@@ -2148,7 +2166,7 @@ $(function(){
 	    			success: function(data){
 	    				var obj = JSON.parse(data);
 	    				if(obj.res_ == true){
-	    					
+	    					hide_loading_process();
 	    					callSuccess(obj.msg_);
 	    					resetPromoteForm();
 	    					if($('#promotionFor').val() == 'Admission'){
@@ -2161,7 +2179,7 @@ $(function(){
 	    				}
 	    			}, error: function(xhr, status, error){
 	    				callDanger(xhr.ResponseText);
-	    				
+	    				hide_loading_process();
 	    			}
 	    		});
 	    	} else {
@@ -2173,7 +2191,7 @@ $(function(){
 	    $('#cmbAdmittedStudents').change(function(){
 	        url_ = site_url_ + '/promote/getStudentsofCurrentSession';
 	        data_ = 'ClassSessid_='+$('#cmbAdmittedStudents').val();
-	        
+	        loading_process();
 	        $("#undo_redo1").empty();
 	        $("#undo_redo1").append('Loading...');
 	        $.ajax({
@@ -2187,14 +2205,14 @@ $(function(){
 	                    str_html = str_html + "<option value='"+ obj[loop1].regid +"'>"+ obj[loop1].FNAME +"</option>"
 	                }
 	                $("#undo_redo1").append(str_html);
-	                
+	                hide_loading_process();
 	            },
 	            error: function (xhr, ajaxOptions, thrownError) {
 	                //alert(xhr.responseText);
 	                str_html = "<option>"+thrownError+" !!</option>";
 	                $("#undo_redo1").empty();
 	                $("#undo_redo1").append(str_html);
-	                
+	                hide_loading_process();
 	            }
 	        });
 	    });
@@ -2211,7 +2229,7 @@ $(function(){
 			$("#cmbStaff").empty();
 			$('#s2id_cmbStaff span').text("Loading...");
 			url_ = site_url_ + "/userManagement/getStaffData/"+$id_;
-			
+			loading_process();
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -2224,14 +2242,14 @@ $(function(){
 	                    str_html = str_html + "<option value='"+ obj[loop1].teacherID +"'>"+ obj[loop1].name +"</option>"
 	                }
 	                $("#cmbStaff").append(str_html);
-	                
+	                hide_loading_process();
 				}, error: function (xhr, ajaxOptions, thrownError) {
 	                //alert(xhr.responseText);
 	                str_html = "<option>"+thrownError+" !!</option>";
 	                $("#cmbStaff").empty();
 	                $("#cmbStaff").append(str_html);
 	                $("#s2id_cmbStaff span").text(str_html);
-	                
+	                hide_loading_process();
 	            }
 			});
 		});
@@ -2250,7 +2268,7 @@ $(function(){
 						url_ = site_url_ + "/userManagement/updateuser";
 					}
 					data_ = $('#frmUserManagement').serialize();
-					
+					loading_process();
 					$.ajax({
 						type: "POST",
 						url: url_,
@@ -2263,7 +2281,7 @@ $(function(){
 							} else {
 								callDanger(obj.msg_);
 							}
-							
+							hide_loading_process();
 						}, error: function(xhr, status, error){
 							callDanger(xhr.responseText);
 						}
@@ -2274,7 +2292,7 @@ $(function(){
 			var str = this.id;
 			var arr = str.split('_');
 			var modified_id = "action_user_"+arr[2];
-			
+			loading_process();
 			arr[1]
 			arr[2]
 			url_ = site_url_+"/userManagement/activeDeactiveUser/"+arr[2]+"/"+arr[1];
@@ -2291,7 +2309,7 @@ $(function(){
 							$('#'+modified_id).css('color', '#009000');
 							$('#'+modified_id).html("<span class='icon-thumbs-up active-deactive-user' id='activedeactive_"+0+"_"+arr[2]+"'></span> | <span class='icon-pencil edituser' id='edit_"+arr[2]+"'></span>");
 						}
-						
+						hide_loading_process();
 					} else {
 
 					}
@@ -2305,7 +2323,7 @@ $(function(){
 			var str = this.id;
 			var arr = str.split('_');
 			url_ = site_url_+"/userManagement/getUsers/"+arr[1];
-			
+			loading_process();
 			$.ajax({
 				type: 'POST',
 				url: url_,
@@ -2324,7 +2342,7 @@ $(function(){
 					$('#create_update_user').val('Update');
 					$('#create_update_user').removeClass('btn-success');
 					$('#create_update_user').addClass('btn-danger');
-					
+					hide_loading_process();
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -2341,7 +2359,7 @@ $(function(){
 
 	            url_ = site_url_ + '/attendance/checkExistingAttendance';
 	            checkdata_ = 'ClassSessid_='+classid+'&date_='+date_+'&time_='+time__;
-	            
+	            loading_process();
 	            $.ajax({
 	                type    : 'POST',
 	                url     : url_,
@@ -2376,7 +2394,7 @@ $(function(){
 		                            	str_html = str_html + "</tr>";
 	                            	}
 	                                $('#students_here').html(str_html);
-
+	                                hide_loading_process();
 	                            }, error: function(xhr, status, error){
 									callDanger(xhr.responseText);
 								}
@@ -2385,7 +2403,7 @@ $(function(){
 	                    	var str_html = '';
 	                        str_html = str_html + "<tr><td colspan='3' style='color: #ff0000; background: #ffffff; width:100%; border-radius: 5px; padding: 10px; text-align: center; font-size: 15px'>Attendance for <b>Class "+class_+"</b> with selected date & time is already entered. Please Select another class/ date/ time.</td></tr>";
 	                        $('#students_here').html(str_html);
-	                        
+	                        hide_loading_process();
 	                    }
 	                }, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
@@ -2401,7 +2419,7 @@ $(function(){
 	            url_ = site_url_+'/attendance/takeattendance';
 	            data_ = $('#frmAddAttendance').serialize();
 	            class_ = $('#cmbClassesForStudents').find('option:selected').text();
-	            
+	            loading_process();
 	            $.ajax({
 	                type    : 'POST',
 	                url     : url_,
@@ -2439,7 +2457,7 @@ $(function(){
 	                    }
 	                    $('#students_here').html('');
 	                    resetAttendanceForm();
-	                    
+	                    hide_loading_process();
 	                }, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
 					}
@@ -2458,7 +2476,7 @@ $(function(){
 	    $('#frmSMS').submit(function(){ 
 	    	var url_ = site_url_ + "/attendance/sendSMS";
 	    	var data_ = $('#frmSMS').serialize();
-	    	
+	    	loading_process();
 	    	$.ajax({
 	    		type: "POST",
 	    		url: url_,
@@ -2472,7 +2490,7 @@ $(function(){
 					$('#myModal').modal('hide');
 				}
 	    	});
-	    	
+	    	hide_loading_process();
 	    	return false;
 	    });
 	    $('#atten_check').change(function(){
@@ -2516,7 +2534,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchdaywiseresult';
 	        data_ = $('#frmViewDaywiseAttendance').serialize();
 	        $('#printHead').html('Attendance -');
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2564,7 +2582,7 @@ $(function(){
 	                    str_html = "<span style='color: #ff0000; padding: 10px'>No Attendance found for the selected Date</span>";
 	                }   
 	                $('#view_day_wise_attendance').html(str_html);
-	                
+	                hide_loading_process();
 
 	            }, error: function(xhr, status, error){
 	            	callDanger(xhr.responsetext);
@@ -2586,7 +2604,7 @@ $(function(){
 	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewConsolidateAttendance').serialize();
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2648,7 +2666,7 @@ $(function(){
 	                $('#view_consolidate_attendance').html(str_html);
 	            }
 	        });
-	        
+	        hide_loading_process();
 	    return false;
 	    });
 
@@ -2658,7 +2676,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewTotalAttendance').serialize();
 	        $('#printHead').html('Total Attendance for - ');
-	        
+	        loading_process();
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -2720,7 +2738,7 @@ $(function(){
 	                $('#view_consolidate_attendance').html(str_html);
 	            }
 	        });
-	        
+	        hide_loading_process();
 	    return false;
 	    });
 	
@@ -2742,6 +2760,16 @@ $(function(){
 				sticky: false,
 				class_name: 'gritter-success'
 			});
+		}
+		function loading_process(){
+			$('#loading_process').css('opacity', '1');
+			$('#loading_process').css('display', 'inline-block');
+			$('#loading_process').html('<img src="'+base_url_+'/assets_/img/spinner.gif" /> Its Loading...');
+		}
+		function hide_loading_process(){
+			$('#loading_process').css('opacity', '1');
+			$('#loading_process').css('display', 'none');
+			$('#loading_process').html('');	
 		}
 	// -----------
 

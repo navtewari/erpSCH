@@ -229,7 +229,7 @@ class My_fee_model extends CI_Model {
         $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d') >=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
         $this->db->limit(1);
         $query = $this->db->get('fee_6_invoice');
-
+        
         $str = 'x';
         if($query->num_rows()!=0){ //checking year_from-month_from for which invoice already generated for a class
 

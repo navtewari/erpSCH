@@ -7,7 +7,8 @@ class My_admission_model extends CI_Model {
     function __construct() {
         parent::__construct();
         // Exceptional Handling
-            $this -> _db_error();
+            $this->load->model('My_error_model', 'error');
+            $this -> error -> _db_error();
         // --------------------
     }  
 
@@ -52,6 +53,19 @@ class My_admission_model extends CI_Model {
         return $query -> result();
     }
 
+    function getStudents_in_class_in_session($session){
+        $year__ = $session;
+        $this -> db -> select ('a.CLASSID, COUNT(c.regid) as TOTAL_STUDENTS');
+        $this -> db -> where ('b.SESSID', $year__);
+        $this -> db -> order_by('ABS(a.CLASS)', 'asc');
+        $this -> db -> order_by('a.SECTION', 'asc');
+        $this -> db -> group_by('c.CLSSESSID');
+        $this -> db -> from('class_1_classes a');
+        $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID', 'left outer');
+        $this -> db -> join('class_3_class_wise_students c', 'b.CLSSESSID=c.CLSSESSID', 'left outer');
+        $query = $this -> db -> get();
+        return $query -> result();   
+    }
     function getState(){
         $query = $this->db->get('master_3_state_');
         return $query->result();
@@ -416,14 +430,5 @@ class My_admission_model extends CI_Model {
         $this->db->where('CATEGORY', $regid);
         $query = $this->db->get('master_7_stud_personal');
         return $query->result();
-    }
-    function _db_error(){
-        //exception handling ------------------
-        if ($this -> db -> trans_status() == FALSE) {
-            echo "gadbad";
-            die();
-            //redirect('web/dberror');
-        }
-        //-------------------------------------
     }
 }
