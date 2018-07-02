@@ -62,7 +62,7 @@ class Dashboard_reports extends CI_Controller {
 
     function get_students(){
     	$clssessid = $this->input->post('classessid');
-    	$data['class_students'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'), $clssessid);
+    	$data['class_students'] = $this->repm->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
     	echo json_encode($data);
     }
     function check_login() {

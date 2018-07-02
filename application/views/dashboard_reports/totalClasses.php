@@ -67,7 +67,7 @@
     <div class="span4">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5><div style="float: left">Student(s) in class&nbsp;</div><div id="class_name" style="float: left; background: #ffff00; color: #000090; font-weight">12S</div></h5>
+                <h5><div style="float: left">Student(s) in class&nbsp;</div><div id="class_name" style="float: left; background: #ffff00; color: #000090; font-weight"></div></h5>
             </div>
             <div class="widget-content nopadding">
                 <table class="table table-bordered table-striped with-check">

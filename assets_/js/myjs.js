@@ -2749,6 +2749,8 @@ $(function(){
 					}
 					$('#class_name').html(strarray[1]);
 					$('#student_data_here_as_per_class').html(str);
+				}, error: function(xhr, status, error){
+					$('#student_data_here_as_per_class').html(xhr.responsetext);
 				}
 			});
 
