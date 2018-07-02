@@ -155,17 +155,6 @@ class Web extends CI_Controller {
                 $data['title_'] = 'View Total Attendance';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
-            case 999:
-                $data['page_'] = 'dashboard_reports';
-                $data['title_'] = "Registered Stduents";
-                $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
-                break;
-            case 998:
-                $data['page_'] = 'dashboard_reports';
-                $data['title_'] = "Total Classes in ".$this -> session -> userdata('_current_year___');
-                $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
-                $data['total_students'] = $this->mam->getStudents_in_class_in_session($this->session->userdata('_current_year___'));
-                break;
             default:
                 $data['page_'] = 'erorrs';
         }

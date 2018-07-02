@@ -2723,7 +2723,36 @@ $(function(){
 	        
 	    return false;
 	    });
-	
+	// -----------------
+
+	// Dashboard Reports
+		$('body').on('click', '.show_students_as_per_class', function(){
+			var id_ = this.id; 
+			
+			var strarray = id_.split('~');
+			var data_ = "classessid="+strarray[0];
+
+			var url_ = site_url_ + "/dashboard_reports/get_students";
+			$.ajax({
+				type: "POST",
+				url: url_,
+				data: data_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str = '';
+					for(i=0; i<obj.class_students.length; i++){
+
+						str = str + "<tr>";
+						str = str + "<td>" + obj.class_students[i].regid + "</td>";
+						str = str + "<td>" + obj.class_students[i].FNAME + "</td>";
+						str = str + "</tr>";
+					}
+					$('#class_name').html(strarray[1]);
+					$('#student_data_here_as_per_class').html(str);
+				}
+			});
+
+		});
 	// -----------------
 	// Popup boxes
 		function callDanger(message){

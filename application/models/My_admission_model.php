@@ -17,6 +17,7 @@ class My_admission_model extends CI_Model {
             $this->db->where('c.CLSSESSID',$classessid);
         }
         $this->db->where('b.SESSID', $session);
+        $this->db->order_by('a.FNAME');
         $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY, d.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
@@ -55,7 +56,7 @@ class My_admission_model extends CI_Model {
 
     function getStudents_in_class_in_session($session){
         $year__ = $session;
-        $this -> db -> select ('a.CLASSID, COUNT(c.regid) as TOTAL_STUDENTS');
+        $this -> db -> select ('a.CLASSID, COUNT(c.regid) as TOTAL_STUDENTS, b.CLSSESSID');
         $this -> db -> where ('b.SESSID', $year__);
         $this -> db -> order_by('ABS(a.CLASS)', 'asc');
         $this -> db -> order_by('a.SECTION', 'asc');
