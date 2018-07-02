@@ -7,7 +7,7 @@ class My_discount_model extends CI_Model {
     function __construct() {
         parent::__construct();
         // Exceptional Handling
-            $this -> _db_error();
+            $this->load->model('My_error_model', 'error');
         // --------------------
     }  
 
@@ -84,14 +84,5 @@ class My_discount_model extends CI_Model {
     	$this->db->where('DID', $did);
     	$query = $this->db->delete('master_16_discount');
     	return $query;
-    }
-    function _db_error(){
-        //exception handling ------------------
-        if ($this -> db -> trans_status() == false) {
-            echo "gadbad";
-            die();
-            //redirect('web/dberror');
-        }
-        //-------------------------------------
     }
 }

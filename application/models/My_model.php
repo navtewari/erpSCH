@@ -7,7 +7,7 @@ class My_model extends CI_Model {
     function __construct() {
         parent::__construct();
         // Exceptional Handling
-            $this -> _db_error();
+            $this->load->model('My_error_model', 'error');
         // --------------------
     }    
 
@@ -36,7 +36,7 @@ class My_model extends CI_Model {
         }
 
         // Exceptional Handling
-            $this -> _db_error();
+            $this -> error -> _db_error();
         // --------------------
         return $flag_;
     }
@@ -78,14 +78,5 @@ class My_model extends CI_Model {
         return $reg___;
     }
     
-    function _db_error(){
-        //exception handling ------------------
-        if ($this -> db -> trans_status() == FALSE) {
-            echo "gadbad";
-            die();
-            //redirect('web/dberror');
-        }
-        //-------------------------------------
-    }
 }
 

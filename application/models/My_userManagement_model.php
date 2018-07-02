@@ -6,6 +6,9 @@ class My_usermanagement_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        // Exceptional Handling
+            $this->load->model('My_error_model', 'error');
+        // --------------------
     }
     function getUsers($user = 'x'){
     	$this->db->select('b.USERNAME_, b.PASSWORD_, a.name, b.ACTIVE, c.STATUS, a.CATEGORY_ID, b.STAFFID');

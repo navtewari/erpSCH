@@ -8,7 +8,6 @@ class My_admission_model extends CI_Model {
         parent::__construct();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
-            $this -> error -> _db_error();
         // --------------------
     }  
 

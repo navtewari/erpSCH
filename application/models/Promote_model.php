@@ -7,6 +7,9 @@ class Promote_model extends CI_Model {
 
 	function __construct() {
         parent::__construct();
+        // Exceptional Handling
+            $this->load->model('My_error_model', 'error');
+        // --------------------
     }
     function get_totalClass(){
     	$this->db->order_by('ABS(CLASS)');

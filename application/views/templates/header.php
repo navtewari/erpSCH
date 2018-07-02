@@ -32,8 +32,21 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/uniform.css'); ?>" />
         <link  rel="stylesheet" href="<?PHP echo base_url() . 'assets_/multiSelect/css/style.css'; ?>">
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>" />
+        <style>
+            .page-loader {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url(<?php echo base_url('assets_/img/page-loader.gif');?>) 50% 50% no-repeat rgb(249,249,249);
+                opacity: .8;
+            }
+        </style>
     </head>
     <body id="doc__">
+        <div class="page-loader"></div>
         <div style="text-align: center; width: 100%">
             <div id="loading_process" style="font-weight: bold; font-family: verdana; display: inline-block; opacity: 0; left:auto; right: auto; position: fixed; min-width: 100px; width: auto; height: auto; border-radius: 5px; padding: 5px; background: #F0F0F0; border: #808080 dotted 1px; color: 000000; margin-top: 2%; z-index: 99999"></div>
         </div>

@@ -14,6 +14,9 @@ $(function(){
 
 	$("#txtStudentPhone").mask("(999) 999-9999");
 	$( window ).on( "load", function(){
+		
+		$(".page-loader").fadeOut("slow");
+
 		if($('#frmAdmission').length != 0){
 			$('input[type=radio]').css('opacity', '1');
 			fillStudents();

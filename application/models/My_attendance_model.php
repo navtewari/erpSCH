@@ -7,6 +7,11 @@ class My_attendance_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+
+        // Exceptional Handling
+            $this->load->model('My_error_model', 'error');
+            $this -> error -> _db_error();
+        // --------------------
     }
 
     function getClasses($year__){

@@ -8,7 +8,7 @@ class Dashboard_reports extends CI_Controller {
         parent::__construct();
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
-        $this->load->model('my_reports_model', 'repm');
+        $this->load->model('my_dashboard_reports_model', 'dr');
     }
 
     function total_students(){
@@ -55,14 +55,14 @@ class Dashboard_reports extends CI_Controller {
     }
 
     function all_figures_for_dashboard($year__){
-        $data['count_reg_students'] = $this->repm->total_reg_students($year__);
-        $data['count_classes_in_session'] = $this->repm->total_classes_in_a_session($year__);
+        $data['count_reg_students'] = $this->dr->total_reg_students($year__);
+        $data['count_classes_in_session'] = $this->dr->total_classes_in_a_session($year__);
         return $data;
     }
 
     function get_students(){
     	$clssessid = $this->input->post('classessid');
-    	$data['class_students'] = $this->repm->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
+    	$data['class_students'] = $this->dr->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
     	echo json_encode($data);
     }
     function check_login() {
