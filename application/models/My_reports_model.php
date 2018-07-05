@@ -11,4 +11,31 @@ class My_reports_model extends CI_Model {
         // --------------------
     }  
 
+    function getPersonalDetail($stdid){
+    	$this->db->where('regid', $stdid);
+    	$query = $this->db->get('master_7_stud_personal');
+    	return $query->row();
+    }
+
+    function getAcademicDetail($stdid){
+    	$this->db->where('regid', $stdid);
+    	$this->db->where('STATUS_', 1);
+    	$query = $this->db->get('master_8_stud_academics');
+    	return $query->row();	
+    }
+
+    function get_P_AddressDetail($stdid){
+    	$this->db->where('regid', $stdid);
+    	$this->db->where('ADDRESS_STATUS', 'PERMANENT');
+    	$query = $this->db->get('master_9_stud_address');
+    	return $query->row();	
+    }
+
+    function get_C_AddressDetail($stdid){
+    	$this->db->where('regid', $stdid);
+    	$this->db->where('ADDRESS_STATUS', 'CORRESPONDANCE');
+    	$query = $this->db->get('master_9_stud_address');
+    	return $query->row();	
+    }
+
 }

@@ -485,6 +485,7 @@ $(function () {
     $('#btnAddSessionClassSubmit').click(function () {
         $('#undo_redo_to option').prop('selected', true);
         data_ = $('#frmClassInSession').serializeArray();
+        alert(data_);
         url_ = site_url_ + "/master/setClassInSession";
         $.ajax({
             type: 'POST',

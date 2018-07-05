@@ -28,6 +28,22 @@ class My_admission_model extends CI_Model {
         return $query->result();
     }
 
+    function get_admitted_students($session, $classessid=''){
+        if($classessid!=''){
+            $this->db->where('c.CLSSESSID',$classessid);
+        }
+        $this->db->where('c.SESSID', $session);
+        $this->db->order_by('a.FNAME');
+        $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY, d.CLASSID');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session d', 'b.CLASS_OF_ADMISSION=d.CLSSESSID');
+        $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     function getstudents_for_dropdown($session, $classessid=''){
     	if($classessid!=''){
     		$this->db->where('c.CLSSESSID',$classessid);
@@ -88,6 +104,7 @@ class My_admission_model extends CI_Model {
                 'FNAME' => $this->input->post('txtFullName'),
                 'MNAME' => '-x-',
                 'LNAME' => '-x-',
+                'PHOTO_' => 'no-image.jpg',
                 'DOB_' => $this->input->post('txtStudDOB'),
                 'GENDER' => $this->input->post('optStuGender'),
                 'FATHER' => $this->input->post('txtFatherName'),
@@ -335,7 +352,8 @@ class My_admission_model extends CI_Model {
         }
     }
     function updateID___($pid_, $newid_, $regid_){
-        $this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
+        //$this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
+        $this->db->where('ID_', $pid_); // This is for new concept
         $query = $this->db->get('_id_');
         
         if ($query->num_rows() != 0) {
@@ -350,7 +368,7 @@ class My_admission_model extends CI_Model {
     }
 
     function createRegID() {
-        $this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
+        //$this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('_id_');
         
         $yr = explode('-', $this->session->userdata('_current_year___'));
@@ -363,12 +381,14 @@ class My_admission_model extends CI_Model {
             $data['newid_'] = $id_ = $id_ + 1;
             $flag_ = TRUE;
         } else {
-            $data['newid_'] = $id_ = 1001;
+            //$data['newid_'] = $id_ = 1001;
+            $data['newid_'] = $id_ = 0001; // new concept starts from 0001
             $data['pid_'] = $id_;
             $flag_ = FALSE;
         }
 
-        $data['regid__'] = $regid__ . $id_;
+        //$data['regid__'] = $regid__ . $id_;
+        $data['regid__'] = $regid__ . str_pad($id_, 4, "0", STR_PAD_LEFT); // new concept to concatenate
 
         return $data;
     }
