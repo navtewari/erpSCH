@@ -768,7 +768,7 @@ $(function () {
         var subjectid = arr_str[0];
         var subjectName = arr_str[1];
         url_ = site_url_ + "/master/deleteSubject/" + subjectid;
-        if (confirm('Are you sure you want to delete Grade ' + subjectName)) {
+        if (confirm('Are you sure you want to delete Subject ' + subjectName)) {
             $.ajax({
                 type: 'POST',
                 url: url_,
