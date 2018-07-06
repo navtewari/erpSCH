@@ -7,6 +7,7 @@ class Promote extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->database(_DATABASE_);
         $this->load->model('my_model', 'mm');    
         $this->load->model('Promote_model', 'clsm');
     }

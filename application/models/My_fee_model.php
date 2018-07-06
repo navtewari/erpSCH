@@ -1,7 +1,4 @@
-
-<?php
-
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class My_fee_model extends CI_Model {
 
@@ -32,6 +29,7 @@ class My_fee_model extends CI_Model {
             $data['month'] = 'x';
             $data['year'] = 'x';
         }
+        $this->error->_db_error();
         return $data;
     }
     function get_invoice_for_receipt($class__){

@@ -6,6 +6,7 @@ class Reports extends CI_Controller {
 
     function __construct() {
     	parent::__construct();
+        $this->load->database(_DATABASE_);
     	$this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('my_reports_model', 'mrm');

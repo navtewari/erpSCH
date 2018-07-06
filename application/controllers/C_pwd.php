@@ -6,6 +6,7 @@ class C_pwd extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->database(_DATABASE_);
         $this->load->model('my_model', 'mm');
         if (! $this->session->userdata('_user___')) {
             redirect(__BACKTOSITE__);
