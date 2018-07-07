@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Reg_adm extends CI_Controller {
     function __construct() {
         parent::__construct();    
+        $this->load->database(_DATABASE_);
         $this->load->model('my_model', 'mm');    
         $this->load->model('my_admission_model', 'mam');
     }

@@ -6,6 +6,7 @@ class Web extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->database(_DATABASE_);
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('my_master_fee_model', 'mmm');
@@ -18,6 +19,7 @@ class Web extends CI_Controller {
     function all_figures_for_dashboard($year__){
         $data['count_reg_students'] = $this->dr->total_reg_students($year__);
         $data['count_classes_in_session'] = $this->dr->total_classes_in_a_session($year__);
+        $data['count_students_in_a_session'] = $this->dr->total_students_in_a_session($year__);
         return $data;
     }
     function dashboard($active = 1, $subno = 1, $submenu = 'index') {

@@ -1,6 +1,6 @@
 <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5>Data table</h5>
+                <h5>Data table (Total <?php echo count($student_in_current_session);?> students)</h5>
                 <h5 style="float: right; color:#900000" id="reload_me">Reload</h5>
             </div>
             <div class="widget-content nopadding">

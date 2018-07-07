@@ -41,6 +41,37 @@ class My_model extends CI_Model {
         return $flag_;
     }
 
+    function changepwd(){
+        if($this->session->userdata('pwd_count') <= 3){
+            $old_pwd = $this->input->post('old_pwd');
+            $new_pwd = $this->input->post('new_pwd');
+
+            $data = array(
+                'PASSWORD_' => $new_pwd
+            );
+
+            $this->db->where('USERNAME_', $this->session->userdata('_user___'));
+            $this->db->where('PASSWORD_', $old_pwd);
+            $query = $this->db->get('login', $data);
+
+            if($query->num_rows() != 0){
+                $this->db->where('USERNAME_', $this->session->userdata('_user___'));
+                $this->db->where('PASSWORD_', $old_pwd);
+                $query = $this->db->update('login', $data);
+
+                $bool_ = array('res_'=>TRUE, 'msg_' => '<div style="color: #009000;">Password changed successfully</div>');
+                $this->session->unset_userdata('pwd_count');
+            } else {
+                $bool_ = array('res_'=>FALSE, 'msg_' => 'Your old credentials are not matching. Please try again!!!');
+            }
+        } else {
+            $bool_ = array('res_'=>FALSE, 'msg_' => 'All three chances over.');
+        }
+
+        return $bool_;
+    }
+    
+
     function getsessions(){
         $this->db->order_by('SESSSTART', 'desc');
         $query = $this->db->get('master_6_session');

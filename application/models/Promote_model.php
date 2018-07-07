@@ -294,7 +294,9 @@ class Promote_model extends CI_Model {
     }
 
     function promote_admit_prev_students($year__){
-        $promote_students = $this->input->post('to');
+        $x = $this->input->post('to');
+        $promote_students = explode(',',$x);
+        //$promote_students = $this->input->post('to');
         $clssessid = $this->input->post('cmbAdmFor');
 
         for($i=0; $i<count($promote_students); $i++){
