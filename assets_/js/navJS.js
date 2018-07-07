@@ -26,6 +26,10 @@ $(function () {
         if ($("#frmSubject").length != 0) {
             fillClasses_subject();
         }
+        
+        if ($("#frmSubjectMarks").length != 0) {
+            fillClasses_subjectmarks();       
+        }
 
         if ($("#frmTeacher").length != 0) {
             //fillTeacher();
@@ -529,6 +533,7 @@ $(function () {
     $('#cmbClassofGrading').change(function () {
         fillGradeinTable();
     });
+    
     function fillGradeinTable() {
         var classSessID = $('#cmbClassofGrading').val();
         var className = $("#cmbClassofGrading option:selected").text();
@@ -554,7 +559,7 @@ $(function () {
                     $('#tabGrading').html(str_html);
                     $('#exitHeading').html('Existing Grades for ' + className);
                 } else {
-                    $('#tabGrading').html('NO Grade Present for ' + className);
+                    $('#tabGrading').html('<td colspan="4">NO Grade Present for ' + className + '</td>');
                 }
             }
         });
@@ -700,6 +705,7 @@ $(function () {
     $('#subClassID').change(function () {
         fillSubjectinTable();
     });
+    
     function fillSubjectinTable() {
         var classID = $('#subClassID').val();
         var className = $("#subClassID option:selected").text();
@@ -724,7 +730,7 @@ $(function () {
                     $('#exitHeading').html('Existing Subjects for ' + className);
                 } else {
                      $('#exitHeading').html('Existing Subjects for ' + className);
-                    $('#tabSubjects').html("<font color='red'>NO Subject Present </font>");
+                    $('#tabSubjects').html("<td colspan='3'><font color='red'>NO Subject Present </font></td>");
                 }
             }
         });
@@ -822,7 +828,7 @@ $(function () {
                     $('#exitHeading').html("Existing Staff Members for " + staffCatgory);
                 } else {
                     $('#exitHeading').html("Existing Staff Members for " + staffCatgory);
-                    $('#tabTeacher').html("<font color='red'>No Staff Member is available yet</font>");
+                    $('#tabTeacher').html("<td colspan='3'><font color='red'>No Staff Member is available yet</font></td>");
                 }
             }
         });
@@ -1001,7 +1007,7 @@ $(function () {
                     $('#tabAssociatedSubjects').html(str_html);
                 } else {
                     $('#exitHeading').html('Associated Subjects for ' + teacherName);
-                    $('#tabAssociatedSubjects').html('No subject Associated');
+                    $('#tabAssociatedSubjects').html('<td colspan="4">No subject Associated</td>');
                 }
             }
         });
@@ -1104,6 +1110,115 @@ $(function () {
         }
     });
 //------------------------------------------------------------------------------------
+//-------------------------Subject Marks--------------------------------------
+function fillClasses_subjectmarks() {
+        $('#s2id_subClassID span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#subClassMarksID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLASSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                }
+                $('#s2id_subClassMarksID span').text("Choose Class");
+                $('#subClassMarksID').html(str_html);
+            }
+        });
+    }
+    
+    $('#subClassMarksID').change(function () {
+        var classID = $('#subClassMarksID').val();
+        url_ = site_url_ + "/master/getClassSubject/" + classID;
+        $('#s2id_cmbSubject span').text("Loading...");
+        $('#cmbSubject').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.class_subject.length > 0) {
+                    var str_html = '';
+                    str_html = str_html + "<option value=''>Choose Subject</option>";
+                    for (i = 0; i < obj.class_subject.length; i++) {
+                        str_html = str_html + "<option value='" + obj.class_subject[i].subjectID + "'>" + obj.class_subject[i].subName + " " + obj.class_subject[i].status + "</option>";
+                    }
+                    $('#s2id_cmbSubject span').text("Choose Subject");
+                    $('#cmbSubject').html(str_html);
+                } else {
+                    $('#s2id_cmbSubject span').text('Subject not found');
+                }
+            }
+        });
+    });
+    
+    $('#cmbSubject').change(function () {        
+        fillMarksAssociatedSubject();
+    });
+
+    function fillMarksAssociatedSubject() {        
+        var subjectID = $('#cmbSubject').val();
+        var subjectName = $("#cmbSubject option:selected").text();
+        var className = $("#subClassMarksID option:selected").text();
+        url_ = site_url_ + "/exam/getMarksAssociatedSubject/" + subjectID;    
+      
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+              
+                if (obj.Subject_marks.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Subject_marks.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Subject_marks[i].subName + "</b></td>";
+                        str_html = str_html + "<td>" + obj.Subject_marks[i].maxMarks + "</td>";
+                        str_html = str_html + "<td>" + obj.Subject_marks[i].passMarks + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip deleteAssoicatedSubjectMarks' id='" + obj.Subject_marks[i].submarkID + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#exitHeading').html('Associated Marks for <span style="color:red;">' + subjectName + ' in ' + className + '</span>');
+                    $('#tabSubjects').html(str_html);
+                } else {
+                    $('#exitHeading').html('Associated Marks for <span style="color:red;">' + subjectName + ' in ' + className + '</span>');
+                    $('#tabSubjects').html('<td colspan="4"><span style="color:red;">No Marks Associated for this subject </span></td>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }           
+        });
+    }
+    
+    $('body').on('click', '.deleteAssoicatedSubjectMarks', function () {
+        var marksID = this.id;
+
+        url_ = site_url_ + "/exam/deleteAssoicatedSubjectMarks/" + marksID;
+        if (confirm('Are you sure you want to delete these Marks')) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillMarksAssociatedSubject();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+//----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
     function callDanger(message) {
