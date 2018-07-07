@@ -26,9 +26,9 @@ $(function () {
         if ($("#frmSubject").length != 0) {
             fillClasses_subject();
         }
-        
+
         if ($("#frmSubjectMarks").length != 0) {
-            fillClasses_subjectmarks();       
+            fillClasses_subjectmarks();
         }
 
         if ($("#frmTeacher").length != 0) {
@@ -534,7 +534,7 @@ $(function () {
     $('#cmbClassofGrading').change(function () {
         fillGradeinTable();
     });
-    
+
     function fillGradeinTable() {
         var classSessID = $('#cmbClassofGrading').val();
         var className = $("#cmbClassofGrading option:selected").text();
@@ -706,7 +706,7 @@ $(function () {
     $('#subClassID').change(function () {
         fillSubjectinTable();
     });
-    
+
     function fillSubjectinTable() {
         var classID = $('#subClassID').val();
         var className = $("#subClassID option:selected").text();
@@ -730,7 +730,7 @@ $(function () {
                     $('#tabSubjects').html(str_html);
                     $('#exitHeading').html('Existing Subjects for ' + className);
                 } else {
-                     $('#exitHeading').html('Existing Subjects for ' + className);
+                    $('#exitHeading').html('Existing Subjects for ' + className);
                     $('#tabSubjects').html("<td colspan='3'><font color='red'>NO Subject Present </font></td>");
                 }
             }
@@ -1112,7 +1112,7 @@ $(function () {
     });
 //------------------------------------------------------------------------------------
 //-------------------------Subject Marks--------------------------------------
-function fillClasses_subjectmarks() {
+    function fillClasses_subjectmarks() {
         $('#s2id_subClassID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
         $('#subClassMarksID').empty();
@@ -1131,7 +1131,7 @@ function fillClasses_subjectmarks() {
             }
         });
     }
-    
+
     $('#subClassMarksID').change(function () {
         var classID = $('#subClassMarksID').val();
         url_ = site_url_ + "/master/getClassSubject/" + classID;
@@ -1155,29 +1155,28 @@ function fillClasses_subjectmarks() {
                 }
             }
         });
-    });
-    
-    $('#cmbSubject').change(function () {        
         fillMarksAssociatedSubject();
     });
+  
 
-    function fillMarksAssociatedSubject() {        
+    function fillMarksAssociatedSubject() {
+        var classID = $('#subClassMarksID').val();
         var subjectID = $('#cmbSubject').val();
         var subjectName = $("#cmbSubject option:selected").text();
         var className = $("#subClassMarksID option:selected").text();
-        url_ = site_url_ + "/exam/getMarksAssociatedSubject/" + subjectID;    
-      
+        url_ = site_url_ + "/exam/getMarksAssociatedSubject/" + subjectID + "/" + classID;
+
         $.ajax({
             type: "POST",
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
-              
+
                 if (obj.Subject_marks.length) {
                     var str_html = '';
                     for (i = 0; i < obj.Subject_marks.length; i++) {
                         str_html = str_html + "<tr class='gradeX'>";
-                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Subject_marks[i].subName + "</b></td>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Subject_marks[i].subName + " (" +obj.Subject_marks[i].status + ")</b></td>";
                         str_html = str_html + "<td>" + obj.Subject_marks[i].maxMarks + "</td>";
                         str_html = str_html + "<td>" + obj.Subject_marks[i].passMarks + "</td>";
                         str_html = str_html + '<td class="taskOptions">';
@@ -1185,18 +1184,18 @@ function fillClasses_subjectmarks() {
                         str_html = str_html + '</td>';
                         str_html = str_html + "</tr>";
                     }
-                    $('#exitHeading').html('Associated Marks for <span style="color:red;">' + subjectName + ' in ' + className + '</span>');
+                    $('#exitHeading').html('Associated Marks for Subjects in ' + className + '</span>');
                     $('#tabSubjects').html(str_html);
                 } else {
-                    $('#exitHeading').html('Associated Marks for <span style="color:red;">' + subjectName + ' in ' + className + '</span>');
-                    $('#tabSubjects').html('<td colspan="4"><span style="color:red;">No Marks Associated for this subject </span></td>');
+                    $('#exitHeading').html('Associated Marks for Subjects in ' + className + '</span>');
+                    $('#tabSubjects').html('<td colspan="4"><span style="color:red;">No Marks Associated with Subjects in '+ className +' </span></td>');
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
-            }           
+            }
         });
     }
-    
+
     $('body').on('click', '.deleteAssoicatedSubjectMarks', function () {
         var marksID = this.id;
 
@@ -1218,6 +1217,42 @@ function fillClasses_subjectmarks() {
                 }
             });
         }
+    });
+
+    function subMarks_Submit() {
+        if ($('#txtmaxMarks').val() === '') {
+            callDanger("Please Enter Maximum Marks for the subject!!");
+            $('#txtmaxMarks').focus();
+        } else if ($('#txtpassMarks').val() === '') {
+            callDanger("Please Enter Pass Marks for the subject!!");
+            $('#txtpassMarks').focus();
+        } else {
+            data_ = new FormData($('#frmSubjectMarks')[0]);
+        }
+        url_ = site_url_ + "/exam/submitMarksAssociatedSubject";
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    fillMarksAssociatedSubject();
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+    $('.subjectMarksSubmit').click(function () {
+        subMarks_Submit();
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
