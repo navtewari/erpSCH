@@ -2735,7 +2735,7 @@ $(function(){
 			var strarray = id_.split('~');
 			var data_ = "classessid="+strarray[0];
 
-			var url_ = site_url_ + "/dashboard_reports/get_students";
+			var url_ = site_url_ + "/dashboardReports/get_students";
 			$.ajax({
 				type: "POST",
 				url: url_,

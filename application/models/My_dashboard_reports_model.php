@@ -6,6 +6,7 @@ class My_dashboard_reports_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
         	$this->load->model('My_error_model', 'error');
         // --------------------
@@ -15,6 +16,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('SESSID', $year_);
         $this->db->select('count(regid) as count_students');
         $query = $this->db->get('master_8_stud_academics');
+
         $result = $query->row();
         return $result->count_students;
     }
@@ -23,6 +25,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('SESSID', $year_);
         $this->db->select('count(CLASSID) as count_classes_in_session');
         $query = $this->db->get('class_2_in_session');
+
         $result = $query->row();
         return $result->count_classes_in_session;   
     }
@@ -47,6 +50,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('SESSID', $year_);
         $this->db->select('count(regid) as count_students');
         $query = $this->db->get('class_3_class_wise_students');
+
         $result = $query->row();
         return $result->count_students;
     }

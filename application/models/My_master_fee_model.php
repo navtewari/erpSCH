@@ -6,6 +6,7 @@ class My_master_fee_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
         // --------------------

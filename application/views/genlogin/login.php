@@ -19,35 +19,12 @@
             <?php
             $attrib_ = array(
                 'class' => 'form-vertical',
-                'name' => 'loginform',
-                'id' => 'loginform',
+                'name' => 'GENloginform',
+                'id' => 'GENloginform',
             );
             ?>
-            <?php echo form_open('login/authenticate', $attrib_); ?>
-            <div class="control-group normal_text"> 
-                <h3>School ERP</h3>
-                <h6><?php echo $this->session->userdata('school_name'); ?></h6>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <div class="main_input_box">
-                        <span class="add-on bg_lo"><i class="icon-calendar"></i></span>
-                        <?php
-                        $data = array(
-                            'name' => 'cmbSession',
-                            'id' => 'cmbSession',
-                            'required' => 'required'
-                        );
-                        $options = array();
-                        $options[''] = 'Select Session';
-                        foreach ($master_sessions as $sessionsitem) {
-                            $options[$sessionsitem->SESSID] = $sessionsitem->SESSID;
-                        }
-                        echo form_dropdown($data, $options, '');
-                        ?>
-                    </div>
-                </div>
-            </div>
+            <?php echo form_open('gen_login/checking', $attrib_); ?>
+            <div class="control-group normal_text"> <h3>School ERP</h3></div>
             <div class="control-group">
                 <div class="controls">
                     <div class="main_input_box">
@@ -63,8 +40,8 @@
                 </div>
             </div>
             <div class="form-actions">                
-                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:left; margin-left:18px;"/>                
-                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;float:right;margin-right: 18px;"/>                
+                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:left; margin-left:18px;"/>
+                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;float:right;margin-right: 18px;"/>               
             </div> 
             <?php echo form_close();?>
     </div>

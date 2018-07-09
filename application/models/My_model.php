@@ -6,6 +6,7 @@ class My_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
         // --------------------
@@ -35,9 +36,6 @@ class My_model extends CI_Model {
             $this->session->set_flashdata('msg_', 'False Credentials !!');
         }
 
-        // Exceptional Handling
-            $this -> error -> _db_error();
-        // --------------------
         return $flag_;
     }
 
@@ -86,7 +84,8 @@ class My_model extends CI_Model {
         $this->db->join('user_menu b', 'a.ID_= b.MENU');
         $this->db->where('b.USER_', $status);
         $query = $this->db->get();
-        //echo $this->db->last_query();
+        
+
         return $query->result();
     }
     function getsubmenu(){
@@ -95,7 +94,7 @@ class My_model extends CI_Model {
     }
 
     function last_registration() {
-        $this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
+        //$this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('_id_');
         if ($query->num_rows() != 0) {
             $row_ = $query->row();
@@ -103,9 +102,7 @@ class My_model extends CI_Model {
         } else {
             $reg___ = 0;
         }
-        // Exceptional Handling
-            $this -> _db_error();
-        // --------------------
+        
         return $reg___;
     }
     

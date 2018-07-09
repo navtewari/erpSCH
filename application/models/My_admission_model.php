@@ -6,6 +6,7 @@ class My_admission_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
         // --------------------
@@ -25,6 +26,7 @@ class My_admission_model extends CI_Model {
             $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
         }
         $query = $this->db->get();
+
         return $query->result();
     }
 
@@ -55,6 +57,7 @@ class My_admission_model extends CI_Model {
         $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
         $this->db->join('class_2_in_session d', 'c.CLSSESSID=d.CLSSESSID');
         $query = $this->db->get();
+
         return $query->result();
     }
 
@@ -66,6 +69,7 @@ class My_admission_model extends CI_Model {
         $this -> db -> from('class_1_classes a');
         $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
         $query = $this -> db -> get();
+
         return $query -> result();
     }
 
@@ -80,10 +84,12 @@ class My_admission_model extends CI_Model {
         $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID', 'left outer');
         $this -> db -> join('class_3_class_wise_students c', 'b.CLSSESSID=c.CLSSESSID', 'left outer');
         $query = $this -> db -> get();
+
         return $query -> result();   
     }
     function getState(){
         $query = $this->db->get('master_3_state_');
+
         return $query->result();
     }
 
@@ -350,6 +356,8 @@ class My_admission_model extends CI_Model {
             $this->db->where('regid', $arr[$i]);
             $this->db->update('register_sibling', $dataSibling);
         }
+
+
     }
     function updateID___($pid_, $newid_, $regid_){
         //$this -> db -> where('SESSIONID', $this->session->userdata('_current_year___'));
@@ -364,6 +372,8 @@ class My_admission_model extends CI_Model {
             $data = array('ID_' => $newid_, 'regid_' => $regid_,'SESSIONID' => $this->session->userdata('_current_year___'));
             $bool_ = $this->db->insert('_id_', $data);
         }
+
+  
         return $bool_;
     }
 
@@ -411,6 +421,7 @@ class My_admission_model extends CI_Model {
         } else {
             $path_ = 'x';
         }
+
         return $path_;
     }
 
@@ -422,33 +433,42 @@ class My_admission_model extends CI_Model {
         $this->db->where('a.regid', $regid_);
         //$this->db->where('b.STATUS_OF_ADMISSION', 0); //No Need as no registration table exists
         $query = $this->db->get();
-        //echo $this->db->last_query();
+
         return $query->row();
     }
     function get_admission_detail_2($regid_, $type_){ //Permanent/Correspondance Addresses
         $this->db->where('ADDRESS_STATUS', $type_);
         $this->db->where('regid', $regid_);
         $query = $this->db->get('master_9_stud_address');
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->row();
     }
     function get_admission_detail_3($regid_){ // Contact Detail
         $this->db->where('regid', $regid_);
         $query = $this->db->get('master_10_stud_contact');
+
         return $query->row();
     }
     function get_siblings_4($regid_){
         $this->db->where('regid', $regid_);
         $query = $this->db->get('register_sibling');
+
         return $query->row();   
     }
     function get_category(){
         $this->db->where('CATEGORY', 'CATEG');
         $query = $this->db->get('master_16_discount');
+
         return $query->result();
     }
     function get_student_category($regid){
         $this->db->where('CATEGORY', $regid);
         $query = $this->db->get('master_7_stud_personal');
+
         return $query->result();
     }
 }

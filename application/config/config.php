@@ -508,12 +508,21 @@ $config['proxy_ips'] = '';
 /*
 Custom defines
 */
-define('_SCHOOL_', "SCHOOL NAME, CITY");
-define('_SCHOOL_ABREV_', "SCH");
-define('_ADDRESS_', "ABC Phase 2, XYZ Nagar, Haldwani - 263139, UK");
-define('_CONTACT_', "9760020667, 9690173666");
-define('_EMAIL_', "nitin.d12@gmail.com, info@gmail.com");
-define('_logo_1', 'logo.jpg');
-define('_logo_2', 'logo.jpg');
+$config['_DATABASE_'] = 'default-clients';
+$selected_database ='default-clients';//$CI->config->item('_DATABASE_');
+$school_name = 'SCHOOL NAME, CITY';
+$abrev = 'SCH-ERP';
+$address = 'ABC Phase 2, XYZ Nagar, Haldwani - 263139, UK';
+$contact = '9760020667, 9690173666';
+$email = 'nitin.d12@gmail.com, info@gmail.com';
+$logo1 = 'logo.jpg';
+$logo2 = 'logo.jpg';
 
-define('_DATABASE_', "default-sunbeam");
+define('_DATABASE_', $selected_database);
+define('_SCHOOL_', $school_name);
+define('_SCHOOL_ABREV_', $abrev);
+define('_ADDRESS_', $address);
+define('_CONTACT_', $contact);
+define('_EMAIL_', $email);
+define('_logo_1', $logo1);
+define('_logo_2', $logo2);
