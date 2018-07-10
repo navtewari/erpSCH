@@ -329,7 +329,8 @@ class My_admission_model extends CI_Model {
             // Code for Siblings
             $this->db->where('regid', $regid_);
             $query = $this->db->get('register_sibling');
-                
+            
+            if($siblings!=''){
                 if($query->num_rows()!=0){
                     $this->db->where('regid', $regid_);
                     $query = $this->db->update('register_sibling', $dataSibling);
@@ -347,12 +348,18 @@ class My_admission_model extends CI_Model {
                     }
                 }
                 $this->no_discount_to_other_siblings($siblings);
+            } else {
+                if($query->num_rows()!=0){
+                    $this->db->where('regid', $regid_);
+                    $this->db->delete('register_sibling');
+                }
+            }
             // -----------------
 
             // Code for Discounts
             $this->db->where('regid', $regid_);
             $query = $this->db->get('register_discount');
-                
+            if($discounts!=''){
                 if($query->num_rows()!=0){
                     $this->db->where('regid', $regid_);
                     $query = $this->db->update('register_discount', $dataDiscount);
@@ -369,6 +376,10 @@ class My_admission_model extends CI_Model {
                         $query = $this->db->insert('register_discount', $dataDiscount);
                     }
                 }
+            } else {
+                $this->db->where('regid', $regid_);
+                $query = $this->db->delete('register_discount');
+            }
             // -----------------
 
             if ($query == true) {

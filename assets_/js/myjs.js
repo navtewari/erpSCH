@@ -304,7 +304,8 @@ $(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
 				reset_admission_form();
 			} else {
-				url_ = site_url_ + "/reg_adm/get_admision_detail/"+$('#cmbRegistrationID').val();
+				var regid_ = $('#cmbRegistrationID').val();
+				url_ = site_url_ + "/reg_adm/get_admision_detail/"+regid_;
 				$.ajax({
 					type: 'post',
 					url: url_,
@@ -389,7 +390,7 @@ $(function(){
 							$('#show_discount').html('');
 							for(i=0;i<arrDiscount.length;i++){
 								if($.trim(arrDiscount[i]) != ''){
-									$('#show_discount').html($('#show_discount').html()+design_cover_for_discount_representation(arrDiscount[i]));
+									$('#show_discount').html($('#show_discount').html()+design_cover_for_discount_representation(arrDiscount[i], regid_));
 								}
 							}
 						}
@@ -445,8 +446,8 @@ $(function(){
 			return temp;
 		}
 
-		function design_cover_for_discount_representation(current_selection){
-			var temp = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_discount icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
+		function design_cover_for_discount_representation(current_selection, regid_){
+			var temp = "<div style='float: left; padding: 2px' id='_"+regid_+"_"+current_selection+"_DISCOUNT_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span  id='"+regid_+"_"+current_selection+"_DISCOUNT_id' class='deleteme_as_discount icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
 			return temp;
 		}
 		$('#cmbSiblingRegistrationID').change(function(){
@@ -469,7 +470,7 @@ $(function(){
 		$('#cmbDiscount_if_any').change(function(){
 			if($('#cmbDiscount_if_any').val()!='x'){
 				var current_selection = $('#cmbDiscount_if_any').val();
-				var current_selection_ = design_cover_for_discount_representation(current_selection);
+				var current_selection_ = design_cover_for_discount_representation(current_selection, $('#cmbRegistrationID').val());
 				if($('#txtDiscounts').val() != ''){
 					var str = $('#txtDiscounts').val();
     				if(str.indexOf(current_selection) == -1){
@@ -487,13 +488,12 @@ $(function(){
 			var arrDiscount = [];
 			var temp = this.id;
 			var arr = temp.split('_');
-			var id_ = $.trim(arr[0]);
-			
+			var id_ = $.trim(arr[1]);
 			var x_ = $('#txtDiscounts').val();
 			var arrDiscount = x_.split(',');
 
 			arrDiscount.splice($.inArray(id_, arrDiscount),1);
-
+			alert(temp);
 			$('#txtDiscounts').val(arrDiscount);
 			$('#_'+temp).css('display','none');
 		});
@@ -512,6 +512,7 @@ $(function(){
 			$('#txtSiblings').val(arrSibling);
 			$('#_'+temp).css('display','none');
 		});
+
 		// -----------------------
 	// ----------------------------------------
 	// Master Discount ------------------------
@@ -1776,13 +1777,37 @@ $(function(){
 		                	flexi_heads = flexi_heads + ", " + obj.fetch_receipt_data[0].FLEXIBLE_HEADS_N_TIMES;
 		            	}
 		                
-		                // Calculation of discount for category or sibling
-		                var discount_category = 'x';
+		                // Calculation of discount for category or sibling or Other discount
+		                	if(obj.other_discount_data != null){
+		                		var other_discount_arr = (obj.other_discount_data.DISCOUNT).split(',');
+		                		var other_discount_length = parseInt(other_discount_arr.length);
+		                		var total_other_discount_amount = 0;
+		                		var calculated_amount = 0;
+		                		if(other_discount_arr.length != 0){
+		                			var other_discount_items = obj.other_discount_data.DISCOUNT;
+		                		}
+		                		for(d=0;d<parseInt(other_discount_arr.length);d++){
+		                			for(k=0;k<obj.fetch_other_discount_data.length;k++){
+		                				calculated_amount = 0;
+		                				if(other_discount_arr[d] == obj.fetch_other_discount_data[k].ITEM_){
+		                					if(obj.fetch_other_discount_data[k].STATUS_ == 'Percentage'){
+		                						calculated_amount = parseInt(parseInt(actual_)*(parseInt(obj.fetch_other_discount_data[k].AMOUNT)/100));
+		                					} else {
+		                						calculated_amount = obj.fetch_other_discount_data[k].AMOUNT;
+		                					}
+		                					total_other_discount_amount = parseInt(total_other_discount_amount) + parseInt(calculated_amount);
+		                				}
+		                			}
+		                		}
+		                	} else {
+		                		var total_other_discount_amount = 0;
+		                	}
+
+		                	var discount_category = 'x';
 		                	if(obj.sibling_discount != null){
 		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
 		                		var sibling_length = parseInt(sibling_arr.length);
 		                		var discount_sibling_value = obj.fetch_discount_data.AMOUNT;
-
 		                		if(obj.fetch_discount_data.STATUS_ == 'Percentage'){
 		                			var discount_amt = parseInt(parseInt(actual_)*(parseInt(discount_sibling_value)/100));
 		                			var total_discount_amount = parseInt(discount_amt) * sibling_length;
@@ -1794,6 +1819,7 @@ $(function(){
 		                		var total_sibling = 0;
 		                		var total_discount_amount = 0;
 		                	}
+		                	//alert(total_discount_amount);
 		                	if(obj.fetch_category_discount_data != null){
 		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
 		                		if(obj.fetch_category_discount_data.STATUS_ == 'Percentage'){
@@ -1813,6 +1839,10 @@ $(function(){
 		                	} else {
 		                		var total_categ_discount_amount = 0;
 		                	}
+		                	if(obj.other_discount_data != null){
+		                		discount_category = discount_category + "," + obj.other_discount_data.DISCOUNT + ""
+		                	}
+		                	//alert(total_categ_discount_amount);
 		                	var category_amount_to_store = '';
 		                	if(total_discount_amount != 0){
 		                		category_amount_to_store = category_amount_to_store + total_discount_amount;
@@ -1823,8 +1853,12 @@ $(function(){
 		                		category_amount_to_store = category_amount_to_store + total_categ_discount_amount;
 		                	}
 
+		                	if(total_other_discount_amount != 0){
+		                		category_amount_to_store = category_amount_to_store + "," + total_other_discount_amount;
+		                	}
+
 		                	var discount_if_any = 0;
-		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_discount_amount) + parseInt(total_categ_discount_amount);
+		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_discount_amount) + parseInt(total_categ_discount_amount) + parseInt(total_other_discount_amount);
 		                // -----------------------------------------------
 		                var fine_if_any = 0;
 		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
@@ -1900,7 +1934,7 @@ $(function(){
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
 		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff'>";
-		                str_html = str_html + "Sibling: "+total_discount_amount+" + "+"Category: "+total_categ_discount_amount+".";
+		                str_html = str_html + "Sibling: "+total_discount_amount+" + "+"Category: "+total_categ_discount_amount+" + "+"Other Discount: "+total_other_discount_amount;
 		                str_html = str_html + "</div>";
 		                str_html = str_html + "</td>"
 		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_discount_' name='_discount_' value="+discount_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";

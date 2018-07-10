@@ -671,10 +671,20 @@ class My_fee_model extends CI_Model {
         $query = $this->db->get('register_sibling');
         return $query->row();
     }
+    function get_specific_other_discount_for_fee_discount($regid_){
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('register_discount');
+        return $query->row();   
+    }
     function get_student_discount($item_){
         $this->db->where('ITEM_', $item_);
         $query = $this->db->get('master_16_discount');
         return $query->row();
+    }
+    function get_other_discount($OTHER_){
+        $this->db->where('CATEGORY', $OTHER_);
+        $query = $this->db->get('master_16_discount');
+        return $query->result();
     }
     function chkDiscountStatus($invdetid_){
         $this->db->where('INVDETID', $invdetid_);

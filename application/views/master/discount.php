@@ -46,6 +46,7 @@
                                                 $options['x'] = 'Select Category';
                                                 $options['OTHER'] = 'OTHER';
                                                 $options['CATEG'] = 'CATEGORY';
+                                                $options['SIBLINGS'] = 'SIBLINGS';
                                             ?>
                                             <?php echo form_dropdown($data, $options, ''); ?>
                                         </div>

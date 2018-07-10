@@ -101,7 +101,13 @@ class Fee extends CI_Controller {
         $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
         if($this->fm->chkDiscountStatus($invdetid_) == false){
             $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
+            $data['other_discount_data'] = $this->fm->get_specific_other_discount_for_fee_discount($regid_);
 
+            if(count($data['other_discount_data'])!=0){
+                $data['fetch_other_discount_data'] = $this->fm->get_other_discount('OTHER');
+            } else {
+                $data['fetch_other_discount_data'] = NULL;
+            }
             if(count($data['sibling_discount']) != 0){
                 $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
             } else {
@@ -115,6 +121,7 @@ class Fee extends CI_Controller {
         } else {
             $data['fetch_discount_data'] = NULL;
             $data['fetch_category_discount_data'] = NULL;
+            $data['fetch_other_discount_data'] = NULL;
         }
         $data['date_'] = array(date('d/m/Y')); 
         $data['sch_name'] = array(_SCHOOL_);
