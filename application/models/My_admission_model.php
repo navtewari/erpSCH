@@ -219,7 +219,7 @@ class My_admission_model extends CI_Model {
                 if ($query == true) {
                     $i = $this->updateID___($pid_, $newid_, $regid_);
                     if($i == true){
-                        $bool_ = array('res_' => true, 'msg_' => 'New Reg ID: <b>'.$regid_.'</b>Submitted Successfully..!!');
+                        $bool_ = array('res_' => true, 'msg_' => 'New Reg ID: <b>'.$regid_.'</b> Submitted Successfully..!!');
                     } else {
                         $bool_ = array('res_' => true, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
                     }

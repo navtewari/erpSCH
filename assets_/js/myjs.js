@@ -367,6 +367,8 @@ $(function(){
 							$('#txtStudentPhone').val(obj.contact.MOBILE_S);
 							$('#txtEmail').val(obj.contact.EMAIL_S);
 						}
+						$('#show_siblings').html('');
+						$('#txtSiblings').val('');
 						if(jQuery.isEmptyObject(obj.siblings) == false){
 							$('#txtSiblings').val(obj.siblings.SIBLINGS);
 							var x_ = $('#txtSiblings').val();
@@ -378,6 +380,8 @@ $(function(){
 								}
 							}
 						}
+						$('#show_discount').html('');
+						$('#txtDiscounts').val('');
 						if(jQuery.isEmptyObject(obj.discounts) == false){
 							$('#txtDiscounts').val(obj.discounts.DISCOUNT);
 							var x_ = $('#txtDiscounts').val();
