@@ -58,6 +58,7 @@ class Web extends CI_Controller {
             case 3:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
                 $data['category_'] = $this->mam->get_category();
+                $data['discounts_'] = $this->mdm->get_discount_except_category_n_siblings();
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';
                 $data['Personal'] = ' active';
@@ -65,6 +66,7 @@ class Web extends CI_Controller {
                 $data['Address'] = '';
                 $data['siblings'] = '';
                 $data['category'] = '';
+                $data['discount'] = '';
                 break;
             case 4:
                 $data['page_'] = 'master';

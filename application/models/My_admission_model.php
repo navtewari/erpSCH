@@ -191,20 +191,35 @@ class My_admission_model extends CI_Model {
                     'STATUS' => 1
                 );
 
+                $discounts = trim($this->input->post('txtDiscounts'));
+                $dataDiscount = array(
+                    'regid' => $regid_,
+                    'DISCOUNT'=>$discounts,
+                    'DISCOUNT_OFFERED'=>1,
+                    'DATE_'=> date('Y-m-d H:i:s'),
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'STATUS' => 1  
+                );
+
                 $query = $this->db->insert('master_8_stud_academics', $dataAcademics);
                 $query = $this->db->insert('master_7_stud_personal', $dataPersonal);
                 $query = $this->db->insert('master_9_stud_address', $dataCorresAdd);
                 $query = $this->db->insert('master_9_stud_address', $dataPerAdd);
                 $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
+
                 if($siblings!=''){
                     $query = $this->db->insert('register_sibling', $dataSibling);
-                    $this->no_discount_to_other_siblings($siblings);
+                    $this->no_discount_to_other_siblings($siblings); // Erase the sibling-discount offered to the selected siblings
+                }
+
+                if($discounts!=''){
+                    $query = $this->db->insert('register_discount', $dataDiscount);
                 }
 
                 if ($query == true) {
                     $i = $this->updateID___($pid_, $newid_, $regid_);
                     if($i == true){
-                        $bool_ = array('res_' => true, 'msg_' => 'Submitted Successfully..!!');
+                        $bool_ = array('res_' => true, 'msg_' => 'New Reg ID: <b>'.$regid_.'</b>Submitted Successfully..!!');
                     } else {
                         $bool_ = array('res_' => true, 'msg_' => 'Something goes wrong with new reg ID. Please try again...!!');
                     }
@@ -284,6 +299,16 @@ class My_admission_model extends CI_Model {
                 'STATUS' => 1
             );
 
+            $discounts = trim($this->input->post('txtDiscounts'));
+            $dataDiscount = array(
+                'regid' => $regid_,
+                'DISCOUNT'=>$discounts,
+                'DISCOUNT_OFFERED'=>1,
+                'DATE_'=> date('Y-m-d H:i:s'),
+                'USERNAME_' => $this->session->userdata('_user___'),
+                'STATUS' => 1  
+            );
+
             $this->db->where('regid', $regid_);
             $query = $this->db->update('master_8_stud_academics', $dataAcademics);
 
@@ -324,8 +349,30 @@ class My_admission_model extends CI_Model {
                 $this->no_discount_to_other_siblings($siblings);
             // -----------------
 
+            // Code for Discounts
+            $this->db->where('regid', $regid_);
+            $query = $this->db->get('register_discount');
+                
+                if($query->num_rows()!=0){
+                    $this->db->where('regid', $regid_);
+                    $query = $this->db->update('register_discount', $dataDiscount);
+                } else {
+                    if($discounts!=''){
+                        $dataDiscount = array(
+                        'regid' => $regid_,
+                        'DISCOUNT' => $discounts,
+                        'DISCOUNT_OFFERED'=>1,
+                        'DATE_'=> date('Y-m-d H:i:s'),
+                        'USERNAME_' => $this->session->userdata('_user___'),
+                        'STATUS' => 1
+                        );
+                        $query = $this->db->insert('register_discount', $dataDiscount);
+                    }
+                }
+            // -----------------
+
             if ($query == true) {
-                $bool_ = array('res_' => true, 'msg_' => 'Updated Successfully..!!');
+                $bool_ = array('res_' => true, 'msg_' => 'Reg ID: <b>'.$regid_.'</b> Updated Successfully..!!');
             } else {
                 $bool_ = array('res_' => false, 'msg_' => 'Something goes wrong. Please try again...!!');
             }
@@ -456,6 +503,12 @@ class My_admission_model extends CI_Model {
     function get_siblings_4($regid_){
         $this->db->where('regid', $regid_);
         $query = $this->db->get('register_sibling');
+
+        return $query->row();   
+    }
+    function get_discount_5($regid_){
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('register_discount');
 
         return $query->row();   
     }

@@ -7,6 +7,7 @@ class Reg_adm extends CI_Controller {
         parent::__construct();    
         $this->load->model('my_model', 'mm');    
         $this->load->model('my_admission_model', 'mam');
+        $this->load->model('my_discount_model', 'mdm');
     }
     
     function index($active = 1, $submenu = 'index'){
@@ -36,7 +37,10 @@ class Reg_adm extends CI_Controller {
         $data['students_'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'), $studid);
         echo json_encode($data);
     }
-
+    function getDiscount(){
+        $data['discounts_'] = $this->mdm->get_discount_except_category_n_siblings();
+        echo json_encode($data);
+    }
     function getClasses_in_session(){
         $data['class_in_session'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
         echo json_encode($data);   
@@ -55,6 +59,7 @@ class Reg_adm extends CI_Controller {
         $data['address_correspondance'] = $this->mam->get_admission_detail_2($regid, 'CORRESPONDANCE');
         $data['contact'] = $this->mam->get_admission_detail_3($regid);
         $data['siblings'] = $this->mam->get_siblings_4($regid);
+        $data['discounts'] = $this->mam->get_discount_5($regid);
         echo json_encode($data);
     }
 }

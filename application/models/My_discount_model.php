@@ -74,6 +74,14 @@ class My_discount_model extends CI_Model {
     	return $query->result();
     }
 
+    function get_discount_except_category_n_siblings(){
+        $this->db->distinct();
+        $this->db->where('CATEGORY', 'OTHER');
+        $this->db->select('DID, ITEM_, STATUS_, CATEGORY, AMOUNT, DESC_');
+        $query = $this->db->get('master_16_discount');
+        return $query->result();
+    }
+
     function get_specific_discount(){
     	$did = $this->input->post('did');
     	$this->db->where('DID', $did);

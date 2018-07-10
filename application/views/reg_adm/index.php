@@ -81,6 +81,7 @@
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#Address">Address</a></li>
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#siblings">Any Sibling(s) ?</a></li>
                     <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#category">Category</a></li>
+                    <li class="<?php echo $Address;?>"><a data-toggle="tab" href="#discount">Discount (if any?)</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -98,6 +99,9 @@
                 </div>
                 <div id="category" class="tab-pane<?php echo $category;?>">
                     <?php $this->load->view('reg_adm/tabs/category'); ?>
+                </div>
+                <div id="discount" class="tab-pane<?php echo $discount;?>">
+                    <?php $this->load->view('reg_adm/tabs/discount'); ?>
                 </div>
             </div>
         </div>

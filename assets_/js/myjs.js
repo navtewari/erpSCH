@@ -24,6 +24,7 @@ $(function(){
 			fillStates('cmbPState');
 			fillStates('cmbCState');
 			fillSiblings();
+			fillDiscount();
 		}
 		if($('#frmAssociateStaticFee').length != 0){
 			fillClasses_for_current_session();
@@ -129,6 +130,27 @@ $(function(){
 				}
 			});
 		}
+		function fillDiscount(){
+			$('#s2id_cmbDiscount_if_any span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getDiscount";
+			$('#show')
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value='Select Discount'>No-Discount</option>";
+					for(i=0;i<obj.discounts_.length; i++){
+						str_html = str_html + "<option value='"+obj.discounts_[i].ITEM_+"'>"+obj.discounts_[i].ITEM_+"</option>";
+					}
+					$('#s2id_cmbDiscount_if_any span').text("Select Discount");
+					$('#cmbDiscount_if_any').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
 		function fillClasses(){
 			$('#s2id_cmbClassofAdmission span').text("Loading...");
 			url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -182,11 +204,13 @@ $(function(){
 				$('#student_photo_here').html('<img src='+base_url_+'/assets_/student_photo/no-image.jpg'+' />');
 				$('.filename').text("No file selected");
 				$('#show_siblings').html('');
+				$('#show_discount').html('');
 				fillStudents();
 				fillClasses();
 				fillStates('cmbPState');
 				fillStates('cmbCState');
 				fillSiblings();
+				fillDiscount();
 				reset_discount_form();
 			// --------------------
 		}
@@ -354,6 +378,17 @@ $(function(){
 								}
 							}
 						}
+						if(jQuery.isEmptyObject(obj.discounts) == false){
+							$('#txtDiscounts').val(obj.discounts.DISCOUNT);
+							var x_ = $('#txtDiscounts').val();
+							var arrDiscount = x_.split(',');
+							$('#show_discount').html('');
+							for(i=0;i<arrDiscount.length;i++){
+								if($.trim(arrDiscount[i]) != ''){
+									$('#show_discount').html($('#show_discount').html()+design_cover_for_discount_representation(arrDiscount[i]));
+								}
+							}
+						}
 						if(jQuery.isEmptyObject(obj.personal_academics) == false){
 							$('#cmbCategory').val(obj.personal_academics.CATEGORY);
 							$('#s2id_cmbCategory span').text(obj.personal_academics.CATEGORY);
@@ -400,9 +435,14 @@ $(function(){
 				});
 			}
 		});
-		// Sibling Module Code
+		// Sibling & Discount Module Code
 		function design_cover_for_sibling_representation(current_selection){
 			var temp = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_sibling icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
+			return temp;
+		}
+
+		function design_cover_for_discount_representation(current_selection){
+			var temp = "<div style='float: left; padding: 2px' id='_"+current_selection+"_id'><div style='float: left; padding: 2px; background: #ffffff; color: #000000; border:#808080 solid 1px; border-radius: 5px; font-size: 10px'>"+current_selection+"&nbsp;<span id='"+current_selection+"_id' class='deleteme_as_discount icon-trash' style='color: #ff0000; font-size:11px;z-index:99'></span></div></div>";
 			return temp;
 		}
 		$('#cmbSiblingRegistrationID').change(function(){
@@ -421,6 +461,39 @@ $(function(){
 				}
 			}
 		});
+
+		$('#cmbDiscount_if_any').change(function(){
+			if($('#cmbDiscount_if_any').val()!='x'){
+				var current_selection = $('#cmbDiscount_if_any').val();
+				var current_selection_ = design_cover_for_discount_representation(current_selection);
+				if($('#txtDiscounts').val() != ''){
+					var str = $('#txtDiscounts').val();
+    				if(str.indexOf(current_selection) == -1){
+    					$('#txtDiscounts').val($('#txtDiscounts').val() + "," + current_selection);
+    					$('#show_discount').html($('#show_discount').html()+current_selection_);
+    				}
+				} else {
+					$('#txtDiscounts').val(current_selection);
+					$('#show_discount').html(current_selection_);
+				}
+			}
+		});
+
+		$('body').on('click', '.deleteme_as_discount', function(){
+			var arrDiscount = [];
+			var temp = this.id;
+			var arr = temp.split('_');
+			var id_ = $.trim(arr[0]);
+			
+			var x_ = $('#txtDiscounts').val();
+			var arrDiscount = x_.split(',');
+
+			arrDiscount.splice($.inArray(id_, arrDiscount),1);
+
+			$('#txtDiscounts').val(arrDiscount);
+			$('#_'+temp).css('display','none');
+		});
+
 		$('body').on('click', '.deleteme_as_sibling', function(){
 			var arrSibling = [];
 			var temp = this.id;
