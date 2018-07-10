@@ -6,6 +6,7 @@ class My_discount_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
         // --------------------
@@ -69,6 +70,7 @@ class My_discount_model extends CI_Model {
     	$this->db->distinct();
     	$this->db->select('DID, ITEM_, STATUS_, CATEGORY, AMOUNT, DESC_');
     	$query = $this->db->get('master_16_discount');
+
     	return $query->result();
     }
 
@@ -76,6 +78,7 @@ class My_discount_model extends CI_Model {
     	$did = $this->input->post('did');
     	$this->db->where('DID', $did);
     	$query = $this->db->get('master_16_discount');
+
     	return $query->row();
     }
 
@@ -83,6 +86,7 @@ class My_discount_model extends CI_Model {
     	$did = $this->input->post('did');
     	$this->db->where('DID', $did);
     	$query = $this->db->delete('master_16_discount');
+
     	return $query;
     }
 }

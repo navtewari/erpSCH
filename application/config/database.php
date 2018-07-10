@@ -71,16 +71,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 
-
-$active_group = 'default-clients';
+$ci =& get_instance();
+//$ci->config->load('DB_KEY', true);
+$active_group = 'default';
 $query_builder = TRUE;
-
-$db['default-clients'] = array(
+$db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'amrapal',
+	'database' => 'erpclients',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -120,6 +120,7 @@ $db['default-sunbeam'] = array(
 );
 
 $db['default-gdjm'] = array(
+
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
@@ -140,3 +141,4 @@ $db['default-gdjm'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+$ci->load->database($db[$active_group]);

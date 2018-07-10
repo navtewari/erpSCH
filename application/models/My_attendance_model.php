@@ -7,10 +7,9 @@ class My_attendance_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
-            $this -> error -> _db_error();
         // --------------------
     }
 
@@ -24,6 +23,10 @@ class My_attendance_model extends CI_Model {
     	$this->db->where('a.SESSID', $year__);
     	$query = $this->db->get();
 
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
     	return $query->result();
     }
 
@@ -35,6 +38,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('b.clssessid', $clssessid);
         $this->db->where('c.SESSID', $year__);
         $query = $this->db->get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -50,6 +58,10 @@ class My_attendance_model extends CI_Model {
         $this->db->where('TIME_',$time_);
         $query = $this->db->get('class_4_class_wise_attendance');
 
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         if($query->num_rows() != 0){
             $bool_ = 2;
         } else {
@@ -89,7 +101,7 @@ class My_attendance_model extends CI_Model {
                     );
                 $bool_ = $this->db->insert('class_4_class_wise_attendance', $data);
             }
-
+  
             if($bool_== true){
                 $data_['messageNo'] = 1; //'Attendance for class <b>'.$class.'</b> successfully submitted.';
                 //$this->session->set_flashdata('msg_all', 'Attendance for class <b>'.$class.'</b> successfully submitted.');
@@ -114,6 +126,11 @@ class My_attendance_model extends CI_Model {
             $this->session->set_flashdata('msg_all', 'Something goes wrong. Please try again...');
         }
 
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
+
         return json_encode($data_);
     }
 
@@ -136,6 +153,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('b.CLSSESSID', $clssessid);
         $this->db->where('b.SESSID', $year__);
         $query = $this->db->get();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         //echo $this->db->last_query(); 
         return $query->result();
     }
@@ -151,6 +173,10 @@ class My_attendance_model extends CI_Model {
         $this->db->where('DATE_ <=', $date_upto);
         $query = $this->db->get('class_4_class_wise_attendance');
         
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -165,7 +191,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('DATE_ <=',  $date_upto);
         //$this->db->group_by('DATE_');
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -181,7 +211,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
 
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -197,7 +231,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
 
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -211,7 +249,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
 
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
     function fetchTime_for_day(){
@@ -224,7 +266,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('CLSSESSID', $clssessid); //Classessid is also contains the current session
 
         $query = $this->db->get('class_4_class_wise_attendance');
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
     function fetchAttendance_daywise(){
@@ -236,7 +282,11 @@ class My_attendance_model extends CI_Model {
         $this->db->where('b.CLSSESSID', $clssessid);
         $this->db->where('b.DATE_', $date_);   
         $query = $this->db->get();
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 }

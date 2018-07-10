@@ -4,6 +4,7 @@ class My_fee_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->my_library->changeDB();
         // Exceptional Handling
             $this->load->model('My_error_model', 'error');
         // --------------------
@@ -29,7 +30,11 @@ class My_fee_model extends CI_Model {
             $data['month'] = 'x';
             $data['year'] = 'x';
         }
+        
+        // check transaction status
         $this->error->_db_error();
+        // ------------------------
+  
         return $data;
     }
     function get_invoice_for_receipt($class__){
@@ -61,6 +66,11 @@ class My_fee_model extends CI_Model {
         } else {
             $data = array();
         }
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $data;
     }
 
@@ -72,21 +82,31 @@ class My_fee_model extends CI_Model {
         $this->db->join('class_2_in_session d', 'd.CLSSESSID = a.CLSSESSID');
         $this->db->where('a.CLSSESSID', $class__);
         $query = $this->db->get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
     function get_flexible_fee_head_for_class($class__, $regid_ = 'x'){
-            $this->db->select('c.regid, a.FEE_HEAD, a.DURATION, a.AMOUNT, b.*');
-            $this->db->from('fee_4_flexible_heads a');
-            $this->db->join('fee_5_add_flexi_head_to_students b', 'a.FLX_HD_ID = b.FLX_HD_ID', 'left');
-            $this->db->join('master_7_stud_personal c', 'b.REGID=c.regid');
-            $this -> db -> where('b.CLSSESSID', $class__);
-            $this -> db -> where('b.STATUS', 1);
-            if($regid_ != 'x'){
-                $this -> db -> where('c.regid', $regid_);
-            }
-            $query = $this -> db -> get();
-    return $query->result();
+        $this->db->select('c.regid, a.FEE_HEAD, a.DURATION, a.AMOUNT, b.*');
+        $this->db->from('fee_4_flexible_heads a');
+        $this->db->join('fee_5_add_flexi_head_to_students b', 'a.FLX_HD_ID = b.FLX_HD_ID', 'left');
+        $this->db->join('master_7_stud_personal c', 'b.REGID=c.regid');
+        $this -> db -> where('b.CLSSESSID', $class__);
+        $this -> db -> where('b.STATUS', 1);
+        if($regid_ != 'x'){
+            $this -> db -> where('c.regid', $regid_);
+        }
+        $query = $this -> db -> get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
+        return $query->result();
     }
     
     function get_students_in_class($clssessid){
@@ -96,7 +116,11 @@ class My_fee_model extends CI_Model {
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
         $this->db->where('b.clssessid', $clssessid);
         $query = $this->db->get();
-        //echo $this->db->last_query();
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
     
@@ -109,6 +133,11 @@ class My_fee_model extends CI_Model {
         $this -> db -> from('class_1_classes a');
         $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
         $query = $this -> db -> get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query -> result();
     }
     function get_class_fee_in_session($year__){
@@ -119,7 +148,11 @@ class My_fee_model extends CI_Model {
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $query = $this -> db -> get();
 
-        //echo $this->db->last_query()."<br />";
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         
         return $query->result();
     }
@@ -133,7 +166,11 @@ class My_fee_model extends CI_Model {
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $query = $this -> db -> get();
 
-        //echo $this->db->last_query()."<br />";
+        
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         
         return $query->result();
     }
@@ -150,6 +187,11 @@ class My_fee_model extends CI_Model {
         $this->db->where('a.YEAR_TO', $yr_to);
         $this->db->where('a.MONTH_TO', $mnth_to);
         $query = $this->db->get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $query->result();
     }
 
@@ -219,6 +261,10 @@ class My_fee_model extends CI_Model {
             $data['invdetid'] = 'x';
         }
 
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
         return $data;
     }
     function check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
@@ -363,6 +409,7 @@ class My_fee_model extends CI_Model {
         }
         $data['msg_'] = $str;
         $data['invid_'] = $final_invid_;
+  
         return $data;
     }
     function check_previous_invoice($class__, $yr_from, $mnth_from){
@@ -374,6 +421,7 @@ class My_fee_model extends CI_Model {
         } else {
             $data['bool_'] = false;
         }
+
         return $data;
     }
     
@@ -392,6 +440,7 @@ class My_fee_model extends CI_Model {
             $data['bool_'] = false;
             $data['invid'] = 'x';
         }
+
         return $data;
     }
     function check_invoice_detail($invid, $regid){
@@ -406,6 +455,7 @@ class My_fee_model extends CI_Model {
             $data['bool_'] = false;
             $data['invdetid'] = 'x';
         }
+
         return $data;
     }
     function fetch_invoice_data_for_receipt($invdetid_){
@@ -413,6 +463,7 @@ class My_fee_model extends CI_Model {
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->where('b.INVDETID', $invdetid_);
         $query = $this->db->get();
+
         return $query->row();
     }
     function fetch_static_heads_to_class($class__, $regid_){

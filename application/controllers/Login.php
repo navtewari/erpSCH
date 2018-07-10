@@ -6,15 +6,13 @@ class Login extends CI_Controller {
 
     function __construct() {
         parent::__construct();    
-        $this->load->database(_DATABASE_);
+        if(!$this->session->userdata('main_user')){
+            redirect('gen_login');
+        }
         $this->load->model('my_model', 'mm');
     }
 
     function index(){
-        //echo $this->security->get_csrf_token_name();
-        //echo $this->security->get_csrf_hash();
-
-        $this->session->sess_destroy();
         $data['master_sessions'] = $this->mm->getsessions();
     	$this->load->view('login', $data);
     }
@@ -27,7 +25,14 @@ class Login extends CI_Controller {
         }
     }
     public function logout(){
-        $this->session->sess_destroy();
+        $data = array(
+            '_name_',
+            '_user___',
+            '_status_',
+            '_current_year___',
+            '_previous_year___'
+        );
+        $this->session->unset_userdata($data);
         redirect('login');
     }
     public function check_login(){
