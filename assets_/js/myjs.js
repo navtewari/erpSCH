@@ -493,7 +493,7 @@ $(function(){
 			var arrDiscount = x_.split(',');
 
 			arrDiscount.splice($.inArray(id_, arrDiscount),1);
-			alert(temp);
+			
 			$('#txtDiscounts').val(arrDiscount);
 			$('#_'+temp).css('display','none');
 		});
@@ -516,6 +516,22 @@ $(function(){
 		// -----------------------
 	// ----------------------------------------
 	// Master Discount ------------------------
+		$('#cmbCategory').change(function(){
+			if($('#cmbCategory').val() == 'SIBLINGS'){
+				$('#txtItem').val($('#cmbCategory').val());
+				$('#txtItem').attr('disabled', 'disabled');
+				$('#sibling_count').css('display', 'block');
+				$('#cmbSiblingCountForDiscount').focus();
+			} else {
+				$('#sibling_count').css('display', 'none');
+				$('#txtItem').removeAttr('disabled');
+				if($('#txtItem').val() == 'SIBLINGS' || $('#txtItem').val() == 'SIBLING'){
+					$('#txtItem').val('');
+				}
+				$('#txtItem').focus();
+			}
+		});
+
 		function fill_discounts(){
 			url_ = site_url_ + "/discount/get_discounts";
 			$.ajax({
@@ -553,13 +569,16 @@ $(function(){
 			});
 		}
 		$('#update_master_Discount').click(function(){
-			if($('#txtItem').val() == ''){
+			if($.trim($('#txtItem').val()) == ''){
 				callDanger("Please fill the name of discounted item !!");
+			} else if($('#cmbSiblingCountForDiscount').val() == '') {
+				callDanger("Please fill sibling number !!");
 			} else if($('#cmdStatus').val() == 'x'){
 				callDanger("Please select the status of discounted category !!");
-			} else if($('#txtAmount').val() == '') {
+			} else if($.trim($('#txtAmount').val()) == '') {
 				callDanger("Please select the status of discounted category !!");
 			} else {
+				$('#txtItem').removeAttr('disabled');
 				var data_ = $('#frmDiscounts').serialize();
 				var url_ = site_url_ + "/discount/submit_discount";
 				$.ajax({
@@ -570,9 +589,12 @@ $(function(){
 						$('#discount_head').html('Add Discount');
 						$('#discount_head').removeClass('edit_color_head');
 						$('#txtItem').removeClass('edit_color_content');
+						$('#txtItem').val();
 						$('#s2id_cmdStatus span').removeClass('edit_color_content');
 						$('#txtAmount').removeClass('edit_color_content');
 						$('#txtDesc').removeClass('edit_color_content');
+						$('#sibling_count').css('display', 'none');
+						$('#s2id_cmbSiblingCountForDiscount span').text('Select Number');
 						var obj = JSON.parse(data);
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
@@ -582,7 +604,7 @@ $(function(){
 								$('#txtItem').focus();
 							}
 						} else {
-							callDanger(obj.msg_);
+							callDanger(obj.msg_);	
 							$('#txtItem').focus();
 						}
 					}, error: function(xhr, status, error){
@@ -623,6 +645,11 @@ $(function(){
 						$('#s2id_cmdStatus span').text(obj.STATUS_);
 						$('#cmbCategory').val(obj.CATEGORY);
 						$('#s2id_cmbCategory span').text(obj.CATEGORY);
+						if(obj.CATEGORY == 'SIBLINGS'){
+							$('#sibling_count').css('display', 'block');
+							$('#cmbSiblingCountForDiscount').val(obj.ELIGIBLE_COUNT);
+							$('#s2id_cmbSiblingCountForDiscount span').text(obj.ELIGIBLE_COUNT);
+						}
 						$('#txtAmount').val(obj.AMOUNT);
 						$('#txtDesc').val(obj.DESC_);
 						$('#txtItem').focus();
@@ -631,18 +658,20 @@ $(function(){
 					} 
 				});
 			} else if(xarr[0] == 'Delete'){
-				var url_ = site_url_ + "/discount/deleted_specific_discount";
-				$.ajax({
-					type: 'POST',
-					url: url_,
-					data: data_,
-					success: function(data){
-						fill_discounts();
-						callSuccess("Discounted Item Successfully deleted.");
-					}, error: function(xhr, status, error){
-						callDanger(xhr.responseText);
-					} 
-				});
+				if(confirm("Do you really want to delete this item?") == true){
+					var url_ = site_url_ + "/discount/deleted_specific_discount";
+					$.ajax({
+						type: 'POST',
+						url: url_,
+						data: data_,
+						success: function(data){
+							fill_discounts();
+							callSuccess("Discounted Item Successfully deleted.");
+						}, error: function(xhr, status, error){
+							callDanger(xhr.responseText);
+						} 
+					});
+				}
 			}
 		});
 		$('#reset_discount').click(function(){

@@ -27,7 +27,6 @@
                     <div class="row-fluid">
                         <div class="controls span5">
                             <div class="widget-box">
-                                <div  style="border: #ff0000 solid 0px; width: 50px; height:50px; float: right; right: 0px; z-index: 2222; position: absolute;" id="student_photo_here"></div>
                                 <div class="widget-title"> <span class="icon"> <i class="icon-certificate"></i> </span>
                                     <h5 id="discount_head">Add Discount</h5>
                                 </div>
@@ -85,6 +84,27 @@
                                             );
                                             echo form_input($data);
                                             ?>
+                                        </div>
+                                    </div>
+                                    <div class="control-group span12" id="sibling_count" style="display: none">
+                                        <label class="control-label" style="font-weight: bold; font-size: 10px">Total Siblings eligible for discount</label>
+                                        <div class="controls">
+                                        <?php
+                                            $data = array(
+                                                'class' => "span4 text",
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'name' => 'cmbSiblingCountForDiscount',
+                                                'id' => 'cmbSiblingCountForDiscount',
+                                                'style' => 'float: left; color: #0000ff; background: #00ffff',
+                                            );
+                                            $optSibNo = array();
+                                            $optSibNo[''] = 'Select Number';
+                                            for($i=1; $i<=5; $i++){
+                                                $optSibNo[$i] = $i;
+                                            }
+                                            echo form_dropdown($data,$optSibNo, '');
+                                        ?>
                                         </div>
                                     </div>
                                     <div class="control-group span5">

@@ -18,6 +18,7 @@ class My_discount_model extends CI_Model {
         $category = $this->input->post('cmbCategory');
     	$amount_ = $this->input->post('txtAmount');
     	$desc_ = $this->input->post('txtDesc');
+        $eligible_no = $this->input->post('cmbSiblingCountForDiscount');
 
     	if($this->input->post('txtBool') == 'new'){
     		// Code for new record
@@ -28,6 +29,7 @@ class My_discount_model extends CI_Model {
     		} else {
     			$Discount = array(
 	    			'ITEM_' => $item_,
+                    'ELIGIBLE_COUNT' => $eligible_no,
 	    			'STATUS_' =>$status_,
                     'CATEGORY'=>$category,
 	    			'AMOUNT' =>$amount_,
@@ -47,6 +49,7 @@ class My_discount_model extends CI_Model {
     		$did = $this->input->post('txtDiscountID');
     		$Discount = array(
     			'ITEM_' => $item_,
+                'ELIGIBLE_COUNT' => $eligible_no,
     			'STATUS_' =>$status_,
                 'CATEGORY'=>$category,
     			'AMOUNT' =>$amount_,
