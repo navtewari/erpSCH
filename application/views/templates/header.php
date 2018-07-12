@@ -75,7 +75,7 @@
 
         <!--start-top-serch-->
         <div id="search">
-            <form name="frmStudentInfoSearch" id="frmStudentInfoSearch" method="post" action="<?php echo site_url('reports/getStudentInfo');?>">
+            <form name="frmStudentInfoSearch" id="frmStudentInfoSearch" method="post" action="<?php echo site_url('reports/getStudentInfo');?>" target="_blank">
                 <input type="text" placeholder="Search here..." name="txtSearchID" id="txtSearchID" required="required" />
                 <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
             </form>

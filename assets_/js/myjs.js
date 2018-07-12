@@ -2877,6 +2877,12 @@ $(function(){
 	// -----------------
 
 	// Dashboard Reports
+		$('body').on('click', '.inTotalClasses', function(){
+			var str_id = this.id;
+			var id_ = str_id.split('~');
+			$('#txtSearchID').val(id_[0]);
+			$('#frmStudentInfoSearch').submit();
+		});
 		$('body').on('click', '.show_students_as_per_class', function(){
 			var id_ = this.id; 
 			
@@ -2894,8 +2900,8 @@ $(function(){
 					for(i=0; i<obj.class_students.length; i++){
 
 						str = str + "<tr>";
-						str = str + "<td>" + obj.class_students[i].regid + "</td>";
-						str = str + "<td>" + obj.class_students[i].FNAME + "</td>";
+						str = str + "<td id='"+obj.class_students[i].regid+"~IntotalClassesID' class='inTotalClasses'>" + obj.class_students[i].regid + "</td>";
+						str = str + "<td id='"+obj.class_students[i].regid+"~IntotalClassesName' class='inTotalClasses'>" + obj.class_students[i].FNAME + "</td>";
 						str = str + "</tr>";
 					}
 					$('#class_name').html(strarray[1]);

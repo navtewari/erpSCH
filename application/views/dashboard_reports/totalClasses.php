@@ -70,17 +70,17 @@
                 <h5><div style="float: left">Student(s) in class&nbsp;</div><div id="class_name" style="float: left; background: #ffff00; color: #000090; font-weight"></div></h5>
             </div>
             <div class="widget-content nopadding">
-                <table class="table table-bordered table-striped with-check">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left">ID</th>
-                            <th style="text-align: left">Student Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="student_data_here_as_per_class" style="font-size: 12px" style="height: 250px; overflow: auto">
-                        
-                    </tbody>
-                </table>
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left">ID</th>
+                                <th style="text-align: left">Student Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student_data_here_as_per_class" style="font-size: 12px" style="height: 250px; overflow: auto">
+                            
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
