@@ -1786,7 +1786,10 @@ $(function(){
 		                pay_amount = obj.fetch_receipt_data[0].DUE_AMOUNT;
 		                actual_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
 		                due_actual = amount_ - parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
-		                
+		                var total_categ_discount_amount = 0;
+		                var total_sibling_discount_amount = 0;
+		                var total_other_discount_amount = 0;
+
 		                if(due_actual < 0){
 		                    due_actual = 0;
 		                }
@@ -1836,19 +1839,24 @@ $(function(){
 		                	if(obj.sibling_discount != null){
 		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
 		                		var sibling_length = parseInt(sibling_arr.length);
-		                		var discount_sibling_value = obj.fetch_discount_data.AMOUNT;
-		                		if(obj.fetch_discount_data.STATUS_ == 'Percentage'){
-		                			var discount_amt = parseInt(parseInt(actual_)*(parseInt(discount_sibling_value)/100));
-		                			var total_discount_amount = parseInt(discount_amt) * sibling_length;
-		                		} else {
-		                			var total_discount_amount = parseInt(discount_sibling_value) * parseInt(sibling_length);
+		                		var discount_sibling_value = 0;
+		                		if(obj.fetch_discount_data != null){
+		                			var discount_sibling_value = obj.fetch_discount_data.AMOUNT;
+
+		                			if(obj.fetch_discount_data.STATUS_ == 'Percentage'){
+			                			var discount_amt = parseInt(parseInt(actual_)*(parseInt(discount_sibling_value)/100));
+			                			var total_sibling_discount_amount = discount_amt;
+			                			//var total_sibling_discount_amount = parseInt(discount_amt) * sibling_length;
+			                		} else {
+			                			var total_sibling_discount_amount = parseInt(discount_sibling_value) * parseInt(sibling_length);
+			                		}
 		                		}
 		                		discount_category = 'SIBLINGS';
 		                	} else {
 		                		var total_sibling = 0;
-		                		var total_discount_amount = 0;
+		                		var total_sibling_discount_amount = 0;
 		                	}
-		                	//alert(total_discount_amount);
+		                	//alert(total_sibling_discount_amount);
 		                	if(obj.fetch_category_discount_data != null){
 		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
 		                		if(obj.fetch_category_discount_data.STATUS_ == 'Percentage'){
@@ -1873,8 +1881,8 @@ $(function(){
 		                	}
 		                	//alert(total_categ_discount_amount);
 		                	var category_amount_to_store = '';
-		                	if(total_discount_amount != 0){
-		                		category_amount_to_store = category_amount_to_store + total_discount_amount;
+		                	if(total_sibling_discount_amount != 0){
+		                		category_amount_to_store = category_amount_to_store + total_sibling_discount_amount;
 		                	}
 		                	if(total_categ_discount_amount != 0 && category_amount_to_store != ''){
 		                		category_amount_to_store = category_amount_to_store + "," + total_categ_discount_amount;	
@@ -1887,7 +1895,7 @@ $(function(){
 		                	}
 
 		                	var discount_if_any = 0;
-		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_discount_amount) + parseInt(total_categ_discount_amount) + parseInt(total_other_discount_amount);
+		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_sibling_discount_amount) + parseInt(total_categ_discount_amount) + parseInt(total_other_discount_amount);
 		                // -----------------------------------------------
 		                var fine_if_any = 0;
 		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
@@ -1963,7 +1971,7 @@ $(function(){
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
 		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff'>";
-		                str_html = str_html + "Sibling: "+total_discount_amount+" + "+"Category: "+total_categ_discount_amount+" + "+"Other Discount: "+total_other_discount_amount;
+		                str_html = str_html + "Sibling: "+total_sibling_discount_amount+" + "+"Category: "+total_categ_discount_amount+" + "+"Other Discount: "+total_other_discount_amount;
 		                str_html = str_html + "</div>";
 		                str_html = str_html + "</td>"
 		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_discount_' name='_discount_' value="+discount_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";

@@ -663,8 +663,32 @@ class My_fee_model extends CI_Model {
             $this->db->join('master_7_stud_personal b', 'd.REGID = b.regid');
             $this->db->join('class_2_in_session c', 'a.CLSSESSID = c.CLSSESSID');
             $query = $this->db->get();
-            
         return $query->result();
+    }
+    function check_eligibility_for_sibling_discount($regid_){
+        $bool_ = array('res_'=>false, 'msg_'=>"Not Eligible for sibling discount");
+        
+        $this->db->select('SIBLINGS');
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('register_sibling');
+        if($query->num_rows() != 0){
+            $row = $query->row();
+            $regids = count(explode(",",$row->SIBLINGS))+1; // here +1 means: the student himself/ herself (is also included in sibling's count) 
+
+            $this->db->select('ELIGIBLE_COUNT');
+            $this->db->where('CATEGORY', 'SIBLINGS');
+            $qry_eligible = $this->db->get('master_16_discount');
+            if($qry_eligible->num_rows()!=0){
+                $row = $qry_eligible->row();
+                $eligilble_count = $row->ELIGIBLE_COUNT;
+
+                if($regids >= $eligilble_count){
+                    $bool_ = array('res_'=>true, 'msg_'=>"Eligible for sibling discount");            
+                }
+            }
+
+        }
+        return $bool_;
     }
     function get_specific_sibling_for_fee_discount($regid_){
         $this->db->where('regid', $regid_);

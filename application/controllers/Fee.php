@@ -98,6 +98,7 @@ class Fee extends CI_Controller {
         $invdetid_ =  $this->input->post('invdetid');
         $clssessid = $this->input->post('clssessid');
         $regid_ = $this->input->post('regid_');
+        $data['sibling_discount_eligiblity'] = $this->fm->check_eligibility_for_sibling_discount($regid_);
         $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
         if($this->fm->chkDiscountStatus($invdetid_) == false){
             $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
@@ -108,8 +109,13 @@ class Fee extends CI_Controller {
             } else {
                 $data['fetch_other_discount_data'] = NULL;
             }
-            if(count($data['sibling_discount']) != 0){
-                $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+            
+            if($data['sibling_discount_eligiblity']['res_'] == true){
+                if(count($data['sibling_discount']) != 0){
+                    $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+                } else {
+                    $data['fetch_discount_data'] = NULL;
+                }
             } else {
                 $data['fetch_discount_data'] = NULL;
             }

@@ -99,11 +99,11 @@
                                                 'style' => 'float: left; color: #0000ff; background: #00ffff',
                                             );
                                             $optSibNo = array();
-                                            $optSibNo[''] = 'Select Number';
+                                            $optSibNo['x'] = 'Select Number';
                                             for($i=1; $i<=5; $i++){
                                                 $optSibNo[$i] = $i;
                                             }
-                                            echo form_dropdown($data,$optSibNo, '');
+                                            echo form_dropdown($data,$optSibNo, 'x');
                                         ?>
                                         </div>
                                     </div>
