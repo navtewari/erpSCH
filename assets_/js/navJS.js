@@ -1,4 +1,16 @@
 $(function () {
+    $(document).ajaxStart(function(){
+        $('#loading_process').css('opacity', '1');
+        $('#loading_process').css('display', 'inline-block');
+        $('#loading_process').html('<img src="'+base_url_+'/assets_/img/spinner.gif" /> Its Loading...');
+    });
+
+    $(document).ajaxComplete(function(){
+        $('#loading_process').css('opacity', '1');
+        $('#loading_process').css('display', 'none');
+        $('#loading_process').html(''); 
+    });
+
     $(window).on("load", function () {
         if ($("#frmGenSchool").length != 0) {
             fillStates('cmbPState1');
@@ -489,7 +501,7 @@ $(function () {
     $('#btnAddSessionClassSubmit').click(function () {
         $('#undo_redo_to option').prop('selected', true);
         data_ = $('#frmClassInSession').serializeArray();
-        alert(data_);
+        //alert(data_);
         url_ = site_url_ + "/master/setClassInSession";
         $.ajax({
             type: 'POST',
