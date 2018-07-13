@@ -111,8 +111,8 @@ $(function(){
 		}
 		function fillSiblings(){
 			$('#s2id_cmbSiblingRegistrationID span').text("Loading...");
-			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
-			$('#cmbRegistrationID').empty();
+			url_ = site_url_ + "/reg_adm/get_admitted_students";
+			//$('#cmbRegistrationID').empty();
 			$.ajax({
 				type: "POST",
 				url: url_,

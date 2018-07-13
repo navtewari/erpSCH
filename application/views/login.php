@@ -13,9 +13,25 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-login.css'); ?>" />
         <link href="<?php echo base_url('assets_/font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" />
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+        <style>
+            .page-loader {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url(<?php echo base_url('assets_/img/page-loader.gif');?>) 50% 50% no-repeat rgb(249,249,249);
+                opacity: .8;
+            }
+        </style>
     </head>
-    <body>
+    <body id="doc__" style="margin-top: 4% !important">
+        <div class="page-loader"></div>
         <div id="loginbox">            
+            <div class="control-group normal_text" style="margin-right: 25px; margin-bottom: 10px;"> 
+            <a href="<?php echo site_url('gen_login');?>" style="padding: 1px 0px; border-top-left-radius: 10px; border-top-right-radius: 10px; background: #ff0000; width: 30px; height: 30px; color: #ffffff; font-weight: bold; float:right;"/><i class="icon-remove"></i></a>
+        </div>
             <?php
             $attrib_ = array(
                 'class' => 'form-vertical',
@@ -54,8 +70,6 @@
                         <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" name="txtUser__" id="txtUser__" placeholder="Username" required="required" />
                     </div>
                 </div>
-            </div>
-            <div class="control-group">
                 <div class="controls">
                     <div class="main_input_box">
                         <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" name="txtPwd__" id= "txtPwd__" placeholder="Password" />
@@ -63,14 +77,15 @@
                 </div>
             </div>
             <div class="form-actions">                
-                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:left; margin-left:18px;"/>                
-                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;float:right;margin-right: 18px;"/>                
+                <input type="submit" class="btn btn-success" value="LOGIN" style="width:40%;float:left; margin-left:18px;"/>           
+                <input type="reset" class="btn btn-danger" value="RESET" style="width:30%;float:right;margin-right: 18px;"/> 
             </div> 
             <?php echo form_close();?>
     </div>
 
     <script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script>  
-    <script src="<?php echo base_url('assets_/js/matrix.login.js'); ?>"></script> 
+    <script src="<?php echo base_url('assets_/js/matrix.login.js'); ?>"></script>
+    <script src="<?php echo base_url('assets_/js/masked.js');?>"></script>  
     <script src="<?php echo base_url('assets_/js/myjs.js'); ?>"></script> 
 </body>
 

@@ -13,8 +13,21 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-login.css'); ?>" />
         <link href="<?php echo base_url('assets_/font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" />
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+        <style>
+        .page-loader {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url(<?php echo base_url('assets_/img/page-loader.gif');?>) 50% 50% no-repeat rgb(249,249,249);
+                opacity: .8;
+            }
+        </style>
     </head>
-    <body>
+    <body id="doc__">
+        <div class="page-loader"></div>
         <div id="loginbox">            
             <?php
             $attrib_ = array(
@@ -40,14 +53,15 @@
                 </div>
             </div>
             <div class="form-actions">                
-                <input type="submit" class="btn btn-success" value="LOGIN" style="width:200px;float:left; margin-left:18px;"/>
-                <input type="reset" class="btn btn-danger" value="RESET" style="width:100px;float:right;margin-right: 18px;"/>               
+                <input type="submit" class="btn btn-success" value="LOGIN" style="width:40%;float:left; margin-left:18px;"/>
+                <input type="reset" class="btn btn-danger" value="RESET" style="width:30%;float:right;margin-right: 18px;"/>               
             </div> 
             <?php echo form_close();?>
     </div>
 
     <script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script>  
     <script src="<?php echo base_url('assets_/js/matrix.login.js'); ?>"></script> 
+    <script src="<?php echo base_url('assets_/js/masked.js');?>"></script> 
     <script src="<?php echo base_url('assets_/js/myjs.js'); ?>"></script> 
 </body>
 

@@ -29,7 +29,7 @@ class My_admission_model extends CI_Model {
 
         return $query->result();
     }
-
+    
     function get_admitted_students($session, $classessid=''){
         if($classessid!=''){
             $this->db->where('c.CLSSESSID',$classessid);
