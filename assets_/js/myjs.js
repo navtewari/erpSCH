@@ -702,7 +702,8 @@ $(function(){
 		$('#add_static_head').click(function(){
 			if($.trim($('#txtFeeStaticHead').val()) != ''){
 				url_ = site_url_ + "/master_fee/submit_static_fee_head";
-				data_ = 'txtFeeStaticHead='+$('#txtFeeStaticHead').val();
+				data_ = 'txtFeeStaticHead='+$('#txtFeeStaticHead').val()+'&cmbDuration='+$('#cmbDuration').val();
+				
 				$.ajax({
 					type: "POST",
 					url: url_,
@@ -712,6 +713,7 @@ $(function(){
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 							fill_static_fee_heads();
+							fill_static_heads_to_assiciates_classes();
 							rest_static_head_form();
 						} else {
 							callDanger(obj.msg_);
@@ -778,6 +780,7 @@ $(function(){
 					if(obj.res_ == true){
 						callSuccess(obj.msg_);
 						fill_static_fee_heads();
+						fill_static_heads_to_assiciates_classes();
 					} else {
 						callDanger(obj.msg_);
 					}
@@ -809,6 +812,7 @@ $(function(){
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 							fill_static_fee_heads();
+							fill_static_heads_to_assiciates_classes();
 						} else {
 							callDanger(obj.msg_);
 						}
@@ -840,6 +844,7 @@ $(function(){
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 							fill_flexible_fee_heads();
+							fillFlexibleHeads_for_Associate_with_students
 							rest_flexi_head_form();
 						} else {
 							callDanger(obj.msg_);
@@ -858,7 +863,25 @@ $(function(){
 			}
 		return false;
 		});
-
+		function fill_static_heads_to_assiciates_classes(){
+			url_ = site_url_ + "/master_fee/get_static_fee_heads";
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value='x'>Select Head</option>";
+					for(i=0;i<obj.static_heads.length; i++){
+						str_html = str_html + "<option value='"+obj.static_heads[i].ST_HD_ID+"'>"+obj.static_heads[i].FEE_HEAD+"</option>";
+					}
+					$('#s2id_cmbStaticHeads span').text("Select Head");
+					$('#cmbStaticHeads').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
 		function fill_flexible_fee_heads(){
 			url_ = site_url_ + "/master_fee/get_flexible_heads";
 			$.ajax({
@@ -919,6 +942,7 @@ $(function(){
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 							fill_flexible_fee_heads();
+							fillFlexibleHeads_for_Associate_with_students();
 						} else {
 							callDanger(obj.msg_);
 						}
@@ -958,6 +982,7 @@ $(function(){
 					if(obj.res_ == true){
 						callSuccess(obj.msg_);
 						fill_flexible_fee_heads();
+						fillFlexibleHeads_for_Associate_with_students();
 					} else {
 						callDanger(obj.msg_);
 					}
