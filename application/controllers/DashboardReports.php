@@ -68,17 +68,12 @@ class DashboardReports extends CI_Controller {
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
 
-        $data['figure'] = $this->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
 
         $this->load->view('templates/header');
         $this->load->view('templates/menu', $data);
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
-    }
-    function all_figures_for_dashboard($year__){
-        $data['count_reg_students'] = $this->dr->total_reg_students($year__);
-        $data['count_classes_in_session'] = $this->dr->total_classes_in_a_session($year__);
-        return $data;
     }
 
     function get_students(){

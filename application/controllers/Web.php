@@ -15,12 +15,6 @@ class Web extends CI_Controller {
         $this->load->model('my_dashboard_reports_model', 'dr');
     }
 
-    function all_figures_for_dashboard($year__){
-        $data['count_reg_students'] = $this->dr->total_reg_students($year__);
-        $data['count_classes_in_session'] = $this->dr->total_classes_in_a_session($year__);
-        $data['count_students_in_a_session'] = $this->dr->total_students_in_a_session($year__);
-        return $data;
-    }
     function dashboard($active = 1, $subno = 1, $submenu = 'index') {
         $this->check_login();
         $this->set_live_session();
@@ -33,7 +27,7 @@ class Web extends CI_Controller {
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
 
-        $data['figure'] = $this->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
 
         $this->load->view('templates/header');
         $this->load->view('templates/menu', $data);

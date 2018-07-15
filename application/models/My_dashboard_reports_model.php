@@ -12,6 +12,16 @@ class My_dashboard_reports_model extends CI_Model {
         // --------------------
     }
 
+    function all_figures_for_dashboard($year__){
+        $data['count_reg_students'] = $this->total_reg_students($year__);
+        $data['count_classes_in_session'] = $this->total_classes_in_a_session($year__);
+        $data['count_students_in_a_session'] = $this->total_students_in_a_session($year__);
+        $data['count_invoices_in_session'] = $this->total_invoices_in_a_session($year__);
+        $data['count_fee_receipts'] = $this->total_fee_paid($year__);
+        $data['total_fee_collected'] = $this->total_fee_collected($year__);
+        return $data;
+    }
+
     function total_reg_students($year_){
         $this->db->where('SESSID', $year_);
         $this->db->select('count(regid) as count_students');
@@ -53,5 +63,55 @@ class My_dashboard_reports_model extends CI_Model {
 
         $result = $query->row();
         return $result->count_students;
+    }
+
+    function total_invoices_in_a_session($year_='x'){
+        if($year_ != 'x'){
+            $this->db->where('SESSID', $year_);
+        }
+        $this->db->select('count(a.INVID) as total_invoices');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->total_invoices;
+    }
+
+    function get_invoices_in_a_session($year_){
+        if($year_ != 'x'){
+            $this->db->where('SESSID', $year_);
+        }
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function total_fee_paid($year_){
+        if($year_ != 'x'){
+            $this->db->where('a.SESSID', $year_);
+        }
+        $this->db->select('count(c.RECPTID) as total_Receipts');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->total_Receipts;
+
+    }
+
+    function total_fee_collected($year_){
+        if($year_ != 'x'){
+            $this->db->where('a.SESSID', $year_);
+        }
+        $this->db->select('sum(c.ACTUAL_PAID_AMT) as fee_collected');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->fee_collected;
+
     }
 }

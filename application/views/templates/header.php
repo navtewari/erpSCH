@@ -31,7 +31,7 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/datepicker.css');?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/uniform.css'); ?>" />
         <link  rel="stylesheet" href="<?PHP echo base_url() . 'assets_/multiSelect/css/style.css'; ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>?version=1.0" />
         <style>
             .page-loader {
                 position: fixed;
