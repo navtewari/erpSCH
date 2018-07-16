@@ -198,6 +198,8 @@ class My_fee_model extends CI_Model {
     function generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months){
         $s = 'x';
         $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
+        $prevInvoiceID = $data['last_invoice_detail_id']['ID'];
+        $prevInvoice_result = $data['last_invoice_detail_id']['res_'];
 
         if($data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
             $data1 = array(
@@ -249,8 +251,29 @@ class My_fee_model extends CI_Model {
             $query = $this->db->insert('fee_6_invoice_detail', $data1);
             if($query == true){
                 $data['bool__'] = 1; // Invoice Successfully generated
-                $s = "Invoice Successfully generated";
+                
                 $data['invdetid'] = $this->db->insert_id();
+                // Updation: Disable the previous invoice
+                    if($prevInvoice_result == true){
+                        $data = array(
+                            'STATUS' => 0
+                        );
+                        $this->db->where('INVDETID', $prevInvoiceID);
+                        if($this->db->update('fee_6_invoice_detail', $data) == true){
+                            $s = "Invoice Successfully generated++"; // invoice generated with disabling the previous invoice
+                        } else {
+                            /* 
+                                E-Mail the new invoice ID to nitin.d12@gmail.com notifyng that 
+                                previous-invoiceID against new-invoiceId is not disabled for 
+                                smoother invoice monitoring. Also E-mail the school name 
+                                via session variable: $this->session->userdata('school_name');
+                            */
+                            $s = "Invoice Successfully generated"; // invoice generated without disabling the previous invoice
+                        }
+                    } else {
+                        $s = "Invoice Successfully generated"; // Invoice generated first time so no need to disable any invoice
+                    }
+                // --------------------------------------
             } else {
                 $data['bool__'] = 0; // Something goes wrong. Please try again
                 $data['invdetid'] = 'x';
@@ -309,6 +332,9 @@ class My_fee_model extends CI_Model {
                     generate the invoice.
                 */
                 $rs = $querylast->row();
+                // This array variable is used to disable the previous invoice if new invoice generated for the selected student
+                    $data['last_invoice_detail_id'] = array('res_' => true, 'ID'=>$rs->INVDETID); 
+                // -------------------------------------------------------------------------------------------------------------
                 $date1 = mktime(0,0,0,$rs->MONTH_TO,0,$rs->YEAR_TO);
                 $date2 = mktime(0,0,0,$mnth_from,0,$yr_from);
                 $diff_ = round((($date2-$date1)/60/60/24/30),0,PHP_ROUND_HALF_UP);
@@ -354,6 +380,9 @@ class My_fee_model extends CI_Model {
                 */
             /*(6) */$data['bool_'] = 6;
                     $final_invid_ = 'x';
+                    // This array variable is used to disable the previous invoice but here no need as no previous invoice found
+                        $data['last_invoice_detail_id'] = array('res_' => false, 'ID'=>'x'); 
+                    // -------------------------------------------------------------------------------------------------------------
                     $str = "Code-6: Invoice generated successfully.";
             }
             
@@ -364,7 +393,7 @@ class My_fee_model extends CI_Model {
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
             $this->db->where('b.REGID', $regid_);
-            $this->db->where('a.CLSSESSID', $class__);
+            $this->db->where('a.CLSSESSID', $class__); // CLSSESSID in where condition means we are selecting a class as well as session
             $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
             $this->db->order_by('b.INVDETID', 'desc');
@@ -375,6 +404,9 @@ class My_fee_model extends CI_Model {
             if($querylast->num_rows() != 0){
             /*(7) */$data['bool_'] = 7;
                 $r = $querylast->row();
+                // This array variable is used to disable the previous invoice if new invoice generated for the selected student
+                    $data['last_invoice_detail_id'] = array('res_' => true, 'ID'=>$r->INVDETID); 
+                // -------------------------------------------------------------------------------------------------------------
                     $yr_from_r = (int)$r->YEAR_FROM;
                     $mnth_from_r = (int)$r->MONTH_FROM;
                     $yr_to_r = (int)$r->YEAR_TO;
@@ -404,6 +436,9 @@ class My_fee_model extends CI_Model {
                 // No last invoice found for the selected student then generate the invoice for the selected period
                 /* (12) */$data['bool_'] = 12;
                         $final_invid_ = 'x';
+                        // This array variable is used to disable the previous invoice but here no need as no previous invoice found
+                            $data['last_invoice_detail_id'] = array('res_' => false, 'ID'=>'x'); 
+                        // -------------------------------------------------------------------------------------------------------------
                 $str = 'Code-12: Invoice generated successfully.';
             }
         }
@@ -584,6 +619,7 @@ class My_fee_model extends CI_Model {
             $data['msg_'] = "Code-1: Connot undo this invoice of Stud ID -".$r->regid." as he/ she already paid some fee against the same.";
         } else{
             $this->db->where('INVDETID', $invdetid_);
+            $this->db->where('STATUS', 1);
             $query = $this->db->get('fee_6_invoice_detail');
             if($query->num_rows()!=0){
                 $r1 = $query->row();
@@ -605,7 +641,7 @@ class My_fee_model extends CI_Model {
                 }
             } else {
                 /*(4)*/$data['bool_'] = 4;
-                $data['msg_'] = "Code-4: Something goes wrong. Please try again.";
+                $data['msg_'] = "Code-4: Only Latest Invoice for the student can undo.";
             }
         }
         return $data;

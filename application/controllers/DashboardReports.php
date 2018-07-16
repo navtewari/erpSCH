@@ -25,7 +25,7 @@ class DashboardReports extends CI_Controller {
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
 
-        $data['figure'] = $this->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
 
         $this->load->view('templates/header');
         $this->load->view('templates/menu', $data);
@@ -47,7 +47,7 @@ class DashboardReports extends CI_Controller {
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
 
-        $data['figure'] = $this->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
 
         $this->load->view('templates/header');
         $this->load->view('templates/menu', $data);
@@ -80,6 +80,28 @@ class DashboardReports extends CI_Controller {
     	$clssessid = $this->input->post('classessid');
     	$data['class_students'] = $this->dr->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
     	echo json_encode($data);
+    }
+
+    function get_invoices(){
+        $this->check_login();
+
+        $data['inner_page'] = 'invoices';
+        $data['active'] = 1;
+
+        $data['page_'] = 'dashboard_reports';
+        $data['title_'] = "Invoice(s) in ". $this->session->userdata('_current_year___');
+        $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
+        $data['invoices'] = $this->dr->get_invoices_in_a_session($this->session->userdata('_current_year___'));
+
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
+        $data['sub_menu'] = $this->mm->getsubmenu();
+
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/menu', $data);
+        $this->load->view('dashboard', $data);
+        $this->load->view('templates/footer');
     }
     function check_login() {
         if (!$this->session->userdata('_user___')) {

@@ -27,60 +27,60 @@
             </div>
         </div>
     </div>
-    <div class="span4">
+    <div class="span8">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5>Student(s) in class</h5>
+                <h5>Invoice(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
             </div>
             <div class="widget-content nopadding">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th style="text-align: left">Class</th>
-                            <th>Total Student(s)</th>
+                            <th>INV. ID</th>
+                            <th>Class</th>
+                            <th style="text-align: left">RegID</th>
+                            <th style="text-align: left">Name</th>
+                            <th style="text-align: right">Amount</th>
+                            <th style="text-align: right">Due Amount</th>
                         </tr>
                     </thead>
                     <tbody id="student_data_here" style="font-size: 12px">
-                        <?php foreach ($total_students as $stduents) { ?>
-                            <?php if($stduents->TOTAL_STUDENTS != 0){ ?>
-                            <tr class="gradeX">
-                                <td>
-                                    <div style="font-size: 12px; padding: 0px 2px;">
-                                        <?php echo 'Class ' . $stduents->CLASSID;?>        
-                                    </div>
+                        <?php foreach ($invoices as $inv_item) { ?>
+                            <?php if($inv_item->STATUS == 1){ ?>
+                                <tr class="gradeX">
+                                    <?php $due_amnt = $inv_item->DUE_AMOUNT; ?>
+                            <?php } else { ?>
+                                <tr class="gradeX" style="color: #B0B0B0; text-decoration: line-through;">
+                                    <?php if($inv_item->DUE_AMOUNT != 0){?>
+                                        <?php $due_amnt = "(c/fwd) " . $inv_item->DUE_AMOUNT; ?>
+                                    <?php } else { ?>
+                                        <?php $due_amnt = $inv_item->DUE_AMOUNT; ?>
+                                    <?php } ?>
+                            <?php } ?>
+                                <td style="text-align: center">
+                                    <?php echo $inv_item->INVDETID; ?>
                                 </td>
                                 <td style="text-align: center">
-                                    <center>
-                                        <div style="background: #00AFEC; color: #ffffff; padding: 0px 2px; min-width: 10px; max-width: 50px; border-radius: 8px">
-                                            <a href="#" id="<?php echo $stduents->CLSSESSID."~".$stduents->CLASSID;?>" style="color: #ffffff" class="show_students_as_per_class"><?php echo $stduents->TOTAL_STUDENTS; ?></a>
-                                        </div>
-                                    </center>
+                                    <?php echo $inv_item->CLASSID; ?>
+                                </td>
+                                <td>
+                                    <div>
+                                        <?php echo $inv_item->regid;?>        
+                                    </div>
+                                </td>
+                                <td>
+                                    <?php echo $inv_item->FNAME; ?>
+                                </td>
+                                <td style="text-align: right">
+                                    <?php echo $inv_item->ACTUAL_DUE_AMOUNT+$inv_item->PREV_DUE_AMOUNT; ?>
+                                </td>
+                                <td style="text-align: right">
+                                    <?php echo $due_amnt; ?>
                                 </td>
                             </tr>
-                        <?php } ?>
                         <?php } ?>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-    <div class="span4">
-        <div class="widget-box">
-            <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5><div style="float: left">Student(s) in class&nbsp;</div><div id="class_name" style="float: left; background: #ffff00; color: #000090; font-weight"></div></h5>
-            </div>
-            <div class="widget-content nopadding">
-                    <table class="table table-bordered table-striped with-check">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left">ID</th>
-                                <th style="text-align: left">Student Name</th>
-                            </tr>
-                        </thead>
-                        <tbody id="student_data_here_as_per_class" style="font-size: 12px" style="height: 250px; overflow: auto">
-                            
-                        </tbody>
-                    </table>
             </div>
         </div>
     </div>
