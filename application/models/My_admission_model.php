@@ -26,7 +26,6 @@ class My_admission_model extends CI_Model {
             $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
         }
         $query = $this->db->get();
-
         return $query->result();
     }
     

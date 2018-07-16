@@ -37,20 +37,26 @@ class My_fee_model extends CI_Model {
   
         return $data;
     }
-    function get_invoice_for_receipt($class__){
+    function get_invoice_for_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
         $this->db->group_by('YEAR_TO, MONTH_TO');
         $this->db->where('CLSSESSID', $class__);
+        $this->db->where('YEAR_FROM', $yr_from);
+        $this->db->where('MONTH_FROM', $mnth_from);
+        $this->db->where('YEAR_TO', $yr_to);
+        $this->db->where('MONTH_TO', $mnth_to);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $this->db->order_by('INVID', 'desc');
         //$this->db->order_by("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d')", 'desc');
         //$this->db->order_by('cast(YEAR_TO AS SIGNED INTEGER)', 'desc');
         //$this->db->order_by('cast(MONTH_TO AS SIGNED INTEGER)', 'desc');
         //$this->db->limit(1);
+
+
         $query = $this->db->get('fee_6_invoice');
         //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $R = $query->row();
-            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT');
+            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT, c.STATUS');
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
             $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
@@ -187,7 +193,6 @@ class My_fee_model extends CI_Model {
         $this->db->where('a.YEAR_TO', $yr_to);
         $this->db->where('a.MONTH_TO', $mnth_to);
         $query = $this->db->get();
-
         // check transaction status
         $this->error->_db_error();
         // ------------------------
@@ -200,6 +205,7 @@ class My_fee_model extends CI_Model {
         $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
         $prevInvoiceID = $data['last_invoice_detail_id']['ID'];
         $prevInvoice_result = $data['last_invoice_detail_id']['res_'];
+        $data['prev_id'] = $prevInvoiceID;
 
         if($data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
             $data1 = array(
@@ -251,15 +257,13 @@ class My_fee_model extends CI_Model {
             $query = $this->db->insert('fee_6_invoice_detail', $data1);
             if($query == true){
                 $data['bool__'] = 1; // Invoice Successfully generated
-                
+
                 $data['invdetid'] = $this->db->insert_id();
                 // Updation: Disable the previous invoice
                     if($prevInvoice_result == true){
-                        $data = array(
-                            'STATUS' => 0
-                        );
+                        
                         $this->db->where('INVDETID', $prevInvoiceID);
-                        if($this->db->update('fee_6_invoice_detail', $data) == true){
+                        if($this->db->update('fee_6_invoice_detail', array('STATUS' => 0)) == true){
                             $s = "Invoice Successfully generated++"; // invoice generated with disabling the previous invoice
                         } else {
                             /* 
@@ -325,6 +329,7 @@ class My_fee_model extends CI_Model {
                 $this->db->where("DATE_FORMAT(CONCAT(YEAR_FROM,'-',MONTH_FROM,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
                 $this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")));
                 $query_selected_period = $this->db->get('fee_6_invoice');
+
                 
                 /* 
                     First calculate the difference in months between last invoice of student with the selected period, 
@@ -339,7 +344,7 @@ class My_fee_model extends CI_Model {
                 $date2 = mktime(0,0,0,$mnth_from,0,$yr_from);
                 $diff_ = round((($date2-$date1)/60/60/24/30),0,PHP_ROUND_HALF_UP);
                 // -------------------------------------------------------------------------------------------------------
-
+                
                 if($query_selected_period->num_rows()!=0){ // if condition true means the invoice of selected period for the selected class is already exits
                     if($diff_ == 1){
                         $row_ = $query_selected_period->row();
@@ -446,6 +451,26 @@ class My_fee_model extends CI_Model {
         $data['invid_'] = $final_invid_;
   
         return $data;
+    }
+
+    function check_last_invoice_for_a_student($regid_, $clssessid){
+        $this->db->select('b.INVDETID, a.INVID, a.CLSSESSID, b.REGID');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
+        $this->db->where('b.REGID', $regid_);
+        $this->db->where('a.CLSSESSID', $clssessid);
+        $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
+        $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
+        $this->db->order_by('b.INVDETID', 'desc');
+        $this->db->limit(1);
+        $querylast = $this->db->get();
+        if($querylast->num_rows()!=0){
+            $r = $querylast->row();
+            $bool_ = array('res_'=>true, 'prev_id'=>$r->INVDETID);
+        } else {
+            $bool_ = array('res_'=>false, 'prev_id'=>'x');
+        }
+        return $bool_;
     }
     function check_previous_invoice($class__, $yr_from, $mnth_from){
         $this->db->where('CLSSESSID', $class__);
@@ -608,7 +633,7 @@ class My_fee_model extends CI_Model {
         }
         return $bool_;
     }
-    function undo_invoice($invdetid_, $regid_){
+    function undo_invoice($invdetid_, $regid_, $clssessid){
         $this->db->select('regid');
         $this->db->where('INVDETID', $invdetid_);
         $this->db->limit(1);
@@ -633,6 +658,14 @@ class My_fee_model extends CI_Model {
                         $this->db->where('INVID', $invid);
                         $this->db->delete('fee_6_invoice');
                     }
+                    // trying to Enabled the last invoice id for a student
+                        $result_prev_invoice = $this->check_last_invoice_for_a_student($regid_, $clssessid);
+                        if($result_prev_invoice['res_'] == true){
+                            $invdetid = $result_prev_invoice['prev_id'];
+                            $this->db->where('INVDETID', $invdetid);
+                            $query = $this->db->update('fee_6_invoice_detail', array('STATUS'=> 1));
+                        }
+                    // ---------------------------------------------------
                     /*(2)*/$data['bool_'] = 2;
                     $data['msg_'] = "Code-2: Invoice Deleted Successfully.";
                 } else {
@@ -662,7 +695,7 @@ class My_fee_model extends CI_Model {
         if($query->num_rows()!=0){
             $R = $query->row();
 
-            //$this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.*, c.CLASSID');
+            $this->db->select('b.FNAME, b.MNAME, b.LNAME, b.GENDER, a.SESSID, a.CLSSESSID, a.YEAR_FROM, a.YEAR_TO, a.MONTH_FROM, a.MONTH_TO, a.NOM, aa.*, c.CLASSID');
             if($invdetid_!=''){
                 $this->db->where('aa.INVDETID', $invdetid_);
             }

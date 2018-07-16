@@ -33,6 +33,80 @@
                         ?>
                     </div>
                 </div>
+                <div class="control-group span1"></div>
+                <div class="control-group span2">
+                    <label class="control-label">Year From</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbYearFromForReceipt',
+                                    'id' => 'cmbYearFromForReceipt',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                for($i=date('Y'); $i<=(date('Y')+1);$i++){
+                                    $options[$i] = $i;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, date('Y')); ?>
+                        </div>
+                </div>
+                <div class="control-group span2">
+                    <label class="control-label">Month From</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbMonthFromForReceipt',
+                                    'id' => 'cmbMonthFromForReceipt',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                foreach($fetch_month as $key => $value){
+                                    $options[$key] = $value;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, (date('m'))); ?>
+                        </div>
+                </div>
+                <div class="control-group span1"></div>
+                <div class="control-group span2">
+                    <label class="control-label">Year To</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbYearToForReceipt',
+                                    'id' => 'cmbYearToForReceipt',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                for($i=date('Y'); $i<=(date('Y')+1);$i++){
+                                    $options[$i] = $i;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, date('Y')); ?>
+                        </div>
+                </div>
+                <div class="control-group span2">
+                    <label class="control-label">Month To</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbMonthToForReceipt',
+                                    'id' => 'cmbMonthToForReceipt',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                foreach($fetch_month as $key => $value){
+                                    $options[$key] = $value;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, date('m')); ?>
+                        </div>
+                </div>
             </div>
         </div>
     </div>

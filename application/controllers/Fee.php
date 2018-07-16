@@ -63,14 +63,15 @@ class Fee extends CI_Controller {
         $data = $this->fm->generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months);
         echo json_encode($data);
     }
-    function undo_invoice($invdetid_, $regid_){
-        $data = $this->fm->undo_invoice($invdetid_, $regid_);
+    function undo_invoice($invdetid_, $regid_, $clssessid){
+        $data = $this->fm->undo_invoice($invdetid_, $regid_, $clssessid);
         echo json_encode($data);
     }
     function print_invoice($invdetid_, $clssessid){
         $data = $this->fm->get_invoice($clssessid, $invdetid_);
         $this -> load -> view('fee/printinvoice', $data);
     }
+    
     function calculate_no_months($yrfrom, $mnthfrom, $yr2, $mnth2){
         if($yrfrom<$yr2){
             $count_1 = 12 - $mnthfrom;
@@ -90,10 +91,16 @@ class Fee extends CI_Controller {
 
     function show_class_for_receipt(){
         $class__ = $this->input->post('class_in_session_for_Receipt');
-        $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_for_receipt($class__);
+        $yr_from = $this->input->post('cmbYearFromForReceipt');
+        $mnth_from = $this->input->post('cmbMonthFromForReceipt');
+        $yr_to = $this->input->post('cmbYearToForReceipt');
+        $mnth_to = $this->input->post('cmbMonthToForReceipt');
+
+        $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_for_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
         $data['fetch_class_students'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'), $class__);
         echo json_encode($data);
     }
+    
     function show_student_data_for_receipt(){
         $invdetid_ =  $this->input->post('invdetid');
         $clssessid = $this->input->post('clssessid');
@@ -119,7 +126,7 @@ class Fee extends CI_Controller {
             } else {
                 $data['fetch_discount_data'] = NULL;
             }
-            if($data['fetch_receipt_data'][0]->CATEGORY != ''){
+            if($data['fetch_receipt_data'][0]->CATEGORY != '' && $data['fetch_receipt_data'][0]->CATEGORY != 'x'){
                 $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
             } else {
                 $data['fetch_category_discount_data'] = NULL;

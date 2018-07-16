@@ -103,6 +103,11 @@ class DashboardReports extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }
+    function get_invoices_via_ajax(){
+        $clssessid = $this->input->post('clssessid');
+        $data['invoices'] = $this->dr->get_invoices_in_a_session($this->session->userdata('_current_year___'), $clssessid);
+        echo json_encode($data);
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');
