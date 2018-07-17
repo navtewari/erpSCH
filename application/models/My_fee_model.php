@@ -887,6 +887,7 @@ class My_fee_model extends CI_Model {
         $this->db->order_by('RECPTID', 'desc');
         $this->db->limit(1);
         $query = $this->db->get('fee_7_receipts');
+
         if($query->num_rows()!=0){
             $r = $query->row();
             $id_ = $r->RECPTID;

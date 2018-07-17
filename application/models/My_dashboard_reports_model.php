@@ -107,7 +107,27 @@ class My_dashboard_reports_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-
+    function get_receipts_in_a_session($year_='x', $clssessid='x'){
+        if($year_ != 'x'){
+            $this->db->where('a.SESSID', $year_);
+        }
+        if($clssessid != 'x'){
+            $this->db->where('a.CLSSESSID', $clssessid);   
+        }
+        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT, b.STATUS, z.RECPTID, z.FLEXI_FEE_STATUS, z.ADFLXFEESTUDID, z.DISCOUNT_AMOUNT, z.ACTUAL_PAID_AMT, z.FINE');
+        $this->db->from('class_1_classes y');
+        $this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
+        $this->db->join('fee_6_invoice a', 'x.CLSSESSID=a.CLSSESSID');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_7_stud_personal c', 'c.regid=b.REGID');
+        $this->db->join('master_8_stud_academics d', 'd.regid=c.regid');
+        $this->db->join('fee_7_receipts z', 'b.INVDETID=z.INVDETID');
+        $this->db->order_by('y.CLASS');
+        $this->db->order_by('z.RECPTID');
+        $this->db->order_by('c.regid');
+        $query = $this->db->get();
+        return $query->result();
+    }
     function total_fee_paid($year_){
         $this->db->where('e.STATUS_', 1);
         if($year_ != 'x'){

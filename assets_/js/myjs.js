@@ -3024,6 +3024,65 @@ $(function(){
 				}
 			});
 		});
+		$('body').on('click', '.classwise_receipts', function(){
+			var str = this.id;
+			var arr_ = str.split('~');
+			var data_ = "clssessid="+arr_[1];
+			var show_class = arr_[3];
+			var url_ = site_url_+'/dashboardReports/get_receipts_via_ajax';
+			$('#receipts_for_class').html("Invoice(s) for <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
+			$.ajax({
+				type: "POST",
+				url: url_,
+				data: data_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str = '';
+					var total_receipts = obj.receipts.length;
+					if(total_receipts > 0){
+						for(i=0; i< total_receipts; i++){
+								var css_class = ' class="view_invoice_1"';
+								str = str + '<tr class="gradeX">';
+								var dueamnt = obj.receipts[i].DUE_AMOUNT;
+							_url_ = site_url_+'/fee/fee_print/'+obj.receipts[i].RECPTID;
+							str = str + '<td style="text-align: center">';
+                            str = str + '<a href="'+_url_+'" target="_blank"'+css_class+'>View</a>';
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: center">';
+                            str = str + obj.receipts[i].RECPTID;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: center">';
+                            str = str + obj.receipts[i].CLASSID;
+                            str = str + '</td>';
+                            str = str + '<td>';
+                            str = str + obj.receipts[i].regid;
+                            str = str + '</td>';
+                            str = str + '<td>';
+                            str = str + obj.receipts[i].FNAME;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: rigth">';
+                            str = str + obj.receipts[i].ACTUAL_PAID_AMT;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: rigth">';
+                            str = str + obj.receipts[i].DISCOUNT_AMOUNT;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: rigth">';
+                            str = str + obj.receipts[i].FINE;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: center">';
+                            str = str + '<a href="'+_url_+'" target="_blank"'+css_class+'>View</a>';
+                            str = str + '</td>';
+                            str = str + '</tr>';
+						}
+					} else {
+						str = "<td colspan='8' style='color: #ff0000; text-align: center; font-weight: bold; padding:10px'>No Receipt Found...</td>";
+					}
+					$('#student_receipts_data_here').html(str);
+				}, error: function(xhr, status, error){
+					$('#student_receipts_data_here').html(xhr.responsetext);
+				}
+			});
+		});
 	// -----------------
 	// Popup boxes
 		function callDanger(message){

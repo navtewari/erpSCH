@@ -23,7 +23,7 @@
 			<div class="quick-actions_homepage">
 				<ul class="quick-actions">
 					<li class="bg_lb"> <a href="<?php echo site_url('DashboardReports/get_invoices');?>"> <i class="icon-credit-card"></i> <span class="label label-inverse"><?php echo $figure['count_invoices_in_session']; ?></span> Invoices </a> </li>
-					<li class="bg_ly"> <a href="<?php echo site_url('DashboardReports/');?>"> <i class="icon-ok"></i> <span class="label label-success"><?php echo $figure['count_fee_receipts']; ?></span> Fee Receipts </a> </li>
+					<li class="bg_ly"> <a href="<?php echo site_url('DashboardReports/get_receipts');?>"> <i class="icon-ok"></i> <span class="label label-success"><?php echo $figure['count_fee_receipts']; ?></span> Fee Receipts </a> </li>
 					<li class="bg_lb"> <a href="<?php echo site_url('DashboardReports/');?>"> <i class="icon-exclamation-sign"></i> <span class="label label-important"><?php echo $figure['total_fee_collected']; ?></span> Fee Collected  </a> </li>
 				</ul>
 			</div>

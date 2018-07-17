@@ -103,6 +103,32 @@ class DashboardReports extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }
+    function get_receipts(){
+        $this->check_login();
+
+        $data['inner_page'] = 'receipts';
+        $data['active'] = 1;
+
+        $data['page_'] = 'dashboard_reports';
+        $data['title_'] = "Receipt(s) in ". $this->session->userdata('_current_year___');
+        $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
+        $data['receipts'] = $this->dr->get_receipts_in_a_session($this->session->userdata('_current_year___'));
+
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
+        $data['sub_menu'] = $this->mm->getsubmenu();
+
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/menu', $data);
+        $this->load->view('dashboard', $data);
+        $this->load->view('templates/footer');   
+    }
+    function get_receipts_via_ajax(){
+        $clssessid = $this->input->post('clssessid');
+        $data['receipts'] = $this->dr->get_receipts_in_a_session($this->session->userdata('_current_year___'), $clssessid);
+        echo json_encode($data);
+    }
     function get_invoices_via_ajax(){
         $clssessid = $this->input->post('clssessid');
         $data['invoices'] = $this->dr->get_invoices_in_a_session($this->session->userdata('_current_year___'), $clssessid);
