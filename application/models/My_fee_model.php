@@ -116,6 +116,8 @@ class My_fee_model extends CI_Model {
     }
     
     function get_students_in_class($clssessid){
+        $this->db->order_by('a.FNAME', 'asc');
+        //$this->db->order_by('a.regid', 'asc');
         $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
