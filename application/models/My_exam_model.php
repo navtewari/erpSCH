@@ -27,7 +27,7 @@ class My_exam_model extends CI_Model {
     }
     
     function mdeleteAssoicatedSubjectMarks($marksID){
-         $this->db->where('submarkID', $marksID);
+        $this->db->where('submarkID', $marksID);
         $query = $this->db->delete('master_15_subject_marks');
 
         if ($query == TRUE) {
@@ -65,6 +65,12 @@ class My_exam_model extends CI_Model {
         }
 
         return $bool_;
+    }
+    
+    function mgetAllScholasticItems(){        
+        $this->db->from('exam_1_scholastic_items');       
+        $query = $this->db->get();
+        return $query->result();
     }
     
 }

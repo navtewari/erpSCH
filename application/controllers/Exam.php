@@ -24,5 +24,10 @@ class Exam extends CI_Controller {
         $data = $this->mem->msubmitMarksAssociatedSubject();
         echo json_encode($data);
     }
+    
+    function getAllScholasticItems() {
+        $data['Scholastic'] = $this->mem->mgetAllScholasticItems();
+        echo json_encode($data);
+    }
 
 }

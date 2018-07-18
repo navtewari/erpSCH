@@ -1,14 +1,14 @@
 $(function () {
-    $(document).ajaxStart(function(){
+    $(document).ajaxStart(function () {
         $('#loading_process').css('opacity', '1');
         $('#loading_process').css('display', 'inline-block');
-        $('#loading_process').html('<img src="'+base_url_+'/assets_/img/spinner.gif" /> Its Loading...');
+        $('#loading_process').html('<img src="' + base_url_ + '/assets_/img/spinner.gif" /> Its Loading...');
     });
 
-    $(document).ajaxComplete(function(){
+    $(document).ajaxComplete(function () {
         $('#loading_process').css('opacity', '1');
         $('#loading_process').css('display', 'none');
-        $('#loading_process').html(''); 
+        $('#loading_process').html('');
     });
 
     $(window).on("load", function () {
@@ -48,6 +48,10 @@ $(function () {
             //fillTeacher_combo();
             fillStaffCategory_combo();
             //fillClasses_teacher();
+        }
+
+        if ($("#frmScholastic").length != 0) {
+            fillScholastic_item();            
         }
     });
     //-------------------------------------------General
@@ -1169,7 +1173,7 @@ $(function () {
         });
         fillMarksAssociatedSubject();
     });
-  
+
 
     function fillMarksAssociatedSubject() {
         var classID = $('#subClassMarksID').val();
@@ -1188,7 +1192,7 @@ $(function () {
                     var str_html = '';
                     for (i = 0; i < obj.Subject_marks.length; i++) {
                         str_html = str_html + "<tr class='gradeX'>";
-                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Subject_marks[i].subName + " (" +obj.Subject_marks[i].status + ")</b></td>";
+                        str_html = str_html + "<td><i class='icon-info-sign'></i> <b>" + obj.Subject_marks[i].subName + " (" + obj.Subject_marks[i].status + ")</b></td>";
                         str_html = str_html + "<td>" + obj.Subject_marks[i].maxMarks + "</td>";
                         str_html = str_html + "<td>" + obj.Subject_marks[i].passMarks + "</td>";
                         str_html = str_html + '<td class="taskOptions">';
@@ -1200,7 +1204,7 @@ $(function () {
                     $('#tabSubjects').html(str_html);
                 } else {
                     $('#exitHeading').html('Associated Marks for Subjects in ' + className + '</span>');
-                    $('#tabSubjects').html('<td colspan="4"><span style="color:red;">No Marks Associated with Subjects in '+ className +' </span></td>');
+                    $('#tabSubjects').html('<td colspan="4"><span style="color:red;">No Marks Associated with Subjects in ' + className + ' </span></td>');
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
@@ -1266,6 +1270,38 @@ $(function () {
     $('.subjectMarksSubmit').click(function () {
         subMarks_Submit();
     });
+
+    function fillScholastic_item() {
+        url_ = site_url_ + "/exam/getAllScholasticItems";
+
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);                                
+                if (obj.Scholastic.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Scholastic.length; i++) {                        
+                        str_html = str_html + "<tr class='gradeX'>";                        
+                        str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
+                        str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
+                        str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#exitHeading').html('Scholastic items already present </span>');
+                    $('#tabScholastic').html(str_html);
+                } else {
+                    $('#exitHeading').html('No Scholastic items present </span>');
+                    $('#tabScholastic').html('<td colspan="3"><span style="color:red;">No Scholastic items present  </span></td>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
