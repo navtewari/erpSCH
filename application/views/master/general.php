@@ -210,6 +210,55 @@
                                 </div>
                             </td>   
                         </tr>
+
+                        <tr>
+                            <td>Affiliation</td>
+                            <td class="taskOptions"><i class="icon-edit" style="color: #ff3333;cursor:pointer;" id="editAffiliation"></i></td>
+                            <td>
+                                <div id="labelschAffiliation"></div>
+                                <div class="txtSchAffiliationEdit" style="display:none;">                        
+                                    <?php
+                                    $data = array(
+                                        'type' => 'text',
+                                        'class' => "span11",
+                                        'placeholder' => 'Affiliation',
+                                        'autocomplete' => 'off',
+                                        'required' => 'required',
+                                        'name' => 'txtaffilation',                                        
+                                        'id' => 'txtaffilation',
+                                        'value' => ''
+                                    );
+                                    echo form_input($data);
+                                    ?>         
+                                    <input type="button" value="update" class="btn btn-warning updateMe"/>
+                                </div>
+                            </td>   
+                        </tr>
+
+                        <tr>
+                            <td>Remarks</td>
+                            <td class="taskOptions"><i class="icon-edit" style="color: #ff3333;cursor:pointer;" id="editRemarks"></i></td>
+                            <td>
+                                <div id="labelschRemarks"></div>
+                                <div class="txtSchRemarksEdit" style="display:none;">                        
+                                    <?php
+                                    $data = array(
+                                        'type' => 'text',
+                                        'class' => "span11",
+                                        'placeholder' => 'Remarks (if any)',
+                                        'autocomplete' => 'off',
+                                        'required' => 'required',
+                                        'name' => 'txtRemark',
+                                        'rows' => '2',
+                                        'id' => 'txtRemark',
+                                        'value' => ''
+                                    );
+                                    echo form_textarea($data);
+                                    ?>         
+                                    <input type="button" value="update" class="btn btn-warning updateMe"/>
+                                </div>
+                            </td>   
+                        </tr>
                     </tbody>                   
                 </table>
             </div>
@@ -382,6 +431,45 @@
                                 'value' => 'INDIA'
                             );
                             echo form_input($data);
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Affiliation</label>
+                        <div class="controls">    
+                            <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class' => "span11",
+                                'placeholder' => 'Affiliation',
+                                'autocomplete' => 'off',
+                                'required' => 'required',
+                                'name' => 'txtaffilation1',                                
+                                'id' => 'txtaffilation1',
+                                'value' => ''
+                            );
+                            echo form_input($data);
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Remarks (if any)</label>
+                        <div class="controls">    
+                            <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class' => "span11",
+                                'placeholder' => 'Remarks (if any)',
+                                'autocomplete' => 'off',
+                                'required' => 'required',
+                                'name' => 'txtRemark1',
+                                'rows' => '2',
+                                'id' => 'txtRemark1',
+                                'value' => ''
+                            );
+                            echo form_textarea($data);
                             ?>
                         </div>
                     </div>

@@ -683,6 +683,8 @@ class My_Master_model extends CI_Model {
             $disitt_ = trim($this->input->post('txtPDistt1'));
             $state_ = trim($this->input->post('cmbPState1'));
             $country_ = trim($this->input->post('txtCountry1'));
+            $affiliation_ = trim($this->input->post('txtaffilation1'));
+            $remark_ = trim($this->input->post('txtRemark1'));
         } else {
             $sch_id = trim($this->input->post('txtSchID'));
             $schName_ = trim($this->input->post('txtSchName'));
@@ -693,6 +695,8 @@ class My_Master_model extends CI_Model {
             $disitt_ = trim($this->input->post('txtPDistt'));
             $state_ = trim($this->input->post('cmbPState'));
             $country_ = trim($this->input->post('txtCountry'));
+            $affiliation_ = trim($this->input->post('txtaffilation'));
+            $remark_ = trim($this->input->post('txtRemark'));
         }
 
         $data = array(
@@ -704,6 +708,8 @@ class My_Master_model extends CI_Model {
             'SCH_DISITT' => $disitt_,
             'SCH_STATE' => $state_,
             'SCH_COUNTRY' => $country_,
+            'AFFILIATION' => $affiliation_,
+            'REMARK' => $remark_,
             'DATE_' => date('Y-m-d H:i:s'),
             'USERNAME' => $this->session->userdata('_user___')
         );
