@@ -43,7 +43,9 @@
             <?php echo form_open('login/authenticate', $attrib_); ?>
             <div class="control-group normal_text"> 
                 <h3>School ERP</h3>
-                <h6><?php echo $this->session->userdata('school_name'); ?></h6>
+                <h6>
+                    <?php echo $this->session->userdata('sch_name'); ?>, <?php echo $this->session->userdata('sch_city'); ?>
+                </h6>
             </div>
             <div class="control-group">
                 <div class="controls">
@@ -82,6 +84,10 @@
                 <input type="reset" class="btn btn-danger" value="RESET" style="width:30%;float:right;margin-right: 18px;"/> 
             </div> 
             <?php echo form_close();?>
+            <div class="control-group" style="padding: 0px; color: #ffffff">
+                <h6 style="text-align: center;">
+                </h6>
+            </div>
     </div>
 
     <script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script>  

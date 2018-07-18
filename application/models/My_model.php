@@ -105,6 +105,45 @@ class My_model extends CI_Model {
         
         return $reg___;
     }
+
+    function get_profile(){
+        $q = $this->db->get('master_17_general');
+        if($q->num_rows() == 1){
+            $r = $q->row();
+            $data = array(
+                'logo' => $r->SCH_LOGO,
+                'sch_name' => $r->SCH_NAME,
+                'sch_contact' => $r->SCH_CONTACT,
+                'sch_email' => $r->SCH_EMAIL,
+                'sch_addr' => $r->SCH_ADD,
+                'sch_city' => $r->SCH_CITY,
+                'sch_distt'=> $r->SCH_DISITT,
+                'sch_state'=>$r->SCH_STATE,
+                'sch_country'=>$r->SCH_COUNTRY,
+                'affiliation'=>$r->AFFILIATION,
+                'remark' => $r->REMARK,
+                'date_'=>$r->DATE_,
+                'username'=>$r->USERNAME
+            );
+        } else {
+            $data = array(
+                'logo' => 'x.png',
+                'sch_name' => 'ABC',
+                'sch_contact' => '0000000000',
+                'sch_email' => 'temp@gmail.com',
+                'sch_addr' => 'x',
+                'sch_city' => 'x',
+                'sch_distt'=> 'x',
+                'sch_state'=> 'x',
+                'sch_country'=>'x',
+                'affiliation'=>'x',
+                'remark' => 'x',
+                'date_'=>'x',
+                'username'=>'x'
+            );
+        }
+        return $data;
+    }
     
 }
 

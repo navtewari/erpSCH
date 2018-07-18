@@ -1,14 +1,15 @@
 <!--Footer-part-->
 
 <div class="row-fluid">
-  <div id="footer" class="span12"> 2017 &copy; schoolname. Developed by <a href="http://teamfreelancers.com" target="_blank">Teamfreelancers.com</a></div>
+  <div id="footer" class="span12"> <span style="color:#ffffff"><?php echo $this->session->userdata('sch_name'); ?>, <?php echo $this->session->userdata('sch_city'); ?><br> <?php echo $this->session->userdata('remark'); ?>.</span><br>
+    2017 &copy; Design &amp; Developed by <a href="http://teamfreelancers.com" target="_blank">Teamfreelancers.com</a></div>
 </div>
 
 <script src="<?php echo base_url('assets_/js/jquery.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.ui.custom.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap.min.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/myjs.js');?>?version=1.52"></script>  
-<script src="<?php echo base_url('assets_/js/navJS.js');?>?version=1.2"></script>
+<script src="<?php echo base_url('assets_/js/navJS.js');?>?version=1.3"></script>
 <script src="<?php echo base_url('assets_/js/jquery.gritter.min.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/bootstrap-colorpicker.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-datepicker.js');?>"></script> 

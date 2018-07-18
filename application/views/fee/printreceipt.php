@@ -92,10 +92,10 @@
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0" class="table_" style='border:#009900 solid 0px'>
 							<tr class="feeHeader">
-								<td width="100"><img src='<?php echo base_url('assets_/logo/'._logo_1); ?>' / ></td>
+								<td width="100"><img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / ></td>
 								<td width="500">
 									<span class='header_text'>
-									<b><?php echo $sch_name; ?></b><br />
+									<b><?php echo $this->session->userdata('sch_name').", ".$this->session->userdata('sch_city'); ?></b><br />
 									<span style="font-weight: 100">Fee Receipt <br />
 									<span style="font-size: 13px; font-weight: bold">
 										<?PHP 
@@ -180,15 +180,37 @@
 											<td class="label_" width="130">Submission Date</td>
 											<td class="content"><?php echo $dt_; ?></td>
 										</tr>
-										<?php 
+										<?php
+											$static_heads = ''; 
+											$static_amnt  = 0;
+											$flexi_heads = '';
+											$flexi_amount = 0;
+
 											$static_heads = $receipt->STATIC_HEADS_1_TIME;
-											$static_heads = $static_heads . $receipt->STATIC_HEADS_N_TIMES;
 											$static_amnt  = $receipt->STATIC_SPLIT_AMT_1_TIME;
-											$static_amnt  = $static_amnt  . $receipt->STATIC_SPLIT_AMT_N_TIME;
+											if($static_heads != 'x'){
+												$static_heads = $static_heads . ", ".$receipt->STATIC_HEADS_N_TIMES;
+											} else {
+												$static_heads = $receipt->STATIC_HEADS_N_TIMES;
+											}
+											if($receipt->STATIC_SPLIT_AMT_N_TIME!=''){
+												$static_amnt  = $static_amnt  . ", ".$receipt->STATIC_SPLIT_AMT_N_TIME;
+											} else {
+												$static_amnt  = $receipt->STATIC_SPLIT_AMT_N_TIME;
+											}
 											$flexi_heads  = $receipt->FLEXIBLE_HEADS_1_TIME;
-											$flexi_heads  = $flexi_heads  . $receipt->FLEXIBLE_HEADS_N_TIMES;
 											$flexi_amount = $receipt->FLEXI_SPLIT_AMT_1_TIME;
-											$flexi_amount = $flexi_amount . ", " . $receipt->FLEXI_SPLIT_AMT_N_TIMES;
+											if($flexi_heads != ''){
+												$flexi_heads  = $flexi_heads  . ", ".$receipt->FLEXIBLE_HEADS_N_TIMES;
+											} else {
+												$flexi_heads  = $receipt->FLEXIBLE_HEADS_N_TIMES;
+											}
+											if($receipt->FLEXI_SPLIT_AMT_N_TIMES != ''){
+												$flexi_amount = $flexi_amount . ", " . $receipt->FLEXI_SPLIT_AMT_N_TIMES;
+											} else {
+												$flexi_amount = $flexi_amount . $receipt->FLEXI_SPLIT_AMT_N_TIMES;
+											}
+
 											$heads = $static_heads . ", " . $flexi_heads;
 										?>
 										<tr valign="top">
@@ -243,10 +265,10 @@
 										<tr>
 											<td colspan="2" class="address_contact" width="50%">
 												<b>Address</b><br /> 
-												<?php echo _ADDRESS_; ?>
+												<?php echo $this->session->userdata('sch_addr').", ".$this->session->userdata('sch_city').", ".$this->session->userdata('sch_state')." (".$this->session->userdata('sch_country').")"; ?>
 												<BR />
-												<b>Contact</b>: <?php echo _CONTACT_; ?><br />
-												<b>Email</b>: <?php echo _EMAIL_; ?><br />
+												<b>Contact</b>: <?php echo $this->session->userdata('sch_contact'); ?><br />
+												<b>Email</b>: <?php echo $this->session->userdata('sch_email'); ?><br />
 											</td>
 											<td colspan="2" width="50%" align="right" valign="bottom" style="font-size: 12px">Authorized Signatory</td>
 										</tr>

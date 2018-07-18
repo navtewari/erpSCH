@@ -13,6 +13,7 @@ class Login extends CI_Controller {
     }
 
     function index(){
+        $this->session->set_userdata($this->mm->get_profile());
         $data['master_sessions'] = $this->mm->getsessions();
     	$this->load->view('login', $data);
     }
@@ -30,7 +31,7 @@ class Login extends CI_Controller {
             '_user___',
             '_status_',
             '_current_year___',
-            '_previous_year___'
+            '_previous_year___',
         );
         $this->session->unset_userdata($data);
         redirect('login');

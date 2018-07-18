@@ -148,7 +148,7 @@
 							<tr>
 			
 								<td align="left">
-									<img src='<?php echo base_url('assets_/logo/'._logo_1); ?>' width="100" / >
+									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / >
 								</td>
 								<td style="text-align: center">
 									<h1>INVOICE</h1>
@@ -161,10 +161,10 @@
 											}
 										?>)
 									</b>
-									<h4><b style="font-size: 12px"><?php echo _SCHOOL_; ?></b></h4>
+									<h4><b style="font-size: 12px"><?php echo $this->session->userdata('sch_name'); ?></b></h4>
 								</td>
 								<td align="right">
-									<img src='<?php echo base_url('assets_/logo/'._logo_1); ?>' width="100" / >
+									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / >
 								</td>
 							</tr>
 							<tr>
@@ -359,10 +359,10 @@
 													<tr>
 														<td colspan="2" class="address_contact" width="50%">
 															<b>Address</b><br /> 
-															<?php echo _ADDRESS_; ?>
+															<?php echo $this->session->userdata('sch_name').", ".$this->session->userdata('sch_city').", ".$this->session->userdata('sch_state')." (".$this->session->userdata('sch_country').")"; ?>
 															<BR />
-															<b>Contact</b>: <?php echo _CONTACT_; ?><br />
-															<b>Email</b>: <?php echo _EMAIL_; ?><br />
+															<b>Contact</b>: <?php echo $this->session->userdata('sch_contact'); ?><br />
+															<b>Email</b>: <?php echo $this->session->userdata('sch_email'); ?><br />
 														</td>
 														<td colspan="2" width="50%" align="right" valign="bottom" style="font-size: 12px">Authorized Signatory</td>
 													</tr>
