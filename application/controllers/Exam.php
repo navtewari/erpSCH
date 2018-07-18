@@ -19,14 +19,34 @@ class Exam extends CI_Controller {
         $data = $this->mem->mdeleteAssoicatedSubjectMarks($marksID);
         echo json_encode($data);
     }
-    
+
     function submitMarksAssociatedSubject() {
         $data = $this->mem->msubmitMarksAssociatedSubject();
         echo json_encode($data);
     }
-    
+
     function getAllScholasticItems() {
         $data['Scholastic'] = $this->mem->mgetAllScholasticItems();
+        echo json_encode($data);
+    }
+
+    function submitScholasticItem() {
+        $data = $this->mem->msubmitScholasticItem();
+        echo json_encode($data);
+    }
+
+    function get_Scholastic_for_update($scholasticID) {
+        $data['Scholasticitem'] = $this->mem->mget_Scholastic_for_update($scholasticID);
+        echo json_encode($data);
+    }
+    
+    function updateScholasticItem(){
+        $data = $this->mem->mupdateScholasticItem();
+        echo json_encode($data);
+    }
+    
+    function delete_Scholastic($scholasticID){
+        $data = $this->mem->mdelete_Scholastic($scholasticID);
         echo json_encode($data);
     }
 

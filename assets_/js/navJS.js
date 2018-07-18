@@ -43,15 +43,16 @@ $(function () {
             fillClasses_subjectmarks();
         }
 
-        if ($("#frmTeacher").length != 0) {
-            //fillTeacher();
-            //fillTeacher_combo();
-            fillStaffCategory_combo();
-            //fillClasses_teacher();
+        if ($("#frmTeacher").length != 0) {            
+            fillStaffCategory_combo();            
         }
 
         if ($("#frmScholastic").length != 0) {
-            fillScholastic_item();            
+            fillScholastic_item();  
+        }
+        
+        if ($("#frmScholasticAddClass").length != 0) {
+            fillClasses_scholastic();
         }
     });
     //-------------------------------------------General
@@ -101,6 +102,8 @@ $(function () {
                     $('#labelschDisitt').html(obj.msg_[0].SCH_DISITT);
                     $('#labelschState').html(obj.msg_[0].SCH_STATE);
                     $('#labelschCountry').html(obj.msg_[0].SCH_COUNTRY);
+                    $('#labelschAffiliation').html(obj.msg_[0].AFFILIATION);
+                    $('#labelschRemarks').html(obj.msg_[0].REMARK);
 
                     $('#txtSchID').val(obj.msg_[0].SCH_ID);
                     $('#txtSchName').val(obj.msg_[0].SCH_NAME);
@@ -110,6 +113,8 @@ $(function () {
                     $('#txtPCity').val(obj.msg_[0].SCH_CITY);
                     $('#txtPDistt').val(obj.msg_[0].SCH_DISITT);
                     $('#txtCountry').val(obj.msg_[0].SCH_COUNTRY);
+                    $('#txtaffilation').val(obj.msg_[0].AFFILIATION);
+                    $('#txtRemark').val(obj.msg_[0].REMARK);
                 } else {
                     $('.submitSchoolData').css({'display': 'block'});
                     $('.editSchoolData').css({'display': 'none'});
@@ -169,6 +174,8 @@ $(function () {
         $('.txtSchCityEdit').css({'display': 'none'});
         $('.txtSchStateEdit').css({'display': 'none'});
         $('.txtSchCountryEdit').css({'display': 'none'});
+        $('.txtSchAffiliationEdit').css({'display': 'none'});
+        $('.txtSchRemarksEdit').css({'display': 'none'});
     });
     $('#editPhoto').click(function () {
         if ($('.txtSchLogoEdit:visible').length == 0)
@@ -240,6 +247,22 @@ $(function () {
             $('.txtSchCountryEdit').css({'display': 'block'});
         } else {
             $('.txtSchCountryEdit').css({'display': 'none'});
+        }
+    });
+    $('#editAffiliation').click(function () {
+        if ($('.txtSchAffiliationEdit:visible').length == 0)
+        {
+            $('.txtSchAffiliationEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchAffiliationEdit').css({'display': 'none'});
+        }
+    });
+    $('#editRemarks').click(function () {
+        if ($('.txtSchRemarksEdit:visible').length == 0)
+        {
+            $('.txtSchRemarksEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchRemarksEdit').css({'display': 'none'});
         }
     });
     //-------------------------------------------Session
@@ -1287,7 +1310,7 @@ $(function () {
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
-                        str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + '~' + obj.Scholastic[i].item +"'><i class='icon-remove'></i></a>";
                         str_html = str_html + '</td>';
                         str_html = str_html + "</tr>";
                     }
@@ -1299,6 +1322,131 @@ $(function () {
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
+            }
+        });
+    }
+    
+    $('.submitScholastic').click(function () {
+        if ($('#txtScholasticItem').val() === '') {
+            callDanger("Please Enter Scholastic Item Name !!");
+            $('#txtScholasticItem').focus();
+        } else if ($('#txtScholasticMarks').val() === '') {
+            callDanger("Please Enter Marks allotted to Scholastic Item!!");
+            $('#txtScholasticMarks').focus();
+        } else {
+            data_ = $('#frmScholastic').serializeArray();
+            url_ = site_url_ + "/exam/submitScholasticItem";
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillScholastic_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '.editScholastic', function () {        
+        var scholasticID = this.id;        
+        url_ = site_url_ + "/exam/get_Scholastic_for_update/" + scholasticID;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);                
+                $('#ScholasticID_Edit').val(scholasticID);
+                $('#txtScholasticItem_edit').val(obj.Scholasticitem[0].item);                
+                $('#txtScholasticMarks_edit').val(obj.Scholasticitem[0].maxMarks);
+                $('#editScholasticDiv').css({'display': 'block'});
+                $('#txtScholasticItem_edit').focus();
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+    
+    $('body').on('click', '.submitScholastic_edit', function () {        
+        if ($('#txtScholasticItem_edit').val() === '') {
+            callDanger("Please Enter Scholastic Item Name !!");
+            $('#txtScholasticItem_edit').focus();
+        } else if ($('#txtScholasticMarks_edit').val() === '') {
+            callDanger("Please Enter Marks allotted to Scholastic Item!!");
+            $('#txtScholasticMarks_edit').focus();
+        } else {
+            data_ = $('#frmScholastic_edit').serializeArray();
+            url_ = site_url_ + "/exam/updateScholasticItem";
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillScholastic_item();
+                        $('#editScholasticDiv').css({'display': 'none'});
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '.deleteScholastic', function () {
+        
+        var str = this.id;
+        var arr_str = str.split('~');
+        var scholasticID = arr_str[0];
+        var scholasticItem = arr_str[1];
+        url_ = site_url_ + "/exam/delete_Scholastic/" + scholasticID;
+        if (confirm('Are you sure you want to delete ' + scholasticItem)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillScholastic_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    function fillClasses_scholastic(){
+        alert('hi');
+        $('#s2id_ScholasticClassID span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#ScholasticClassID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                }
+                $('#s2id_ScholasticClassID span').text("Choose Class");
+                $('#ScholasticClassID').html(str_html);
             }
         });
     }
