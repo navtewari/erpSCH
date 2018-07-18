@@ -29,7 +29,8 @@
     <body id="doc__" style="margin-top: 4% !important">
         <div class="page-loader"></div>
         <div id="loginbox">            
-            <div class="control-group normal_text" style="margin-right: 25px; margin-bottom: 10px;"> 
+            <div class="control-group normal_text" style="margin-right: 25px; margin-bottom: 10px;">
+            <div style="float: left; font-size: 10px; font-weight: bold">2-way Security</div>
             <a href="<?php echo site_url('gen_login');?>" style="padding: 1px 0px; border-top-left-radius: 10px; border-top-right-radius: 10px; background: #ff0000; width: 30px; height: 30px; color: #ffffff; font-weight: bold; float:right;"/><i class="icon-remove"></i></a>
         </div>
             <?php

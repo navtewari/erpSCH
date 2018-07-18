@@ -152,16 +152,22 @@ class My_master_fee_model extends CI_Model {
 
     //------------------------------------Fetch class in selected session/ Year --------------------------------------
     function get_class_in_session($year__){
-        $this -> db -> where ('SESSID', $year__);
-        $this -> db -> order_by('CLASSID');
-        $query = $this -> db -> get('class_2_in_session');
+        $this -> db -> where ('b.SESSID', $year__);
+        $this -> db -> order_by('ABS(a.CLASS)', 'asc');
+        $this -> db -> order_by('a.SECTION', 'asc');
+        $this -> db -> from('class_1_classes a');
+        $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
+        $query = $this -> db -> get();
 
         return $query -> result();
     }
     function get_class_fee_in_session($year__){
+        $this -> db -> order_by('ABS(c.CLASS)', 'asc');
+        $this -> db -> order_by('c.SECTION', 'asc');
         $this->db->select('a.CLSSESSID, a.CLASSID, b.CFEEID, b.TOTFEE');
         $this->db->from('fee_8_class_fee b');
         $this->db->join('class_2_in_session a', 'a.CLSSESSID = b.CLSSESSID', 'left');
+        $this->db->join('class_1_classes c', 'a.CLASSID=c.CLASSID');
         $this->db->where('a.SESSID', $year__);
         $query = $this -> db -> get();
 

@@ -998,9 +998,6 @@ $(function(){
 		    $('.classes_for_static_heads').each(function(){ //iterate all listed checkbox items
 		        this.checked = status; //change ".checkbox" checked status
 		    });
-		    $('.classes_for_static_heads').each(function(){ //iterate all listed checkbox items
-		        this.checked = status; //change ".checkbox" checked status
-		    });
 		});
 		function fill_accordion_showing_classes_associates_staticHeads(){
 			url_ = site_url_ + "/master_fee/fill_accordion_statichead_associates_classes";
@@ -1118,7 +1115,10 @@ $(function(){
 			    			var obj = JSON.parse(data);
 			    			if(obj.res_ == true){
 			    				callSuccess(obj.msg_);
-			    				$('.cancel_static_associates_classes').click();
+			    				$('.classes_for_static_heads').each(function(){ //iterate all listed checkbox items
+							        this.checked = false; //change ".checkbox" checked status
+							    });
+			    				$('#txtFeeStaticHeadAmt').val('');
 			    				fill_accordion_showing_classes_associates_staticHeads();
 			    			} else {
 			    				callDanger(obj.msg_);
