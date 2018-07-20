@@ -49,5 +49,20 @@ class Exam extends CI_Controller {
         $data = $this->mem->mdelete_Scholastic($scholasticID);
         echo json_encode($data);
     }
+    
+    function get_class_scholastic_in_session($classID){
+        $data['scholasticinclass'] = $this->mem->mget_class_scholastic_in_session($classID);
+        echo json_encode($data);
+    }
+    
+    function AddScholastictoClass($classsessID){
+        $data = $this->mem->massociateScholastic_with_class($classsessID);
+        echo json_encode($data);
+    }
+    
+    function delAssociated_scholastic_class($assocID){
+        $data = $this->mem->mdelAssociated_scholastic_class($assocID);
+        echo json_encode($data);
+    }
 
 }

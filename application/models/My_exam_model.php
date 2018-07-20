@@ -156,5 +156,67 @@ class My_exam_model extends CI_Model {
 
         return $bool_;
     }
+    
+    function mget_class_scholastic_in_session($classID) {
+        $this->db->select('a.CLSSESSID, a.CLASSID, b.*,  c.*');
+        $this->db->from('exam_2_add_scholastic_to_class b');
+        $this->db->join('class_2_in_session a', 'a.CLSSESSID = b.CLSSESSID', 'left');
+        $this->db->join('exam_1_scholastic_items c', 'b.itemID = c.itemID');
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.CLSSESSID', $classID);
+        $this->db->order_by('c.itemID', 'Asc');
+        $query = $this->db->get();
+
+        //echo $this->db->last_query()."<br />";
+        //die();
+        return $query->result();
+    }    
+
+    function massociateScholastic_with_class($classsessID) {
+        $scholastic_item = $this->input->post('chkScholastic');
+        $seleted_classes = $classsessID;
+        $session = $this->session->userdata('_current_year___');
+              
+        for ($loop1 = 0; $loop1 < count($scholastic_item); $loop1++) {
+            $this->db->where('CLSSESSID', $seleted_classes);
+            $this->db->where('itemID', $scholastic_item[$loop1]);
+            $this->db->where('SESSID', $session);
+            $query = $this->db->get('exam_2_add_scholastic_to_class');
+
+            if ($query->num_rows($query) != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Already Exists');
+            } else {
+                $data = array(
+                    'CLSSESSID' => $seleted_classes,
+                    'SESSID' => $session,
+                    'itemID' => $scholastic_item[$loop1],
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $query = $this->db->insert('exam_2_add_scholastic_to_class', $data);
+
+                if ($query == TRUE) {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Head Associated Successfully');
+                } else {
+                    $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again');
+                }
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelAssociated_scholastic_class($assocID) {
+        $this->db->where('ADDSCHCLASSID', $assocID);
+        $query = $this->db->delete('exam_2_add_scholastic_to_class');
+        // echo $this->db->last_query()."<br />";
+        //exit();
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Associated Scholastic Item Deleted from Class Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
 
 }
