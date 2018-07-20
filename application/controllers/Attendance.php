@@ -8,7 +8,6 @@ class Attendance extends CI_Controller {
         parent::__construct();
         $this->load->model('My_attendance_model', 'mam');
         $this->load->model('my_model', 'mm');    
-        $this->load->model('my_admission_model', 'mam');
     }
     function index(){
         $this -> check_login();
@@ -44,6 +43,7 @@ class Attendance extends CI_Controller {
 
     function takeattendance(){
         $data['no__'] = json_decode($this->mam->takeattendance());
+        $data['sms_check'] = $this->session->userdata('sms_loginto');
         echo json_encode($data['no__']);
     }
 
@@ -101,24 +101,25 @@ class Attendance extends CI_Controller {
     }
 
     function sendSMS(){
+
         $msg = $this->input->post('MessageToPrint');
 
-        if($this->input->post('yes') == 'Submit'){
+        if($this->input->post('check_sms') == 'yes'){
             /* */ // Booking Message to Owner Mobile
-                $username = "pop";
-                $password = "pop123";
+                $username = $this->session->userdata('sms_userid');
+                $password = $this->session->userdata('sms_pwd');
                 $number = $this->input->post("mobilenumbers");
-                $sender = "SCHOOL";
+                $sender = $this->session->userdata('sms_senderid');
                 $msg1=$this->input->post("Absent_Message");
                 $message = rawurlencode($msg1);
 
-                //$url="http://teamfreelancer.bulksms5.com/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+                //$url=$this->session->userdata('sms_loginto')."/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
 
                 //$url = "http://www.login.bulksmsgateway.in/sendmessage.php?user=" . urlencode($username) . "&password=" . urlencode($password) . "&mobile=" . urlencode($number) . "&sender=" . urlencode($sender) . "&message=" . urlencode($message) . "&type=" . urlencode('3');
 
                 //$url = "http://teamfreelancer.bulksms5.com/unicodesmsapi.php?user=" . $username . "&password=" . $password . "&mobile=" . $number . "&sender=" . $sender . "&message=" . $message . "&type=3";
                 
-                $url="http://teamfreelancer.bulksms5.com/unicodesmsapi.php?username=".trim($username,'"')."&password=".trim($password,'"')."&mobilenumber=".trim($number,'"')."&message=".trim($message,'"')."&senderid=".trim($sender,'"')."&type=3";
+                $url=$this->session->userdata('sms_loginto')."/unicodesmsapi.php?username=".trim($username,'"')."&password=".trim($password,'"')."&mobilenumber=".trim($number,'"')."&message=".trim($message,'"')."&senderid=".trim($sender,'"')."&type=3";
 
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -127,7 +128,7 @@ class Attendance extends CI_Controller {
             /* */
             $data['msg_all'] = $msg.". And SMS is also sent to the Absantee's Parents.";
         } else {
-            $data['msg_all'] = $msg.". But without any sms as cancelled by you.";
+            $data['msg_all'] = $msg." But without any sms as cancelled by you.";
         }
         echo json_encode($data);
     }

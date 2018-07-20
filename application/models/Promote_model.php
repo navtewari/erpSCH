@@ -200,7 +200,6 @@ class Promote_model extends CI_Model {
         $this->db->where('b.STATUS_OF_ADMISSION', 0); 
         // ---------------------------------------------------------
         $query = $this->db->get();
-
         return $query->result();
     }
     function getStudentFromPreviousSession($year__){
