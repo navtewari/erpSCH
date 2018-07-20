@@ -43,16 +43,17 @@ $(function () {
             fillClasses_subjectmarks();
         }
 
-        if ($("#frmTeacher").length != 0) {            
-            fillStaffCategory_combo();            
+        if ($("#frmTeacher").length != 0) {
+            fillStaffCategory_combo();
         }
 
         if ($("#frmScholastic").length != 0) {
-            fillScholastic_item();  
+            fillScholastic_item();
         }
-        
+
         if ($("#frmScholasticAddClass").length != 0) {
-            fillClasses_scholastic();
+            fillscholastic_forclass();
+            fillClasses_forscholastic();
         }
     });
     //-------------------------------------------General
@@ -1301,16 +1302,16 @@ $(function () {
             type: "POST",
             url: url_,
             success: function (data) {
-                var obj = JSON.parse(data);                                
+                var obj = JSON.parse(data);
                 if (obj.Scholastic.length) {
                     var str_html = '';
-                    for (i = 0; i < obj.Scholastic.length; i++) {                        
-                        str_html = str_html + "<tr class='gradeX'>";                        
+                    for (i = 0; i < obj.Scholastic.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
-                        str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + '~' + obj.Scholastic[i].item +"'><i class='icon-remove'></i></a>";
+                        str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + '~' + obj.Scholastic[i].item + "'><i class='icon-remove'></i></a>";
                         str_html = str_html + '</td>';
                         str_html = str_html + "</tr>";
                     }
@@ -1325,7 +1326,7 @@ $(function () {
             }
         });
     }
-    
+
     $('.submitScholastic').click(function () {
         if ($('#txtScholasticItem').val() === '') {
             callDanger("Please Enter Scholastic Item Name !!");
@@ -1347,6 +1348,7 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
+                        fillscholastic_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1354,17 +1356,17 @@ $(function () {
             });
         }
     });
-    
-    $('body').on('click', '.editScholastic', function () {        
-        var scholasticID = this.id;        
+
+    $('body').on('click', '.editScholastic', function () {
+        var scholasticID = this.id;
         url_ = site_url_ + "/exam/get_Scholastic_for_update/" + scholasticID;
         $.ajax({
             type: 'POST',
             url: url_,
             success: function (data) {
-                var obj = JSON.parse(data);                
+                var obj = JSON.parse(data);
                 $('#ScholasticID_Edit').val(scholasticID);
-                $('#txtScholasticItem_edit').val(obj.Scholasticitem[0].item);                
+                $('#txtScholasticItem_edit').val(obj.Scholasticitem[0].item);
                 $('#txtScholasticMarks_edit').val(obj.Scholasticitem[0].maxMarks);
                 $('#editScholasticDiv').css({'display': 'block'});
                 $('#txtScholasticItem_edit').focus();
@@ -1373,8 +1375,8 @@ $(function () {
             }
         });
     });
-    
-    $('body').on('click', '.submitScholastic_edit', function () {        
+
+    $('body').on('click', '.submitScholastic_edit', function () {
         if ($('#txtScholasticItem_edit').val() === '') {
             callDanger("Please Enter Scholastic Item Name !!");
             $('#txtScholasticItem_edit').focus();
@@ -1395,6 +1397,7 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
+                        fillscholastic_forclass();
                         $('#editScholasticDiv').css({'display': 'none'});
                     }
                 }, error: function (xhr, status, error) {
@@ -1403,9 +1406,8 @@ $(function () {
             });
         }
     });
-    
+
     $('body').on('click', '.deleteScholastic', function () {
-        
         var str = this.id;
         var arr_str = str.split('~');
         var scholasticID = arr_str[0];
@@ -1422,6 +1424,7 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
+                        fillscholastic_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1429,27 +1432,131 @@ $(function () {
             });
         }
     });
-    
-    function fillClasses_scholastic(){
-        alert('hi');
-        $('#s2id_ScholasticClassID span').text("Loading...");
+
+    function fillscholastic_forclass() {
+        url_ = site_url_ + "/exam/getAllScholasticItems";
+
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.Scholastic.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Scholastic.length; i++) {
+                        str_html = str_html + "<input type='checkbox' name='chkScholastic[]' class='span2' value='" + obj.Scholastic[i].itemID + "' id='" + obj.Scholastic[i].itemID + "'> <b> " + obj.Scholastic[i].item + " [" + obj.Scholastic[i].maxMarks + "]" + "</b><br>";
+                    }
+                    $('#fillscholastic').html(str_html);
+                } else {
+                    $('#fillscholastic').html('No Scholastic items present </span>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+
+    function fillClasses_forscholastic() {
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
-        $('#ScholasticClassID').empty();
         $.ajax({
             type: "POST",
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
                 var str_html = '';
-                str_html = str_html + "<option value=''>Choose Class</option>";
                 for (i = 0; i < obj.class_in_session.length; i++) {
-                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                    str_html = str_html + "<input type='radio' name='classSch' class='span2' id='" + obj.class_in_session[i].CLSSESSID + "' value='" + obj.class_in_session[i].CLASSID + "'> <b>Class " + obj.class_in_session[i].CLASSID + "</b><br>";
                 }
-                $('#s2id_ScholasticClassID span').text("Choose Class");
-                $('#ScholasticClassID').html(str_html);
+                $('#fillclass').html(str_html);
             }
         });
     }
+
+    function fillAssociatedScholasticItem() {               
+        var str = $('input[type=radio][name=classSch]:checked').attr('id');
+        var className = $('#' + str).val();
+        
+        if ($('#' + str).is(":checked")) {
+            url_ = site_url_ + "/exam/get_class_scholastic_in_session/" + str;
+            $.ajax({
+                type: "POST",
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    // alert(obj.scholasticinclass.length);
+                    var str_html = '';
+                    if (obj.scholasticinclass.length > 0) {
+                        for (i = 0; i < obj.scholasticinclass.length; i++) {
+                            str_html = str_html + "<tr class='gradeX'>";
+                            str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.scholasticinclass[i].item + "</b></td>";
+                            str_html = str_html + '<td class="taskOptions">';
+                            str_html = str_html + "<a href='#' class='tip deleteAssociatedScholastic' id='" + obj.scholasticinclass[i].ADDSCHCLASSID + "'><i class='icon-remove'></i></a>";
+                            str_html = str_html + '</td>';
+                            str_html = str_html + "</tr>";
+                        }
+                        $('#fillAssociatedScholastic').html(str_html);
+                        $('#exitHeading1').html('Scholastic Item Associated with Class ' + className);
+                    } else {
+                        $('#exitHeading1').html('No Scholastic Item Associated with Class ' + className);
+                        $('#fillAssociatedScholastic').html("<td colspan='3'><font color='red'>NO Scholastic Item Associated with Class " + className + "</font></td>");
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    }
+
+    $('#fillclass').on('change', '[type=radio]', function (e) {
+        //var str = this.id;
+        //var className = $('#' + str).val();
+        fillAssociatedScholasticItem();
+    });
+
+    $('body').on('click', '.Add_scholastic_class', function () {
+        var classsid = $('input[type=radio][name=classSch]:checked').attr('id');
+        data_ = $('#frmScholasticAddClass').serializeArray();
+        url_ = site_url_ + "/exam/AddScholastictoClass/" + classsid;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    fillAssociatedScholasticItem();
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+
+    $('body').on('click', '.deleteAssociatedScholastic', function () {
+        var assoID = this.id;
+        url_ = site_url_ + "/exam/delAssociated_scholastic_class/" + assoID;
+        if (confirm('Are you sure you want to delete this Scholastic Item from Class')) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);  
+                        fillAssociatedScholasticItem();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
