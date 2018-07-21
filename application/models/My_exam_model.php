@@ -135,8 +135,8 @@ class My_exam_model extends CI_Model {
         }
         return $bool_;
     }
-    
-    function mdelete_Scholastic($scholasticID){
+
+    function mdelete_Scholastic($scholasticID) {
         $this->db->where('itemID', $scholasticID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $query1 = $this->db->get('exam_2_add_scholastic_to_class');
@@ -156,7 +156,7 @@ class My_exam_model extends CI_Model {
 
         return $bool_;
     }
-    
+
     function mget_class_scholastic_in_session($classID) {
         $this->db->select('a.CLSSESSID, a.CLASSID, b.*,  c.*');
         $this->db->from('exam_2_add_scholastic_to_class b');
@@ -170,13 +170,13 @@ class My_exam_model extends CI_Model {
         //echo $this->db->last_query()."<br />";
         //die();
         return $query->result();
-    }    
+    }
 
     function massociateScholastic_with_class($classsessID) {
         $scholastic_item = $this->input->post('chkScholastic');
         $seleted_classes = $classsessID;
         $session = $this->session->userdata('_current_year___');
-              
+
         for ($loop1 = 0; $loop1 < count($scholastic_item); $loop1++) {
             $this->db->where('CLSSESSID', $seleted_classes);
             $this->db->where('itemID', $scholastic_item[$loop1]);
@@ -216,6 +216,104 @@ class My_exam_model extends CI_Model {
             $bool_ = array('res_' => FALSE, 'msg_' => 'error');
         }
 
+        return $bool_;
+    }
+
+    function mgetAllCoScholasticItems() {
+        $query = $this->db->get('exam_3_coscholastic_items');
+        return $query->result();
+    }
+
+    function msubmitCoScholasticItem() {
+        $coschlasticItem = $this->input->post('txtCoScholasticItem');
+
+        $this->db->where('coitem', $coschlasticItem);
+        $query = $this->db->get('exam_3_coscholastic_items');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => ' This Co-Scholastic Item already present');
+        } else {
+            $data = array(
+                'coitem' => $coschlasticItem,
+            );
+
+            $query = $this->db->insert('exam_3_coscholastic_items', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Co-Scholastic Item Inserted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_coScholastic($coscholasticID) {
+        $this->db->where('coitemID', $coscholasticID);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query1 = $this->db->get('exam_4_add_coscholastic_to_class');
+        // echo $this->db->last_query()."<br />";
+
+        if ($query1->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => '!! This Co-Scholastic Item is already Associated with Class Therefore Cannot be deleted !!');
+        } else {
+            $this->db->where('coitemID', $coscholasticID);
+            $query = $this->db->delete('exam_3_coscholastic_items');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'CO-Scholastic Item Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mget_class_coscholastic_in_session($classID) {
+        $this->db->select('a.CLSSESSID, a.CLASSID, b.*,  c.*');
+        $this->db->from('exam_4_add_coscholastic_to_class b');
+        $this->db->join('class_2_in_session a', 'a.CLSSESSID = b.CLSSESSID', 'left');
+        $this->db->join('exam_3_coscholastic_items c', 'b.coitemID = c.coitemID');
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.CLSSESSID', $classID);
+        $this->db->order_by('c.coitemID', 'Asc');
+        $query = $this->db->get();
+
+        //echo $this->db->last_query()."<br />";
+        //die();
+        return $query->result();
+    }
+
+    function mAddcoScholastictoClass($classsessID) {
+        $coscholastic_item = $this->input->post('chkScholastic');
+        $seleted_classes = $classsessID;
+        $session = $this->session->userdata('_current_year___');
+
+        for ($loop1 = 0; $loop1 < count($coscholastic_item); $loop1++) {
+            $this->db->where('CLSSESSID', $seleted_classes);
+            $this->db->where('itemID', $coscholastic_item[$loop1]);
+            $this->db->where('SESSID', $session);
+            $query = $this->db->get('exam_4_add_coscholastic_to_class');
+
+            if ($query->num_rows($query) != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Already Exists');
+            } else {
+                $data = array(
+                    'CLSSESSID' => $seleted_classes,
+                    'SESSID' => $session,
+                    'itemID' => $coscholastic_item[$loop1],
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $query = $this->db->insert('exam_4_add_coscholastic_to_class', $data);
+
+                if ($query == TRUE) {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Head Associated Successfully');
+                } else {
+                    $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again');
+                }
+            }
+        }
         return $bool_;
     }
 
