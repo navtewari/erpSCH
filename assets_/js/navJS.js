@@ -55,6 +55,15 @@ $(function () {
             fillscholastic_forclass();
             fillClasses_forscholastic();
         }
+        
+       if ($("#frmCoScholastic").length != 0) {
+            fillCoScholastic_item();
+        }
+        
+        if ($("#frmcoScholasticAddClass").length != 0) {
+            fillcoscholastic_forclass();   
+            fillClasses_forcoscholastic();
+        }
     });
     //-------------------------------------------General
     function fillStates(selector) {
@@ -1507,9 +1516,7 @@ $(function () {
         }
     }
 
-    $('#fillclass').on('change', '[type=radio]', function (e) {
-        //var str = this.id;
-        //var className = $('#' + str).val();
+    $('#fillclass').on('change', '[type=radio]', function (e) {        
         fillAssociatedScholasticItem();
     });
 
@@ -1557,6 +1564,204 @@ $(function () {
             });
         }
     });
+    
+    function fillCoScholastic_item() {
+        url_ = site_url_ + "/exam/getAllCoScholasticItems";        
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.CoScholastic.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.CoScholastic.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td>" + obj.CoScholastic[i].coitem + "</td>";                        
+                        str_html = str_html + '<td class="taskOptions">';                        
+                        str_html = str_html + "<a href='#' class='tip deleteCoScholastic' id='" + obj.CoScholastic[i].coitemID + '~' + obj.CoScholastic[i].coitem + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#exitHeading').html('Co-Scholastic items already present </span>');
+                    $('#tabCoScholastic').html(str_html);
+                } else {
+                    $('#exitHeading').html('No Co-Scholastic items present </span>');
+                    $('#tabCoScholastic').html('<td colspan="3"><span style="color:red;">No Co-Scholastic items present  </span></td>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+    
+    $('.submitCoScholastic').click(function () {
+        if ($('#txtCoScholasticItem').val() === '') {
+            callDanger("Please Enter Co-Scholastic Item Name !!");
+            $('#txtCoScholasticItem').focus();       
+        } else {
+            data_ = $('#frmCoScholastic').serializeArray();
+            url_ = site_url_ + "/exam/submitCoScholasticItem";
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillCoScholastic_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '.deleteCoScholastic', function () {
+        var str = this.id;
+        var arr_str = str.split('~');
+        var coscholasticID = arr_str[0];
+        var coscholasticItem = arr_str[1];
+        url_ = site_url_ + "/exam/delete_coScholastic/" + coscholasticID;
+        if (confirm('Are you sure you want to delete ' + coscholasticItem)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillCoScholastic_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '.editCoScholastic', function () {
+        var coscholasticID = this.id;        
+        url_ = site_url_ + "/exam/get_coScholastic_for_update/" + coscholasticID;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $('#coScholasticID_Edit').val(coscholasticID);
+                $('#txtcoScholasticItem_edit').val(obj.coScholasticitem[0].coitem);                
+                $('#editcoScholasticDiv').css({'display': 'block'});
+                $('#txtcoScholasticItem_edit').focus();
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+    
+    function fillcoscholastic_forclass() {
+        url_ = site_url_ + "/exam/getAllCoScholasticItems";        
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.CoScholastic.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.CoScholastic.length; i++) {
+                        str_html = str_html + "<input type='checkbox' name='chkcoScholastic[]' class='span2' value='" + obj.CoScholastic[i].coitemID + "' id='" + obj.CoScholastic[i].coitemID + "'> <b> " + obj.CoScholastic[i].coitem + "</b><br>";
+                    }
+                    $('#fillcoscholastic').html(str_html);
+                } else {
+                    $('#fillcoscholastic').html('No Co-Scholastic items present </span>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+    
+    function fillClasses_forcoscholastic() {
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<input type='radio' name='classcoSch' class='span2' id='" + obj.class_in_session[i].CLSSESSID + "' value='" + obj.class_in_session[i].CLASSID + "'> <b>Class " + obj.class_in_session[i].CLASSID + "</b><br>";
+                }
+                $('#fillcoclass').html(str_html);
+            }
+        });
+    }
+    
+    function fillAssociatedcoScholasticItem() {               
+        var str = $('input[type=radio][name=classcoSch]:checked').attr('id');
+        var className = $('#' + str).val();
+        
+        if ($('#' + str).is(":checked")) {
+            url_ = site_url_ + "/exam/get_class_coscholastic_in_session/" + str;
+            $.ajax({
+                type: "POST",
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    // alert(obj.scholasticinclass.length);
+                    var str_html = '';
+                    if (obj.coscholasticinclass.length > 0) {
+                        for (i = 0; i < obj.coscholasticinclass.length; i++) {
+                            str_html = str_html + "<tr class='gradeX'>";
+                            str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.coscholasticinclass[i].coitem + "</b></td>";
+                            str_html = str_html + '<td class="taskOptions">';
+                            str_html = str_html + "<a href='#' class='tip deleteAssociatedScholastic' id='" + obj.coscholasticinclass[i].ADDCOSCHCLASSID + "'><i class='icon-remove'></i></a>";
+                            str_html = str_html + '</td>';
+                            str_html = str_html + "</tr>";
+                        }
+                        $('#fillAssociatedcoScholastic').html(str_html);
+                        $('#exitHeading1').html('Co-Scholastic Item Associated with Class ' + className);
+                    } else {
+                        $('#exitHeading1').html('No Co-Scholastic Item Associated with Class ' + className);
+                        $('#fillAssociatedcoScholastic').html("<td colspan='3'><font color='red'>NO Co-Scholastic Item Associated with Class " + className + "</font></td>");
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    }
+
+    $('#fillcoclass').on('change', '[type=radio]', function (e) {        
+        fillAssociatedcoScholasticItem();
+    });
+    
+    $('body').on('click', '.Add_coscholastic_class', function () {
+        var classsid = $('input[type=radio][name=classcoSch]:checked').attr('id');
+        data_ = $('#frmcoScholasticAddClass').serializeArray();
+        url_ = site_url_ + "/exam/AddcoScholastictoClass/" + classsid;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    fillAssociatedcoScholasticItem();
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+    
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes

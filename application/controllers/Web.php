@@ -164,6 +164,11 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Scholastic Items';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
+            case 22:
+                $data['page_'] = 'exam';
+                $data['title_'] = 'Co-Scholastic Items';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;            
             default:
                 $data['page_'] = 'erorrs';
         }
