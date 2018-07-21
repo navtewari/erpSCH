@@ -2608,24 +2608,27 @@ $(function(){
 	                        if(obj.nos.length != 0){
 	                            str = '';
 	                            moblength = obj.nos.length;
-	                            /* // This below code will be used when you want to send sms to absantee's parents
-	                            for(i=0;i<moblength;i++){
-	                                if(i < moblength-1){
-	                                    str = str + $.trim(obj.nos[i].MOBILE_S) + ",";
-	                                    str = $.trim(str);
-	                                } else if(i == moblength-1){
-	                                    str = str + $.trim(obj.nos[i].MOBILE_S); 
-	                                    str = $.trim(str);   
-	                                }
-	                            }
-	                            $('#mobilenumbers').val(str);
-	                            d = obj.nos[0].DATE_;
-	                            dt = d.split('-');
-	                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-	                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt_+"). Please motivate him/her to attend classes regularly.");
-	                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
-								//$('#myModal').modal('show');
-								*/
+	                            if(obj.sms_check != 'NA'){
+		                            /* // This below code will be used when you want to send sms to absantee's parents */
+		                            for(i=0;i<moblength;i++){
+		                                if(i < moblength-1){
+		                                    str = str + $.trim(obj.nos[i].MOBILE_S) + ",";
+		                                    str = $.trim(str);
+		                                } else if(i == moblength-1){
+		                                    str = str + $.trim(obj.nos[i].MOBILE_S); 
+		                                    str = $.trim(str);   
+		                                }
+		                            }
+		                            $('#mobilenumbers').val(str);
+
+		                            d = obj.nos[0].DATE_;
+		                            dt = d.split('-');
+		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.nos[0].DATE_+"). Please motivate him/her to attend classes regularly.");
+		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
+									$('#myModal').modal('show');
+									/**/
+								}
 	                            callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 	                        }
 	                    } else if(obj.messageNo == 2){   
@@ -2651,10 +2654,11 @@ $(function(){
 	    	$('#atten_check').prop('checked', false);
 			$('#uniform-atten_check span').removeClass('checked');
 	    }
-	    $('#frmSMS').submit(function(){ 
+	    $('.sendsms').click(function(){ 
 	    	var url_ = site_url_ + "/attendance/sendSMS";
-	    	var data_ = $('#frmSMS').serialize();
-	    	
+	    	var str = this.id;
+	    	var arr_ = str.split('_');
+	    	var data_ = $('#frmSMS').serialize()+"&check_sms="+arr_[1];
 	    	$.ajax({
 	    		type: "POST",
 	    		url: url_,

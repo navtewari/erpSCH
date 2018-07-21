@@ -24,6 +24,22 @@ class My_gen_login_model extends CI_Model{
 			$this->session->set_userdata('db2', $row->DB_);
 			$this->session->set_userdata('school_name', $row->CLIENT_NAME);
 			$this->session->set_userdata('user_status', $row->user_status);
+
+			$this->db->where('CID', $row->CID);
+			$this->db->where('STATUS', 1);
+			$query = $this->db->get('bulksms');
+			if($query->num_rows() != 0){
+				$r = $query->row();
+				$this->session->set_userdata('sms_loginto', $r->LOGINTO);
+				$this->session->set_userdata('sms_senderid', $r->SENDERID);
+				$this->session->set_userdata('sms_userid', $r->USERID);
+				$this->session->set_userdata('sms_pwd', $r->PWD);
+			} else {
+				$this->session->set_userdata('sms_loginto', 'NA');
+				$this->session->set_userdata('sms_senderid', 'NA');
+				$this->session->set_userdata('sms_userid', 'NA');
+				$this->session->set_userdata('sms_pwd', 'NA');
+			}
 			$bool_ = array('res_'=>true, 'db'=>$row->DB_);
 		} else {
 			$bool_ = array('res_'=>false, 'db'=>'default');

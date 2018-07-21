@@ -41,7 +41,7 @@
                                 'autocomplete' => 'off',
                                 'name' => 'attendancedate',
                                 'id' => 'attendancedate',
-                                'value'=> date('d/m/Y')
+                                'value'=> date('d-m-Y')
                             );
                             echo form_input($data);
                         ?>
@@ -189,8 +189,8 @@
                             ?>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" value="Submit" name="yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
-                    <button type="submit" class="btn btn-danger" value="No" name="no"><i class="fa fa-close"></i> Don't Send SMS </button>
+                    <button type="submit" class="btn btn-primary sendsms" value="Submit" name="sms_yes" id="sms_yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
+                    <button type="submit" class="btn btn-danger sendsms" value="No" name="sms_no" id="sms_no"><i class="fa fa-close"></i> Don't Send SMS </button>
                 <?php echo form_close(); ?>
               </div>
             </div>

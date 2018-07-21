@@ -1,0 +1,3 @@
+1. agar new invoice generate hoti hai to old wali ka status 0 ho jana chahiye. Aur sare due_amont new wale mein reflect karne chahiye
+
+2. receipts kisi bhi month ki dekhi jaa sakti hain but payment sir latest invoice ki hi honi chahiye, because purane sare dues latest/ new invoice mein agaye hain to agar payment old wale mein kar diya to panga ho jayegaa aur hisaab kabhi nahi milegaa.

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2018 at 12:09 PM
+-- Generation Time: Jul 20, 2018 at 08:43 PM
 -- Server version: 5.6.11-log
 -- PHP Version: 5.5.3
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `erpclients`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bulksms`
+--
+
+CREATE TABLE `bulksms` (
+  `SMSID` int(11) NOT NULL,
+  `LOGINTO` varchar(250) NOT NULL,
+  `SENDERID` varchar(50) NOT NULL,
+  `USERID` varchar(30) NOT NULL,
+  `PWD` varchar(20) NOT NULL,
+  `CID` int(4) UNSIGNED ZEROFILL NOT NULL,
+  `STATUS` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table is used to store the bulk sms detail for clients';
+
+--
+-- Dumping data for table `bulksms`
+--
+
+INSERT INTO `bulksms` (`SMSID`, `LOGINTO`, `SENDERID`, `USERID`, `PWD`, `CID`, `STATUS`) VALUES
+(1, 'http://teamfreelancer.bulksms5.com', 'SBSSSH', 'sunbeam', 'sunbeam@123', 0001, 1);
 
 -- --------------------------------------------------------
 
@@ -45,7 +68,8 @@ CREATE TABLE `clients` (
 
 INSERT INTO `clients` (`CID`, `CLIENT_NAME`, `ABBREV`, `ADDRESS`, `CONTACT`, `EMAIL`, `DB_`, `STATUS`, `USERNAME_`, `DATE_`) VALUES
 (0001, 'The Sunbeam Public School, Haldwnani', 'TSS', 'x', '9410112596, 9897910445', 'thesunbeamschool2006@gmail.com', 'default-sunbeam', 1, 'nitin', '2018-07-06 07:59:15'),
-(0002, 'GDJM School, Nandhor', 'GDJM', 'x', '9760020667', 'nitin.d12@gmail.com', 'default-gdjm', 1, 'mamta', '2018-07-06 08:02:14');
+(0002, 'GDJM School, Nandhor', 'GDJM', 'x', '9760020667', 'nitin.d12@gmail.com', 'default-gdjm', 1, 'mamta', '2018-07-06 08:02:14'),
+(0003, 'Teamfreelancers', 'TFree', 'x', '9760020667', 'nitin.d12@gmail.com', 'default', 1, 'gopal', '2018-07-06 08:02:14');
 
 -- --------------------------------------------------------
 
@@ -57,22 +81,32 @@ CREATE TABLE `users` (
   `USERNAME_` varchar(40) NOT NULL,
   `PASSWORD_` varchar(20) NOT NULL,
   `STATUS` varchar(15) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ACTIVE` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`USERNAME_`, `PASSWORD_`, `STATUS`, `DATE_`) VALUES
-('gopal', '123', 'admin', '2018-07-06 07:56:04'),
-('mamta', '123', 'school', '2018-07-07 11:01:34'),
-('naveen', '123', 'admin', '2018-07-06 07:55:48'),
-('nitin', '123', 'admin', '2018-07-06 07:55:48');
+INSERT INTO `users` (`USERNAME_`, `PASSWORD_`, `STATUS`, `DATE_`, `ACTIVE`) VALUES
+('gopal', '123', 'admin', '2018-07-06 07:56:04', 1),
+('mamta', '123', 'school', '2018-07-07 11:01:34', 1),
+('naveen', '123', 'admin', '2018-07-06 07:55:48', 1),
+('nitin', '123', 'school', '2018-07-06 07:55:48', 1),
+('ppl', 'ppl@#123', 'school', '2018-07-20 18:30:39', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `bulksms`
+--
+ALTER TABLE `bulksms`
+  ADD PRIMARY KEY (`SMSID`),
+  ADD UNIQUE KEY `CID` (`CID`),
+  ADD KEY `FK_CID` (`CID`);
 
 --
 -- Indexes for table `clients`
@@ -92,10 +126,15 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `bulksms`
+--
+ALTER TABLE `bulksms`
+  MODIFY `SMSID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `CID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
