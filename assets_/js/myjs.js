@@ -36,6 +36,9 @@ $(function(){
 			fillClasses_to_find_students();
 			view_classes_to_view_students();
 		}
+		if($('#frmApplicableDiscount').length != 0){
+			fillClasses_for_applicable_discount();
+		}
 		if(('#frmPromoteStudents').length != 0){
 			$('input[type=radio]').css('opacity', '1');
 			$('._select').css('display', 'block');
@@ -151,6 +154,49 @@ $(function(){
 				}
 			});
 		}
+		/*
+		function fillClasses_for_applicable_discount(){
+			url_ = site_url_ + "/fee/get_all_fee_heads";
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Choose Class</option>";
+					for(i=0;i<obj.class_in_session.length; i++){
+						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
+					}
+					
+					$('#fee_heads_here').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+
+		function fillFeeHeads_for_applicable_discount(){
+			$('#s2id_cmbClassofAdmission span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getClasses_in_session";
+			$('#cmbClassofAdmission').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Choose Class</option>";
+					for(i=0;i<obj.class_in_session.length; i++){
+						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
+					}
+					$('#s2id_cmbClassofAdmission span').text("Choose Class");
+					$('#cmbClassofAdmission').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		*/
 		function fillClasses(){
 			$('#s2id_cmbClassofAdmission span').text("Loading...");
 			url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -2604,36 +2650,37 @@ $(function(){
 	                data    : data_,
 	                success : function(data){
 	                    obj = JSON.parse(data);
-	                    if(obj.messageNo == 1){
-	                        if(obj.nos.length != 0){
+	                    if(obj.no__['messageNo'] == 1){
+	                        if(obj.no__['nos'].length != 0){
 	                            str = '';
-	                            moblength = obj.nos.length;
+	                            moblength = obj.no__['nos'].length;
 	                            if(obj.sms_check != 'NA'){
 		                            /* // This below code will be used when you want to send sms to absantee's parents */
 		                            for(i=0;i<moblength;i++){
 		                                if(i < moblength-1){
-		                                    str = str + $.trim(obj.nos[i].MOBILE_S) + ",";
+		                                    str = str + $.trim(obj.no__['nos'][i].MOBILE_S) + ",";
 		                                    str = $.trim(str);
 		                                } else if(i == moblength-1){
-		                                    str = str + $.trim(obj.nos[i].MOBILE_S); 
+		                                    str = str + $.trim(obj.no__['nos'][i].MOBILE_S); 
 		                                    str = $.trim(str);   
 		                                }
 		                            }
+		                            
 		                            $('#mobilenumbers').val(str);
 
-		                            d = obj.nos[0].DATE_;
-		                            dt = d.split('-');
+		                            d = obj.no__['nos'][0].DATE_;
+		                            dt = d.split('/');
 		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.nos[0].DATE_+"). Please motivate him/her to attend classes regularly.");
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.no__['nos'][0].DATE_+"). Please motivate him/her to attend classes regularly.");
 		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 									$('#myModal').modal('show');
 									/**/
 								}
 	                            callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 	                        }
-	                    } else if(obj.messageNo == 2){   
+	                    } else if(obj.no__['messageNo'] == 2){   
 	                        $('#msg_here').html("Something goes wrong. Please try again...");
-	                    } else if(obj.messageNo == 3){
+	                    } else if(obj.no__['messageNo'] == 3){
 	                        $('#msg_here').html("Something goes wrong. Please try again...");
 	                    }
 	                    $('#students_here').html('');
