@@ -7,7 +7,6 @@
                     <li class="<?php echo $flexible_head;?>"><a data-toggle="tab" href="#flexible_head">Manage Flexible Heads</a></li>
                     <li class="<?php echo $associate_static;?>"><a data-toggle="tab" href="#associate_static">Associate Static Heads</a></li>
                     <li class="<?php echo $associate_flexible;?>"><a data-toggle="tab" href="#associate_flexible">Associate Flexible Heads</a></li>
-                    <li class="<?php echo $applicableDiscount;?>"><a data-toggle="tab" href="#applicableDiscount">Applicable Heads for Discount</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -57,18 +56,6 @@
 				        echo form_open('#', $attrib_); 
 				    ?>
                     <?php $this->load->view('master/tabfee/associate_flexible'); ?>
-                    <?php echo form_close();?>
-                </div>
-                <div id="applicableDiscount" class="tab-pane<?php echo $applicableDiscount;?>">
-                    <?php
-                        $attrib_ = array(
-                            'class' => 'form-vertical',
-                            'name' => 'frmApplicableDiscount',
-                            'id' => 'frmApplicableDiscount',
-                        );
-                        echo form_open('#', $attrib_); 
-                    ?>
-                    <?php $this->load->view('master/tabfee/applicableDiscounts'); ?>
                     <?php echo form_close();?>
                 </div>
             </div>

@@ -154,49 +154,6 @@ $(function(){
 				}
 			});
 		}
-		/*
-		function fillClasses_for_applicable_discount(){
-			url_ = site_url_ + "/fee/get_all_fee_heads";
-			$.ajax({
-				type: "POST",
-				url: url_,
-				success:  function(data){
-					var obj = JSON.parse(data);
-					var str_html = '';
-					str_html = str_html + "<option value=''>Choose Class</option>";
-					for(i=0;i<obj.class_in_session.length; i++){
-						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
-					}
-					
-					$('#fee_heads_here').html(str_html);
-				}, error: function(xhr, status, error){
-					callDanger(xhr.responseText);
-				}
-			});
-		}
-
-		function fillFeeHeads_for_applicable_discount(){
-			$('#s2id_cmbClassofAdmission span').text("Loading...");
-			url_ = site_url_ + "/reg_adm/getClasses_in_session";
-			$('#cmbClassofAdmission').empty();
-			$.ajax({
-				type: "POST",
-				url: url_,
-				success:  function(data){
-					var obj = JSON.parse(data);
-					var str_html = '';
-					str_html = str_html + "<option value=''>Choose Class</option>";
-					for(i=0;i<obj.class_in_session.length; i++){
-						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
-					}
-					$('#s2id_cmbClassofAdmission span').text("Choose Class");
-					$('#cmbClassofAdmission').html(str_html);
-				}, error: function(xhr, status, error){
-					callDanger(xhr.responseText);
-				}
-			});
-		}
-		*/
 		function fillClasses(){
 			$('#s2id_cmbClassofAdmission span').text("Loading...");
 			url_ = site_url_ + "/reg_adm/getClasses_in_session";
