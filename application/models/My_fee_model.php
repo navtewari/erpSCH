@@ -81,7 +81,7 @@ class My_fee_model extends CI_Model {
     }
 
     function get_static_heads_to_class($class__){
-        $this->db->select('d.CLASSID, c.FEE_HEAD, a.TOTFEE, b.AMOUNT, b.PAYMENT_STATUS, c.DURATION');
+        $this->db->select('d.CLASSID, c.FEE_HEAD, a.TOTFEE, b.AMOUNT, b.PAYMENT_STATUS, c.DURATION, c.DISCOUNT_APPLICABLE');
         $this->db->from('fee_8_class_fee a');
         $this->db->join('fee_9_class_fee_split b', 'a.CFEEID=b.CFEEID');
         $this->db->join('fee_3_static_heads c', 'c.ST_HD_ID = b.ST_HD_ID');
@@ -235,6 +235,7 @@ class My_fee_model extends CI_Model {
         if($data['bool_'] == 4 || $data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
             $data_static = $this->fetch_static_heads_to_class($class__, $regid_,$no_of_months);
             $data_flexi = $this->fetch_flexi_heads_to_students($class__, $regid_,$no_of_months);
+            $total_applicable_discount_amount = $data_static['static_discount_applicable_amount'];
             $total_actual_amount = $data_static['static_amount'] + ($data_static['n_static_amount']*$no_of_months) + $data_flexi['_flexi_amount'] + ($data_flexi['n_flexi_amount']*$no_of_months);
             $due_amount = $this->fetch_due_amount_in_invoice($regid_);
             $total_amount_due = $due_amount+$total_actual_amount;
@@ -249,6 +250,7 @@ class My_fee_model extends CI_Model {
                 'FLEXIBLE_HEADS_N_TIMES'=>$data_flexi['n_flexi_heads'],
                 'FLEXI_SPLIT_AMT_N_TIMES'=>$data_flexi['n_flexi_heads_amount'],
                 'ACTUAL_AMOUNT'=> $total_actual_amount,
+                'APPLICABLE_DISCOUNT_AMOUNT' => $total_applicable_discount_amount,
                 'DESCRIPTION_IFANY' => 'X',
                 'REGID'=>$regid_,
                 'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
@@ -532,32 +534,45 @@ class My_fee_model extends CI_Model {
         $data['static_heads_to_class'] = $this->get_static_heads_to_class($class__);
         $_static_heads__ = '';
         $_static_heads_amount_ = '';
+        $_static_discount_applicable_amount_1_time = 0;
         $_static_total_amount = 0;
         $n_static_heads__ = '';
         $n_static_heads_amount_ = '';
+        $_static_discount_applicable_amount_n_time = 0;
         $n_static_total_amount = 0;
         if(count($data['static_heads_to_class']) != 0){
             foreach ($data['static_heads_to_class'] as $static_item) {
                 if($static_item->DURATION == '1'){
                     if($_static_heads__ != ''){
-                        $_static_heads__ = $_static_heads__ .",". $static_item->FEE_HEAD;
+                        $_static_heads__ = $_static_heads__ .",". $static_item->FEE_HEAD."@".$static_item->DISCOUNT_APPLICABLE;
                         $_static_heads_amount_ = $_static_heads_amount_ .", ". $static_item->AMOUNT;
                         $_static_total_amount = $_static_total_amount + $static_item->AMOUNT;
-
+                        if($static_item->DISCOUNT_APPLICABLE == 1){
+                            $_static_discount_applicable_amount_1_time = $_static_discount_applicable_amount_1_time + $static_item->AMOUNT;
+                        }
                     } else {
-                        $_static_heads__ = $static_item->FEE_HEAD;
+                        $_static_heads__ = $static_item->FEE_HEAD."@".$static_item->DISCOUNT_APPLICABLE;
                         $_static_heads_amount_ = $static_item->AMOUNT;
                         $_static_total_amount = $static_item->AMOUNT;
+                        if($static_item->DISCOUNT_APPLICABLE == 1){
+                            $_static_discount_applicable_amount_1_time = $_static_discount_applicable_amount_1_time + $static_item->AMOUNT;
+                        }
                     }
                 } else {
                     if($n_static_heads__ != ''){
-                        $n_static_heads__ = $n_static_heads__ .",". $static_item->FEE_HEAD;
+                        $n_static_heads__ = $n_static_heads__ .",". $static_item->FEE_HEAD."@".$static_item->DISCOUNT_APPLICABLE;
                         $n_static_heads_amount_ = $n_static_heads_amount_. ",". $static_item->AMOUNT;
                         $n_static_total_amount = $n_static_total_amount + $static_item->AMOUNT;
+                        if($static_item->DISCOUNT_APPLICABLE == 1){
+                            $_static_discount_applicable_amount_n_time = $_static_discount_applicable_amount_n_time + $static_item->AMOUNT;
+                        }
                     } else {
-                        $n_static_heads__ = $static_item->FEE_HEAD;
+                        $n_static_heads__ = $static_item->FEE_HEAD."@".$static_item->DISCOUNT_APPLICABLE;
                         $n_static_heads_amount_ = $static_item->AMOUNT;
                         $n_static_total_amount = $static_item->AMOUNT;
+                        if($static_item->DISCOUNT_APPLICABLE == 1){
+                            $_static_discount_applicable_amount_n_time = $_static_discount_applicable_amount_n_time + $static_item->AMOUNT;
+                        }
                     }
                 }
              } 
@@ -568,6 +583,7 @@ class My_fee_model extends CI_Model {
         $data['n_static_heads'] = $n_static_heads__;
         $data['n_static_heads_amount'] = $n_static_heads_amount_;
         $data['n_static_amount'] = $n_static_total_amount;
+        $data['static_discount_applicable_amount'] = $_static_discount_applicable_amount_1_time + $_static_discount_applicable_amount_n_time;
 
         return $data;
     }
@@ -725,7 +741,7 @@ class My_fee_model extends CI_Model {
     }
     function get_student_receipt($invdetid_, $clssessid){
 
-            $this->db->select('d.REGID, b.FNAME, b.MNAME, b.LNAME, b.GENDER, b.FATHER, b.CATEGORY, a.*, c.CLASSID, d.INVDETID, d.STATIC_HEADS_1_TIME, d.STATIC_SPLIT_AMT_1_TIME, d.STATIC_HEADS_N_TIMES, d.STATIC_SPLIT_AMT_N_TIME, d.FLEXIBLE_HEADS_1_TIME, d.FLEXI_SPLIT_AMT_1_TIME, d.FLEXIBLE_HEADS_N_TIMES, d.FLEXI_SPLIT_AMT_N_TIMES, d.ACTUAL_AMOUNT, d.DESCRIPTION_IFANY, d.ACTUAL_DUE_AMOUNT, d.PREV_DUE_AMOUNT, d.DUE_AMOUNT, d.DATE_');
+            $this->db->select('d.REGID, b.FNAME, b.MNAME, b.LNAME, b.GENDER, b.FATHER, b.CATEGORY, a.*, c.CLASSID, d.INVDETID, d.STATIC_HEADS_1_TIME, d.STATIC_SPLIT_AMT_1_TIME, d.STATIC_HEADS_N_TIMES, d.STATIC_SPLIT_AMT_N_TIME, d.FLEXIBLE_HEADS_1_TIME, d.FLEXI_SPLIT_AMT_1_TIME, d.FLEXIBLE_HEADS_N_TIMES, d.FLEXI_SPLIT_AMT_N_TIMES, d.ACTUAL_AMOUNT, d.APPLICABLE_DISCOUNT_AMOUNT, d.DESCRIPTION_IFANY, d.ACTUAL_DUE_AMOUNT, d.PREV_DUE_AMOUNT, d.DUE_AMOUNT, d.DATE_');
             $this->db->where('a.CLSSESSID', $clssessid);
             $this->db->where('d.INVDETID', $invdetid_);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));

@@ -27,6 +27,7 @@ class My_master_fee_model extends CI_Model {
             $data = array(
                 'FEE_HEAD' => strtoupper($this -> input -> post('txtFeeStaticHead')),
                 'DURATION' => $this->input->post('cmbDuration'),
+                'DISCOUNT_APPLICABLE' => false,
                 'USERNAME' => $this -> session -> userdata('_user___'),
                 'DATE_' => date('Y-m-d H:i:s')
                 );
@@ -75,7 +76,25 @@ class My_master_fee_model extends CI_Model {
         }
         return $bool_;
     }
-    
+    function update_discount_applicable(){
+        $status = $this->input->post('status_');
+        $sthdid = $this->input->post('sthdid');
+        $this->db->where('ST_HD_ID', $sthdid);
+        $data = array(
+            'DISCOUNT_APPLICABLE'=> $status
+        );
+        $query = $this->db->update('fee_3_static_heads', $data);
+        if($query == true){
+            if($status = true){
+                $bool = array('res_'=>true, 'msg_', '<b>Enables</b> Discount Successfully.');
+            } else {
+                $bool = array('res_'=>true, 'msg_', '<b>Disable</b> Discount Successfully.');
+            }
+        } else {
+            $bool = array('res_'=>false, 'msg_', 'Something goes wrong. Please try again.');
+        }
+        return $bool;
+    }
     //------------------------------------FLEXIBLE HEADS--------------------------------------
     function get_flexible_heads(){
         $this->db->select('a.ITEM, b.*');
@@ -191,7 +210,7 @@ class My_master_fee_model extends CI_Model {
 
     //------------------------------------ASSOCIATE STATIC HEADS FEE AMT TO CLASS --------------------------------------
     function get_static_heads_to_class($class__){
-        $this->db->select('d.CLASSID, c.FEE_HEAD, a.TOTFEE, b.AMOUNT, b.PAYMENT_STATUS');
+        $this->db->select('d.CLASSID, c.FEE_HEAD, a.TOTFEE, b.AMOUNT, b.PAYMENT_STATUS, c.DISCOUNT_APPLICABLE');
         $this->db->from('fee_8_class_fee a');
         $this->db->join('fee_9_class_fee_split b', 'a.CFEEID=b.CFEEID');
         $this->db->join('fee_3_static_heads c', 'c.ST_HD_ID = b.ST_HD_ID');
