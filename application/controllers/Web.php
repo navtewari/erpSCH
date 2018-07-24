@@ -93,7 +93,7 @@ class Web extends CI_Controller {
                 break;
             case 9:
                 $data['page_'] = 'master';
-                $data['title_'] = 'Master / General';
+                $data['title_'] = 'Change School Profile';
                 break;
             case 10:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
@@ -169,6 +169,11 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Co-Scholastic Items';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;            
+            case 23:
+                $data['page_'] = 'master';
+                $data['title_'] = "Change Student's Contact Numbers";
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break; 
             default:
                 $data['page_'] = 'erorrs';
         }

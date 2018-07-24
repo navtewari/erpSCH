@@ -69,6 +69,7 @@ class My_exam_model extends CI_Model {
 
     function mgetAllScholasticItems() {
         $this->db->from('exam_1_scholastic_items');
+        $this->db->order_by('priority', 'Asc');
         $query = $this->db->get();
         return $query->result();
     }
@@ -164,7 +165,7 @@ class My_exam_model extends CI_Model {
         $this->db->join('exam_1_scholastic_items c', 'b.itemID = c.itemID');
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('b.CLSSESSID', $classID);
-        $this->db->order_by('c.itemID', 'Asc');
+        $this->db->order_by('c.priority', 'Asc');
         $query = $this->db->get();
 
         //echo $this->db->last_query()."<br />";
@@ -220,6 +221,7 @@ class My_exam_model extends CI_Model {
     }
 
     function mgetAllCoScholasticItems() {
+        $this->db->order_by('priority', 'Asc');
         $query = $this->db->get('exam_3_coscholastic_items');
         return $query->result();
     }
@@ -276,7 +278,7 @@ class My_exam_model extends CI_Model {
         $this->db->join('exam_3_coscholastic_items c', 'b.coitemID = c.coitemID');
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('b.CLSSESSID', $classID);
-        $this->db->order_by('c.coitemID', 'Asc');
+        $this->db->order_by('c.priority', 'Asc');
         $query = $this->db->get();
 
         //echo $this->db->last_query()."<br />";
@@ -285,13 +287,13 @@ class My_exam_model extends CI_Model {
     }
 
     function mAddcoScholastictoClass($classsessID) {
-        $coscholastic_item = $this->input->post('chkScholastic');
+        $coscholastic_item = $this->input->post('chkcoScholastic');
         $seleted_classes = $classsessID;
         $session = $this->session->userdata('_current_year___');
 
         for ($loop1 = 0; $loop1 < count($coscholastic_item); $loop1++) {
             $this->db->where('CLSSESSID', $seleted_classes);
-            $this->db->where('itemID', $coscholastic_item[$loop1]);
+            $this->db->where('coitemID', $coscholastic_item[$loop1]);
             $this->db->where('SESSID', $session);
             $query = $this->db->get('exam_4_add_coscholastic_to_class');
 
@@ -301,14 +303,14 @@ class My_exam_model extends CI_Model {
                 $data = array(
                     'CLSSESSID' => $seleted_classes,
                     'SESSID' => $session,
-                    'itemID' => $coscholastic_item[$loop1],
+                    'coitemID' => $coscholastic_item[$loop1],
                     'USERNAME_' => $this->session->userdata('_user___'),
                     'DATE_' => date('Y-m-d H:i:s')
                 );
                 $query = $this->db->insert('exam_4_add_coscholastic_to_class', $data);
 
                 if ($query == TRUE) {
-                    $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Head Associated Successfully');
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Co-Scholastic Head Associated Successfully');
                 } else {
                     $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again');
                 }
