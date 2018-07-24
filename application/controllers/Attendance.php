@@ -44,7 +44,7 @@ class Attendance extends CI_Controller {
     function takeattendance(){
         $data['no__'] = json_decode($this->mam->takeattendance());
         $data['sms_check'] = $this->session->userdata('sms_loginto');
-        echo json_encode($data['no__']);
+        echo json_encode($data);
     }
 
     function viewconsolidate(){

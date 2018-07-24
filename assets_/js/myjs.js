@@ -36,6 +36,9 @@ $(function(){
 			fillClasses_to_find_students();
 			view_classes_to_view_students();
 		}
+		if($('#frmStaticFee').length != 0){
+			fill_static_fee_heads();
+		}
 		if(('#frmPromoteStudents').length != 0){
 			$('input[type=radio]').css('opacity', '1');
 			$('._select').css('display', 'block');
@@ -699,6 +702,32 @@ $(function(){
 		function rest_static_head_form(){
 			$('#txtFeeStaticHead').val('');
 		}
+		$('body').on('click','.discount_applicable', function(){
+			var str = this.id;
+			var arr = str.split('~');
+			var url_ = site_url_ + "/master_fee/update_discount_applicable";
+			if(arr[1] == 'discount_applicable_yes'){
+				var data_ = "sthdid="+arr[0]+"&status_=0";
+			} else if(arr[1] == 'discount_applicable_no'){
+				var data_ = "sthdid="+arr[0]+"&status_=1";
+			}
+			$.ajax({
+				type: "POST",
+				url: url_,
+				data: data_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					if(obj.res_ == true){
+						callSuccess(obj.msg_);
+					} else {
+						callDanger(obj.msg_);	
+					}
+					fill_static_fee_heads();
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
 		$('#add_static_head').click(function(){
 			if($.trim($('#txtFeeStaticHead').val()) != ''){
 				url_ = site_url_ + "/master_fee/submit_static_fee_head";
@@ -745,6 +774,13 @@ $(function(){
 						str_html = str_html + '<td style="text-align: left" class="taskDesc"></i>';
 						str_html = str_html + obj.static_heads[i].ITEM;
 						str_html = str_html + '</td>';
+						str_html = str_html + '<td  style="text-align: center">';
+                        if(obj.static_heads[i].DISCOUNT_APPLICABLE == 1){
+							str_html = str_html + "<i class='icon-ok _yes_ discount_applicable' id='"+obj.static_heads[i].ST_HD_ID+"~discount_applicable_yes'>&nbsp;</i>";
+                        }else{
+							str_html = str_html + "<i class='icon-remove _no_ discount_applicable' id='"+obj.static_heads[i].ST_HD_ID+"~discount_applicable_no'>&nbsp;</i>";
+                        }
+                        str_html = str_html + "</td>";
 						str_html = str_html + '<td class="taskOptions">';
 						str_html = str_html + '<a href="#" class="tip edit_static_head_" id="EditStaticHead~'+ obj.static_heads[i].ST_HD_ID + '~'+ obj.static_heads[i].FEE_HEAD + '~'+ obj.static_heads[i].DURATION + '~'+ obj.static_heads[i].ITEM + '"><i class="icon-pencil"></i></a> | ';
 						str_html = str_html + '<a href="#" class="tip delete_static_head_" id="'+ obj.static_heads[i].ST_HD_ID + '"><i class="icon-remove"></i></a>';
@@ -1827,10 +1863,11 @@ $(function(){
 		                name_ = name_ + ((obj.fetch_receipt_data[0].LNAME == "-x-") ? "":obj.fetch_receipt_data[0].LNAME);
 		                
 		                //amount_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT)/parseInt(obj.fetch_receipt_data[0].NOM);
-		                amount_ = parseFloat(obj.fetch_receipt_data[0].DUE_AMOUNT);
-		                pay_amount = obj.fetch_receipt_data[0].DUE_AMOUNT;
-		                actual_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
-		                due_actual = amount_ - parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
+		                var amount_ = parseFloat(obj.fetch_receipt_data[0].DUE_AMOUNT);
+		                var pay_amount = obj.fetch_receipt_data[0].DUE_AMOUNT;
+		                var actual_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
+		                var amount_to_apply_discount = parseFloat(obj.fetch_receipt_data[0].APPLICABLE_DISCOUNT_AMOUNT);
+		                var due_actual = amount_ - parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT);
 		                var total_categ_discount_amount = 0;
 		                var total_sibling_discount_amount = 0;
 		                var total_other_discount_amount = 0;
@@ -1840,10 +1877,18 @@ $(function(){
 		                }
 		                var fixed_heads = '';
 		                if(obj.fetch_receipt_data[0].STATIC_HEADS_1_TIME != ''){
-		                	fixed_heads = fixed_heads + obj.fetch_receipt_data[0].STATIC_HEADS_1_TIME;
+		                	var str = obj.fetch_receipt_data[0].STATIC_HEADS_1_TIME;
+		                	var temp_static_heads_1_time = str.split(',');
+		                	for(i=0;i<temp_static_heads_1_time.length;i++){
+		                		fixed_heads = fixed_heads + ", " + temp_static_heads_1_time[i].split('@')[0];
+		                	}
 		            	}
 		                if(obj.fetch_receipt_data[0].STATIC_HEADS_N_TIMES != ''){
-		                	fixed_heads = fixed_heads + ", " + obj.fetch_receipt_data[0].STATIC_HEADS_N_TIMES;
+		                	var str = obj.fetch_receipt_data[0].STATIC_HEADS_N_TIMES;
+		                	var temp_static_heads_n_time = str.split(',');
+		                	for(i=0;i<temp_static_heads_n_time.length;i++){
+		                		fixed_heads = fixed_heads + ", " + temp_static_heads_n_time[i].split('@')[0];
+		                	}
 		            	}
 
 		            	var flexi_heads = '';
@@ -1855,20 +1900,23 @@ $(function(){
 		            	}
 		                
 		                // Calculation of discount for category or sibling or Other discount
+		                var total_other_discount_amount = 0;
+		                var calculated_amount = 0;
+		                var other_discount_items = '';
+		                if(amount_to_apply_discount != 0){
 		                	if(obj.other_discount_data != null){
 		                		var other_discount_arr = (obj.other_discount_data.DISCOUNT).split(',');
 		                		var other_discount_length = parseInt(other_discount_arr.length);
-		                		var total_other_discount_amount = 0;
-		                		var calculated_amount = 0;
+
 		                		if(other_discount_arr.length != 0){
-		                			var other_discount_items = obj.other_discount_data.DISCOUNT;
+		                			other_discount_items = obj.other_discount_data.DISCOUNT;
 		                		}
 		                		for(d=0;d<parseInt(other_discount_arr.length);d++){
 		                			for(k=0;k<obj.fetch_other_discount_data.length;k++){
 		                				calculated_amount = 0;
 		                				if(other_discount_arr[d] == obj.fetch_other_discount_data[k].ITEM_){
 		                					if(obj.fetch_other_discount_data[k].STATUS_ == 'Percentage'){
-		                						calculated_amount = parseInt(parseInt(actual_)*(parseInt(obj.fetch_other_discount_data[k].AMOUNT)/100));
+		                						calculated_amount = parseInt(parseInt(amount_to_apply_discount)*(parseInt(obj.fetch_other_discount_data[k].AMOUNT)/100));
 		                					} else {
 		                						calculated_amount = obj.fetch_other_discount_data[k].AMOUNT;
 		                					}
@@ -1879,8 +1927,12 @@ $(function(){
 		                	} else {
 		                		var total_other_discount_amount = 0;
 		                	}
+		                }
 
 		                	var discount_category = 'x';
+		                	var total_sibling = 0;
+		                	var total_sibling_discount_amount = 0;
+		                	/*
 		                	if(obj.sibling_discount != null){
 		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
 		                		var sibling_length = parseInt(sibling_arr.length);
@@ -1901,6 +1953,7 @@ $(function(){
 		                		var total_sibling = 0;
 		                		var total_sibling_discount_amount = 0;
 		                	}
+		                	*/
 		                	//alert(total_sibling_discount_amount);
 		                	if(obj.fetch_category_discount_data != null){
 		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
@@ -2015,8 +2068,8 @@ $(function(){
 		                str_html = str_html + "</tr>";
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
-		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff'>";
-		                str_html = str_html + "Sibling: "+total_sibling_discount_amount+" + "+"Category: "+total_categ_discount_amount+" + "+"Other Discount: "+total_other_discount_amount;
+		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff; clear: both'>";
+		                str_html = str_html + other_discount_items;//+ "("+total_other_discount_amount;
 		                str_html = str_html + "</div>";
 		                str_html = str_html + "</td>"
 		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_discount_' name='_discount_' value="+discount_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";
@@ -2604,36 +2657,37 @@ $(function(){
 	                data    : data_,
 	                success : function(data){
 	                    obj = JSON.parse(data);
-	                    if(obj.messageNo == 1){
-	                        if(obj.nos.length != 0){
+	                    if(obj.no__['messageNo'] == 1){
+	                        if(obj.no__['nos'].length != 0){
 	                            str = '';
-	                            moblength = obj.nos.length;
+	                            moblength = obj.no__['nos'].length;
 	                            if(obj.sms_check != 'NA'){
 		                            /* // This below code will be used when you want to send sms to absantee's parents */
 		                            for(i=0;i<moblength;i++){
 		                                if(i < moblength-1){
-		                                    str = str + $.trim(obj.nos[i].MOBILE_S) + ",";
+		                                    str = str + $.trim(obj.no__['nos'][i].MOBILE_S) + ",";
 		                                    str = $.trim(str);
 		                                } else if(i == moblength-1){
-		                                    str = str + $.trim(obj.nos[i].MOBILE_S); 
+		                                    str = str + $.trim(obj.no__['nos'][i].MOBILE_S); 
 		                                    str = $.trim(str);   
 		                                }
 		                            }
+		                            
 		                            $('#mobilenumbers').val(str);
 
-		                            d = obj.nos[0].DATE_;
-		                            dt = d.split('-');
+		                            d = obj.no__['nos'][0].DATE_;
+		                            dt = d.split('/');
 		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.nos[0].DATE_+"). Please motivate him/her to attend classes regularly.");
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.no__['nos'][0].DATE_+"). Please motivate him/her to attend classes regularly.");
 		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 									$('#myModal').modal('show');
 									/**/
 								}
 	                            callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 	                        }
-	                    } else if(obj.messageNo == 2){   
+	                    } else if(obj.no__['messageNo'] == 2){   
 	                        $('#msg_here').html("Something goes wrong. Please try again...");
-	                    } else if(obj.messageNo == 3){
+	                    } else if(obj.no__['messageNo'] == 3){
 	                        $('#msg_here').html("Something goes wrong. Please try again...");
 	                    }
 	                    $('#students_here').html('');

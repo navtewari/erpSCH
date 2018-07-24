@@ -247,7 +247,7 @@
 
 											<?php if($item->STATIC_HEADS_1_TIME!=''){?>
 												<?PHP foreach($static_heads_1_time as $val){ ?>
-													<?php $s_heads1 = $s_heads1 . $val . "<span class='times_'>(1 time)</span><br>";?>
+													<?php $s_heads1 = $s_heads1 . explode('@',$val)[0] . "<span class='times_'>(1 time)</span><br>";?>
 													<?php $s_amnt1 = $s_amnt1 . number_format((int)$static_split_amt_1_time[$index_], 2, '.', ''). "<br>";?>
 													<?php $s_total_amount = $s_total_amount + (int)$static_split_amt_1_time[$index_]; ?>
 													<?php $index_++; ?>
@@ -257,7 +257,7 @@
 											<?php if($item->STATIC_HEADS_N_TIMES!=''){?>
 												<?php $index_ = 0;?>
 												<?PHP foreach($static_heads_n_times as $val){ ?>
-													<?php $s_headsN = $s_headsN . $val . "<span class='times_'>(". $static_split_amt_n_time[$index_] . " x ". $item->NOM.")</span><br>";?>
+													<?php $s_headsN = $s_headsN . explode("@",$val)[0] . "<span class='times_'>(". $static_split_amt_n_time[$index_] . " x ". $item->NOM.")</span><br>";?>
 													<?php $s_amntN = $s_amntN . number_format((int)$static_split_amt_n_time[$index_]*(int)$item->NOM, 2, '.', ''). "<br>";?>
 													<?php $s_total_amount = $s_total_amount + ((int)$static_split_amt_n_time[$index_]*(int)$item->NOM); ?>
 													<?php $index_++; ?>

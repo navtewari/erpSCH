@@ -176,6 +176,10 @@ class Fee extends CI_Controller {
         $receipt_id = $this->fm->get_latest_receipt($invdetid);
         redirect('fee/fee_print/'.$receipt_id);
     }
+
+    function get_all_fee_heads(){
+        // yet to code
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

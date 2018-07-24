@@ -37,11 +37,11 @@
                             $data = array(
                                 'type' => 'text',
                                 'class'=>"span12",
-                                'data-date-format'=>"dd-mm-yyyy",
+                                'data-date-format'=>"dd/mm/yyyy",
                                 'autocomplete' => 'off',
                                 'name' => 'attendancedate',
                                 'id' => 'attendancedate',
-                                'value'=> date('d-m-Y')
+                                'value'=> date('d/m/Y')
                             );
                             echo form_input($data);
                         ?>

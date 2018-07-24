@@ -24,3 +24,14 @@
 .dashboard-session-color{
 	color: #900000;
 }
+._no_{
+	color: #ff0000;
+	cursor: pointer;
+}
+._yes_{
+	color: #009000;
+	cursor: pointer;
+}
+.inTotalClasses{
+	cursor: pointer;
+}

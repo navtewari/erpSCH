@@ -90,6 +90,7 @@ class Web extends CI_Controller {
                 $data['flexible_head'] = '';
                 $data['associate_static'] = '';
                 $data['associate_flexible'] = '';
+                $data['applicableDiscount'] = '';
                 break;
             case 9:
                 $data['page_'] = 'master';

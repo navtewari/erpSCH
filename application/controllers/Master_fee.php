@@ -29,6 +29,10 @@ class Master_fee extends CI_Controller {
         echo json_encode($data);
     }
 
+    function update_discount_applicable(){
+        $data = $this->mmm->update_discount_applicable();
+        echo json_encode($data);   
+    }
     function get_flexible_heads(){
         $data['flexi_heads'] = $this->mmm->get_flexible_heads();
         echo json_encode($data);

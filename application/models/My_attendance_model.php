@@ -130,7 +130,6 @@ class My_attendance_model extends CI_Model {
         $this->error->_db_error();
         // ------------------------
   
-
         return json_encode($data_);
     }
 
