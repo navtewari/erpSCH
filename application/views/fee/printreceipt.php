@@ -92,7 +92,7 @@
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0" class="table_" style='border:#009900 solid 0px'>
 							<tr class="feeHeader">
-								<td width="100"><img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / ></td>
+								<td width="100"><img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / ></td>
 								<td width="500">
 									<span class='header_text'>
 									<b><?php echo $this->session->userdata('sch_name').", ".$this->session->userdata('sch_city'); ?></b><br />
