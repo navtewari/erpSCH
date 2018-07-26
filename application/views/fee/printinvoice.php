@@ -148,7 +148,7 @@
 							<tr>
 			
 								<td align="left">
-									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / >
+									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
 								</td>
 								<td style="text-align: center">
 									<h1>INVOICE</h1>
@@ -164,7 +164,7 @@
 									<h4><b style="font-size: 12px"><?php echo $this->session->userdata('sch_name'); ?></b></h4>
 								</td>
 								<td align="right">
-									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>' width="100" / >
+									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
 								</td>
 							</tr>
 							<tr>
