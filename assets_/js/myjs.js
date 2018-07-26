@@ -1684,7 +1684,6 @@ $(function(){
 					}
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
-					
 				}
 			});
 		});
