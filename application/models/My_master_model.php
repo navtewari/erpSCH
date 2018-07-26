@@ -757,6 +757,8 @@ class My_Master_model extends CI_Model {
             }
         } else {
             if ($query1 == TRUE) {
+                $this->load->model('my_model', 'mm');
+                $this->session->set_userdata($this->mm->get_profile());
                 $bool_ = array('res_' => TRUE, 'msg_' => 'School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> updated successfully.');
             } else {
                 $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or School <span style="color: #0000ff; font-weight: bold">' . $schName_ . '</span> is already exists. Please check and try again.');
@@ -810,10 +812,8 @@ class My_Master_model extends CI_Model {
             );
 
             $this->db->where('regid', $stuID);
-            $this->db->where('SESSID', $this->session->userdata('_current_year___'));
             $query = $this->db->update('master_10_stud_contact', $data);   
-                        
-            
+                                    
             if ($query == TRUE) {
                 $bool_ = array('res_' => TRUE, 'msg_' => 'Contact Updated Successfully');
             } else {
