@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="span12">
+    <div class="span4">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Class</h5>
@@ -9,8 +9,8 @@
                     <?php
                     $attrib_ = array(
                         'class' => 'form-horizontal',
-                        'name' => 'frmSubject',
-                        'id' => 'frmSubject',
+                        'name' => 'frmStudentContact',
+                        'id' => 'frmStudentContact',
                     );
                     ?>
                     <?php echo form_open('#', $attrib_); ?>
@@ -19,8 +19,8 @@
                         <div class="controls">
                             <?php
                             $data = array(
-                                'name' => 'subClassID',
-                                'id' => 'subClassID',                                
+                                'name' => 'stuClassID',
+                                'id' => 'stuClassID',                                
                                 'required' => 'required'
                             );
                             $options = array();
@@ -34,21 +34,23 @@
         </div>
     </div>
 
-    <div class="span5">
+    <div class="span7">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5 id="exitHeading">Existing Subjects</h5>
+                <h5 id="exitHeading">Student in  Selected Class</h5>
             </div>
             <div class="widget-content nopadding">
                 <table class="table table-bordered">
                     <thead>
                         <tr style="text-align: left;">                            
-                            <th>Subject Name</th>
-                            <th>Status</th>                            
-                            <th>Action</th>                            
+                            <th>Sr.No</th>
+                            <th>Name</th>
+                            <th>Father's Name</th>                            
+                            <th>Contact</th>                            
+                            <th>Action</th>  
                         </tr>
                     </thead>
-                    <tbody id="tabSubjects"> 
+                    <tbody id="tabStudents"> 
 
                     </tbody>
                 </table>

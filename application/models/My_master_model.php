@@ -684,6 +684,7 @@ class My_Master_model extends CI_Model {
             $state_ = trim($this->input->post('cmbPState1'));
             $country_ = trim($this->input->post('txtCountry1'));
             $affiliation_ = trim($this->input->post('txtaffilation1'));
+            $website_ = trim($this->input->post('txtwebsite1'));
             $remark_ = trim($this->input->post('txtRemark1'));
         } else {
             $sch_id = trim($this->input->post('txtSchID'));
@@ -696,6 +697,7 @@ class My_Master_model extends CI_Model {
             $state_ = trim($this->input->post('cmbPState'));
             $country_ = trim($this->input->post('txtCountry'));
             $affiliation_ = trim($this->input->post('txtaffilation'));
+            $website_ = trim($this->input->post('txtwebsite'));
             $remark_ = trim($this->input->post('txtRemark'));
         }
 
@@ -709,6 +711,7 @@ class My_Master_model extends CI_Model {
             'SCH_STATE' => $state_,
             'SCH_COUNTRY' => $country_,
             'AFFILIATION' => $affiliation_,
+            'WEBSITE' => $website_,
             'REMARK' => $remark_,
             'DATE_' => date('Y-m-d H:i:s'),
             'USERNAME' => $this->session->userdata('_user___')
@@ -786,6 +789,38 @@ class My_Master_model extends CI_Model {
             $path_ = 'x';
         }
         return $path_;
+    }
+    
+    function mget_student_detail($clssessid) {              
+        $this->db->select('a.regid, a.FNAME, a.FATHER, c.CLASSID, b.clssessid, b.ID_, d.regid, d.MOBILE_S');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->join('master_10_stud_contact d', 'a.regid=d.regid');
+        $this->db->where('b.clssessid', $clssessid);
+        $this->db->where('c.SESSID', $this->session->userdata('_current_year___'));
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+    
+    function msubmitStudentContact($stuID, $ContactNo){
+            $data = array(
+                'MOBILE_S' => $ContactNo,                
+            );
+
+            $this->db->where('regid', $stuID);
+            $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+            $query = $this->db->update('master_10_stud_contact', $data);   
+                        
+            
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Contact Updated Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+            
+            return $bool_;
     }
 
 }

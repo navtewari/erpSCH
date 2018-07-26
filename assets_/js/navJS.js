@@ -55,14 +55,18 @@ $(function () {
             fillscholastic_forclass();
             fillClasses_forscholastic();
         }
-        
-       if ($("#frmCoScholastic").length != 0) {
+
+        if ($("#frmCoScholastic").length != 0) {
             fillCoScholastic_item();
         }
-        
+
         if ($("#frmcoScholasticAddClass").length != 0) {
-            fillcoscholastic_forclass();   
+            fillcoscholastic_forclass();
             fillClasses_forcoscholastic();
+        }
+
+        if ($("#frmStudentContact").length != 0) {
+            fillClasses_forContact();
         }
     });
     //-------------------------------------------General
@@ -113,6 +117,7 @@ $(function () {
                     $('#labelschState').html(obj.msg_[0].SCH_STATE);
                     $('#labelschCountry').html(obj.msg_[0].SCH_COUNTRY);
                     $('#labelschAffiliation').html(obj.msg_[0].AFFILIATION);
+                    $('#labelschWebsite').html(obj.msg_[0].WEBSITE);
                     $('#labelschRemarks').html(obj.msg_[0].REMARK);
 
                     $('#txtSchID').val(obj.msg_[0].SCH_ID);
@@ -124,6 +129,7 @@ $(function () {
                     $('#txtPDistt').val(obj.msg_[0].SCH_DISITT);
                     $('#txtCountry').val(obj.msg_[0].SCH_COUNTRY);
                     $('#txtaffilation').val(obj.msg_[0].AFFILIATION);
+                    $('#txtwebsite').val(obj.msg_[0].WEBSITE);
                     $('#txtRemark').val(obj.msg_[0].REMARK);
                 } else {
                     $('.submitSchoolData').css({'display': 'block'});
@@ -185,6 +191,7 @@ $(function () {
         $('.txtSchStateEdit').css({'display': 'none'});
         $('.txtSchCountryEdit').css({'display': 'none'});
         $('.txtSchAffiliationEdit').css({'display': 'none'});
+        $('.txtSchWebsiteEdit').css({'display': 'none'});
         $('.txtSchRemarksEdit').css({'display': 'none'});
     });
     $('#editPhoto').click(function () {
@@ -265,6 +272,14 @@ $(function () {
             $('.txtSchAffiliationEdit').css({'display': 'block'});
         } else {
             $('.txtSchAffiliationEdit').css({'display': 'none'});
+        }
+    });
+    $('#editWebsite').click(function () {
+        if ($('.txtSchWebsiteEdit:visible').length == 0)
+        {
+            $('.txtSchWebsiteEdit').css({'display': 'block'});
+        } else {
+            $('.txtSchWebsiteEdit').css({'display': 'none'});
         }
     });
     $('#editRemarks').click(function () {
@@ -1481,10 +1496,10 @@ $(function () {
         });
     }
 
-    function fillAssociatedScholasticItem() {               
+    function fillAssociatedScholasticItem() {
         var str = $('input[type=radio][name=classSch]:checked').attr('id');
         var className = $('#' + str).val();
-        
+
         if ($('#' + str).is(":checked")) {
             url_ = site_url_ + "/exam/get_class_scholastic_in_session/" + str;
             $.ajax({
@@ -1516,7 +1531,7 @@ $(function () {
         }
     }
 
-    $('#fillclass').on('change', '[type=radio]', function (e) {        
+    $('#fillclass').on('change', '[type=radio]', function (e) {
         fillAssociatedScholasticItem();
     });
 
@@ -1555,7 +1570,7 @@ $(function () {
                     if (obj.res_ === false) {
                         callDanger(obj.msg_);
                     } else {
-                        callSuccess(obj.msg_);  
+                        callSuccess(obj.msg_);
                         fillAssociatedScholasticItem();
                     }
                 }, error: function (xhr, status, error) {
@@ -1564,9 +1579,9 @@ $(function () {
             });
         }
     });
-    
+
     function fillCoScholastic_item() {
-        url_ = site_url_ + "/exam/getAllCoScholasticItems";        
+        url_ = site_url_ + "/exam/getAllCoScholasticItems";
         $.ajax({
             type: "POST",
             url: url_,
@@ -1576,8 +1591,8 @@ $(function () {
                     var str_html = '';
                     for (i = 0; i < obj.CoScholastic.length; i++) {
                         str_html = str_html + "<tr class='gradeX'>";
-                        str_html = str_html + "<td>" + obj.CoScholastic[i].coitem + "</td>";                        
-                        str_html = str_html + '<td class="taskOptions">';                        
+                        str_html = str_html + "<td>" + obj.CoScholastic[i].coitem + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip deleteCoScholastic' id='" + obj.CoScholastic[i].coitemID + '~' + obj.CoScholastic[i].coitem + "'><i class='icon-remove'></i></a>";
                         str_html = str_html + '</td>';
                         str_html = str_html + "</tr>";
@@ -1593,11 +1608,11 @@ $(function () {
             }
         });
     }
-    
+
     $('.submitCoScholastic').click(function () {
         if ($('#txtCoScholasticItem').val() === '') {
             callDanger("Please Enter Co-Scholastic Item Name !!");
-            $('#txtCoScholasticItem').focus();       
+            $('#txtCoScholasticItem').focus();
         } else {
             data_ = $('#frmCoScholastic').serializeArray();
             url_ = site_url_ + "/exam/submitCoScholasticItem";
@@ -1619,7 +1634,7 @@ $(function () {
             });
         }
     });
-    
+
     $('body').on('click', '.deleteCoScholastic', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -1644,9 +1659,9 @@ $(function () {
             });
         }
     });
-    
+
     $('body').on('click', '.editCoScholastic', function () {
-        var coscholasticID = this.id;        
+        var coscholasticID = this.id;
         url_ = site_url_ + "/exam/get_coScholastic_for_update/" + coscholasticID;
         $.ajax({
             type: 'POST',
@@ -1654,7 +1669,7 @@ $(function () {
             success: function (data) {
                 var obj = JSON.parse(data);
                 $('#coScholasticID_Edit').val(coscholasticID);
-                $('#txtcoScholasticItem_edit').val(obj.coScholasticitem[0].coitem);                
+                $('#txtcoScholasticItem_edit').val(obj.coScholasticitem[0].coitem);
                 $('#editcoScholasticDiv').css({'display': 'block'});
                 $('#txtcoScholasticItem_edit').focus();
             }, error: function (xhr, status, error) {
@@ -1662,9 +1677,9 @@ $(function () {
             }
         });
     });
-    
+
     function fillcoscholastic_forclass() {
-        url_ = site_url_ + "/exam/getAllCoScholasticItems";        
+        url_ = site_url_ + "/exam/getAllCoScholasticItems";
         $.ajax({
             type: "POST",
             url: url_,
@@ -1684,7 +1699,7 @@ $(function () {
             }
         });
     }
-    
+
     function fillClasses_forcoscholastic() {
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
         $.ajax({
@@ -1700,11 +1715,11 @@ $(function () {
             }
         });
     }
-    
-    function fillAssociatedcoScholasticItem() {               
+
+    function fillAssociatedcoScholasticItem() {
         var str = $('input[type=radio][name=classcoSch]:checked').attr('id');
         var className = $('#' + str).val();
-        
+
         if ($('#' + str).is(":checked")) {
             url_ = site_url_ + "/exam/get_class_coscholastic_in_session/" + str;
             $.ajax({
@@ -1736,10 +1751,10 @@ $(function () {
         }
     }
 
-    $('#fillcoclass').on('change', '[type=radio]', function (e) {        
+    $('#fillcoclass').on('change', '[type=radio]', function (e) {
         fillAssociatedcoScholasticItem();
     });
-    
+
     $('body').on('click', '.Add_coscholastic_class', function () {
         var classsid = $('input[type=radio][name=classcoSch]:checked').attr('id');
         data_ = $('#frmcoScholasticAddClass').serializeArray();
@@ -1761,7 +1776,74 @@ $(function () {
             }
         });
     });
-    
+
+    function fillClasses_forContact() {
+        $('#s2id_stuClassID span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#stuClassID').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                }
+                $('#s2id_stuClassID span').text("Choose Class");
+                $('#stuClassID').html(str_html);
+            }
+        });
+    }
+
+    $('#stuClassID').change(function () {
+        var clssessid = $('#stuClassID').val();
+        var className = $("#stuClassID option:selected").text();
+        url_ = site_url_ + "/master/get_student_detail/" + clssessid;
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.Student.length; i++) {
+                    str_html = str_html + "<tr class='gradeX'>";
+                    str_html = str_html + "<td>" + (i + 1) + "</td>";
+                    str_html = str_html + "<td>" + obj.Student[i].FNAME + "</td>";
+                    str_html = str_html + "<td>" + obj.Student[i].FATHER + "</td>";
+                    str_html = str_html + "<td><input type='text' name='txtB' class='textB' id='txt-" + obj.Student[i].regid + "' value='" + obj.Student[i].MOBILE_S + "'></td>";
+                    str_html = str_html + '<td class="taskOptions">';
+                    str_html = str_html + "<a href='#' class='btn editStudentContact' id='" + obj.Student[i].regid + "'><i class='fa fa-arrow-circle-right fa-lg'></i></a>";
+                    str_html = str_html + '</td>';
+                    str_html = str_html + "</tr>";
+                }
+                $('#tabStudents').html(str_html);
+                $('#exitHeading').html('Student in <span style="color:blue">' + className + '</span>');
+            }
+        });
+    });
+  
+    $('body').on('click', '.editStudentContact', function () {
+        var assoID = this.id;
+        var ida = 'txt-' + assoID;
+        var contactNo = $('#' + ida).val();        
+        url_ = site_url_ + "/master/submitStudentContact/" + assoID + "/" + contactNo;        
+        $.ajax({
+            type: 'POST',
+            url: url_,            
+            success: function (data) {
+                var obj = JSON.parse(data);                
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);                    
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes

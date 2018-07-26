@@ -174,5 +174,14 @@ class Master extends CI_Controller {
         $data['Staff'] = $this->mmm->mgetExistingStaffCategory();
         echo json_encode($data);
     }
-
+    
+    function get_student_detail($clssessid) {
+        $data['Student'] = $this->mmm->mget_student_detail($clssessid);
+        echo json_encode($data);
+    }
+    
+    function submitStudentContact($stuID, $ContactNo) {
+        $data = $this->mmm->msubmitStudentContact($stuID, $ContactNo);
+        echo json_encode($data);
+    }
 }
