@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2018 at 09:21 AM
+-- Generation Time: Jul 26, 2018 at 07:28 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -1763,7 +1763,7 @@ CREATE TABLE IF NOT EXISTS `exam_4_add_coscholastic_to_class` (
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ADDCOSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `exam_4_add_coscholastic_to_class`
@@ -1773,7 +1773,8 @@ INSERT INTO `exam_4_add_coscholastic_to_class` (`ADDCOSCHCLASSID`, `CLSSESSID`, 
 (1, 422, '2017-18', 1, 'nitin', '2017-06-28 05:16:14'),
 (2, 423, '2017-18', 1, 'nitin', '2017-06-28 05:16:14'),
 (6, 422, '2017-18', 5, 'nitin', '2017-06-28 06:39:16'),
-(7, 424, '2017-18', 5, 'nitin', '2017-06-28 06:39:16');
+(7, 424, '2017-18', 5, 'nitin', '2017-06-28 06:39:16'),
+(8, 522, '2018-19', 1, 'nitin', '2018-07-26 05:28:17');
 
 -- --------------------------------------------------------
 
@@ -2149,7 +2150,7 @@ CREATE TABLE IF NOT EXISTS `fee_4_flexible_heads` (
   `USERNAME` varchar(100) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`FLX_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `fee_4_flexible_heads`
@@ -5518,6 +5519,7 @@ CREATE TABLE IF NOT EXISTS `master_17_general` (
   `SCH_STATE` varchar(100) NOT NULL,
   `SCH_COUNTRY` varchar(100) NOT NULL,
   `AFFILIATION` varchar(1000) NOT NULL,
+  `WEBSITE` varchar(200) NOT NULL,
   `REMARK` varchar(1000) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME` varchar(20) NOT NULL,
@@ -5528,8 +5530,8 @@ CREATE TABLE IF NOT EXISTS `master_17_general` (
 -- Dumping data for table `master_17_general`
 --
 
-INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`, `SCH_EMAIL`, `SCH_ADD`, `SCH_CITY`, `SCH_DISITT`, `SCH_STATE`, `SCH_COUNTRY`, `AFFILIATION`, `REMARK`, `DATE_`, `USERNAME`) VALUES
-(4, '4.png', 'G.D.J. Memorial Public School', '9410713666, 9917417797', 'gdjmpublicschoolchorgaliya@gmail.com', 'Naya Gaon Katan', 'Chorgaliya', 'Nainital', 'UTTARAKHAND', 'INDIA', '3530484', 'A CBSE New Delhi affiliated Co-Educational English Medium School', '2018-07-18 17:31:14', 'nitin');
+INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`, `SCH_EMAIL`, `SCH_ADD`, `SCH_CITY`, `SCH_DISITT`, `SCH_STATE`, `SCH_COUNTRY`, `AFFILIATION`, `WEBSITE`, `REMARK`, `DATE_`, `USERNAME`) VALUES
+(4, '4.png', 'G.D.J. Memorial Public School', '9410713666, 9917417797', 'gdjmpublicschoolchorgaliya@gmail.com', 'Naya Gaon Katan', 'Chorgaliya', 'Nainital', 'UTTARAKHAND', 'INDIA', '3530484', 'https://www.teamfreelancers.com', 'A CBSE New Delhi affiliated Co-Educational English Medium School', '2018-07-26 05:23:54', 'nitin');
 
 -- --------------------------------------------------------
 
@@ -5596,9 +5598,9 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (11, 'fa fa-user', 'Pay Fee', 'web/dashboard/6/13/payfee', 7, 6),
 (12, 'fa fa-user', 'New Attendance', 'web/dashboard/7/16/add_attendance', 1, 7),
 (13, 'fa fa-user', 'View Consolidate', 'web/dashboard/7/17/view_consolidate', 2, 7),
-(14, 'fa fa-user', 'Subject Marks', 'marks/subjectmarks', 8, 8),
-(15, 'fa fa-money', 'Scholastic items', 'scholastic/index', 1, 8),
-(16, 'fa fa-money', 'Co-Scholastic items', 'scholastic/co_scholastic', 2, 8),
+(14, 'fa fa-user', 'Subject Marks', 'web/dashboard/8/20/subjectmarks', 8, 8),
+(15, 'fa fa-money', 'Scholastic items', 'web/dashboard/8/21/scholasticItems', 1, 8),
+(16, 'fa fa-money', 'Co-Scholastic items', 'web/dashboard/8/22/CoScholasticItem', 2, 8),
 (17, 'fa fa-money', 'Input Result', 'marks/input_result', 3, 8),
 (18, 'fa fa-sitemap', 'Prepare Result', 'marks/prepare_result', 3, 8),
 (19, 'fa fa-book', 'Register Students', 'reports/registered_students', 3, 9),

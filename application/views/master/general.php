@@ -234,6 +234,30 @@
                                 </div>
                             </td>   
                         </tr>
+                        
+                        <tr>
+                            <td>Website</td>
+                            <td class="taskOptions"><i class="icon-edit" style="color: #ff3333;cursor:pointer;" id="editWebsite"></i></td>
+                            <td>
+                                <div id="labelschWebsite"></div>
+                                <div class="txtSchWebsiteEdit" style="display:none;">                        
+                                    <?php
+                                    $data = array(
+                                        'type' => 'text',
+                                        'class' => "span11",
+                                        'placeholder' => 'Website',
+                                        'autocomplete' => 'off',
+                                        'required' => 'required',
+                                        'name' => 'txtwebsite',                                        
+                                        'id' => 'txtwebsite',
+                                        'value' => ''
+                                    );
+                                    echo form_input($data);
+                                    ?>         
+                                    <input type="button" value="update" class="btn btn-warning updateMe"/>
+                                </div>
+                            </td>   
+                        </tr>
 
                         <tr>
                             <td>Remarks</td>
@@ -447,6 +471,25 @@
                                 'required' => 'required',
                                 'name' => 'txtaffilation1',                                
                                 'id' => 'txtaffilation1',
+                                'value' => ''
+                            );
+                            echo form_input($data);
+                            ?>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Website</label>
+                        <div class="controls">    
+                            <?php
+                            $data = array(
+                                'type' => 'text',
+                                'class' => "span11",
+                                'placeholder' => 'Website',
+                                'autocomplete' => 'off',
+                                'required' => 'required',
+                                'name' => 'txtwebsite1',                                
+                                'id' => 'txtwebsite1',
                                 'value' => ''
                             );
                             echo form_input($data);

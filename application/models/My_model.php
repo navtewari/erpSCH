@@ -8,11 +8,11 @@ class My_model extends CI_Model {
         parent::__construct();
         $this->my_library->changeDB();
         // Exceptional Handling
-            $this->load->model('My_error_model', 'error');
+        $this->load->model('My_error_model', 'error');
         // --------------------
-    }    
+    }
 
-    function authenticate(){
+    function authenticate() {
         $this->db->select('a.*, b.name, b.CATEGORY_ID');
         $this->db->where('a.USERNAME_', $this->input->post('txtUser__'));
         $this->db->where('a.PASSWORD_', $this->input->post('txtPwd__'));
@@ -28,7 +28,7 @@ class My_model extends CI_Model {
             $this->session->set_userdata('_status_', $row_->CATEGORY_ID);
             $this->session->set_userdata('_current_year___', $this->input->post('cmbSession'));
             $sess_ = explode("-", $this->input->post('cmbSession'));
-            $prevSess = ($sess_[0]-1)."-".($sess_[1]-1);
+            $prevSess = ($sess_[0] - 1) . "-" . ($sess_[1] - 1);
             $this->session->set_userdata('_previous_year___', $prevSess);
             $flag_ = true;
         } else {
@@ -39,8 +39,8 @@ class My_model extends CI_Model {
         return $flag_;
     }
 
-    function changepwd(){
-        if($this->session->userdata('pwd_count') <= 3){
+    function changepwd() {
+        if ($this->session->userdata('pwd_count') <= 3) {
             $old_pwd = $this->input->post('old_pwd');
             $new_pwd = $this->input->post('new_pwd');
 
@@ -52,43 +52,42 @@ class My_model extends CI_Model {
             $this->db->where('PASSWORD_', $old_pwd);
             $query = $this->db->get('login', $data);
 
-            if($query->num_rows() != 0){
+            if ($query->num_rows() != 0) {
                 $this->db->where('USERNAME_', $this->session->userdata('_user___'));
                 $this->db->where('PASSWORD_', $old_pwd);
                 $query = $this->db->update('login', $data);
 
-                $bool_ = array('res_'=>TRUE, 'msg_' => '<div style="color: #009000;">Password changed successfully</div>');
+                $bool_ = array('res_' => TRUE, 'msg_' => '<div style="color: #009000;">Password changed successfully</div>');
                 $this->session->unset_userdata('pwd_count');
             } else {
-                $bool_ = array('res_'=>FALSE, 'msg_' => 'Your old credentials are not matching. Please try again!!!');
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Your old credentials are not matching. Please try again!!!');
             }
         } else {
-            $bool_ = array('res_'=>FALSE, 'msg_' => 'All three chances over.');
+            $bool_ = array('res_' => FALSE, 'msg_' => 'All three chances over.');
         }
 
         return $bool_;
     }
-    
 
-    function getsessions(){
+    function getsessions() {
         $this->db->order_by('SESSSTART', 'desc');
         $query = $this->db->get('master_6_session');
 
         return $query->result();
-
     }
-    
-    function getmenu($status=''){
+
+    function getmenu($status = '') {
         $this->db->select('a.*, b.USER_');
         $this->db->from('menu_1 a');
         $this->db->join('user_menu b', 'a.ID_= b.MENU');
         $this->db->where('b.USER_', $status);
         $query = $this->db->get();
-        
+
 
         return $query->result();
     }
-    function getsubmenu(){
+
+    function getsubmenu() {
         $query = $this->db->get('menu_2_submenu');
         return $query->result();
     }
@@ -102,13 +101,13 @@ class My_model extends CI_Model {
         } else {
             $reg___ = 0;
         }
-        
+
         return $reg___;
     }
 
-    function get_profile(){
+    function get_profile() {
         $q = $this->db->get('master_17_general');
-        if($q->num_rows() == 1){
+        if ($q->num_rows() == 1) {
             $r = $q->row();
             $data = array(
                 'logo' => $r->SCH_LOGO,
@@ -117,13 +116,13 @@ class My_model extends CI_Model {
                 'sch_email' => $r->SCH_EMAIL,
                 'sch_addr' => $r->SCH_ADD,
                 'sch_city' => $r->SCH_CITY,
-                'sch_distt'=> $r->SCH_DISITT,
-                'sch_state'=>$r->SCH_STATE,
-                'sch_country'=>$r->SCH_COUNTRY,
-                'affiliation'=>$r->AFFILIATION,
+                'sch_distt' => $r->SCH_DISITT,
+                'sch_state' => $r->SCH_STATE,
+                'sch_country' => $r->SCH_COUNTRY,
+                'affiliation' => $r->AFFILIATION,
                 'remark' => $r->REMARK,
-                'date_'=>$r->DATE_,
-                'username'=>$r->USERNAME
+                'date_' => $r->DATE_,
+                'username' => $r->USERNAME
             );
         } else {
             $data = array(
@@ -133,17 +132,15 @@ class My_model extends CI_Model {
                 'sch_email' => 'temp@gmail.com',
                 'sch_addr' => 'x',
                 'sch_city' => 'x',
-                'sch_distt'=> 'x',
-                'sch_state'=> 'x',
-                'sch_country'=>'x',
-                'affiliation'=>'x',
+                'sch_distt' => 'x',
+                'sch_state' => 'x',
+                'sch_country' => 'x',
+                'affiliation' => 'x',
                 'remark' => 'x',
-                'date_'=>'x',
-                'username'=>'x'
+                'date_' => 'x',
+                'username' => 'x'
             );
         }
         return $data;
-    }
-    
+    }    
 }
-
