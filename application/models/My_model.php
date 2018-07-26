@@ -120,6 +120,7 @@ class My_model extends CI_Model {
                 'sch_state' => $r->SCH_STATE,
                 'sch_country' => $r->SCH_COUNTRY,
                 'affiliation' => $r->AFFILIATION,
+                'website' => $r->WEBSITE,
                 'remark' => $r->REMARK,
                 'date_' => $r->DATE_,
                 'username' => $r->USERNAME
@@ -136,6 +137,7 @@ class My_model extends CI_Model {
                 'sch_state' => 'x',
                 'sch_country' => 'x',
                 'affiliation' => 'x',
+                'website' => 'x',
                 'remark' => 'x',
                 'date_' => 'x',
                 'username' => 'x'
