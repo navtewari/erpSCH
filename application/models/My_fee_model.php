@@ -260,7 +260,7 @@ class My_fee_model extends CI_Model {
             $query = $this->db->insert('fee_6_invoice_detail', $data1);
             if($query == true){
                 $data['bool__'] = 1; // Invoice Successfully generated
-
+                $data['total_amount_due'] = $total_amount_due;
                 $data['invdetid'] = $this->db->insert_id();
                 // Updation: Disable the previous invoice
                     if($prevInvoice_result == true){

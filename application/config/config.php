@@ -21,7 +21,7 @@ date_default_timezone_set('Asia/Kolkata');
 */
 $config['base_url'] = 'http://localhost/erpSCH';
 
-define('JS_VERSION_NITIN', 1.84);
+define('JS_VERSION_NITIN', 1.86);
 define('_NITIN_IMG_VERSION_', 1.0);
 
 define('JS_VERSION_NAVEEN', 1.5);

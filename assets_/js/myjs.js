@@ -1553,26 +1553,26 @@ $(function(){
 												                        if(objreceipt.fetch_invoice_for_receipt[index].STATUS == 1){
 												                        	var due_amount = objreceipt.fetch_invoice_for_receipt[index].DUE_AMOUNT;
 												                            if(due_amount <= 0){
-												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
+												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><i class='icon-play' style='color: #DE9797'></i></td>";
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><a href='"+site_url_+"/fee/print_latest_receipt/"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee~"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"'></i></span></a></td>";
 												                            } else {
-												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important'><span class='red_' title='"+due_amount+"'>"+due_amount+"</span></td>";
+												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='red_' title='"+due_amount+"'>"+due_amount+"</span></td>";
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='payFee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"_"+regid_+"_outer'><i class='icon-play myreceipt_from_invoice' id='payFee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"_"+regid_+"' style='color: #ff0000'></i></td>";
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='print_fee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"_outer'><a href='"+site_url_+"/fee/print_latest_receipt/"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"'></i></span></a></td>";
 												                            }
 												                    	} else {
-												                    		str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important'><span class='dimtext' title='NA'></span></td>";
+												                    		str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='dimtext' title='NA'></span></td>";
 												                        	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><i class='icon-remove' style='color: #DE9797'></i></td>";
 												                        	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><i class='icon-remove' style='color: #DE9797'></i></td>";
 												                    	}
 												                	} else {
-												                		str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important'><span class='dimtext' title='NA'></span></td>";
+												                		str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='dimtext' title='NA'></span></td>";
 												                		str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='payFee_"+regid_+"_to_hold'></td>";
 												                		str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='print_fee_"+regid_+"_to_hold'><i class='icon-print' style='color: #a0a0a0'></i></td>";
 												                	}
 												                } else {
-												                	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important'><span class='dimtext' title='NA'></span></td>";
+												                	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='dimtext' title='NA'></span></td>";
 												                	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='payFee_"+regid_+"_to_hold'></td>";
 												                	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='print_fee_"+regid_+"_to_hold'><i class='icon-print' style='color: #a0a0a0'></i></td>";
 												                }
@@ -1583,7 +1583,7 @@ $(function(){
 								                        str_html = str_html + "<tr class='gradeX'>";
 							                            str_html = str_html + "<td colspan='5' style='text-align: right !important'>Total Fee for the class</td>";
 														str_html = str_html + "<td style='text-align: right !important; color: #0000ff; font-weight: bold'>"+total_amount_for_class+"</td>";
-							                            str_html = str_html + "<td colspan='4'></td>";
+							                            str_html = str_html + "<td colspan='5'></td>";
 							                            str_html = str_html + "</tr>";
 
 							                            str_html = str_html + '</tbody>';
@@ -1639,8 +1639,9 @@ $(function(){
             			$('#'+regid_+"_for_invoice_print").html("<a href='"+site_url_+"/fee/print_invoice/"+obj.invdetid+"/"+$class__+"' target='_blank'><span class='print_invoice'><i class='icon-print' title='Print Invoice'></i></span></a>");
             			$('#place_for_undo_'+regid_).html("<span class='payFee'><i class='icon-undo undoinvoice' title='Undo Invoice' id='undoinvoice_"+obj.invdetid+"_"+regid_+"_"+$class__+"'></i></span>");
 
+            			$('#dueAmt_'+regid_).html("<span class='red_' title='"+obj.total_amount_due+"'>"+obj.total_amount_due+"</span>");
             			$('#payFee_'+regid_+'_to_hold').html("<i class='icon-play myreceipt_from_invoice' id='payFee_"+obj.invdetid+"_"+regid_+"' style='color: #ff0000'></i>");
-						$('#print_fee_'+regid_+'_to_hold').html("<a href='"+site_url_+"/fee/print_latest_receipt/"+obj.invdetid+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee_"+obj.invdetid+"'></i></span></a>");
+						$('#print_fee_'+regid_+'_to_hold').html("<span><i class='icon-print' style='color: #a0a0a0'></i></span>");
 
 						var new_id_for_payFee  = 'payFee_'+obj.invdetid+'_'+regid_+'_outer';
 						$('#payFee_'+regid_+'_to_hold').attr("id", new_id_for_payFee);
@@ -1672,7 +1673,7 @@ $(function(){
 
 						$('#payFee_'+invdetid+'_'+regid_+'_outer').html('');
 						$('#print_fee_'+invdetid+'_outer').html('');
-
+						$('#dueAmt_'+regid_).html('');
 						var new_id = 'payFee_'+regid_+'_to_hold';
 						$('#payFee_'+invdetid+'_'+regid_+'_outer').attr("id", new_id);
 
