@@ -783,7 +783,7 @@ $(function () {
                         for (i = 0; i < obj.class_subject.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
                             str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.class_subject[i].subName + "</b></td>";
-                            str_html = str_html + "<td><input type='text' name='txtSub' class='span7 txtSubject' id='txt-" + obj.class_subject[i].subjectID + "' value='" + obj.class_subject[i].priority + "'></td>";
+                            str_html = str_html + "<td><input type='text' name='txtSub' class='span7 txtPriority' id='txt-" + obj.class_subject[i].subjectID + "' value='" + obj.class_subject[i].priority + "'></td>";
                             str_html = str_html + '<td class="taskOptions">';
                             str_html = str_html + "<a href='#' class='tip deleteSubject' id='" + obj.class_subject[i].subjectID + "~" + obj.class_subject[i].subName + "'><i class='icon-remove'></i></a>";
                             str_html = str_html + '</td>';
@@ -835,35 +835,7 @@ $(function () {
                 }
             });
         }
-    });
-
-    $(document).on('keyup', "input[type='text']", function () {        
-        if ($(this).attr('id') !== "txtSubject") {
-            var priority = $(this).val();
-            var subID = $(this).attr('id');
-
-            var arr_str = subID.split('-');
-            var subjectID = arr_str[1];
-
-            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;
-
-            $.ajax({
-                type: 'POST',
-                url: url_,
-                success: function (data) {
-                    var obj = JSON.parse(data);
-                    if (obj.res_ === false) {
-                        callDanger(obj.msg_);
-                    } else {
-                        callSuccess(obj.msg_);
-                        fillClassSubjectinTable();
-                    }
-                }, error: function (xhr, status, error) {
-                    callSuccess(xhr.responseText);
-                }
-            });
-        }
-    });
+    });    
 
     $('body').on('click', '.deleteSubject', function () {
         var str = this.id;
@@ -1367,6 +1339,7 @@ $(function () {
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
+                        str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtschoPriority' id='txt-" + obj.Scholastic[i].itemID + "' value='" + obj.Scholastic[i].priority + "'></td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
                         str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + '~' + obj.Scholastic[i].item + "'><i class='icon-remove'></i></a>";
@@ -1626,6 +1599,7 @@ $(function () {
                     for (i = 0; i < obj.CoScholastic.length; i++) {
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.CoScholastic[i].coitem + "</td>";
+                        str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtcoschoPriority' id='txt-" + obj.CoScholastic[i].coitemID + "' value='" + obj.CoScholastic[i].priority + "'></td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip deleteCoScholastic' id='" + obj.CoScholastic[i].coitemID + '~' + obj.CoScholastic[i].coitem + "'><i class='icon-remove'></i></a>";
                         str_html = str_html + '</td>';
@@ -1877,6 +1851,84 @@ $(function () {
                 callDanger(xhr.responseText);
             }
         });
+    });
+    
+    $(document).on('keyup', "input[type='text']", function () {            
+        if ($(this).attr('class') === "span7 txtPriority") {
+            var priority = $(this).val();
+            var subID = $(this).attr('id');
+
+            var arr_str = subID.split('-');
+            var subjectID = arr_str[1];
+
+            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillClassSubjectinTable();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }else if ($(this).attr('class') === "span9 txtschoPriority") {            
+            var priority = $(this).val();
+            var scholasticID = $(this).attr('id');
+
+            var arr_str = scholasticID.split('-');
+            var schoID = arr_str[1];
+
+            url_ = site_url_ + "/exam/setSchoPriority/" + schoID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillScholastic_item();
+                        fillscholastic_forclass();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }else if ($(this).attr('class') === "span9 txtcoschoPriority") {            
+            var priority = $(this).val();
+            var coscholasticID = $(this).attr('id');
+
+            var arr_str = coscholasticID.split('-');
+            var coschoID = arr_str[1];
+
+            url_ = site_url_ + "/exam/setcoSchoPriority/" + coschoID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillCoScholastic_item();
+                        fillcoscholastic_forclass
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------

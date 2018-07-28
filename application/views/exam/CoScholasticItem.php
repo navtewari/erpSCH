@@ -57,11 +57,12 @@
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                                 <h5 id="exitHeading">Co-Scholastic items already present</h5>
                             </div>
-                            <div class="widget-content nopadding" style="height:200px; overflow: scroll">
+                            <div class="widget-content nopadding" style="height:300px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
-                                            <th style="text-align:left;width:40%">Co-Scholastic Item</th>                                            
+                                            <th style="text-align:left;width:55%">Co-Scholastic Item</th> 
+                                            <th style="text-align: center">Priority</th>  
                                             <th style="text-align: center">Actions</th>         
                                         </tr>
                                     </thead>
