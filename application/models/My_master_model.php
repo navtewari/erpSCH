@@ -8,7 +8,7 @@ class My_Master_model extends CI_Model {
         parent::__construct();
         $this->my_library->changeDB();
         // Exceptional Handling
-            $this->load->model('My_error_model', 'error');
+        $this->load->model('My_error_model', 'error');
         // --------------------
     }
 
@@ -259,7 +259,7 @@ class My_Master_model extends CI_Model {
             $this->db->where('CLASSID', $item);
             $this->db->where('SESSID', $year__);
             $query = $this->db->get('class_2_in_session');
-            if($query->num_rows() == 0){
+            if ($query->num_rows() == 0) {
                 $data = array(
                     'CLASSID' => $item,
                     'SESSID' => $year__,
@@ -268,7 +268,7 @@ class My_Master_model extends CI_Model {
                 );
                 $query = $this->db->insert('class_2_in_session', $data);
                 if ($query == TRUE) {
-                    if($class_updated !=''){
+                    if ($class_updated != '') {
                         $class_updated = $class_updated . ", " . $item;
                     } else {
                         $class_updated = $item;
@@ -277,8 +277,8 @@ class My_Master_model extends CI_Model {
                 }
             }
         }
-        if($count_ != 0){
-            $bool_ = array('res_' => TRUE, 'msg_' => 'Record successfully updated.<br>'.$class_updated);
+        if ($count_ != 0) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Record successfully updated.<br>' . $class_updated);
         } else {
             $bool_ = array('res_' => TRUE, 'msg_' => 'Something goes wrong or class <span style="color: #0000ff; font-weight: bold"> </span> is already exists. Please check and try again.');
         }
@@ -374,81 +374,56 @@ class My_Master_model extends CI_Model {
 
     function get_subject_in_class($classID) {
         $this->db->where('classID', $classID);
-        $this->db->order_by('subName', 'Asc');
-        $this->db->order_by('status', 'desc');
+        $this->db->order_by('priority', 'asc');
         $query = $this->db->get('master_12_subject');
         return $query->result();
     }
 
-    function mcreate_subject() {
-        $classID = $this->input->post('subClassID');
+    function mcreate_subject($classID) {
         $subName = $this->input->post('txtSubject');
-        $stTH = $this->input->post('chkSubStatusTH');
-        $stPR = $this->input->post('chkSubStatusPR');
 
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('classID', $classID);
-
         $this->db->where('subName', $subName);
-        if ($stTH != '' && $stPR == '') {
-            $whereQ = "status='$stTH'";
-            $status = $stTH;
-        } else if ($stPR != '' && $stTH == '') {
-            $whereQ = "status='$stPR'";
-            $status = $stPR;
-        } else if ($stTH != '' && $stPR != '') {
-            $whereQ = "(status='$stTH' OR status='$stPR')";
-            $status = 1;
-        }
 
-        $this->db->where($whereQ);
         $query = $this->db->get('master_12_subject');
-        // echo $this->db->last_query();
-        // echo "<br>".$query->num_rows();
-        // exit();
-
 
         if ($query->num_rows() != 0) {
-            $bool_ = array('res_' => TRUE, 'msg_' => 'This Subject with selected status already present for this Class');
+            $bool_ = array('res_' => FALSE, 'msg_' => 'This Subject is already Associated for this Class');
         } else {
 
-            if ($status != 1) {
-                $data = array(
-                    'subName' => $subName,
-                    'classID' => $classID,
-                    'status' => $status,
-                    'SESSID' => $this->session->userdata('_current_year___')
-                );
+            $data = array(
+                'subName' => $subName,
+                'classID' => $classID,
+                'SESSID' => $this->session->userdata('_current_year___')
+            );
 
-                $query = $this->db->insert('master_12_subject', $data);
-            } else {
-                //theory--------------------------------------------------
-                $data = array(
-                    'subName' => $subName,
-                    'classID' => $classID,
-                    'status' => $stTH,
-                    'SESSID' => $this->session->userdata('_current_year___')
-                );
-
-                $query = $this->db->insert('master_12_subject', $data);
-
-                //practical-----------------------------------------------
-                $data = array(
-                    'subName' => $subName,
-                    'classID' => $classID,
-                    'status' => $stPR,
-                    'SESSID' => $this->session->userdata('_current_year___')
-                );
-
-                $query = $this->db->insert('master_12_subject', $data);
-            }
+            $query = $this->db->insert('master_12_subject', $data);
 
             if ($query == TRUE) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Subject created Successfully');
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Subject Created and Associated Successfully');
             } else {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }
         }
+
+        return $bool_;
+    }
+
+    function msetSubjectPriority($subID, $priority) {
+        $data = array(
+            'priority' => $priority,
+        );
+
+        $this->db->where('subjectID', $subID);
+        $query = $this->db->update('master_12_subject', $data);
+       
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Subject Priority Updated');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
+        }
+        
         return $bool_;
     }
 
@@ -522,7 +497,7 @@ class My_Master_model extends CI_Model {
         return $bool_;
     }
 
-    function mdelete_teacher($tID) {        
+    function mdelete_teacher($tID) {
         $this->db->where('teacherID', $tID);
         $query = $this->db->get('master_14_teacher_wise_subject');
 
@@ -792,8 +767,8 @@ class My_Master_model extends CI_Model {
         }
         return $path_;
     }
-    
-    function mget_student_detail($clssessid) {              
+
+    function mget_student_detail($clssessid) {
         $this->db->select('a.regid, a.FNAME, a.FATHER, c.CLASSID, b.clssessid, b.ID_, d.regid, d.MOBILE_S');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -805,22 +780,22 @@ class My_Master_model extends CI_Model {
 
         return $query->result();
     }
-    
-    function msubmitStudentContact($stuID, $ContactNo){
-            $data = array(
-                'MOBILE_S' => $ContactNo,                
-            );
 
-            $this->db->where('regid', $stuID);
-            $query = $this->db->update('master_10_stud_contact', $data);   
-                                    
-            if ($query == TRUE) {
-                $bool_ = array('res_' => TRUE, 'msg_' => 'Contact Updated Successfully');
-            } else {
-                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
-            }
-            
-            return $bool_;
+    function msubmitStudentContact($stuID, $ContactNo) {
+        $data = array(
+            'MOBILE_S' => $ContactNo,
+        );
+
+        $this->db->where('regid', $stuID);
+        $query = $this->db->update('master_10_stud_contact', $data);
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Contact Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
     }
 
 }

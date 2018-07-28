@@ -105,8 +105,13 @@ class Master extends CI_Controller {
         echo json_encode($data);
     }
 
-    function submitSubject() {
-        $data = $this->mmm->mcreate_subject();
+    function submitSubject($classID) {
+        $data = $this->mmm->mcreate_subject($classID);
+        echo json_encode($data);
+    }
+    
+    function setSubjectPriority($subID, $priority){
+        $data = $this->mmm->msetSubjectPriority($subID, $priority);
         echo json_encode($data);
     }
 
