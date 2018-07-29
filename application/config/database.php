@@ -97,7 +97,7 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-$db['default-sunbeam'] = array(
+$db['default-folder'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
@@ -119,8 +119,7 @@ $db['default-sunbeam'] = array(
 	'save_queries' => TRUE
 );
 
-$db['default-gdjm'] = array(
-
+$db['default-folder'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
@@ -141,4 +140,5 @@ $db['default-gdjm'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
 $ci->load->database($db[$active_group]);

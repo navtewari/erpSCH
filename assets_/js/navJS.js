@@ -105,7 +105,7 @@ $(function () {
                     $('.submitSchoolData').css({'display': 'none'});
                     $('.editSchoolData').css({'display': 'block'});
                     $('#schoolLogo').attr("src", '');
-                    logo = base_url_ + 'assets_/logo/' + obj.msg_[0].SCH_LOGO;
+                    logo = base_url_ + 'assets_/logo/' + obj.msg_[0].SCH_LOGO + "?ver=1.5";
                     $('#schoolLogo').attr("src", logo);
 
                     $('#labelschName').html(obj.msg_[0].SCH_NAME);
