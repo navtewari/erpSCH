@@ -80,6 +80,7 @@
                                         <tr>                                   
                                             <th style="text-align:left;width:40%">Scholastic Item</th>
                                             <th style="text-align:left;width:40%">Allotted Marks</th>                                           
+                                            <th style="text-align: center">Priority</th>         
                                             <th style="text-align: center">Actions</th>         
                                         </tr>
                                     </thead>

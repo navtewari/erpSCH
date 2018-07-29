@@ -37,6 +37,7 @@ $(function () {
 
         if ($("#frmSubject").length != 0) {
             fillClasses_subject();
+            fillClassSubjectinTable()
         }
 
         if ($("#frmSubjectMarks").length != 0) {
@@ -432,6 +433,7 @@ $(function () {
             });
         }
     });
+
     $('body').on('click', '.editClasses', function () {
         var classid = this.id;
         url_ = site_url_ + "/master/get_Class_for_update/" + classid;
@@ -453,9 +455,11 @@ $(function () {
             }
         });
     });
+
     $('body').on('click', '.classUpdateCancel', function () {
         $('#editClass').css({'display': 'none'});
     });
+
     $('body').on('click', '.classUpdate', function () {
         var classid = $('#txtEditClass_ID').val();
         if ($('#txtEditClass_').val() == '') {
@@ -748,72 +752,72 @@ $(function () {
 //-----------------------------------------------------------------------
 //------------------------------------subject--------------------------------
     function fillClasses_subject() {
-        $('#s2id_subClassID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
-        $('#subClassID').empty();
         $.ajax({
             type: "POST",
             url: url_,
             success: function (data) {
                 var obj = JSON.parse(data);
                 var str_html = '';
-                str_html = str_html + "<option value=''>Choose Class</option>";
                 for (i = 0; i < obj.class_in_session.length; i++) {
-                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLASSID + "'>Class " + obj.class_in_session[i].CLASSID + "</option>";
+                    str_html = str_html + "<input type='radio' name='classcoSub' class='span2' id='" + obj.class_in_session[i].CLSSESSID + "' value='" + obj.class_in_session[i].CLASSID + "'> <b>Class " + obj.class_in_session[i].CLASSID + "</b><br>";
                 }
-                $('#s2id_subClassID span').text("Choose Class");
-                $('#subClassID').html(str_html);
+                $('#fillclassforSub').html(str_html);
             }
         });
     }
 
-    $('#subClassID').change(function () {
-        fillSubjectinTable();
+    function fillClassSubjectinTable() {
+        var classID = $('input[type=radio][name=classcoSub]:checked').attr('id');
+        var className = $('#' + classID).val();
+
+        if ($('#' + classID).is(":checked")) {
+            url_ = site_url_ + "/master/getClassSubject/" + className;
+            $.ajax({
+                type: "POST",
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    var str_html = '';
+                    if (obj.class_subject.length > 0) {
+                        for (i = 0; i < obj.class_subject.length; i++) {
+                            str_html = str_html + "<tr class='gradeX'>";
+                            str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.class_subject[i].subName + "</b></td>";
+                            str_html = str_html + "<td><input type='text' name='txtSub' class='span7 txtPriority' id='txt-" + obj.class_subject[i].subjectID + "' value='" + obj.class_subject[i].priority + "'></td>";
+                            str_html = str_html + '<td class="taskOptions">';
+                            str_html = str_html + "<a href='#' class='tip deleteSubject' id='" + obj.class_subject[i].subjectID + "~" + obj.class_subject[i].subName + "'><i class='icon-remove'></i></a>";
+                            str_html = str_html + '</td>';
+                            str_html = str_html + "</tr>";
+                        }
+                        $('#fillAssociatedSubject').html(str_html);
+                        $('#exitHeading1').html('Subjects Associated with Class ' + className);
+                    } else {
+                        $('#exitHeading1').html('No Subject is Associated with Class ' + className);
+                        $('#fillAssociatedSubject').html("<td colspan='3'><font color='red'>NO Subject is Associated with Class " + className + "</font></td>");
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    }
+
+    $('#fillclassforSub').on('change', '[type=radio]', function (e) {
+        fillClassSubjectinTable();
     });
 
-    function fillSubjectinTable() {
-        var classID = $('#subClassID').val();
-        var className = $("#subClassID option:selected").text();
-        url_ = site_url_ + "/master/getClassSubject/" + classID;
-        $.ajax({
-            type: "POST",
-            url: url_,
-            success: function (data) {
-                var obj = JSON.parse(data);
-                var str_html = '';
-                if (obj.class_subject.length > 0) {
-                    for (i = 0; i < obj.class_subject.length; i++) {
-                        str_html = str_html + "<tr class='gradeX'>";
-                        str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.class_subject[i].subName + "</b></td>";
-                        str_html = str_html + "<td class='taskOptions'><b>" + obj.class_subject[i].status + "</b></td>";
-                        str_html = str_html + '<td class="taskOptions">';
-                        str_html = str_html + "<a href='#' class='tip deleteSubject' id='" + obj.class_subject[i].subjectID + '~' + obj.class_subject[i].subName + "'><i class='icon-remove'></i></a>";
-                        str_html = str_html + '</td>';
-                        str_html = str_html + "</tr>";
-                    }
-                    $('#tabSubjects').html(str_html);
-                    $('#exitHeading').html('Existing Subjects for ' + className);
-                } else {
-                    $('#exitHeading').html('Existing Subjects for ' + className);
-                    $('#tabSubjects').html("<td colspan='3'><font color='red'>NO Subject Present </font></td>");
-                }
-            }
-        });
-    }
 
     $('.subjectSubmit').click(function () {
-        if ($('#subClassID').val() === '') {
+        var classID = $('input[type=radio][name=classcoSub]:checked').attr('id');
+        var className = $('#' + classID).val();
+        if (className === undefined) {
             callDanger("Please Select Class !!");
-            $('#subClassID').focus();
         } else if ($('#txtSubject').val() === '') {
             callDanger("Please Enter Subject Name !!");
             $('#txtSubject').focus();
-        } else if ($("#chkSubStatusTH").prop("checked") == false && $("#chkSubStatusPR").prop("checked") == false) {
-            callDanger("Please Check Subject Status !!");
-            $('#chkSubStatusTH').focus();
         } else {
             data_ = $('#frmSubject').serializeArray();
-            url_ = site_url_ + "/master/submitSubject";
+            url_ = site_url_ + "/master/submitSubject/" + className;
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -824,14 +828,15 @@ $(function () {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillSubjectinTable();
+                        fillClassSubjectinTable();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
                 }
             });
         }
-    });
+    });    
+
     $('body').on('click', '.deleteSubject', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -848,7 +853,7 @@ $(function () {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillSubjectinTable();
+                        fillClassSubjectinTable();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1106,6 +1111,7 @@ $(function () {
             });
         }
     });
+
     function fillClasses_teacher() {
         $('#s2id_subClassTeacherID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -1333,6 +1339,7 @@ $(function () {
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
+                        str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtschoPriority' id='txt-" + obj.Scholastic[i].itemID + "' value='" + obj.Scholastic[i].priority + "'></td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
                         str_html = str_html + "<a href='#' class='tip deleteScholastic' id='" + obj.Scholastic[i].itemID + '~' + obj.Scholastic[i].item + "'><i class='icon-remove'></i></a>";
@@ -1592,6 +1599,7 @@ $(function () {
                     for (i = 0; i < obj.CoScholastic.length; i++) {
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.CoScholastic[i].coitem + "</td>";
+                        str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtcoschoPriority' id='txt-" + obj.CoScholastic[i].coitemID + "' value='" + obj.CoScholastic[i].priority + "'></td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip deleteCoScholastic' id='" + obj.CoScholastic[i].coitemID + '~' + obj.CoScholastic[i].coitem + "'><i class='icon-remove'></i></a>";
                         str_html = str_html + '</td>';
@@ -1823,26 +1831,104 @@ $(function () {
             }
         });
     });
-  
+
     $('body').on('click', '.editStudentContact', function () {
         var assoID = this.id;
         var ida = 'txt-' + assoID;
-        var contactNo = $('#' + ida).val();        
-        url_ = site_url_ + "/master/submitStudentContact/" + assoID + "/" + contactNo;        
+        var contactNo = $('#' + ida).val();
+        url_ = site_url_ + "/master/submitStudentContact/" + assoID + "/" + contactNo;
         $.ajax({
             type: 'POST',
-            url: url_,            
+            url: url_,
             success: function (data) {
-                var obj = JSON.parse(data);                
+                var obj = JSON.parse(data);
                 if (obj.res_ === false) {
                     callDanger(obj.msg_);
                 } else {
-                    callSuccess(obj.msg_);                    
+                    callSuccess(obj.msg_);
                 }
             }, error: function (xhr, status, error) {
                 callDanger(xhr.responseText);
             }
         });
+    });
+    
+    $(document).on('keyup', "input[type='text']", function () {            
+        if ($(this).attr('class') === "span7 txtPriority") {
+            var priority = $(this).val();
+            var subID = $(this).attr('id');
+
+            var arr_str = subID.split('-');
+            var subjectID = arr_str[1];
+
+            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillClassSubjectinTable();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }else if ($(this).attr('class') === "span9 txtschoPriority") {            
+            var priority = $(this).val();
+            var scholasticID = $(this).attr('id');
+
+            var arr_str = scholasticID.split('-');
+            var schoID = arr_str[1];
+
+            url_ = site_url_ + "/exam/setSchoPriority/" + schoID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillScholastic_item();
+                        fillscholastic_forclass();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }else if ($(this).attr('class') === "span9 txtcoschoPriority") {            
+            var priority = $(this).val();
+            var coscholasticID = $(this).attr('id');
+
+            var arr_str = coscholasticID.split('-');
+            var coschoID = arr_str[1];
+
+            url_ = site_url_ + "/exam/setcoSchoPriority/" + coschoID + "/" + priority;
+
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillCoScholastic_item();
+                        fillcoscholastic_forclass
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------

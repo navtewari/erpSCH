@@ -318,5 +318,39 @@ class My_exam_model extends CI_Model {
         }
         return $bool_;
     }
+    
+    function msetSchoPriority($schoID, $priority) {
+        $data = array(
+            'priority' => $priority,
+        );
+
+        $this->db->where('itemID', $schoID);
+        $query = $this->db->update('exam_1_scholastic_items', $data);
+       
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Priority Updated');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
+        }
+        
+        return $bool_;
+    }
+    
+    function msetcoSchoPriority($coschoID, $priority){
+        $data = array(
+            'priority' => $priority,
+        );
+
+        $this->db->where('coitemID', $coschoID);
+        $query = $this->db->update('exam_3_coscholastic_items', $data);
+       
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Co-Scholastic Priority Updated');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
+        }
+        
+        return $bool_;
+    }
 
 }

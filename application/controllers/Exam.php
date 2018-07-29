@@ -94,4 +94,14 @@ class Exam extends CI_Controller {
         $data = $this->mem->mAddcoScholastictoClass($classsessID);
         echo json_encode($data);
     }
+    
+    function setSchoPriority($schoID, $priority){
+        $data = $this->mem->msetSchoPriority($schoID, $priority);
+        echo json_encode($data);
+    }
+    
+    function setcoSchoPriority($coschoID, $priority){
+        $data = $this->mem->msetcoSchoPriority($coschoID, $priority);
+        echo json_encode($data);
+    }
 }
