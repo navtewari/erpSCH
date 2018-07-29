@@ -8,8 +8,8 @@
 <script src="<?php echo base_url('assets_/js/jquery.min.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.ui.custom.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap.min.js');?>"></script>
-<script src="<?php echo base_url('assets_/js/myjs.js');?>?ver=<?php echo JS_VERSION_NITIN;?>"></script>  
-<script src="<?php echo base_url('assets_/js/navJS.js');?>?ver=<?php echo JS_VERSION_NAVEEN;?>"></script>
+<script src="<?php echo base_url('assets_/js/myjs.js');?>?version=<?php echo JS_VERSION_NITIN;?>"></script>  
+<script src="<?php echo base_url('assets_/js/navJS.js');?>?version=<?php echo JS_VERSION_NAVEEN;?>"></script>
 <script src="<?php echo base_url('assets_/js/jquery.gritter.min.js');?>"></script>
 <script src="<?php echo base_url('assets_/js/bootstrap-colorpicker.js');?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap-datepicker.js');?>"></script> 

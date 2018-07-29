@@ -746,7 +746,7 @@ class My_Master_model extends CI_Model {
     function upload_logo($id, $op) {
         clearstatcache();
         $config = array(
-            'upload_path' => './assets_/logo',
+            'upload_path' => './assets_/'.$this->session->userdata('db2').'/logo',
             'allowed_types' => 'jpg|png',
             'max_size' => 250,
             'file_name' => $id,

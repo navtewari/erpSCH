@@ -12,13 +12,13 @@
 	<head>
 		<title> Receipt for <?php echo $receipt->regid; ?> </title>
 		<!-- Bootstrap CSS -->    
-        <link href="<?PHP echo base_url() . 'nitnav/css/bootstrap.min.css'; ?>" rel="stylesheet">
+        <link href="<?PHP echo base_url() . 'assets_/css/bootstrap.min.css'; ?>" rel="stylesheet">
         <!-- bootstrap theme -->
-        <link href="<?PHP echo base_url() . 'nitnav/css/bootstrap-theme.css'; ?>" rel="stylesheet">
+        <link href="<?PHP echo base_url() . 'assets_/css/bootstrap-theme.css'; ?>" rel="stylesheet">
         <!--external css-->
         <!-- font icon -->
-        <link href="<?PHP echo base_url() . 'nitnav/css/elegant-icons-style.css'; ?>" rel="stylesheet" />
-        <link href="<?PHP echo base_url() . 'nitnav/css/font-awesome.min.css'; ?>" rel="stylesheet" />    
+        <link href="<?PHP echo base_url() . 'assets_/css/elegant-icons-style.css'; ?>" rel="stylesheet" />
+        <link href="<?PHP echo base_url() . 'assets_/css/font-awesome.min.css'; ?>" rel="stylesheet" />    
         <style type="text/css" media="print">
         body{ margin-top: 0px }
         .hide_button{ display: none }
@@ -92,7 +92,7 @@
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0" class="table_" style='border:#009900 solid 0px'>
 							<tr class="feeHeader">
-								<td width="100"><img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / ></td>
+								<td width="100"><img src='<?php echo base_url('assets_/'.$this->session->userdata('db2').'/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / ></td>
 								<td width="500">
 									<span class='header_text'>
 									<b><?php echo $this->session->userdata('sch_name').", ".$this->session->userdata('sch_city'); ?></b><br />

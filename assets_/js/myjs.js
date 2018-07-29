@@ -204,7 +204,7 @@ $(function(){
 				$('#reset_me').click();
 				$('#uniform-optStuMale span').removeClass('checked');
 				$('#uniform-optStuFemale span').removeClass('checked');
-				$('#student_photo_here').html('<img src='+base_url_+'/assets_/student_photo/no-image.jpg'+' />');
+				$('#student_photo_here').html('<img src='+base_url_+'assets_/'+_img_folder_+'/student_photo/no-image.jpg'+' />');
 				$('.filename').text("No file selected");
 				$('#show_siblings').html('');
 				$('#show_discount').html('');
@@ -316,7 +316,7 @@ $(function(){
 						var obj = JSON.parse(data);
 						// Filling Personal & Academics Detail
 						if(jQuery.isEmptyObject(obj.personal_academics) == false){
-							$('#student_photo_here').html('<img src='+base_url_+'/assets_/student_photo/'+obj.personal_academics.PHOTO_+' />');
+							$('#student_photo_here').html('<img src='+base_url_+'/assets_/'+_img_folder_+'/student_photo/'+obj.personal_academics.PHOTO_+' />');
 							$('#cmbClassofAdmission').val(obj.personal_academics.CLASS_OF_ADMISSION);
 							$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
 							if(obj.personal_academics.DOA != ''){
@@ -1927,13 +1927,11 @@ $(function(){
                 call_myreceipt(id_, class__, container_);
 			});
 			function call_myreceipt(id_, class__, container_){
-				alert(id_);
 		        var arr = id_.split('_');
 		        var invdetid = arr[1];
 		        var regid_ = arr[2];
 		        
 		        data_ = "invdetid="+invdetid+"&clssessid="+$('#'+class__).val()+"&regid_="+regid_;
-		        alert(data_);
 		        url_ = site_url_ + "/fee/show_student_data_for_receipt";
 		        
 		        $.ajax({
@@ -1941,7 +1939,6 @@ $(function(){
 		            url: url_,
 		            data: data_,
 		            success: function(data){
-
 		                var obj = JSON.parse(data);
 
 		                var name_ = ((obj.fetch_receipt_data[0].FNAME == "-x-") ? "":obj.fetch_receipt_data[0].FNAME);
