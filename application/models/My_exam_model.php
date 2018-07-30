@@ -77,6 +77,7 @@ class My_exam_model extends CI_Model {
     function msubmitScholasticItem() {
         $schlasticItem = $this->input->post('txtScholasticItem');
         $maxMarks = $this->input->post('txtScholasticMarks');
+        $minMarks = $this->input->post('txtScholasticminMarks');
 
         $this->db->where('item', $schlasticItem);
         $query = $this->db->get('exam_1_scholastic_items');
@@ -86,7 +87,8 @@ class My_exam_model extends CI_Model {
         } else {
             $data = array(
                 'item' => $schlasticItem,
-                'maxMarks' => $maxMarks
+                'maxMarks' => $maxMarks,
+                'minMarks' => $minMarks
             );
 
             $query = $this->db->insert('exam_1_scholastic_items', $data);
@@ -110,6 +112,7 @@ class My_exam_model extends CI_Model {
         $schlasticItem = $this->input->post('txtScholasticItem_edit');
         $schlasticID = $this->input->post('ScholasticID_Edit');
         $maxMarks = $this->input->post('txtScholasticMarks_edit');
+        $minMarks = $this->input->post('txtScholasticminMarks_edit');
 
         $this->db->where('itemID', $schlasticID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
@@ -122,7 +125,8 @@ class My_exam_model extends CI_Model {
         } else {
             $data = array(
                 'item' => $schlasticItem,
-                'maxMarks' => $maxMarks
+                'maxMarks' => $maxMarks,
+                'minMarks' => $minMarks
             );
 
             $this->db->where('itemID', $schlasticID);

@@ -1343,6 +1343,7 @@ $(function () {
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
+                        str_html = str_html + "<td>" + obj.Scholastic[i].minMarks + "</td>";
                         str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtschoPriority' id='txt-" + obj.Scholastic[i].itemID + "' value='" + obj.Scholastic[i].priority + "'></td>";
                         str_html = str_html + '<td class="taskOptions">';
                         str_html = str_html + "<a href='#' class='tip editScholastic' id='" + obj.Scholastic[i].itemID + "'><i class='icon-pencil'></i></a> | ";
@@ -1403,6 +1404,7 @@ $(function () {
                 $('#ScholasticID_Edit').val(scholasticID);
                 $('#txtScholasticItem_edit').val(obj.Scholasticitem[0].item);
                 $('#txtScholasticMarks_edit').val(obj.Scholasticitem[0].maxMarks);
+                $('#txtScholasticminMarks_edit').val(obj.Scholasticitem[0].minMarks);
                 $('#editScholasticDiv').css({'display': 'block'});
                 $('#txtScholasticItem_edit').focus();
             }, error: function (xhr, status, error) {
