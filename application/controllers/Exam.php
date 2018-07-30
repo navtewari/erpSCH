@@ -86,7 +86,7 @@ class Exam extends CI_Controller {
     }    
     
     function get_class_coscholastic_in_session($classID){
-         $data['coscholasticinclass'] = $this->mem->mget_class_coscholastic_in_session($classID);
+        $data['coscholasticinclass'] = $this->mem->mget_class_coscholastic_in_session($classID);
         echo json_encode($data);
     }
     
@@ -102,6 +102,21 @@ class Exam extends CI_Controller {
     
     function setcoSchoPriority($coschoID, $priority){
         $data = $this->mem->msetcoSchoPriority($coschoID, $priority);
+        echo json_encode($data);
+    }
+    
+    function get_examterm_in_session(){
+        $data['examTerm'] = $this->mem->mget_examterm_in_session();
+        echo json_encode($data);
+    }
+    
+    function create_term() {
+        $data = $this->mem->mcreate_term();
+        echo json_encode($data);
+    }
+
+    function deleteTerm($termID) {
+        $data = $this->mem->mdeleteTerm($termID);
         echo json_encode($data);
     }
 }

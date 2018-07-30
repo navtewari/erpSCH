@@ -69,6 +69,10 @@ $(function () {
         if ($("#frmStudentContact").length != 0) {
             fillClasses_forContact();
         }
+
+        if ($("#frmExamTerm").length != 0) {
+            fillTerm();
+        }
     });
     //-------------------------------------------General
     function fillStates(selector) {
@@ -835,7 +839,7 @@ $(function () {
                 }
             });
         }
-    });    
+    });
 
     $('body').on('click', '.deleteSubject', function () {
         var str = this.id;
@@ -1852,8 +1856,8 @@ $(function () {
             }
         });
     });
-    
-    $(document).on('keyup', "input[type='text']", function () {            
+
+    $(document).on('keyup', "input[type='text']", function () {
         if ($(this).attr('class') === "span7 txtPriority") {
             var priority = $(this).val();
             var subID = $(this).attr('id');
@@ -1878,7 +1882,7 @@ $(function () {
                     callSuccess(xhr.responseText);
                 }
             });
-        }else if ($(this).attr('class') === "span9 txtschoPriority") {            
+        } else if ($(this).attr('class') === "span9 txtschoPriority") {
             var priority = $(this).val();
             var scholasticID = $(this).attr('id');
 
@@ -1903,7 +1907,7 @@ $(function () {
                     callSuccess(xhr.responseText);
                 }
             });
-        }else if ($(this).attr('class') === "span9 txtcoschoPriority") {            
+        } else if ($(this).attr('class') === "span9 txtcoschoPriority") {
             var priority = $(this).val();
             var coscholasticID = $(this).attr('id');
 
@@ -1923,6 +1927,83 @@ $(function () {
                         callSuccess(obj.msg_);
                         fillCoScholastic_item();
                         fillcoscholastic_forclass
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    function fillTerm() {
+        url_ = site_url_ + "/exam/get_examterm_in_session";
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                if (obj.examTerm.length > 0) {
+                    for (i = 0; i < obj.examTerm.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td>" + obj.examTerm[i].termName + "</td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='btn DeleteTerm' id='" + obj.examTerm[i].termID + "~" + obj.examTerm[i].termName + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#tabExamTerm').html(str_html);
+                } else {
+                    $('#exitHeading1').html('<td colspan="2">No Exam Term Present for This Session</td>');
+                    $('#tabExamTerm').html('<td colspan="2">No Exam Term Present for This Session</td>');
+                }
+            }
+        });
+    }
+
+    $('.submitExamTerm').click(function () {
+        if ($('#txtExamTerm').val() === '') {
+            callDanger("Please Enter Exam Term !!");
+            $('#txtExamTerm').focus();
+        } else {
+            data_ = $('#frmExamTerm').serializeArray();
+            url_ = site_url_ + "/exam/create_term";
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillTerm();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.DeleteTerm', function () {
+        var str = this.id;
+        var arr_str = str.split('~');
+        var termID = arr_str[0];
+        var termName = arr_str[1];
+        url_ = site_url_ + "/exam/deleteTerm/" + termID;
+        if (confirm('Are you sure you want to delete ' + termName)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillTerm();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);

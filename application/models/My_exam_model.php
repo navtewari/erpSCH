@@ -154,7 +154,6 @@ class My_exam_model extends CI_Model {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'error');
             }
         }
-
         return $bool_;
     }
 
@@ -167,7 +166,6 @@ class My_exam_model extends CI_Model {
         $this->db->where('b.CLSSESSID', $classID);
         $this->db->order_by('c.priority', 'Asc');
         $query = $this->db->get();
-
         //echo $this->db->last_query()."<br />";
         //die();
         return $query->result();
@@ -253,8 +251,7 @@ class My_exam_model extends CI_Model {
     function mdelete_coScholastic($coscholasticID) {
         $this->db->where('coitemID', $coscholasticID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
-        $query1 = $this->db->get('exam_4_add_coscholastic_to_class');
-        // echo $this->db->last_query()."<br />";
+        $query1 = $this->db->get('exam_4_add_coscholastic_to_class');        
 
         if ($query1->num_rows() != 0) {
             $bool_ = array('res_' => FALSE, 'msg_' => '!! This Co-Scholastic Item is already Associated with Class Therefore Cannot be deleted !!');
@@ -280,9 +277,6 @@ class My_exam_model extends CI_Model {
         $this->db->where('b.CLSSESSID', $classID);
         $this->db->order_by('c.priority', 'Asc');
         $query = $this->db->get();
-
-        //echo $this->db->last_query()."<br />";
-        //die();
         return $query->result();
     }
 
@@ -318,7 +312,7 @@ class My_exam_model extends CI_Model {
         }
         return $bool_;
     }
-    
+
     function msetSchoPriority($schoID, $priority) {
         $data = array(
             'priority' => $priority,
@@ -326,31 +320,87 @@ class My_exam_model extends CI_Model {
 
         $this->db->where('itemID', $schoID);
         $query = $this->db->update('exam_1_scholastic_items', $data);
-       
+
         if ($query == TRUE) {
             $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Priority Updated');
         } else {
             $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
         }
-        
+
         return $bool_;
     }
-    
-    function msetcoSchoPriority($coschoID, $priority){
+
+    function msetcoSchoPriority($coschoID, $priority) {
         $data = array(
             'priority' => $priority,
         );
 
         $this->db->where('coitemID', $coschoID);
         $query = $this->db->update('exam_3_coscholastic_items', $data);
-       
+
         if ($query == TRUE) {
             $bool_ = array('res_' => TRUE, 'msg_' => 'Co-Scholastic Priority Updated');
         } else {
             $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
         }
-        
         return $bool_;
     }
 
+    function mget_examterm_in_session() {
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query = $this->db->get('exam_5_term');
+
+        return $query->result();
+    }
+
+    function mcreate_term() {
+        $termName = $this->input->post('txtExamTerm');
+
+        $this->db->where('termName', $termName);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query = $this->db->get('exam_5_term');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => $sessionID . ' Exam Term already created');
+        } else {
+            $data = array(
+                'termName' => $termName,
+                'SESSID' => $this->session->userdata('_current_year___')
+            );
+
+            $query = $this->db->insert('exam_5_term', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Exam Term created Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdeleteTerm($termID){
+        $this->db->where('termID', $termID);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query1 = $this->db->get('exam_6_scholastic_result');        
+
+        $this->db->where('termID', $termID);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query2 = $this->db->get('exam_7_coscholastic_result');
+
+        if (($query1->num_rows() != 0 ) || ($query2->num_rows() != 0 )) {
+            $bool_ = array('res_' => FALSE, 'msg_' => '!! This Term is already Associated with Result Therefore Cannot be deleted !!');
+        } else {
+            $this->db->where('termID', $termID);
+            $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+            $query = $this->db->delete('exam_5_term');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Term Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
 }
