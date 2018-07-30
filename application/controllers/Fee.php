@@ -40,6 +40,7 @@ class Fee extends CI_Controller {
     }
 
     function generateInvoice(){
+        
         /*//*
         $class__ = '406';
         $yr_from = '2017';

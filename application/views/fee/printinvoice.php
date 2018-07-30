@@ -13,13 +13,13 @@
 	<head>
 		<title> Invoice(s) for Class <?php echo $class; ?> </title>
 		<!-- Bootstrap CSS -->    
-        <link href="<?PHP echo base_url() . 'nitnav/css/bootstrap.min.css'; ?>" rel="stylesheet">
+        <link href="<?PHP echo base_url() . 'assets_/css/bootstrap.min.css'; ?>" rel="stylesheet">
         <!-- bootstrap theme -->
-        <link href="<?PHP echo base_url() . 'nitnav/css/bootstrap-theme.css'; ?>" rel="stylesheet">
+        <link href="<?PHP echo base_url() . 'assets_/css/bootstrap-theme.css'; ?>" rel="stylesheet">
         <!--external css-->
         <!-- font icon -->
-        <link href="<?PHP echo base_url() . 'nitnav/css/elegant-icons-style.css'; ?>" rel="stylesheet" />
-        <link href="<?PHP echo base_url() . 'nitnav/css/font-awesome.min.css'; ?>" rel="stylesheet" />    
+        <link href="<?PHP echo base_url() . 'assets_/css/elegant-icons-style.css'; ?>" rel="stylesheet" />
+        <link href="<?PHP echo base_url() . 'assets_/css/font-awesome.min.css'; ?>" rel="stylesheet" />    
         <style type="text/css" media="print">
         body{ margin-top: 0px }
         .hide_button{ display: none }
@@ -148,7 +148,7 @@
 							<tr>
 			
 								<td align="left">
-									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
+									<img src='<?php echo base_url('assets_/'.$this->session->userdata('db2').'/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
 								</td>
 								<td style="text-align: center">
 									<h1>INVOICE</h1>
@@ -164,7 +164,7 @@
 									<h4><b style="font-size: 12px"><?php echo $this->session->userdata('sch_name'); ?></b></h4>
 								</td>
 								<td align="right">
-									<img src='<?php echo base_url('assets_/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
+									<img src='<?php echo base_url('assets_/'.$this->session->userdata('db2').'/logo/'.$this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_;?>' width="100" / >
 								</td>
 							</tr>
 							<tr>

@@ -110,7 +110,7 @@ $(function () {
                     $('.submitSchoolData').css({'display': 'none'});
                     $('.editSchoolData').css({'display': 'block'});
                     $('#schoolLogo').attr("src", '');
-                    logo = base_url_ + 'assets_/logo/' + obj.msg_[0].SCH_LOGO;
+                    logo = base_url_ + 'assets_/'+_img_folder_+'/logo/' + obj.msg_[0].SCH_LOGO + "?version=1.9";
                     $('#schoolLogo').attr("src", logo);
 
                     $('#labelschName').html(obj.msg_[0].SCH_NAME);

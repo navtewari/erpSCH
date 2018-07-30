@@ -463,7 +463,7 @@ class My_admission_model extends CI_Model {
     function upload_stud_pic($id){
         clearstatcache();
         $config = array(
-            'upload_path' => './assets_/student_photo',
+            'upload_path' => './assets_/'.$this->session->userdata('db2').'/student_photo',
             'allowed_types' => 'jpg|png',
             'max_size' => 250,
             'file_name' => $id,

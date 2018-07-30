@@ -5,7 +5,7 @@
         <script>
             site_url_ = <?PHP echo '"' . site_url() . '"'; ?>;
             base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
-            
+            _img_folder_ = <?php echo '"'. $this->session->userdata('db2') . '"';?>;
             <?php if ($this->session->userdata('_current_year___')) { ?>
                 _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
                 _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
@@ -62,8 +62,10 @@
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo site_url('c_pwd');?>"><i class="icon-check"></i> Change Password</a></li>
                         <li class="divider"></li>
-                        <li class=""><a title="" href="<?php echo site_url('web/dashboard/2/9/general'); ?>"><i class="icon icon-edit"></i> <span class="text">Change School Profile</span></a></li>                                           
-                        <li class="divider"></li>
+                        <?php if($this->session->userdata('_status_') == 'adm'){ ?>
+                            <li class=""><a title="" href="<?php echo site_url('web/dashboard/2/9/general'); ?>"><i class="icon icon-edit"></i> <span class="text">Change School Profile</span></a></li>                                           
+                            <li class="divider"></li>
+                        <?php } ?>
                         <li><a href="<?php echo site_url('login/logout'); ?>"><i class="icon-key"></i> Log Out</a></li>                                               
                     </ul>
                 </li>                                

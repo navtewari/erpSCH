@@ -19,11 +19,15 @@
 		            		<img src="<?php echo base_url('assets_/student_photo/'.$personal->PHOTO_); ?>">
 		            	</div>
 			            <div class="span6">
-			                <table class="">
+			                <table class="table">
 				                <tbody>
 				                    <tr>
 				                      <td colspan="2"><h4><?php echo $personal->FNAME; ?></h4></td>
 				                    </tr>
+				                    <tr>
+										<td><b>Reg. No.</b></td>
+										<td><?php echo $personal->regid; ?></td>
+									</tr>
 				                    <tr>
 										<td><b>Gender</b></td>
 										<td><?php echo $personal->GENDER; ?></td>
