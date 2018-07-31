@@ -1,22 +1,3 @@
-<style>
-    .view_invoice_0{
-         color: #808080; 
-         background: #f0f0f0;
-         color: #ff0000;
-         border-radius: 4px;
-         border: #A0A0A0 solid 1px;
-         padding: 1px 5px;
-         text-decoration: none !important;
-    }
-    .view_invoice_1{
-         color: #B0B0B0; 
-         background: #ffff00;
-         color: #ff0000;
-         border-radius: 4px;
-         border: #A0A0A0 solid 1px;
-         padding: 1px 5px;
-    }
-</style>
 <div class="row-fluid">
     <div class="span3">
         <div class="widget-box">
