@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Marks Allotted</label>
+                                        <label class="control-label">Maximum Marks</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -58,6 +58,25 @@
                                             ?>                                                    
                                         </div>
                                     </div>
+                                    
+                                    <div class="control-group">
+                                        <label class="control-label">Passing Marks</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'type' => 'text',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span11',
+                                                'name' => 'txtScholasticminMarks',
+                                                'id' => 'txtScholasticminMarks',
+                                                'value' => ''
+                                            );
+                                            echo form_input($data);
+                                            ?>                                                    
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-actions" align="right">                        
                                         <input type="button" value="Add Scholastic Item" class="btn btn-success submitScholastic">
                                         <button type="reset" class="btn btn-primary">Reset</button>                             
@@ -74,12 +93,13 @@
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                                 <h5 id="exitHeading">Scholastic items already present</h5>
                             </div>
-                            <div class="widget-content nopadding" style="height:200px; overflow: scroll">
+                            <div class="widget-content nopadding" style="height:300px; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
                                             <th style="text-align:left;width:40%">Scholastic Item</th>
-                                            <th style="text-align:left;width:40%">Allotted Marks</th>                                           
+                                            <th style="text-align:left;width:40%">Max Marks</th>                                           
+                                            <th style="text-align:left;width:40%">Passing Marks</th>                                           
                                             <th style="text-align: center">Priority</th>         
                                             <th style="text-align: center">Actions</th>         
                                         </tr>
@@ -145,6 +165,23 @@
                                                 'class' => 'span11',
                                                 'name' => 'txtScholasticMarks_edit',
                                                 'id' => 'txtScholasticMarks_edit',
+                                                'value' => ''
+                                            );
+                                            echo form_input($data);
+                                            ?>                                                    
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" style="color:#cc3300">Marks Allotted</label>
+                                        <div class="controls">                        
+                                            <?php
+                                            $data = array(
+                                                'type' => 'text',
+                                                'autocomplete' => 'off',
+                                                'required' => 'required',
+                                                'class' => 'span11',
+                                                'name' => 'txtScholasticminMarks_edit',
+                                                'id' => 'txtScholasticminMarks_edit',
                                                 'value' => ''
                                             );
                                             echo form_input($data);
