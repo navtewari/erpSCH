@@ -138,10 +138,10 @@ class Fee extends CI_Controller {
             $data['fetch_other_discount_data'] = NULL;
         }
         $data['date_'] = array(date('d/m/Y')); 
-        $data['sch_name'] = array(_SCHOOL_);
-        $data['sch_address'] = array(_ADDRESS_);
-        $data['sch_contact'] = array(_CONTACT_);
-        $data['sch_email'] = array(_EMAIL_);
+        $data['sch_name'] = array($this->session->userdata('sch_name'));
+        $data['sch_address'] = array($this->session->userdata('sch_addr'));
+        $data['sch_contact'] = array($this->session->userdata('sch_contact'));
+        $data['sch_email'] = array($this->session->userdata('sch_email'));
         echo json_encode($data);
     }
     function createReceipt(){

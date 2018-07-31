@@ -18,8 +18,8 @@ class Reg_adm extends CI_Controller {
         $data['page_'] = $this->get_page($active);
         $data['inner_page'] = $this->get_submenu($submenu);
         // ----------------------------------------
-        $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
-
+        //$data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
+        $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_($this->session->userdata('_current_year___'));
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
         $data['sub_menu'] = $this->mm->getsubmenu();
         
@@ -34,7 +34,7 @@ class Reg_adm extends CI_Controller {
     }
     
     function getstudents_for_dropdown($studid=''){
-        $data['students_'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'), $studid);
+        $data['students_'] = $this->mam->getstudents_for_dropdown_($this->session->userdata('_current_year___'), $studid);
         echo json_encode($data);
     }
     function get_admitted_students(){
