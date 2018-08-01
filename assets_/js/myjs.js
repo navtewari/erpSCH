@@ -1,4 +1,3 @@
-var objreceipt;
 $(function(){
 	$(document).ajaxStart(function(){
 	    $('#loading_process').css('opacity', '1');
@@ -301,7 +300,10 @@ $(function(){
 			$("#s2id_cmbStaff span").text('Select Member');
 		});
 		$('#reload_me').click(function(){
-			reloadme();
+			$('#reload_or_not').val('yes');
+			if($('#reload_or_not').val() == 'yes'){
+				reloadme();
+			}
 		});
 		$('#cmbRegistrationID').change(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
@@ -2017,7 +2019,7 @@ $(function(){
 		                	var discount_category = 'x';
 		                	var total_sibling = 0;
 		                	var total_sibling_discount_amount = 0;
-		                	/*
+		                	/* Here no need to calculate Sibling discount as this dicount is also calculated in other_discounts
 		                	if(obj.sibling_discount != null){
 		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
 		                		var sibling_length = parseInt(sibling_arr.length);

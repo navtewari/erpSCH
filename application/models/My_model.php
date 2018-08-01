@@ -11,7 +11,9 @@ class My_model extends CI_Model {
         $this->load->model('My_error_model', 'error');
         // --------------------
     }
-
+    function getlogin(){
+        return $this->db->get('login')->result();
+    }
     function authenticate() {
         $this->db->select('a.*, b.name, b.CATEGORY_ID');
         $this->db->where('a.USERNAME_', $this->input->post('txtUser__'));
@@ -35,7 +37,6 @@ class My_model extends CI_Model {
             $flag_ = false;
             $this->session->set_flashdata('msg_', 'False Credentials !!');
         }
-
         return $flag_;
     }
 
