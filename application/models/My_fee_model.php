@@ -529,7 +529,7 @@ class My_fee_model extends CI_Model {
 
         return $query->row();
     }
-    function fetch_static_heads_to_class($class__, $regid_, $nom){
+    function fetch_static_heads_to_class($class__, $regid_){
         $data['static_heads_to_class'] = $this->get_static_heads_to_class($class__);
         $_static_heads__ = '';
         $_static_heads_amount_ = '';
@@ -582,7 +582,7 @@ class My_fee_model extends CI_Model {
         $data['n_static_heads'] = $n_static_heads__;
         $data['n_static_heads_amount'] = $n_static_heads_amount_;
         $data['n_static_amount'] = $n_static_total_amount;
-        $data['static_discount_applicable_amount'] = $_static_discount_applicable_amount_1_time + ($_static_discount_applicable_amount_n_time*$nom);
+        $data['static_discount_applicable_amount'] = $_static_discount_applicable_amount_1_time + $_static_discount_applicable_amount_n_time;
 
         return $data;
     }
