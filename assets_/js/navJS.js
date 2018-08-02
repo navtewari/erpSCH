@@ -73,6 +73,11 @@ $(function () {
         if ($("#frmExamTerm").length != 0) {
             fillTerm();
         }
+        
+        if ($("#frmInputResult").length != 0) {
+            fillExamTermCombo();
+            fillClassforResult();
+        }
     });
     //-------------------------------------------General
     function fillStates(selector) {
@@ -1981,6 +1986,7 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillTerm();
+                        fillExamTermCombo();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -2006,12 +2012,65 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillTerm();
+                        fillExamTermCombo();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
                 }
             });
         }
+    });
+    
+    function fillExamTermCombo(){                
+        $('#s2id_cmbExamTerm span').text("Loading...");
+        url_ = site_url_ + "/exam/get_examterm_in_session";
+        $('#cmbExamTerm').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Term</option>";
+                for (i = 0; i < obj.examTerm.length; i++) {
+                    str_html = str_html + "<option value='" + obj.examTerm[i].termID + "'>" + obj.examTerm[i].termName + "</option>";
+                }
+                $('#s2id_cmbExamTerm span').text("Choose Term");
+                $('#cmbExamTerm').html(str_html);
+            }
+        });
+    }
+    
+    function fillClassforResult(){
+        $('#s2id_cmbClassofResult span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#cmbClassofResult').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'> Class " + obj.class_in_session[i].CLASSID + "</option>";                    
+                }
+                 $('#s2id_cmbClassofResult span').text("Choose Class");
+                $('#cmbClassofResult').html(str_html);
+            }
+        });
+    }
+    
+    $('#cmbAssessment').change(function () {
+        var assArea = $('#cmbAssessment').val();
+        
+        if (assArea === '1'){
+            //for scholastic
+        }else if(assArea === '2'){
+            //for coscholastic 
+        }else{
+             callDanger('Select Proper Assessment Area');
+        }        
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
