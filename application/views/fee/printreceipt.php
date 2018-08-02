@@ -185,27 +185,61 @@
 											$static_amnt  = 0;
 											$flexi_heads = '';
 											$flexi_amount = 0;
-
-											$static_heads = $receipt->STATIC_HEADS_1_TIME;
-											$static_amnt  = $receipt->STATIC_SPLIT_AMT_1_TIME;
-											if($static_heads != 'x'){
-												$static_heads = $static_heads . ", ".$receipt->STATIC_HEADS_N_TIMES;
-											} else {
-												$static_heads = $receipt->STATIC_HEADS_N_TIMES;
+											if($receipt->STATIC_HEADS_1_TIME != ''){ // static heads 1 time
+												$st1time = explode(",", $receipt->STATIC_HEADS_1_TIME);
+												foreach($st1time as $val){
+													if($static_heads != ''){
+														$static_heads = $static_heads . explode("@", $val)[0];		
+													} else {
+														$static_heads = explode("@", $val)[0];
+													}
+												}
 											}
+											if($receipt->STATIC_HEADS_N_TIMES != ''){ // static heads n time
+												$stntime = explode(",", $receipt->STATIC_HEADS_N_TIMES);
+												foreach($stntime as $val){
+													if($static_heads != ''){
+														$static_heads = $static_heads . ", " . explode("@", $val)[0];		
+													} else {
+														$static_heads = explode("@", $val)[0];
+													}	
+												}
+											}
+											$static_amnt  = $receipt->STATIC_SPLIT_AMT_1_TIME;
+
 											if($receipt->STATIC_SPLIT_AMT_N_TIME!=''){
 												$static_amnt  = $static_amnt  . ", ".$receipt->STATIC_SPLIT_AMT_N_TIME;
 											} else {
 												$static_amnt  = $receipt->STATIC_SPLIT_AMT_N_TIME;
 											}
 											$flexi_heads  = $receipt->FLEXIBLE_HEADS_1_TIME;
+											if($receipt->FLEXIBLE_HEADS_1_TIME != ''){ // static heads n time
+												$flex1time = explode(",", $receipt->FLEXIBLE_HEADS_1_TIME);
+												foreach($flex1time as $val){
+													if($flexi_heads != ''){
+														$flexi_heads = $flexi_heads . explode("@", $val)[0];		
+													} else {
+														$flexi_heads = explode("@", $val)[0];
+													}	
+												}
+											}
 											$flexi_amount = $receipt->FLEXI_SPLIT_AMT_1_TIME;
 											if($flexi_heads != ''){
 												$flexi_heads  = $flexi_heads  . ", ".$receipt->FLEXIBLE_HEADS_N_TIMES;
 											} else {
 												$flexi_heads  = $receipt->FLEXIBLE_HEADS_N_TIMES;
 											}
-											if($receipt->FLEXI_SPLIT_AMT_N_TIMES != ''){
+											if($receipt->FLEXI_SPLIT_AMT_N_TIMES != ''){ // Flexi heads n time
+												$flexntime = explode(",", $receipt->FLEXI_SPLIT_AMT_N_TIMES);
+												foreach($flexntime as $val){
+													if($flexi_heads != ''){
+														$flexi_heads = $flexi_heads . ", " . explode("@", $val)[0];		
+													} else {
+														$flexi_heads = explode("@", $val)[0];
+													}	
+												}
+											}
+											if($receipt->FLEXI_SPLIT_AMT_N_TIMES != ''){ // Flexi heads n time
 												$flexi_amount = $flexi_amount . ", " . $receipt->FLEXI_SPLIT_AMT_N_TIMES;
 											} else {
 												$flexi_amount = $flexi_amount . $receipt->FLEXI_SPLIT_AMT_N_TIMES;
@@ -287,6 +321,10 @@
 									?>
 									<br />
 									** Discount on behalf of - <?php echo $categ[0];?>
+									<?php } ?>
+									<br>
+									<?php if($receipt->DESCRIPTION_IFANY != '' && $receipt->DESCRIPTION_IFANY != 'x' && strlen($receipt->DESCRIPTION_IFANY) >1){?>
+										<br>{Note: <?php echo $receipt->DESCRIPTION_IFANY?>}
 									<?php } ?>
 								</td>
 							</tr>

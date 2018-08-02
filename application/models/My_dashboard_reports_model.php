@@ -19,6 +19,9 @@ class My_dashboard_reports_model extends CI_Model {
         $data['count_invoices_in_session'] = $this->total_invoices_in_a_session($year__);
         $data['count_fee_receipts'] = $this->total_fee_paid($year__);
         $data['total_fee_collected'] = $this->total_fee_collected($year__);
+        $data['total_receipt_count'] = $this->total_receipt_count($year__);
+        $data['todays_collection']= $this->todays_collection();
+        $data['todays_receipt_count'] = $this->todays_receipt_count();
         return $data;
     }
 
@@ -150,15 +153,115 @@ class My_dashboard_reports_model extends CI_Model {
         if($year_ != 'x'){
             $this->db->where('a.SESSID', $year_);
         }
-        $this->db->select('sum(c.ACTUAL_PAID_AMT) as fee_collected');
+        $this->db->select('sum((c.ACTUAL_PAID_AMT - c.DISCOUNT_AMOUNT) + c.FINE) as total_fee_collected');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
         $this->db->join('master_7_stud_personal d', 'c.regid=d.REGID');
         $this->db->join('master_8_stud_academics e', 'e.regid=d.regid');
         $query = $this->db->get();
-        $result = $query->row();
-        return $result->fee_collected;
-
+        if($query->num_rows()!=0){
+            $result = $query->row();
+            if($result->total_fee_collected != NULL){
+                $value = $result->total_fee_collected;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
     }
+
+    function total_receipt_count($year_){
+        if($year_ != 'x'){
+            $this->db->where('a.SESSID', $year_);
+        }
+        $this->db->select('COUNT(c.RECPTID) as TOTAL_RECEIPT_COUNT');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $query = $this->db->get();
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->TOTAL_RECEIPT_COUNT != NULL){
+                $value = $r->TOTAL_RECEIPT_COUNT;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+
+    function get_todays_collection(){
+        $this -> db -> order_by('ABS(y.CLASS)', 'asc');
+        $this -> db -> order_by('y.SECTION', 'asc');
+        $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->select('a.SESSID, x.CLASSID, c.*');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
+        $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    function todays_collection(){
+        //$this->db->where('MODE', 'cash');
+        $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->select('SUM((c.ACTUAL_PAID_AMT - c.DISCOUNT_AMOUNT) + c.FINE) as TODAYS_COLLECTION');
+        $query = $this->db->get('fee_7_receipts c');
+
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->TODAYS_COLLECTION != NULL){
+                $value = $r->TODAYS_COLLECTION;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+    function todays_cash_collection(){
+        $this->db->where('MODE', 'cash');
+        $this->db->where('DATE_FORMAT(DATE(a.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->select('SUM((a.ACTUAL_PAID_AMT - a.DISCOUNT_AMOUNT) + a.FINE) as TODAYS_COLLECTION');
+        $query = $this->db->get('fee_7_receipts a');
+
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->TODAYS_COLLECTION != NULL){
+                $value = $r->TODAYS_COLLECTION;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+    function todays_receipt_count(){
+        $this->db->where('DATE_FORMAT(DATE(DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->select('COUNT(a.ACTUAL_PAID_AMT) AS RECEIPT_COUNT');
+        $query = $this->db->get('fee_7_receipts a');
+
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->RECEIPT_COUNT != NULL){
+                $value = $r->RECEIPT_COUNT;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+
 }

@@ -1,4 +1,3 @@
-var objreceipt;
 $(function(){
 	$(document).ajaxStart(function(){
 	    $('#loading_process').css('opacity', '1');
@@ -301,7 +300,10 @@ $(function(){
 			$("#s2id_cmbStaff span").text('Select Member');
 		});
 		$('#reload_me').click(function(){
-			reloadme();
+			$('#reload_or_not').val('yes');
+			if($('#reload_or_not').val() == 'yes'){
+				reloadme();
+			}
 		});
 		$('#cmbRegistrationID').change(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
@@ -880,7 +882,7 @@ $(function(){
 						if(obj.res_ == true){
 							callSuccess(obj.msg_);
 							fill_flexible_fee_heads();
-							fillFlexibleHeads_for_Associate_with_students
+							fillFlexibleHeads_for_Associate_with_students();
 							rest_flexi_head_form();
 						} else {
 							callDanger(obj.msg_);
@@ -1745,7 +1747,8 @@ $(function(){
 				                    	var fixH1 = fixheads_1_time.split(',');
 				                    	var fixH1_amt = fixamt_1_time.split(',');
 				                    	for(i=0; i<fixH1.length;i++){
-				                    		fixHeads_1 = fixHeads_1 + "<div class='fee_heads_static' title='"+parseInt(fixH1_amt[i],10)+"'>"+fixH1[i]+'</div>';
+				                    		str = fixH1[i];
+				                    		fixHeads_1 = fixHeads_1 + "<div class='fee_heads_static' title='"+parseInt(fixH1_amt[i],10)+"'>"+str.split('@')[0]+'</div>';
 				                    		tot_fixAmount_1_time = tot_fixAmount_1_time + parseInt(fixH1_amt[i],10);
 				                    	}
 				                	} else {
@@ -1758,7 +1761,8 @@ $(function(){
 					                    var fixHn = fixheads_n_times.split(',');
 					                    var fixHn_amt = fixamt_n_time.split(',');
 				                    	for(i=0;i<fixHn.length;i++){
-				                    		fixHeads_n = fixHeads_n + "<div class='fee_heads_static' title='"+parseInt(fixHn_amt[i],10)+"'>"+fixHn[i]+'</div>';
+				                    		str = fixHn[i];
+				                    		fixHeads_n = fixHeads_n + "<div class='fee_heads_static' title='"+parseInt(fixHn_amt[i],10)+"'>"+str.split('@')[0]+'</div>';
 				                    		tot_fixAmount_n_time = tot_fixAmount_n_time + parseInt(fixHn_amt[i],10);	
 				                    	}
 				                    	tot_fixAmount_n_time = parseInt(parseInt(tot_fixAmount_n_time,10)*total_months,10);
@@ -2015,7 +2019,7 @@ $(function(){
 		                	var discount_category = 'x';
 		                	var total_sibling = 0;
 		                	var total_sibling_discount_amount = 0;
-		                	/*
+		                	/* Here no need to calculate Sibling discount as this dicount is also calculated in other_discounts
 		                	if(obj.sibling_discount != null){
 		                		var sibling_arr = (obj.sibling_discount.SIBLINGS).split(',');
 		                		var sibling_length = parseInt(sibling_arr.length);
