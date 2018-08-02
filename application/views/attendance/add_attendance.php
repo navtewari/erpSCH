@@ -112,7 +112,7 @@
 					<h5 id="caption_for_class"></h5>
 					<div style="clear: both"></div>
 				</div>
-				<div class="widget-content nopadding" style="overflow: auto; height: 300px">
+				<div class="widget-content nopadding" style="overflow: hidden">
 					<table class="table table-bordered table-striped with-check">
 						<thead>
 							<tr>

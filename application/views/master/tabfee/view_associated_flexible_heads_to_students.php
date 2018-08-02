@@ -3,7 +3,7 @@
       <div class="widget-title"> 
         <h5>Classes in Session <?php echo $this->session->userdata('_current_year___'); ?></h5>
       </div>
-      <div class="widget-content nopadding" style="overflow: auto; height: 350px">
+      <div class="widget-content nopadding" style="overflow: hidden;">
         <table class="table table-bordered table-striped with-check">
           <thead>
             <tr>
