@@ -438,6 +438,57 @@ class My_master_fee_model extends CI_Model {
         return $bool_;
     }
     */
+    function fetch_class_name($clssessid){
+        $this->db->where('CLSSESSID', $clssessid);
+        $this->db->select('CLASSID');
+        $query = $this->db->get('class_2_in_session');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            $classname = $r->CLASSID; 
+        } else {
+            $classname = 'NA';
+        }
+        return $classname;
+
+    }
+    function fetchFlexiHeadsAssociatedClass($clssessid){
+        $this->db->where('CLSSESSID', $clssessid);
+        $this->db->distinct();
+        $this->db->select('b.FLX_HD_ID, b.FEE_HEAD');
+        $this->db->from('fee_5_add_flexi_head_to_students a');
+        $this->db->join('fee_4_flexible_heads b', 'a.FLX_HD_ID=b.FLX_HD_ID');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function fetch_flexiheadName($flexiHead){
+        $this->db->where('FLX_HD_ID', $flexiHead);
+        $this->db->select('FEE_HEAD');
+        $query = $this->db->get('fee_4_flexible_heads');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            $flexiName = $r->FEE_HEAD;
+        } else {
+            $flexiName = 'NA';
+        }
+        return $flexiName;
+    }
+
+    function erase_flexiHeads_associated(){
+        $clssessid = $this->input->get('txtClasssessid');
+        $flexiheadID = $this->input->get('txtFlexiHeadID');
+        
+        $class_name = $this->fetch_class_name($clssessid);
+        $flexiHead_name = $this->fetch_flexiheadName($flexiheadID);
+
+        $this->db->where('CLSSESSID', $clssessid);
+        $this->db->where('FLX_HD_ID', $flexiheadID);
+        if($this->db->delete('fee_5_add_flexi_head_to_students') == true){
+            $bool_ = array('res_'=>true, 'msg_' => $flexiHead_name . ' head is Successfully deleted from the class ' . $class_name);
+        } else {
+            $bool_ = array('res_'=>false, 'msg_' => 'Something goes wrong. Please try again');
+        }
+        return $bool_;
+    }
 
     function del_associated_flx_with_student($flx_asso_student_id){
         $this->db->where('ADFLXFEESTUDID', $flx_asso_student_id);

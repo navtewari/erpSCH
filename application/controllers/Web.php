@@ -18,7 +18,6 @@ class Web extends CI_Controller {
     function dashboard($active = 1, $subno = 1, $submenu = 'index') {
         $this->check_login();
         $this->set_live_session();
-
         // fetching page according to active status
         $data = $this->get_page($subno);
         $data['inner_page'] = $submenu;
@@ -106,6 +105,7 @@ class Web extends CI_Controller {
                 $data['Address'] = '';
                 $data['siblings'] = '';
                 $data['category'] = '';
+                $data['discount'] = '';
                 break;
             case 11:
                 $data['page_'] = 'master';

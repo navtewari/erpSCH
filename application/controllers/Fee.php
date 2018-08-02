@@ -177,7 +177,7 @@ class Fee extends CI_Controller {
         $receipt_id = $this->fm->get_latest_receipt($invdetid);
         redirect('fee/fee_print/'.$receipt_id);
     }
-
+    
     function get_all_fee_heads(){
         // yet to code
     }

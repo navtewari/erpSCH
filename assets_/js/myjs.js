@@ -1317,49 +1317,6 @@ $(function(){
 		    }
 		});
 
-		$('body').on('click', '.View_Students_for_flexible_heads', function () {
-			str = this.id;
-			arr = str.split('~');
-			clssessid = arr[1];
-			url_ = site_url_ + "/master_fee/get_flexible_fee_head_for_class/"+clssessid;
-			
-			$.ajax({
-				type:"POST",
-				url:url_,
-				success: function(data){
-					var obj = JSON.parse(data);
-					var str_html = '';
-					var flexi_heads;
-					if(obj.students__.length != 0){
-						for(i=0; i<obj.students__.length; i++){
-							str_html = str_html + '<tr>';
-							str_html = str_html + '<td>';
-							str_html = str_html + obj.students__[i].regid
-							str_html = str_html + '</td>';
-							str_html = str_html + '<td>';
-							str_html = str_html + obj.students__[i].FNAME
-							str_html = str_html + '</td>';
-							str_html = str_html + '<td>';
-							flexi_heads = '';
-							for(j=0; j<obj.view_student_associated_with_flexible_heads.length;j++){
-								if(obj.students__[i].regid == obj.view_student_associated_with_flexible_heads[j].regid){
-									flexi_heads = flexi_heads + '<div id="_delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'" style="float: left; padding: 2px; overflow: hidden"><div style="padding: 1px 3px 1px 3px; border-radius:5px; background: #00AFEC; font-size: 10px; color: #ffffff; display: inline-block; min-width: 20px">'+obj.view_student_associated_with_flexible_heads[j].FEE_HEAD+'<i class="icon-trash my_flexible_head_association" style="float: right;padding: 3px 3px 0px 6px; font-size: 11px" id="delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'"></i></div></div>';
-								}
-							}
-							str_html = str_html + flexi_heads;
-							str_html = str_html + '</td>';
-							str_html = str_html + '</tr>';
-						}
-						$('#student_associated_flexibleheads_classwise').html(str_html);
-					} else {
-						str_html = str_html + '<tr><td colspan="3" style="color: #ff0000; font-family: verdana, Arial">X: No Student Found in this class !!</td></tr>';
-						$('#student_associated_flexibleheads_classwise').html(str_html);
-					}
-				}, error: function(xhr, status, error){
-					callDanger(xhr.responseText);
-				}
-			});
-		});
 		$('body').on('click', '.my_flexible_head_association', function(){
 			str = this.id;
 			arr = str.split('__');
@@ -1405,6 +1362,81 @@ $(function(){
 				}
 			});
 		}
+		$('body').on('click', '.View_Students_for_flexible_heads', function () {
+			var str = this.id;
+			var arr = str.split('~');
+			var clssessid = arr[1];
+			call_to_fill_view_students_for_flexible_heads(clssessid);
+		});
+		function call_to_fill_view_students_for_flexible_heads(clssessid){
+			var url_ = site_url_ + "/master_fee/get_flexible_fee_head_for_class/"+clssessid;
+
+			$.ajax({
+				type:"POST",
+				url:url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					var flexi_heads;
+					var flexi_heads_associated = '';
+					if(obj.flexiHeadsAssociatedWithClass.length > 0){
+						for(loop1=0;loop1<obj.flexiHeadsAssociatedWithClass.length;loop1++){
+							flexi_heads_associated = flexi_heads_associated + '<div id="deleteFlexiheadAssociatedForClass1_'+clssessid+'_'+obj.flexiHeadsAssociatedWithClass[loop1].FLX_HD_ID+'" style="float: left; padding: 2px; overflow: hidden"><div style="padding: 1px 3px 1px 3px; border-radius:5px; background: #00AFEC; font-size: 10px; color: #ffffff; display: inline-block; min-width: 20px">'+obj.flexiHeadsAssociatedWithClass[loop1].FEE_HEAD+'<i class="icon-trash delete_flexible_head_associated" style="float: right;padding: 3px 3px 0px 6px; font-size: 11px" id="deleteFlexiheadAssociatedForClass2_'+clssessid+'_'+obj.flexiHeadsAssociatedWithClass[loop1].FLX_HD_ID+'"></i></div></div>';
+						}
+					}
+					$('#AssociatedHeads_against_selectedClass').html(flexi_heads_associated);
+					if(obj.students__.length != 0){
+						for(i=0; i<obj.students__.length; i++){
+							str_html = str_html + '<tr>';
+							str_html = str_html + '<td>';
+							str_html = str_html + obj.students__[i].regid
+							str_html = str_html + '</td>';
+							str_html = str_html + '<td>';
+							str_html = str_html + obj.students__[i].FNAME
+							str_html = str_html + '</td>';
+							str_html = str_html + '<td>';
+							flexi_heads = '';
+							for(j=0; j<obj.view_student_associated_with_flexible_heads.length;j++){
+								if(obj.students__[i].regid == obj.view_student_associated_with_flexible_heads[j].regid){
+									flexi_heads = flexi_heads + '<div id="_delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'" style="float: left; padding: 2px; overflow: hidden"><div style="padding: 1px 3px 1px 3px; border-radius:5px; background: #00AFEC; font-size: 10px; color: #ffffff; display: inline-block; min-width: 20px">'+obj.view_student_associated_with_flexible_heads[j].FEE_HEAD+'<i class="icon-trash my_flexible_head_association" style="float: right;padding: 3px 3px 0px 6px; font-size: 11px" id="delete_flexihead_from_association__'+obj.view_student_associated_with_flexible_heads[j].ADFLXFEESTUDID+'"></i></div></div>';
+								}
+							}
+							str_html = str_html + flexi_heads;
+							str_html = str_html + '</td>';
+							str_html = str_html + '</tr>';
+						}
+						$('#student_associated_flexibleheads_classwise').html(str_html);
+					} else {
+						str_html = str_html + '<tr><td colspan="3" style="color: #ff0000; font-family: verdana, Arial">X: No Student Found in this class !!</td></tr>';
+						$('#student_associated_flexibleheads_classwise').html(str_html);
+					}
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		$('body').on('click', '.delete_flexible_head_associated', function(){
+			if(confirm('Are you sure to delete the Fee Head?') == true){
+				var str = this.id;
+				var arr = str.split('_');
+				var data_ = '&txtClasssessid='+arr[1]+"&txtFlexiHeadID="+arr[2];
+				var url_ = site_url_ + "/master_fee/erase_flexiHeads_associated";
+				$.ajax({
+					type: "GET",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							call_to_fill_view_students_for_flexible_heads(arr[1]);
+							callSuccess(obj.msg_);
+						} else {
+							callDanger(obj.msg_);
+						}
+					}
+				});
+			}
+		});
 		// --------------------------------------------------
 
 		// Invoice code below -------------------------------

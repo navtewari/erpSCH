@@ -87,11 +87,17 @@ class Master_fee extends CI_Controller {
     function get_flexible_fee_head_for_class($clssessid){
         $data['view_student_associated_with_flexible_heads'] = $this->mmm->get_flexible_fee_head_for_class($clssessid);
         $data['students__'] = $this->mmm->get_students_in_class($clssessid);
+        $data['flexiHeadsAssociatedWithClass'] = $this->mmm->fetchFlexiHeadsAssociatedClass($clssessid);
         echo json_encode($data);
     }
 
     function del_associated_flx_with_student($flx_asso_student_id){
         $data = $this->mmm->del_associated_flx_with_student($flx_asso_student_id);
+        echo json_encode($data);
+    }
+
+    function erase_flexiHeads_associated(){
+        $data = $this->mmm->erase_flexiHeads_associated();
         echo json_encode($data);
     }
 }
