@@ -2297,7 +2297,7 @@ $(function(){
 		            $('#total_amnt_display').html(total_amnt);
 		            words_ = inWords(total_amnt);
 		            $('#total_amnt_in_words').html(words_.toUpperCase());
-		            if(total_amnt > 0){
+		            if(total_amnt >= 0){
 		                //desc_ = $('#txtDesc').val();
 		                $('#submit_print').css({'visibility':'visible'});
 		            }
@@ -2344,27 +2344,38 @@ $(function(){
 		                $('#txtCCDDDate').focus();
 		                $('#txtCCDDDate').css({'border':'#ff0000 solid 1px'});
 		        } else {
-		            data_ = $('#frmReceiptCreation').serialize();
-		            url_ = site_url_ + "/fee/createReceipt";
-		            $('#submit_print').html('Loading...');
-		            $.ajax({
-		                url: url_,
-		                type: "POST",
-		                data: data_,
-		                success: function(data){
-		                    obj = JSON.parse(data);
-		                    if(obj.receipt_id != 'x'){
-		                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 0px 0px 0px'><a href='"+site_url_+'/fee/fee_print/'+obj.receipt_id+"' class='btn btn-danger' target='_blank'>Print Fee</a></div><div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
-		                    } else {
-		                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
-		                    }
-		                    $('#receiptNo').html(obj.receipt_id);
-		                }, error: function (xhr, ajaxOptions, thrownError) {       
-		                    $("#submit_print").append(xhr.responseText);
-		                }
-		            });
+		        	if($('#total_amnt').val() == 0) {
+		        		if($('#txtDesc').length < 2){
+		        			alert('Please enter description why you allow 0 Amount Receipt.')
+		        			$('#txtDesc').focus();
+		        			$('#txtDesc').css({'border':'#ff0000 solid 1px'});
+		        		} else {
+				            data_ = $('#frmReceiptCreation').serialize();
+				            url_ = site_url_ + "/fee/createReceipt";
+				            $('#submit_print').html('Loading...');
+				            $.ajax({
+				                url: url_,
+				                type: "POST",
+				                data: data_,
+				                success: function(data){
+				                    obj = JSON.parse(data);
+				                    if(obj.receipt_id != 'x'){
+				                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 0px 0px 0px'><a href='"+site_url_+'/fee/fee_print/'+obj.receipt_id+"' class='btn btn-danger' target='_blank'>Print Fee</a></div><div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
+				                    } else {
+				                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
+				                    }
+				                    $('#receiptNo').html(obj.receipt_id);
+				                }, error: function (xhr, ajaxOptions, thrownError) {       
+				                    $("#submit_print").append(xhr.responseText);
+				                }
+				            });
+				        }
+			        }
 		        }
 		    return false;
+		    });
+		    $('body').on('blur', '#txtDesc', function(){
+		    	$('#txtDesc').css({'border':'#f0f0f0 solid 1px'});
 		    });
 			// -------------------------------
 	// ----------
