@@ -2346,7 +2346,7 @@ $(function(){
 		        } else {
 		        	if($('#total_amnt').val() == 0) {
 		        		if($('#txtDesc').length < 2){
-		        			alert('Please enter description why you allow 0 Amount Receipt.')
+		        			alert('If you allowing 0 Amount Receipt then Please enter the reason.');
 		        			$('#txtDesc').focus();
 		        			$('#txtDesc').css({'border':'#ff0000 solid 1px'});
 		        		} else {
