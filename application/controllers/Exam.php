@@ -119,4 +119,14 @@ class Exam extends CI_Controller {
         $data = $this->mem->mdeleteTerm($termID);
         echo json_encode($data);
     }
+    
+    function get_scholastic_item_classwise($classID) {
+        $data['scholasticItem'] = $this->mem->mget_scholastic_item_classwise($classID);
+        echo json_encode($data);
+    }
+
+    function get_coscholastic_item_classwise($classID) {
+        $data = $this->mem->mget_coscholastic_item_classwise($classID);
+        echo json_encode($data);
+    }
 }

@@ -40,7 +40,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="control-group">
                                         <div class="control-group">
                                             <label class="control-label">Select Class</label>
@@ -84,16 +84,33 @@
                                                 $data = array(
                                                     'name' => 'cmbAssessmentItem',
                                                     'id' => 'cmbAssessmentItem',
-                                                    'required' => 'required',
-                                                    'disabled' => 'disabled'
+                                                    'required' => 'required'                                                    
                                                 );
-                                                $options = array();   
+                                                $options = array();
                                                 $options['0'] = 'Select Above Assessment Area';
                                                 ?>
                                                 <?php echo form_dropdown($data, $options, ''); ?>
                                             </div>
                                         </div>
                                     </div> 
+
+                                    <div style="display:none" id="subjectHidden">
+                                        <h3>Select Subject</h3>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <?php
+                                                $data = array(
+                                                    'class' => 'required form-control m-bot8',
+                                                    'name' => 'cmbSubjectMarks',
+                                                    'id' => 'cmbSubjectMarks'
+                                                );
+                                                $options1 = array();
+                                                $options1[''] = 'SELECT SUBJECT';
+                                                echo form_dropdown($data, $options1);
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <?php echo form_close(); ?>
                                 </div>
                             </div>            

@@ -73,7 +73,7 @@ $(function () {
         if ($("#frmExamTerm").length != 0) {
             fillTerm();
         }
-        
+
         if ($("#frmInputResult").length != 0) {
             fillExamTermCombo();
             fillClassforResult();
@@ -115,7 +115,7 @@ $(function () {
                     $('.submitSchoolData').css({'display': 'none'});
                     $('.editSchoolData').css({'display': 'block'});
                     $('#schoolLogo').attr("src", '');
-                    logo = base_url_ + 'assets_/'+_img_folder_+'/logo/' + obj.msg_[0].SCH_LOGO + "?version=1.9";
+                    logo = base_url_ + 'assets_/' + _img_folder_ + '/logo/' + obj.msg_[0].SCH_LOGO + "?version=1.9";
                     $('#schoolLogo').attr("src", logo);
 
                     $('#labelschName').html(obj.msg_[0].SCH_NAME);
@@ -2020,8 +2020,8 @@ $(function () {
             });
         }
     });
-    
-    function fillExamTermCombo(){                
+
+    function fillExamTermCombo() {
         $('#s2id_cmbExamTerm span').text("Loading...");
         url_ = site_url_ + "/exam/get_examterm_in_session";
         $('#cmbExamTerm').empty();
@@ -2040,8 +2040,8 @@ $(function () {
             }
         });
     }
-    
-    function fillClassforResult(){
+
+    function fillClassforResult() {
         $('#s2id_cmbClassofResult span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
         $('#cmbClassofResult').empty();
@@ -2053,24 +2053,52 @@ $(function () {
                 var str_html = '';
                 str_html = str_html + "<option value=''>Choose Class</option>";
                 for (i = 0; i < obj.class_in_session.length; i++) {
-                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'> Class " + obj.class_in_session[i].CLASSID + "</option>";                    
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'> Class " + obj.class_in_session[i].CLASSID + "</option>";
                 }
-                 $('#s2id_cmbClassofResult span').text("Choose Class");
+                $('#s2id_cmbClassofResult span').text("Choose Class");
                 $('#cmbClassofResult').html(str_html);
             }
         });
     }
-    
+
     $('#cmbAssessment').change(function () {
         var assArea = $('#cmbAssessment').val();
-        
-        if (assArea === '1'){
-            //for scholastic
-        }else if(assArea === '2'){
+$("#cmbAssessmentItem").removeAttr("disabled");
+        if (assArea === '1') {
+            if ($('#cmbClassofResult').val() != '') {
+                data_ = $('#cmbClassofResult').val();
+                //alert(data_);
+                url_ = site_url_ + "/exam/get_scholastic_item_classwise/" + data_;
+                //alert(url_);
+                
+                $("#cmbAssessmentItem").removeAttr("disabled");
+                $('#cmbAssessmentItem').html('Checking ...');
+                $.ajax({
+                    type: "POST",
+                    url: url_,
+                    data: data_,
+                    success: function (data) {
+                        var obj = JSON.parse(data);
+                        var str_html = '';                        
+                        str_html = str_html + "<option value=''>Choose Scholastic Item</option>";
+                        for (i = 0; i < obj.scholasticItem.length; i++) {
+                            str_html = str_html + "<option value='" + obj.scholasticItem[i].itemID + "'>" + obj.scholasticItem[i].item + "</option>";
+                        }
+                        $('#s2id_cmbAssessmentItem span').text("Choose Scholastic Item");
+                        $('#cmbAssessmentItem').html(str_html);                        
+                        document.getElementById('subjectHidden').style.display = 'block';
+                        //getStudents();
+                    }
+                });
+            } else {
+                alert('Select Class First');
+                $("#optScholastic").prop("checked", false);
+            }
+        } else if (assArea === '2') {
             //for coscholastic 
-        }else{
-             callDanger('Select Proper Assessment Area');
-        }        
+        } else {
+            callDanger('Select Proper Assessment Area');
+        }
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
