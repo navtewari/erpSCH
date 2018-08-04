@@ -2182,8 +2182,8 @@ $(function(){
 		                str_html = str_html + "<td>";
 		                str_html = str_html + "<table class='table' style='border-bottom: #000000 solid 1px; border:#ff0000 solid 0px; width: 360px; float: right'>";
 		                str_html = str_html + "<tr>";
-		                str_html = str_html + "<td width='200px'>Pay <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-plus'></span></td>";
-		                str_html = str_html + "<td width='160px'><label class='receipt_label'>: Rs. </label><span class='receipt_content'><input type='text' id='due_amnt_input' name='due_amnt_input' value="+pay_amount+" style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px' />/-</span></td>";
+		                str_html = str_html + "<td width='200px'>Total Due <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-plus'></span></td>";
+		                str_html = str_html + "<td width='160px'><label class='receipt_label'>: Rs. "+pay_amount+"</label><input type='hidden' id='due_amnt_input' name='due_amnt_input' value="+pay_amount+" style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px' /></td>";
 		                str_html = str_html + "</tr>";
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
@@ -2204,6 +2204,10 @@ $(function(){
 		                str_html = str_html + "<tr>"
 		                str_html = str_html + "<td><input type='button' class='btn btn-danger' style='border-radius: 3px; padding: 1px 3px; font-size: 11px' id='update_total' value='Update' /></td>";
 		                str_html = str_html + "<td style='font-size: 10px; text-align: right; width: 200px'><span id='total_amnt_in_words'>"+words.toUpperCase()+"</span></td>";
+		                str_html = str_html + "</tr>";
+		                str_html = str_html + "<tr>";
+		                str_html = str_html + "<td width='200px' style='background: #406373; color: #ffffff'>Paid Amount </td>";
+		                str_html = str_html + "<td width='160px' style='background: #406373; color: #ffffff'><label class='receipt_label'>: Rs. </label><span class='receipt_content'><input type='text' id='paid_amount' name='paid_amount' placeholder='"+pay_amount+"' value='' style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px; color: #0000ff; font-weight: bold' />/-</span></td>";
 		                str_html = str_html + "</tr>";
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='font-size: 13px; color: #0000ff; padding:8px 0px 0px 8px'>Payment Mode </td>";
@@ -2328,6 +2332,7 @@ $(function(){
 		        if($.trim($('#txtDesc').val()) == ""){
 		            $('#txtDesc').val('x');
 		        }
+		        
 		        if($.trim($('#due_amnt_input').val()) == ''){
 		            $('#due_amnt_input').focus();
 		            $('#due_amnt_input').css({'border':'#ff0000 solid 1px'});
@@ -2344,12 +2349,19 @@ $(function(){
 		                $('#txtCCDDDate').focus();
 		                $('#txtCCDDDate').css({'border':'#ff0000 solid 1px'});
 		        } else {
+		            var flag = 1;
 		        	if($('#total_amnt').val() == 0) {
-		        		if($('#txtDesc').length < 2){
-		        			alert('If you allowing 0 Amount Receipt then Please enter the reason.');
+		        		if($.trim($('#txtDesc').val()) == ''){
 		        			$('#txtDesc').focus();
 		        			$('#txtDesc').css({'border':'#ff0000 solid 1px'});
+		        			flag = 0;
 		        		} else {
+		        		    flag = 1;
+		        		}
+		        	} else {
+		        	    flag =1;
+		        	}
+		        	    if(flag == 1){
 				            data_ = $('#frmReceiptCreation').serialize();
 				            url_ = site_url_ + "/fee/createReceipt";
 				            $('#submit_print').html('Loading...');
@@ -2369,8 +2381,9 @@ $(function(){
 				                    $("#submit_print").append(xhr.responseText);
 				                }
 				            });
+				        } else {
+				            callDanger('If you allowing 0 Amount Receipt then Please enter the reason.');
 				        }
-			        }
 		        }
 		    return false;
 		    });

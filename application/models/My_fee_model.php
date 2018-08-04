@@ -200,94 +200,136 @@ class My_fee_model extends CI_Model {
   
         return $query->result();
     }
+    function previousReciptExists($regid_, $class__){
+        // Below is to find last invoice for a student 
+            $this->db->select('b.INVDETID');
+            $this->db->from('fee_6_invoice a');
+            $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
+            $this->db->where('b.REGID', $regid_);
+            $this->db->where('a.CLSSESSID', $class__);
+            $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
+            $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
+            $this->db->order_by('b.INVDETID', 'desc');
+            $this->db->limit(1);
+            $querylast = $this->db->get();
+            
+            if($querylast->num_rows()!=0){
+                $r = $querylast->row();
+                $this->db->where('INVDETID', $r->INVDETID);
+                $QueryPrevReceipGenerated = $this->db->get('fee_7_receipts');
 
+                if($QueryPrevReceipGenerated->num_rows() != 0){ // true means receipt of last invoice exists
+                    $str = 'Code-15: New Invoice can be generated.';
+                    $bool_ = true;
+                } else {
+                    $str = 'Code-16: New Invoice cannot be generated as last receipt not found. Please pay the last invoice.';
+                    $bool_ = false;
+                }
+            } else { // false means no invoice yet generated for the selected student for selected class
+                $str = 'Code-17: New Invoice can be generated.';
+                $bool_ = true;
+            }
+
+        $data['msg_'] = $str;
+        $data['res_'] = $bool_;
+
+        return $data;
+    }
     function generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months){
         $s = 'x';
-        $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
-        $prevInvoiceID = $data['last_invoice_detail_id']['ID'];
-        $prevInvoice_result = $data['last_invoice_detail_id']['res_'];
-        $data['prev_id'] = $prevInvoiceID;
+        // This code answers that if receipt of previous invoice is not generated then you cannot generate the new invoice
+            //$data = $this->previousReciptExists($regid_, $class__);
+        // 
+        if(1/*$data['res_'] == true*/){
+            $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
+            $prevInvoiceID = $data['last_invoice_detail_id']['ID'];
+            $prevInvoice_result = $data['last_invoice_detail_id']['res_'];
+            $data['prev_id'] = $prevInvoiceID;
 
-        if($data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
-            $data1 = array(
-                'SESSID' => $this->session->userdata('_current_year___'),
-                'CLSSESSID' => $class__,
-                'YEAR_FROM' => $yr_from,
-                'MONTH_FROM'=> $mnth_from,
-                'YEAR_TO'=> $yr_to,
-                'MONTH_TO'=> $mnth_to,
-                'NOM'=>$no_of_months,
-                'DESCRIPTION_IFANY'=> 'X',
-                'DATE_' => date('Y-m-d H:i:s')
-            );
-            $query = $this->db->insert('fee_6_invoice', $data1);
-            if($query == true){
-                $invoiceid = $this->db->insert_id();
-                $data_['bool__'] = 1;
-            } else {
-                $data_['bool__'] = 0;
+            if($data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
+                $data1 = array(
+                    'SESSID' => $this->session->userdata('_current_year___'),
+                    'CLSSESSID' => $class__,
+                    'YEAR_FROM' => $yr_from,
+                    'MONTH_FROM'=> $mnth_from,
+                    'YEAR_TO'=> $yr_to,
+                    'MONTH_TO'=> $mnth_to,
+                    'NOM'=>$no_of_months,
+                    'DESCRIPTION_IFANY'=> 'X',
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $query = $this->db->insert('fee_6_invoice', $data1);
+                if($query == true){
+                    $invoiceid = $this->db->insert_id();
+                    $data_['bool__'] = 1;
+                } else {
+                    $data_['bool__'] = 0;
+                }
+            } else if($data['bool_'] == 4){
+                $invoiceid = $data['invid_'];
             }
-        } else if($data['bool_'] == 4){
-            $invoiceid = $data['invid_'];
-        }
 
-        if($data['bool_'] == 4 || $data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
-            $data_static = $this->fetch_static_heads_to_class($class__, $regid_,$no_of_months);
-            $data_flexi = $this->fetch_flexi_heads_to_students($class__, $regid_,$no_of_months);
-            $total_applicable_discount_amount = $data_static['static_discount_applicable_amount'];
-            $total_actual_amount = $data_static['static_amount'] + ($data_static['n_static_amount']*$no_of_months) + $data_flexi['_flexi_amount'] + ($data_flexi['n_flexi_amount']*$no_of_months);
-            $due_amount = $this->fetch_due_amount_in_invoice($regid_);
-            $total_amount_due = $due_amount+$total_actual_amount;
-            $data1 = array(
-                'INVID'=>$invoiceid,
-                'STATIC_HEADS_1_TIME'=>$data_static['static_heads'],
-                'STATIC_SPLIT_AMT_1_TIME'=>$data_static['static_heads_amount'],
-                'STATIC_HEADS_N_TIMES'=>$data_static['n_static_heads'],
-                'STATIC_SPLIT_AMT_N_TIME'=>$data_static['n_static_heads_amount'],
-                'FLEXIBLE_HEADS_1_TIME'=>$data_flexi['flexi_heads'],
-                'FLEXI_SPLIT_AMT_1_TIME'=>$data_flexi['flexi_heads_amount'],
-                'FLEXIBLE_HEADS_N_TIMES'=>$data_flexi['n_flexi_heads'],
-                'FLEXI_SPLIT_AMT_N_TIMES'=>$data_flexi['n_flexi_heads_amount'],
-                'ACTUAL_AMOUNT'=> $total_actual_amount,
-                'APPLICABLE_DISCOUNT_AMOUNT' => $total_applicable_discount_amount,
-                'DESCRIPTION_IFANY' => 'X',
-                'REGID'=>$regid_,
-                'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
-                'PREV_DUE_AMOUNT'=>$due_amount,
-                'DUE_AMOUNT'=>$total_amount_due,
-                'DATE_'=> date('Y-m-d H:i:s')
-            );
-            $query = $this->db->insert('fee_6_invoice_detail', $data1);
-            if($query == true){
-                $data['bool__'] = 1; // Invoice Successfully generated
-                $data['total_amount_due'] = $total_amount_due;
-                $data['invdetid'] = $this->db->insert_id();
-                // Updation: Disable the previous invoice
-                    if($prevInvoice_result == true){
-                        
-                        $this->db->where('INVDETID', $prevInvoiceID);
-                        if($this->db->update('fee_6_invoice_detail', array('STATUS' => 0)) == true){
-                            $s = "Invoice Successfully generated++"; // invoice generated with disabling the previous invoice
+            if($data['bool_'] == 4 || $data['bool_'] == 6 || $data['bool_'] == 8 || $data['bool_'] == 12 || $data['bool_'] == 13){
+                $data_static = $this->fetch_static_heads_to_class($class__, $regid_,$no_of_months);
+                $data_flexi = $this->fetch_flexi_heads_to_students($class__, $regid_,$no_of_months);
+                $total_applicable_discount_amount = $data_static['static_discount_applicable_amount'];
+                $total_actual_amount = $data_static['static_amount'] + ($data_static['n_static_amount']*$no_of_months) + $data_flexi['_flexi_amount'] + ($data_flexi['n_flexi_amount']*$no_of_months);
+                $due_amount = $this->fetch_due_amount_in_invoice($regid_);
+                $total_amount_due = $due_amount+$total_actual_amount;
+                $data1 = array(
+                    'INVID'=>$invoiceid,
+                    'STATIC_HEADS_1_TIME'=>$data_static['static_heads'],
+                    'STATIC_SPLIT_AMT_1_TIME'=>$data_static['static_heads_amount'],
+                    'STATIC_HEADS_N_TIMES'=>$data_static['n_static_heads'],
+                    'STATIC_SPLIT_AMT_N_TIME'=>$data_static['n_static_heads_amount'],
+                    'FLEXIBLE_HEADS_1_TIME'=>$data_flexi['flexi_heads'],
+                    'FLEXI_SPLIT_AMT_1_TIME'=>$data_flexi['flexi_heads_amount'],
+                    'FLEXIBLE_HEADS_N_TIMES'=>$data_flexi['n_flexi_heads'],
+                    'FLEXI_SPLIT_AMT_N_TIMES'=>$data_flexi['n_flexi_heads_amount'],
+                    'ACTUAL_AMOUNT'=> $total_actual_amount,
+                    'APPLICABLE_DISCOUNT_AMOUNT' => $total_applicable_discount_amount,
+                    'DESCRIPTION_IFANY' => 'X',
+                    'REGID'=>$regid_,
+                    'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
+                    'PREV_DUE_AMOUNT'=>$due_amount,
+                    'DUE_AMOUNT'=>$total_amount_due,
+                    'DATE_'=> date('Y-m-d H:i:s')
+                );
+                $query = $this->db->insert('fee_6_invoice_detail', $data1);
+                if($query == true){
+                    $data['bool__'] = 1; // Invoice Successfully generated
+                    $data['total_amount_due'] = $total_amount_due;
+                    $data['invdetid'] = $this->db->insert_id();
+                    // Updation: Disable the previous invoice
+                        if($prevInvoice_result == true){
+                            
+                            $this->db->where('INVDETID', $prevInvoiceID);
+                            if($this->db->update('fee_6_invoice_detail', array('STATUS' => 0)) == true){
+                                $s = "Invoice Successfully generated++"; // invoice generated with disabling the previous invoice
+                            } else {
+                                /* 
+                                    E-Mail the new invoice ID to nitin.d12@gmail.com notifyng that 
+                                    previous-invoiceID against new-invoiceId is not disabled for 
+                                    smoother invoice monitoring. Also E-mail the school name 
+                                    via session variable: $this->session->userdata('school_name');
+                                */
+                                $s = "Invoice Successfully generated"; // invoice generated without disabling the previous invoice
+                            }
                         } else {
-                            /* 
-                                E-Mail the new invoice ID to nitin.d12@gmail.com notifyng that 
-                                previous-invoiceID against new-invoiceId is not disabled for 
-                                smoother invoice monitoring. Also E-mail the school name 
-                                via session variable: $this->session->userdata('school_name');
-                            */
-                            $s = "Invoice Successfully generated"; // invoice generated without disabling the previous invoice
+                            $s = "Invoice Successfully generated"; // Invoice generated first time so no need to disable any invoice
                         }
-                    } else {
-                        $s = "Invoice Successfully generated"; // Invoice generated first time so no need to disable any invoice
-                    }
-                // --------------------------------------
+                    // --------------------------------------
+                } else {
+                    $data['bool__'] = 0; // Something goes wrong. Please try again
+                    $data['invdetid'] = 'x';
+                    $s = "Something goes wrong. Please try again";
+                }
             } else {
-                $data['bool__'] = 0; // Something goes wrong. Please try again
+                $data['bool__'] = 2; // Invoice already exists
                 $data['invdetid'] = 'x';
-                $s = "Something goes wrong. Please try again";
             }
         } else {
-            $data['bool__'] = 2; // Invoice already exists
+            $data['bool__'] = 2; // Invoice cannot be generated because any receipt of last invoice is not found.
             $data['invdetid'] = 'x';
         }
 
