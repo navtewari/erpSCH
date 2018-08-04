@@ -2207,7 +2207,7 @@ $(function(){
 		                str_html = str_html + "</tr>";
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td width='200px' style='background: #406373; color: #ffffff'>Paid Amount </td>";
-		                str_html = str_html + "<td width='160px' style='background: #406373; color: #ffffff'><label class='receipt_label'>: Rs. </label><span class='receipt_content'><input type='text' id='paid_amount' name='paid_amount' placeholder='"+pay_amount+"' value='' style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px; color: #0000ff; font-weight: bold' />/-</span></td>";
+		                str_html = str_html + "<td width='160px' style='background: #406373; color: #ffffff'><label class='receipt_label'>: Rs. </label><span class='receipt_content'><input type='text' id='paid_amount' name='paid_amount' placeholder='"+total_amount+"' value='"+total_amount+"' style='width: 100px; padding: 0px; border:#f0f0f0 solid 1px; color: #0000ff; font-weight: bold' />/-</span></td>";
 		                str_html = str_html + "</tr>";
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='font-size: 13px; color: #0000ff; padding:8px 0px 0px 8px'>Payment Mode </td>";
@@ -2270,6 +2270,7 @@ $(function(){
 	                }
 		        });
 		    }
+		    
 			$('body').on('change', '#cmbPaymentMode', function(){
 		        if($('#cmbPaymentMode').val() != 'cash'){
 		            if($('#cmbPaymentMode').val() == 'cheque'){
@@ -2288,6 +2289,7 @@ $(function(){
 		            });
 		        }
 		    });
+		    
 		    $('body').on('click', '#update_total', function(){
 		        if($.trim($('#due_amnt_input').val()) != '' && $.trim($('#_discount_').val()) != '' && $.trim($('#_fine_').val()) != ''){
 		            var due_amnt = parseInt($('#due_amnt_input').val());
@@ -2301,6 +2303,7 @@ $(function(){
 		            $('#total_amnt_display').html(total_amnt);
 		            words_ = inWords(total_amnt);
 		            $('#total_amnt_in_words').html(words_.toUpperCase());
+		            $('#paid_amount').val(total_amnt);
 		            if(total_amnt >= 0){
 		                //desc_ = $('#txtDesc').val();
 		                $('#submit_print').css({'visibility':'visible'});
@@ -2310,7 +2313,16 @@ $(function(){
 		            $('#submit_print').css({'visibility':'hidden'});
 		        }
 		    });
-
+		    $('body').on('blur', '#paid_amount', function(){
+		    	if($.trim($('#paid_amount').val())==''){
+		    		$('#paid_amount').val('0');
+		    	}
+		    });
+		    $('body').on('keyup', '#paid_amount', function(){
+		    	if(isNaN($('#paid_amount').val())){
+		    		$('#paid_amount').val('');
+		    	}
+		    });
 		    $('body').on('keypress', '#actual_amnt_input', function(){
 		        $('#actual_amnt_input').css({'border': '#f0f0f0 solid 1px'});
 		        $('#submit_print').css({'visibility':'hidden'});
@@ -2319,10 +2331,29 @@ $(function(){
 		        $('#due_amnt_input').css({'border': '#f0f0f0 solid 1px'});
 		        $('#submit_print').css({'visibility':'hidden'});
 		    });
-		    
+		    $('body').on('blur', '#_discount_', function(){
+		    	if($.trim($('#_discount_').val())==''){
+		    		$('#_discount_').val('0');
+		    	}
+		    });
+		    $('body').on('keyup', '#_discount_', function(){
+		    	if(isNaN($('#_discount_').val())){
+		    		$('#_discount_').val('');
+		    	}
+		    });
 		    $('body').on('keypress', '#_discount_', function(){
 		        $('#_discount_').css({'border': '#f0f0f0 solid 1px'});
 		        $('#submit_print').css({'visibility':'hidden'});
+		    });
+		    $('body').on('blur', '#_fine_', function(){
+		    	if($.trim($('#_fine_').val())==''){
+		    		$('#_fine_').val('0');
+		    	}
+		    });
+		    $('body').on('keyup', '#_fine_', function(){
+		    	if(isNaN($('#_fine_').val())){
+		    		$('#_fine_').val('');
+		    	}
 		    });
 		    $('body').on('keypress', '#_fine_', function(){
 		        $('#_fine_').css({'border': '#f0f0f0 solid 1px'});

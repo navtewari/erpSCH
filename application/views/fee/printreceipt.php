@@ -163,8 +163,16 @@
 											<td class="content"><?php echo $receipt->CLASSID; ?></td>
 										</tr>
 										<tr>
-											<td class="label_">Session</td>
-											<td class="content"><?php echo $receipt->SESSID; ?></td>
+											<td class="label_">Invoice No.</td>
+											<td class="content"><?php echo $receipt->INVDETID; ?></td>
+										</tr>
+										<?php 
+											$total_paid = $receipt->PAID;
+											$actualAmountToPay = $receipt->ACTUAL_PAID_AMT-$receipt->DISCOUNT_AMOUNT+$receipt->FINE;
+										?>
+										<tr>
+											<td class="label_">Amount Due </td>
+											<td class="content">Rs. <?php echo $actualAmountToPay; ?>/-</td>
 										</tr>
 									</table>
 								</td>
@@ -275,9 +283,6 @@
 											<td class="content">Fine - Rs.<?php echo $receipt->FINE; ?>/-</td>
 										</tr>
 										<?php } ?>
-										<?php 
-											$total_paid = $receipt->ACTUAL_PAID_AMT-$receipt->DISCOUNT_AMOUNT+$receipt->FINE;
-										?>
 										<tr valign="top">
 											<td class="label_">Total Paid</td>
 											<td class="content"><b>Rs. <?php echo $total_paid; ?></b>/- &nbsp;

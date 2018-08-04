@@ -858,7 +858,9 @@ class My_fee_model extends CI_Model {
         $desc_ = $this->input->post('txtDesc');
 
         $fine = $this->input->post('_fine_');
+        $total_gross_amount = $this->input->post('total_amnt');
         $due_amnt_input = $this->input->post('due_amnt_input');
+        $paid__ = $this->input->post('paid_amount');
         $discount_amount = trim($this->input->post('_discount_'));
         $mode = $this->input->post('cmbPaymentMode');
         if($mode != 'cash'){
@@ -880,7 +882,8 @@ class My_fee_model extends CI_Model {
             $this->db->set_flashdata('blunder_error', 'OH NO!! Invoice Record is deleted. You should have to maintain the fee detail for '.$this->session->userdata('_current_year___')." against the registration id - ". $regid);
             $due_amount = 0;
         }
-        $new_due_amount = $due_amount - $due_amnt_input;
+        //$new_due_amount = $due_amount - $due_amnt_input;
+        $new_due_amount = $total_gross_amount - $paid__;
         // -------------------------------------------------------------------------
         if($due_amount > 0){
 
@@ -900,10 +903,11 @@ class My_fee_model extends CI_Model {
                 'ADFLXFEESTUDID' =>$flexiheads,
                 'DISCOUNT' =>$discount,
                 'DISCOUNT_CATEGORY' => $discount_category,
-                'DISCOUNT_AMOUNT'=>$discount_amount,
+                'DISCOUNT_AMOUNT'=>trim($discount_amount),
                 'DESCRIPTION_IFANY'=>$desc_,
-                'ACTUAL_PAID_AMT'=>$due_amnt_input,
-                'FINE'=>$fine,
+                'ACTUAL_PAID_AMT'=>trim($due_amnt_input),
+                'PAID' => trim($paid__),
+                'FINE'=>trim($fine),
                 'MODE'=>$mode,
                 'DD_CQ_NO' =>$ddcq_no,
                 'DD_CQ_DATE'=>$ddcq_date,
