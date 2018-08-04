@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.3
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2018 at 07:28 AM
--- Server version: 5.6.11
+-- Generation Time: Aug 04, 2018 at 09:42 PM
+-- Server version: 5.6.11-log
 -- PHP Version: 5.5.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -14,13 +14,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `erpsch`
 --
-CREATE DATABASE IF NOT EXISTS `erpsch` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `erpsch`;
 
 -- --------------------------------------------------------
 
@@ -28,12 +26,11 @@ USE `erpsch`;
 -- Table structure for table `class_1_classes`
 --
 
-CREATE TABLE IF NOT EXISTS `class_1_classes` (
+CREATE TABLE `class_1_classes` (
   `CLASSID` varchar(10) NOT NULL,
   `CLASS` varchar(100) NOT NULL,
   `SECTION` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLASSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -83,16 +80,13 @@ INSERT INTO `class_1_classes` (`CLASSID`, `CLASS`, `SECTION`, `DATE_`) VALUES
 -- Table structure for table `class_2_in_session`
 --
 
-CREATE TABLE IF NOT EXISTS `class_2_in_session` (
-  `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_2_in_session` (
+  `CLSSESSID` int(15) NOT NULL,
   `CLASSID` varchar(10) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `STATUS_` tinyint(1) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLSSESSID`),
-  KEY `CLASSID` (`CLASSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=545 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_2_in_session`
@@ -121,7 +115,8 @@ INSERT INTO `class_2_in_session` (`CLSSESSID`, `CLASSID`, `SESSID`, `STATUS_`, `
 (541, '7', '2017-18', 1, '2018-07-05 08:55:43'),
 (542, '8', '2017-18', 1, '2018-07-05 08:55:43'),
 (543, '9', '2017-18', 1, '2018-07-05 08:55:43'),
-(544, '1', '2019-20', 1, '2018-07-05 18:39:13');
+(544, '1', '2019-20', 1, '2018-07-05 18:39:13'),
+(545, '5', '2019-20', 1, '2018-08-04 16:16:50');
 
 -- --------------------------------------------------------
 
@@ -129,20 +124,15 @@ INSERT INTO `class_2_in_session` (`CLSSESSID`, `CLASSID`, `SESSID`, `STATUS_`, `
 -- Table structure for table `class_3_class_wise_students`
 --
 
-CREATE TABLE IF NOT EXISTS `class_3_class_wise_students` (
-  `ID_` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_3_class_wise_students` (
+  `ID_` int(15) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSID` varchar(20) NOT NULL,
-  PRIMARY KEY (`ID_`),
-  KEY `regid` (`regid`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `USERNAME_` (`USERNAME_`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=319 ;
+  `SESSID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_3_class_wise_students`
@@ -466,7 +456,8 @@ INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`
 (315, '2018041312', 0, 532, 'nitin', '2018-07-13 06:31:26', '2018-19'),
 (316, '2018041313', 0, 532, 'nitin', '2018-07-13 06:31:27', '2018-19'),
 (317, '2018041314', 0, 532, 'nitin', '2018-07-13 06:31:27', '2018-19'),
-(318, '2018041315', 0, 532, 'nitin', '2018-07-13 06:31:27', '2018-19');
+(318, '2018041315', 0, 532, 'nitin', '2018-07-13 06:31:27', '2018-19'),
+(319, '2018041158', 0, 545, 'nitin', '2018-08-04 16:17:11', '2019-20');
 
 -- --------------------------------------------------------
 
@@ -474,8 +465,8 @@ INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`
 -- Table structure for table `class_4_class_wise_attendance`
 --
 
-CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
-  `ATTID` bigint(22) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_4_class_wise_attendance` (
+  `ATTID` bigint(22) NOT NULL,
   `regid` varchar(25) CHARACTER SET latin1 NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
@@ -483,9 +474,8 @@ CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
   `DATE_` varchar(15) CHARACTER SET latin1 NOT NULL,
   `TIME_` varchar(12) CHARACTER SET latin1 NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
-  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ATTID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1187 ;
+  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_4_class_wise_attendance`
@@ -1679,7 +1669,89 @@ INSERT INTO `class_4_class_wise_attendance` (`ATTID`, `regid`, `ROLLNO`, `CLSSES
 (1183, '2018041186', 0, 529, 'nitin', '21/07/2018', '4:2:AM', 1, '2018-07-21 17:33:23'),
 (1184, '2018041187', 0, 529, 'nitin', '21/07/2018', '4:2:AM', 1, '2018-07-21 17:33:23'),
 (1185, '2018041188', 0, 529, 'nitin', '21/07/2018', '4:2:AM', 1, '2018-07-21 17:33:23'),
-(1186, '2018041191', 0, 529, 'nitin', '21/07/2018', '4:2:AM', 1, '2018-07-21 17:33:23');
+(1186, '2018041191', 0, 529, 'nitin', '21/07/2018', '4:2:AM', 1, '2018-07-21 17:33:23'),
+(1187, '2018041041', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1188, '2018041001', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 0, '2018-08-01 10:39:59'),
+(1189, '2018041002', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 0, '2018-08-01 10:39:59'),
+(1190, '2018041003', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1191, '2018041004', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1192, '2018041005', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1193, '2018041006', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1194, '2018041007', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1195, '2018041008', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1196, '2018041009', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1197, '2018041010', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1198, '2018041011', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1199, '2018041012', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1200, '2018041013', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1201, '2018041014', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1202, '2018041015', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1203, '2018041016', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1204, '2018041017', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1205, '2018041018', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1206, '2018041019', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1207, '2018041020', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1208, '2018041021', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1209, '2018041022', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1210, '2018041023', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1211, '2018041024', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1212, '2018041025', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1213, '2018041026', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1214, '2018041027', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1215, '2018041028', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1216, '2018041029', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1217, '2018041030', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1218, '2018041031', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1219, '2018041032', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1220, '2018041039', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1221, '2018041033', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1222, '2018041040', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1223, '2018041034', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1224, '2018041035', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1225, '2018041036', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1226, '2018041037', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1227, '2018041038', 0, 522, 'nitin', '01/08/2018', '1:11:AM', 1, '2018-08-01 10:39:59'),
+(1228, '2018041041', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1229, '2018041001', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1230, '2018041002', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1231, '2018041003', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1232, '2018041004', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1233, '2018041005', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1234, '2018041006', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1235, '2018041007', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1236, '2018041008', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1237, '2018041009', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1238, '2018041010', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1239, '2018041011', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1240, '2018041012', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1241, '2018041013', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1242, '2018041014', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1243, '2018041015', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1244, '2018041016', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1245, '2018041017', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1246, '2018041018', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1247, '2018041019', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1248, '2018041020', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1249, '2018041021', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1250, '2018041022', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1251, '2018041023', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1252, '2018041024', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1253, '2018041025', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1254, '2018041026', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1255, '2018041027', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1256, '2018041028', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1257, '2018041029', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1258, '2018041030', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1259, '2018041031', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1260, '2018041032', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1261, '2018041039', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1262, '2018041033', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1263, '2018041040', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1264, '2018041034', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1265, '2018041035', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1266, '2018041036', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1267, '2018041037', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48'),
+(1268, '2018041038', 0, 522, 'nitin', '03/08/2018', '1:0:AM', 1, '2018-08-02 18:32:48');
 
 -- --------------------------------------------------------
 
@@ -1687,13 +1759,19 @@ INSERT INTO `class_4_class_wise_attendance` (`ATTID`, `regid`, `ROLLNO`, `CLSSES
 -- Table structure for table `exam_1_scholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_1_scholastic_items` (
-  `itemID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_1_scholastic_items` (
+  `itemID` int(10) NOT NULL,
   `item` varchar(200) CHARACTER SET utf8 NOT NULL,
   `maxMarks` int(3) NOT NULL,
-  `priority` int(10) NOT NULL,
-  PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `priority` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `exam_1_scholastic_items`
+--
+
+INSERT INTO `exam_1_scholastic_items` (`itemID`, `item`, `maxMarks`, `priority`) VALUES
+(1, 'Theory', 100, 0);
 
 -- --------------------------------------------------------
 
@@ -1701,15 +1779,14 @@ CREATE TABLE IF NOT EXISTS `exam_1_scholastic_items` (
 -- Table structure for table `exam_2_add_scholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_2_add_scholastic_to_class` (
-  `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_2_add_scholastic_to_class` (
+  `ADDSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `itemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_2_add_scholastic_to_class`
@@ -1725,7 +1802,8 @@ INSERT INTO `exam_2_add_scholastic_to_class` (`ADDSCHCLASSID`, `CLSSESSID`, `SES
 (14, 406, '2017-18', 6, 'nitin', '2017-06-27 06:42:44'),
 (15, 423, '2017-18', 3, 'nitin', '2017-06-27 12:19:41'),
 (16, 422, '2017-18', 1, 'nitin', '2017-06-27 16:12:47'),
-(17, 424, '2017-18', 3, 'nitin', '2017-07-20 10:28:42');
+(17, 424, '2017-18', 3, 'nitin', '2017-07-20 10:28:42'),
+(19, 526, '2018-19', 1, 'nitin', '2018-07-30 03:58:04');
 
 -- --------------------------------------------------------
 
@@ -1733,12 +1811,11 @@ INSERT INTO `exam_2_add_scholastic_to_class` (`ADDSCHCLASSID`, `CLSSESSID`, `SES
 -- Table structure for table `exam_3_coscholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_3_coscholastic_items` (
-  `coitemID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_3_coscholastic_items` (
+  `coitemID` int(10) NOT NULL,
   `coitem` varchar(200) CHARACTER SET utf8 NOT NULL,
-  `priority` int(10) NOT NULL,
-  PRIMARY KEY (`coitemID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+  `priority` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_3_coscholastic_items`
@@ -1755,15 +1832,14 @@ INSERT INTO `exam_3_coscholastic_items` (`coitemID`, `coitem`, `priority`) VALUE
 -- Table structure for table `exam_4_add_coscholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_4_add_coscholastic_to_class` (
-  `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_4_add_coscholastic_to_class` (
+  `ADDCOSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `coitemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDCOSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_4_add_coscholastic_to_class`
@@ -1774,7 +1850,12 @@ INSERT INTO `exam_4_add_coscholastic_to_class` (`ADDCOSCHCLASSID`, `CLSSESSID`, 
 (2, 423, '2017-18', 1, 'nitin', '2017-06-28 05:16:14'),
 (6, 422, '2017-18', 5, 'nitin', '2017-06-28 06:39:16'),
 (7, 424, '2017-18', 5, 'nitin', '2017-06-28 06:39:16'),
-(8, 522, '2018-19', 1, 'nitin', '2018-07-26 05:28:17');
+(8, 522, '2018-19', 1, 'nitin', '2018-07-26 05:28:17'),
+(9, 522, '2018-19', 5, 'nitin', '2018-07-28 06:51:09'),
+(10, 522, '2018-19', 6, 'nitin', '2018-07-28 06:51:09'),
+(11, 526, '2018-19', 1, 'nitin', '2018-07-28 06:51:13'),
+(12, 526, '2018-19', 5, 'nitin', '2018-07-28 06:51:13'),
+(13, 526, '2018-19', 6, 'nitin', '2018-07-28 06:51:13');
 
 -- --------------------------------------------------------
 
@@ -1782,12 +1863,11 @@ INSERT INTO `exam_4_add_coscholastic_to_class` (`ADDCOSCHCLASSID`, `CLSSESSID`, 
 -- Table structure for table `exam_5_term`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_5_term` (
-  `termID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_5_term` (
+  `termID` int(10) NOT NULL,
   `termName` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`termID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_5_term`
@@ -1803,8 +1883,8 @@ INSERT INTO `exam_5_term` (`termID`, `termName`, `SESSID`) VALUES
 -- Table structure for table `exam_6_scholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
-  `schID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_6_scholastic_result` (
+  `schID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -1815,9 +1895,8 @@ CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
   `marks` int(10) NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`schID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=103 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_6_scholastic_result`
@@ -1882,8 +1961,8 @@ INSERT INTO `exam_6_scholastic_result` (`schID`, `regid`, `CLSSESSID`, `ROLLNO`,
 -- Table structure for table `exam_7_coscholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
-  `coschID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_7_coscholastic_result` (
+  `coschID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -1892,9 +1971,8 @@ CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
   `grade` char(1) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`coschID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_7_coscholastic_result`
@@ -2007,8 +2085,8 @@ INSERT INTO `exam_7_coscholastic_result` (`coschID`, `regid`, `CLSSESSID`, `ROLL
 -- Table structure for table `exam_8_result_subject_total`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_8_result_subject_total` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -2018,9 +2096,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2028,8 +2105,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
 -- Table structure for table `exam_9_result_remarks`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_9_result_remarks` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -2038,9 +2115,8 @@ CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
   `promotedClass` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2048,11 +2124,10 @@ CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
 -- Table structure for table `fee_0_duration`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_0_duration` (
+CREATE TABLE `fee_0_duration` (
   `DURATION` varchar(2) NOT NULL,
   `ITEM` varchar(25) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`DURATION`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2069,12 +2144,11 @@ INSERT INTO `fee_0_duration` (`DURATION`, `ITEM`, `DATE_`) VALUES
 -- Table structure for table `fee_1_type`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_1_type` (
+CREATE TABLE `fee_1_type` (
   `FEETYPEID` int(15) NOT NULL,
   `TYPE_` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FEETYPEID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2083,8 +2157,8 @@ CREATE TABLE IF NOT EXISTS `fee_1_type` (
 -- Table structure for table `fee_2`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_2` (
-  `feeID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_2` (
+  `feeID` int(11) NOT NULL,
   `regID` varchar(25) NOT NULL,
   `date` varchar(20) NOT NULL,
   `Amount` int(11) NOT NULL,
@@ -2095,16 +2169,8 @@ CREATE TABLE IF NOT EXISTS `fee_2` (
   `dd_ch_no` varchar(20) NOT NULL,
   `dd_ch_date` varchar(20) NOT NULL,
   `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`feeID`),
-  KEY `regID` (`regID`,`date`),
-  KEY `userID` (`username`),
-  KEY `username` (`username`),
-  KEY `username_2` (`username`),
-  KEY `regID_2` (`regID`),
-  KEY `feetype` (`feetype`),
-  KEY `SESSIONID` (`SESSIONID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `SESSIONID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2112,15 +2178,14 @@ CREATE TABLE IF NOT EXISTS `fee_2` (
 -- Table structure for table `fee_3_static_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_3_static_heads` (
-  `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_3_static_heads` (
+  `ST_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `DURATION` varchar(2) NOT NULL,
   `DISCOUNT_APPLICABLE` tinyint(1) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ST_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_3_static_heads`
@@ -2142,15 +2207,14 @@ INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `DURATION`, `DISCOUNT_
 -- Table structure for table `fee_4_flexible_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_4_flexible_heads` (
-  `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_4_flexible_heads` (
+  `FLX_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `DURATION` varchar(2) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FLX_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_4_flexible_heads`
@@ -2171,73 +2235,64 @@ INSERT INTO `fee_4_flexible_heads` (`FLX_HD_ID`, `FEE_HEAD`, `DURATION`, `AMOUNT
 -- Table structure for table `fee_5_add_flexi_head_to_students`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_5_add_flexi_head_to_students` (
-  `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_5_add_flexi_head_to_students` (
+  `ADFLXFEESTUDID` int(15) NOT NULL,
   `REGID` varchar(100) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `FLX_HD_ID` int(15) NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADFLXFEESTUDID`),
-  KEY `FLX_HD_ID` (`FLX_HD_ID`),
-  KEY `REGID` (`REGID`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_5_add_flexi_head_to_students`
 --
 
 INSERT INTO `fee_5_add_flexi_head_to_students` (`ADFLXFEESTUDID`, `REGID`, `CLSSESSID`, `SESSID`, `FLX_HD_ID`, `STATUS`, `USERNAME`, `DATE_`) VALUES
-(1, '2018041042', 526, '2018-19', 4, 1, 'nitin', '2018-07-17 03:32:20'),
-(2, '2018041043', 526, '2018-19', 4, 1, 'nitin', '2018-07-17 03:32:20'),
-(3, '2018041048', 526, '2018-19', 4, 1, 'nitin', '2018-07-17 03:32:20'),
-(4, '2018041001', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(5, '2018041002', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(6, '2018041003', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(7, '2018041004', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(8, '2018041005', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(9, '2018041006', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(10, '2018041007', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:03'),
-(11, '2018041008', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(12, '2018041009', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(13, '2018041010', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(14, '2018041011', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(15, '2018041012', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(16, '2018041013', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(17, '2018041014', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(18, '2018041015', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(19, '2018041016', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(20, '2018041017', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(21, '2018041018', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(22, '2018041019', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(23, '2018041020', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(24, '2018041021', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(25, '2018041022', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(26, '2018041023', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(27, '2018041024', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(28, '2018041025', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(29, '2018041026', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(30, '2018041027', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(31, '2018041028', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(32, '2018041029', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(33, '2018041030', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(34, '2018041031', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(35, '2018041032', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(36, '2018041039', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:04'),
-(37, '2018041033', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(38, '2018041040', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(39, '2018041034', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(40, '2018041035', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(41, '2018041036', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(42, '2018041037', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(43, '2018041038', 522, '2018-19', 1, 1, 'nitin', '2018-07-23 08:35:05'),
-(45, '2018041001', 522, '2018-19', 2, 1, 'nitin', '2018-07-23 08:50:33'),
-(46, '2018041002', 522, '2018-19', 2, 1, 'nitin', '2018-07-23 08:50:33'),
-(47, '2018041003', 522, '2018-19', 2, 1, 'nitin', '2018-07-23 08:50:33');
+(392, '2018041041', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(393, '2018041001', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(394, '2018041002', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(395, '2018041003', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(396, '2018041004', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(397, '2018041005', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(398, '2018041006', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(399, '2018041007', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(400, '2018041008', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(401, '2018041009', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(402, '2018041010', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(403, '2018041011', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(404, '2018041012', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(405, '2018041013', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(406, '2018041014', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(407, '2018041015', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(408, '2018041016', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(409, '2018041017', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:41'),
+(410, '2018041018', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(411, '2018041019', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(412, '2018041020', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(413, '2018041021', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(414, '2018041022', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(415, '2018041023', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(416, '2018041024', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(417, '2018041025', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(418, '2018041026', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(419, '2018041027', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(420, '2018041028', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(421, '2018041029', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(422, '2018041030', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(423, '2018041031', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(424, '2018041032', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(425, '2018041039', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(426, '2018041033', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(427, '2018041040', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(428, '2018041034', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(429, '2018041035', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(430, '2018041036', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(431, '2018041037', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(432, '2018041038', 522, '2018-19', 1, 1, 'nitin', '2018-08-02 18:13:42'),
+(433, '2018041158', 545, '2019-20', 1, 1, 'nitin', '2018-08-04 16:17:55');
 
 -- --------------------------------------------------------
 
@@ -2245,8 +2300,8 @@ INSERT INTO `fee_5_add_flexi_head_to_students` (`ADFLXFEESTUDID`, `REGID`, `CLSS
 -- Table structure for table `fee_6_invoice`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
-  `INVID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_6_invoice` (
+  `INVID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `YEAR_FROM` varchar(15) NOT NULL,
@@ -2255,10 +2310,8 @@ CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
   `MONTH_TO` varchar(30) NOT NULL,
   `NOM` int(11) NOT NULL,
   `DESCRIPTION_IFANY` text NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`INVID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_6_invoice`
@@ -2274,8 +2327,6 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 (7, '2018-19', 526, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 07:01:08'),
 (8, '2018-19', 526, '2018', '8', '2018', '8', 1, 'X', '2018-07-15 07:02:05'),
 (9, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 11:40:35'),
-(10, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 11:40:37'),
-(11, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 11:40:37'),
 (12, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 11:40:38'),
 (13, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-15 11:40:39'),
 (15, '2018-19', 526, '2018', '9', '2018', '9', 1, 'X', '2018-07-15 11:58:29'),
@@ -2299,7 +2350,22 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 (56, '2018-19', 531, '2018', '7', '2018', '7', 1, 'X', '2018-07-16 19:41:18'),
 (57, '2018-19', 531, '2018', '7', '2018', '7', 1, 'X', '2018-07-16 19:41:19'),
 (58, '2018-19', 531, '2018', '8', '2018', '8', 1, 'X', '2018-07-16 19:41:37'),
-(62, '2018-19', 529, '2018', '7', '2018', '7', 1, 'X', '2018-07-23 14:44:34');
+(66, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 05:55:26'),
+(67, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 05:56:18'),
+(68, '2018-19', 522, '2018', '6', '2018', '6', 1, 'X', '2018-07-26 05:57:55'),
+(69, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 05:59:55'),
+(71, '2018-19', 529, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 07:04:03'),
+(72, '2018-19', 528, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 07:05:15'),
+(73, '2018-19', 529, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 07:05:43'),
+(74, '2018-19', 528, '2018', '7', '2018', '7', 1, 'X', '2018-07-26 07:07:02'),
+(75, '2018-19', 522, '2018', '7', '2018', '7', 1, 'X', '2018-07-28 04:14:35'),
+(76, '2018-19', 526, '2018', '7', '2018', '7', 1, 'X', '2018-07-28 04:15:24'),
+(77, '2018-19', 522, '2018', '8', '2018', '8', 1, 'X', '2018-08-03 08:56:53'),
+(79, '2018-19', 528, '2018', '8', '2018', '8', 1, 'X', '2018-08-04 13:47:47'),
+(80, '2018-19', 528, '2018', '9', '2018', '9', 1, 'X', '2018-08-04 16:13:44'),
+(81, '2019-20', 545, '2019', '4', '2019', '4', 1, 'X', '2018-08-04 16:18:21'),
+(82, '2018-19', 528, '2018', '8', '2018', '8', 1, 'X', '2018-08-04 18:25:30'),
+(83, '2018-19', 528, '2018', '9', '2018', '9', 1, 'X', '2018-08-04 19:15:02');
 
 -- --------------------------------------------------------
 
@@ -2307,8 +2373,8 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 -- Table structure for table `fee_6_invoice_detail`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_6_invoice_detail` (
-  `INVDETID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_6_invoice_detail` (
+  `INVDETID` int(11) NOT NULL,
   `INVID` int(11) NOT NULL,
   `STATIC_HEADS_1_TIME` varchar(150) NOT NULL,
   `STATIC_SPLIT_AMT_1_TIME` varchar(150) NOT NULL,
@@ -2326,9 +2392,8 @@ CREATE TABLE IF NOT EXISTS `fee_6_invoice_detail` (
   `PREV_DUE_AMOUNT` int(11) NOT NULL,
   `DUE_AMOUNT` int(11) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `STATUS` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`INVDETID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
+  `STATUS` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_6_invoice_detail`
@@ -2338,19 +2403,17 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 (1, 1, 'ADMISSION', '5000', 'REGISTRATION', '1000', '', '', '', '', 6000.00, 0, 'X', '2018041041', 6000, 0, 0, '2018-07-02 13:11:15', 0),
 (2, 2, 'ADMISSION', '5000', 'REGISTRATION', '1000', '', '', '', '', 6000.00, 0, 'X', '2018041001', 6000, 0, 0, '2018-07-02 13:13:02', 0),
 (3, 3, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041002', 1000, 0, 0, '2018-07-10 08:57:15', 0),
-(4, 4, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041003', 1000, 0, 0, '2018-07-10 12:25:54', 1),
+(4, 4, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041003', 1000, 0, 0, '2018-07-10 12:25:54', 0),
 (5, 5, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041004', 1000, 0, 0, '2018-07-10 13:04:50', 0),
 (6, 6, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041005', 1000, 0, 0, '2018-07-10 19:38:25', 1),
 (7, 7, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041042', 1000, 0, 1000, '2018-07-15 07:01:08', 0),
 (8, 8, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041042', 1000, 1000, 2000, '2018-07-15 07:02:06', 0),
 (9, 9, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041006', 1000, 0, 0, '2018-07-15 11:40:35', 1),
-(10, 10, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041007', 1000, 0, 1000, '2018-07-15 11:40:37', 1),
-(11, 11, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041008', 1000, 0, 1000, '2018-07-15 11:40:37', 1),
-(12, 12, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041009', 1000, 0, 1000, '2018-07-15 11:40:38', 1),
-(13, 13, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041010', 1000, 0, 0, '2018-07-15 11:40:39', 1),
+(12, 12, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041009', 1000, 0, 0, '2018-07-15 11:40:38', 0),
+(13, 13, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041010', 1000, 0, 0, '2018-07-15 11:40:39', 0),
 (18, 15, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041043', 1000, 0, 0, '2018-07-15 11:58:29', 0),
 (19, 15, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041042', 1000, 2000, 0, '2018-07-16 05:24:11', 0),
-(20, 16, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041004', 1000, 0, 1000, '2018-07-16 05:30:09', 1),
+(20, 16, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041004', 1000, 0, 0, '2018-07-16 05:30:09', 1),
 (21, 17, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041205', 1000, 0, 1000, '2018-07-16 07:50:00', 1),
 (22, 18, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041042', 1000, 0, 0, '2018-07-16 10:03:06', 1),
 (23, 19, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041044', 1000, 0, 0, '2018-07-16 10:24:38', 1),
@@ -2365,7 +2428,7 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 (54, 39, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041159', 1000, 0, 1000, '2018-07-16 17:47:44', 0),
 (55, 35, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041159', 1000, 1000, 0, '2018-07-16 17:47:54', 1),
 (67, 51, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041191', 1000, 0, 1000, '2018-07-16 18:19:12', 1),
-(68, 52, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041158', 1000, 0, 1000, '2018-07-16 18:23:45', 1),
+(68, 52, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041158', 1000, 0, 1000, '2018-07-16 18:23:45', 0),
 (69, 53, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041244', 1000, 0, 1000, '2018-07-16 19:41:13', 0),
 (70, 54, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041247', 1000, 0, 1000, '2018-07-16 19:41:14', 1),
 (71, 55, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041252', 1000, 0, 1000, '2018-07-16 19:41:16', 1),
@@ -2373,10 +2436,36 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 (73, 57, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041262', 1000, 0, 1000, '2018-07-16 19:41:19', 1),
 (74, 58, '', '', 'REGISTRATION', '1000', '', '', '', '', 1000.00, 0, 'X', '2018041244', 1000, 1000, 2000, '2018-07-16 19:41:37', 1),
 (75, 18, '', '', 'REGISTRATION', '1000', 'CULTURAL PARTICIPATION FEE', '1500', '', '', 2500.00, 0, 'X', '2018041043', 2500, 0, 0, '2018-07-17 03:32:56', 1),
-(77, 16, '', '', 'TUITION', '570', 'EXAM FEE', '500', 'BUS FEE', '1000', 2070.00, 0, 'X', '2018041001', 2070, 0, 2070, '2018-07-23 08:51:39', 1),
-(79, 16, '', '', 'TUITION', '570', '', '', '', '', 570.00, 0, 'X', '2018041041', 570, 0, 570, '2018-07-23 09:00:02', 1),
-(83, 62, 'BOOK BANK@0', '1500', 'REGISTRATION@0,MEDICAL@0,WITHDRAWL@0,TUITION@1', '1000,500,20,570', '', '', '', '', 3590.00, 0, 'X', '2018041195', 3590, 0, 3590, '2018-07-23 14:44:34', 1),
-(84, 16, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', 'BUS FEE', '1000', 3070.00, 1570, 'X', '2018041002', 3070, 0, 0, '2018-07-23 15:56:06', 1);
+(77, 16, '', '', 'TUITION', '570', 'EXAM FEE', '500', 'BUS FEE', '1000', 2070.00, 0, 'X', '2018041001', 2070, 0, 0, '2018-07-23 08:51:39', 1),
+(79, 16, '', '', 'TUITION', '570', '', '', '', '', 570.00, 0, 'X', '2018041041', 570, 0, 0, '2018-07-23 09:00:02', 1),
+(84, 16, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', 'BUS FEE', '1000', 3070.00, 1570, 'X', '2018041002', 3070, 0, 0, '2018-07-23 15:56:06', 1),
+(88, 66, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041007', 2070, 0, 0, '2018-07-26 05:55:26', 1),
+(89, 67, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041008', 2070, 0, 2070, '2018-07-26 05:56:18', 0),
+(90, 16, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041008', 2070, 2070, 0, '2018-07-26 05:57:03', 1),
+(91, 68, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041012', 2070, 0, 70, '2018-07-26 05:57:55', 0),
+(92, 1, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041012', 2070, 70, 0, '2018-07-26 05:58:59', 0),
+(93, 69, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041013', 2070, 0, 0, '2018-07-26 05:59:55', 1),
+(95, 71, 'BOOK BANK@0', '1500', 'REGISTRATION@0,MEDICAL@0,WITHDRAWL@0,TUITION@1', '1000,500,20,570', '', '', '', '', 3590.00, 570, 'X', '2018041195', 3590, 0, 3590, '2018-07-26 07:04:03', 0),
+(96, 72, 'BOOK BANK@0', '1500', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 3070.00, 570, 'X', '2018041110', 3070, 0, 3070, '2018-07-26 07:05:15', 0),
+(97, 73, 'BOOK BANK@0', '1500', 'REGISTRATION@0,MEDICAL@0,WITHDRAWL@0,TUITION@1', '1000,500,20,570', '', '', '', '', 3590.00, 570, 'X', '2018041192', 3590, 0, 0, '2018-07-26 07:05:43', 1),
+(98, 74, 'BOOK BANK@0', '1500', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 3070.00, 570, 'X', '2018041111', 3070, 0, 3070, '2018-07-26 07:07:03', 0),
+(99, 75, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041015', 2070, 0, 0, '2018-07-28 04:14:35', 1),
+(100, 76, '', '', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 1570.00, 570, 'X', '2018041068', 1570, 0, 1570, '2018-07-28 04:15:24', 1),
+(101, 35, 'BOOK BANK@0', '1500', 'REGISTRATION@0,MEDICAL@0,WITHDRAWL@0,TUITION@1', '1000,500,20,570', '', '', '', '', 3590.00, 570, 'X', '2018041195', 3590, 3590, 0, '2018-08-01 16:57:46', 1),
+(102, 16, 'ADMISSION@0', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 570, 'X', '2018041009', 2070, 0, 0, '2018-08-03 08:53:37', 1),
+(103, 16, 'ADMISSION@0', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 570, 'X', '2018041010', 2070, 0, 0, '2018-08-03 08:56:09', 1),
+(104, 77, 'ADMISSION@0', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 570, 'X', '2018041011', 2070, 0, 0, '2018-08-03 08:56:53', 1),
+(105, 16, 'ADMISSION@0', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 570, 'X', '2018041012', 2070, 70, 0, '2018-08-03 11:05:00', 1),
+(107, 79, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041158', 4070, 1000, 0, '2018-08-04 13:47:47', 0),
+(108, 80, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041158', 4070, 0, 0, '2018-08-04 16:13:44', 1),
+(109, 81, '', '', 'TUITION@1', '1000', 'EXAM FEE', '500', '', '', 1500.00, 1000, 'X', '2018041158', 1500, 4070, 5570, '2018-08-04 16:18:21', 1),
+(111, 16, 'ADMISSION@1', '1000', 'TUITION@1', '570', 'EXAM FEE', '500', '', '', 2070.00, 1570, 'X', '2018041003', 2070, 0, 2070, '2018-08-04 18:09:01', 1),
+(112, 79, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041110', 4070, 3070, 1570, '2018-08-04 18:23:26', 0),
+(113, 79, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041111', 4070, 3070, 4140, '2018-08-04 18:25:28', 1),
+(114, 82, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041112', 4070, 0, -1130, '2018-08-04 18:25:30', 0),
+(116, 80, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041112', 4070, -1130, 2940, '2018-08-04 19:14:03', 1),
+(117, 83, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041113', 4070, 0, 4070, '2018-08-04 19:15:02', 1),
+(118, 80, 'BOOK BANK@0,ADMISSION@1', '1500, 1000', 'REGISTRATION@0,TUITION@1', '1000,570', '', '', '', '', 4070.00, 1570, 'X', '2018041110', 4070, 1570, 970, '2018-08-04 19:15:13', 1);
 
 -- --------------------------------------------------------
 
@@ -2384,8 +2473,8 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 -- Table structure for table `fee_7_receipts`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
-  `RECPTID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_7_receipts` (
+  `RECPTID` int(15) NOT NULL,
   `FLEXI_FEE_STATUS` varchar(100) NOT NULL,
   `ADFLXFEESTUDID` text NOT NULL,
   `DISCOUNT` varchar(10) NOT NULL,
@@ -2393,39 +2482,64 @@ CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
   `DISCOUNT_AMOUNT` varchar(10) NOT NULL,
   `DESCRIPTION_IFANY` text NOT NULL,
   `ACTUAL_PAID_AMT` int(11) NOT NULL,
+  `PAID` int(11) NOT NULL,
   `FINE` float NOT NULL,
   `MODE` varchar(10) NOT NULL,
   `DD_CQ_NO` varchar(15) NOT NULL,
   `DD_CQ_DATE` varchar(25) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `INVDETID` int(15) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`RECPTID`),
-  KEY `INVID` (`INVDETID`),
-  KEY `regid` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_7_receipts`
 --
 
-INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `DISCOUNT`, `DISCOUNT_CATEGORY`, `DISCOUNT_AMOUNT`, `DESCRIPTION_IFANY`, `ACTUAL_PAID_AMT`, `FINE`, `MODE`, `DD_CQ_NO`, `DD_CQ_DATE`, `regid`, `INVDETID`, `DATE_`) VALUES
-(1, '0', '', '0', 'x', '0', 'x', 6000, 0, 'cash', 'x', 'x', '2018041041', 1, '0000-00-00 00:00:00'),
-(2, '0', '', '0', 'x', '0', 'x', 6000, 0, 'cash', 'x', 'x', '2018041001', 2, '0000-00-00 00:00:00'),
-(3, '0', '', '1', 'OBC|500', '500', 'x', 1000, 0, 'cash', 'x', 'x', '2018041002', 3, '0000-00-00 00:00:00'),
-(4, '0', '', '1', 'SC|50', '50', 'x', 800, 0, 'cash', 'x', 'x', '2018041003', 4, '0000-00-00 00:00:00'),
-(5, '0', '', '0', 'x', '0', 'x', 200, 0, 'cash', 'x', 'x', '2018041003', 4, '0000-00-00 00:00:00'),
-(7, '0', '', '1', 'SIBLINGS,ST,RTE,ADVERTISEMENTCOUPON|50,80,650', '780', 'x', 1000, 0, 'cash', 'x', 'x', '2018041005', 6, '0000-00-00 00:00:00'),
-(8, '0', '', '1', 'SIBLINGS,SC,RTE|700,50,100', '850', 'x', 1000, 0, 'cash', 'x', 'x', '2018041004', 5, '0000-00-00 00:00:00'),
-(9, '0', '', '1', 'x,RTE|,100', '100', 'x', 3000, 0, 'cash', 'x', 'x', '2018041042', 19, '2018-07-16 10:02:43'),
-(10, '0', '', '1', 'x,RTE|,100', '100', 'x', 1000, 0, 'cash', 'x', 'x', '2018041042', 22, '2018-07-16 10:22:23'),
-(11, '0', '', '1', 'x,RTE,ADVERTISEMENTCOUPON|,100', '100', 'x', 1000, 0, 'cash', 'x', 'x', '2018041043', 18, '2018-07-16 10:51:19'),
-(12, '0', '', '1', 'x,RTE|,100', '100', 'x', 1000, 0, 'cash', 'x', 'x', '2018041044', 23, '2018-07-16 10:52:34'),
-(13, '0', '', '0', 'x', '0', 'x', 2000, 0, 'cash', 'x', 'x', '2018041159', 55, '2018-07-16 17:48:26'),
-(14, '1', 'CULTURAL PARTICIPATION FEE', '1', 'x,RTE,ADVERTISEMENTCOUPON|,100', '100', 'x', 2500, 0, 'cash', 'x', 'x', '2018041043', 75, '2018-07-17 03:33:37'),
-(15, '0', '', '0', 'x', '0', 'x', 1000, 150, 'cash', 'x', 'x', '2018041006', 9, '2018-07-17 04:22:42'),
-(16, '0', '', '0', 'x', '0', 'x', 1000, 0, 'cash', 'x', 'x', '2018041010', 13, '2018-07-21 13:39:25'),
-(17, '1', 'EXAM FEE, BUS FEE', '1', 'OBC,RTE,OLD_STAFF|,1670', '1670', 'x', 3070, 0, 'cash', 'x', 'x', '2018041002', 84, '2018-07-23 17:01:55');
+INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `DISCOUNT`, `DISCOUNT_CATEGORY`, `DISCOUNT_AMOUNT`, `DESCRIPTION_IFANY`, `ACTUAL_PAID_AMT`, `PAID`, `FINE`, `MODE`, `DD_CQ_NO`, `DD_CQ_DATE`, `regid`, `INVDETID`, `DATE_`) VALUES
+(1, '0', '', '0', 'x', '0', 'x', 6000, 0, 0, 'cash', 'x', 'x', '2018041041', 1, '0000-00-00 00:00:00'),
+(2, '0', '', '0', 'x', '0', 'x', 6000, 0, 0, 'cash', 'x', 'x', '2018041001', 2, '0000-00-00 00:00:00'),
+(3, '0', '', '1', 'OBC|500', '500', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041002', 3, '0000-00-00 00:00:00'),
+(4, '0', '', '1', 'SC|50', '50', 'x', 800, 0, 200, 'cash', 'x', 'x', '2018041003', 4, '0000-00-00 00:00:00'),
+(5, '0', '', '0', 'x', '0', 'x', 200, 0, 0, 'cash', 'x', 'x', '2018041003', 4, '0000-00-00 00:00:00'),
+(7, '0', '', '1', 'SIBLINGS,ST,RTE,ADVERTISEMENTCOUPON|50,80,650', '780', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041005', 6, '0000-00-00 00:00:00'),
+(8, '0', '', '1', 'SIBLINGS,SC,RTE|700,50,100', '850', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041004', 5, '0000-00-00 00:00:00'),
+(9, '0', '', '1', 'x,RTE|,100', '100', 'x', 3000, 0, 0, 'cash', 'x', 'x', '2018041042', 19, '2018-07-31 10:02:43'),
+(10, '0', '', '1', 'x,RTE|,100', '100', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041042', 22, '2018-07-31 10:22:23'),
+(11, '0', '', '1', 'x,RTE,ADVERTISEMENTCOUPON|,100', '100', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041043', 18, '2018-07-16 10:51:19'),
+(12, '0', '', '1', 'x,RTE|,100', '100', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041044', 23, '2018-07-16 10:52:34'),
+(13, '0', '', '0', 'x', '0', 'x', 2000, 0, 0, 'cash', 'x', 'x', '2018041159', 55, '2018-07-16 17:48:26'),
+(14, '1', 'CULTURAL PARTICIPATION FEE', '1', 'x,RTE,ADVERTISEMENTCOUPON|,100', '100', 'x', 2500, 0, 0, 'cash', 'x', 'x', '2018041043', 75, '2018-07-17 03:33:37'),
+(15, '0', '', '0', 'x', '0', 'x', 1000, 0, 150, 'cash', 'x', 'x', '2018041006', 9, '2018-07-17 04:22:42'),
+(16, '0', '', '0', 'x', '0', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041010', 13, '2018-07-21 13:39:25'),
+(17, '1', 'EXAM FEE, BUS FEE', '1', 'OBC,RTE,OLD_STAFF|,1670', '1670', 'x', 3070, 0, 0, 'cash', 'x', 'x', '2018041002', 84, '2018-07-23 17:01:55'),
+(18, '1', 'EXAM FEE', '0', 'x', '0', 'x', 2000, 0, 0, 'cash', 'x', 'x', '2018041012', 91, '2018-07-26 05:58:10'),
+(19, '0', '', '0', 'x', '0', 'x', 3000, 0, 0, 'cash', 'x', 'x', '2018041192', 97, '2018-07-26 07:06:02'),
+(20, '1', 'EXAM FEE', '0', 'x', '0', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041015', 99, '2018-07-28 04:15:03'),
+(21, '1', 'EXAM FEE', '0', 'x', '0', 'x', 1500, 0, 0, 'cash', 'x', 'x', '2018041012', 92, '2018-07-29 10:48:01'),
+(22, '1', 'EXAM FEE', '0', 'x', '0', 'x', 500, 0, 0, 'cash', 'x', 'x', '2018041012', 92, '2018-07-29 10:48:38'),
+(23, '1', 'EXAM FEE', '0', 'x', '0', 'x', 140, 0, 0, 'cash', 'x', 'x', '2018041012', 92, '2018-07-29 10:50:37'),
+(24, '0', '', '0', 'x', '0', 'x', 590, 0, 0, 'cash', 'x', 'x', '2018041192', 97, '2018-07-29 10:55:42'),
+(25, '1', 'EXAM FEE', '1', 'x', '300', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041007', 88, '2018-07-30 07:38:31'),
+(26, '1', 'EXAM FEE', '0', 'x', '0', 'x', 1070, 0, 0, 'cash', 'x', 'x', '2018041015', 99, '2018-07-30 07:50:25'),
+(27, '1', 'EXAM FEE', '0', 'x', '0', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041013', 93, '2018-07-30 07:51:08'),
+(28, '0', '', '0', 'x', '0', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041009', 12, '2018-07-31 17:48:02'),
+(29, '1', 'EXAM FEE, BUS FEE', '0', 'x', '0', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041001', 77, '2018-08-01 10:41:47'),
+(30, '0', '', '1', 'x,RTE,ADVERTISEMENTCOUPON|,100', '100', 'x', 7180, 0, 0, 'cash', 'x', 'x', '2018041195', 101, '2018-08-01 16:57:50'),
+(31, '0', '', '1', 'x,NEWSTAFF', '570', 'x', 570, 0, 0, 'cash', 'x', 'x', '2018041041', 79, '2018-08-03 08:49:34'),
+(32, '0', '', '1', 'SC,RTE|50', '1000', 'x', 1000, 0, 0, 'cash', 'x', 'x', '2018041004', 20, '2018-08-03 08:50:14'),
+(33, '1', 'EXAM FEE', '1', 'x', '4140', 'x', 4140, 0, 0, 'cash', 'x', 'x', '2018041008', 90, '2018-08-03 08:51:57'),
+(34, '1', 'EXAM FEE', '1', 'x', '2070', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041009', 102, '2018-08-03 08:53:56'),
+(35, '1', 'EXAM FEE', '1', 'x', '2140', 'x', 2140, 0, 0, 'cash', 'x', 'x', '2018041012', 105, '2018-08-03 11:05:13'),
+(36, '1', 'EXAM FEE', '1', 'x', '2070', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041010', 103, '2018-08-03 11:06:18'),
+(37, '1', 'EXAM FEE', '1', 'x', '100', 'x', 2070, 0, 0, 'cash', 'x', 'x', '2018041011', 104, '2018-08-04 13:06:14'),
+(38, '0', '', '1', 'x,RTE|,100', '100', 'x', 5070, 0, 0, 'cash', 'x', 'x', '2018041158', 107, '2018-08-04 16:13:19'),
+(39, '0', '', '1', 'x,RTE|,100', '100', 'x', 4070, 1000, 0, 'cash', 'x', 'x', '2018041158', 108, '2018-08-04 16:38:17'),
+(43, '0', '', '1', 'x,RTE|,1570', '1570', 'x', 7140, 2000, 0, 'cash', 'x', 'x', '2018041110', 112, '2018-08-04 18:24:21'),
+(44, '0', '', '0', 'x', '0', 'x', 3570, 2000, 0, 'cash', 'x', 'x', '2018041110', 112, '2018-08-04 18:29:32'),
+(45, '0', '', '1', 'x,RTE|,1570', '1000', 'x', 7140, 2000, 0, 'cash', 'x', 'x', '2018041111', 113, '2018-08-04 18:36:33'),
+(46, '0', '', '1', 'x', '200', 'x', 4070, 5000, 0, 'cash', 'x', 'x', '2018041112', 114, '2018-08-04 18:57:44'),
+(47, '0', '', '1', 'x,RTE,OTHER|,1670', '1670', 'x', 5640, 3000, 0, 'cash', 'x', 'x', '2018041110', 118, '2018-08-04 19:24:20');
 
 -- --------------------------------------------------------
 
@@ -2433,15 +2547,13 @@ INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `
 -- Table structure for table `fee_8_class_fee`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_8_class_fee` (
-  `CFEEID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_8_class_fee` (
+  `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `TOTFEE` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEEID`),
-  KEY `CLSSESSID` (`CLSSESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_8_class_fee`
@@ -2454,12 +2566,13 @@ INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DAT
 (5, 525, '1570', 'nitin', '2018-07-22 17:19:53'),
 (6, 526, '1570', 'nitin', '2018-07-22 17:19:52'),
 (7, 527, '3100', 'nitin', '2018-07-22 17:19:52'),
-(8, 528, '3070', 'nitin', '2018-07-22 17:19:52'),
+(8, 528, '4070', 'nitin', '2018-08-04 13:47:25'),
 (9, 529, '3590', 'nitin', '2018-07-22 17:19:52'),
 (10, 530, '1034', 'nitin', '2018-07-18 08:18:57'),
 (11, 531, '1570', 'nitin', '2018-07-22 17:19:52'),
 (12, 532, '1570', 'nitin', '2018-07-22 17:19:52'),
-(13, 533, '1593', 'nitin', '2018-07-22 17:19:53');
+(13, 533, '1593', 'nitin', '2018-07-22 17:19:53'),
+(14, 545, '1000', 'nitin', '2018-08-04 16:17:47');
 
 -- --------------------------------------------------------
 
@@ -2467,18 +2580,15 @@ INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DAT
 -- Table structure for table `fee_9_class_fee_split`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_9_class_fee_split` (
-  `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_9_class_fee_split` (
+  `CFEESPLITID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `ST_HD_ID` int(15) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `PAYMENT_STATUS` varchar(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESPLITID`),
-  KEY `ST_HD_ID` (`ST_HD_ID`),
-  KEY `CFEEID` (`CFEEID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_9_class_fee_split`
@@ -2515,7 +2625,9 @@ INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUN
 (33, 3, 10, '570', '12', 'nitin', '2018-07-22 17:19:53'),
 (34, 4, 10, '570', '12', 'nitin', '2018-07-22 17:19:53'),
 (35, 5, 10, '570', '12', 'nitin', '2018-07-22 17:19:53'),
-(36, 2, 2, '1000', '12', 'nitin', '2018-07-23 15:55:38');
+(36, 2, 2, '1000', '12', 'nitin', '2018-07-23 15:55:38'),
+(37, 8, 2, '1000', '12', 'nitin', '2018-08-04 13:47:25'),
+(38, 14, 10, '1000', '12', 'nitin', '2018-08-04 16:17:47');
 
 -- --------------------------------------------------------
 
@@ -2523,14 +2635,13 @@ INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUN
 -- Table structure for table `fee_10_class_fee_in_a_session`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
+CREATE TABLE `fee_10_class_fee_in_a_session` (
   `CFEESESSID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` int(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2539,13 +2650,11 @@ CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
 -- Table structure for table `login`
 --
 
-CREATE TABLE IF NOT EXISTS `login` (
+CREATE TABLE `login` (
   `USERNAME_` varchar(40) NOT NULL,
   `PASSWORD_` varchar(25) NOT NULL,
   `STAFFID` int(11) NOT NULL,
-  `ACTIVE` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`USERNAME_`),
-  KEY `USER_STATUS` (`STAFFID`)
+  `ACTIVE` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2564,10 +2673,9 @@ INSERT INTO `login` (`USERNAME_`, `PASSWORD_`, `STAFFID`, `ACTIVE`) VALUES
 -- Table structure for table `master_0_country_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_0_country_` (
+CREATE TABLE `master_0_country_` (
   `ABREV_` varchar(5) NOT NULL,
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`ABREV_`)
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2832,7 +2940,7 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 ('WF', 'Wallis and Futuna'),
 ('WK', 'Wake Island'),
 ('WS', 'Samoa'),
-('YD', 'People''s Democratic Repub'),
+('YD', 'People\'s Democratic Repub'),
 ('YE', 'Yemen'),
 ('YT', 'Mayotte'),
 ('ZA', 'South Africa'),
@@ -2846,10 +2954,9 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 -- Table structure for table `master_1_zone_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_1_zone_` (
+CREATE TABLE `master_1_zone_` (
   `ID` int(11) NOT NULL,
-  `ZONE` varchar(10) NOT NULL,
-  PRIMARY KEY (`ID`)
+  `ZONE` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2870,12 +2977,11 @@ INSERT INTO `master_1_zone_` (`ID`, `ZONE`) VALUES
 -- Table structure for table `master_2_zone_region`
 --
 
-CREATE TABLE IF NOT EXISTS `master_2_zone_region` (
+CREATE TABLE `master_2_zone_region` (
   `ID_` int(11) NOT NULL,
   `ZONE_` int(11) NOT NULL,
   `REGION` varchar(10) NOT NULL,
-  `REG_NAME` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID_`)
+  `REG_NAME` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2924,7 +3030,7 @@ INSERT INTO `master_2_zone_region` (`ID_`, `ZONE_`, `REGION`, `REG_NAME`) VALUES
 -- Table structure for table `master_3_state_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_3_state_` (
+CREATE TABLE `master_3_state_` (
   `NAME_` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2946,9 +3052,8 @@ INSERT INTO `master_3_state_` (`NAME_`) VALUES
 -- Table structure for table `master_4_city_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_4_city_` (
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`NAME_`)
+CREATE TABLE `master_4_city_` (
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2970,10 +3075,9 @@ INSERT INTO `master_4_city_` (`NAME_`) VALUES
 -- Table structure for table `master_5_user_status`
 --
 
-CREATE TABLE IF NOT EXISTS `master_5_user_status` (
+CREATE TABLE `master_5_user_status` (
   `ST_ID` varchar(5) NOT NULL,
-  `STATUS` varchar(25) NOT NULL,
-  PRIMARY KEY (`ST_ID`)
+  `STATUS` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2994,12 +3098,11 @@ INSERT INTO `master_5_user_status` (`ST_ID`, `STATUS`) VALUES
 -- Table structure for table `master_6_session`
 --
 
-CREATE TABLE IF NOT EXISTS `master_6_session` (
+CREATE TABLE `master_6_session` (
   `SESSID` varchar(20) NOT NULL,
   `SESSSTART` varchar(100) NOT NULL,
   `SESSEND` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`SESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3020,8 +3123,8 @@ INSERT INTO `master_6_session` (`SESSID`, `SESSSTART`, `SESSEND`, `DATE_`) VALUE
 -- Table structure for table `master_7_stud_personal`
 --
 
-CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
-  `STUD_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_7_stud_personal` (
+  `STUD_ID` int(11) NOT NULL,
   `FNAME` varchar(50) NOT NULL,
   `MNAME` varchar(50) NOT NULL DEFAULT '-x-',
   `LNAME` varchar(50) NOT NULL DEFAULT '-x-',
@@ -3040,11 +3143,8 @@ CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`STUD_ID`),
-  UNIQUE KEY `regid_2` (`regid`),
-  KEY `regid` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_7_stud_personal`
@@ -3093,7 +3193,7 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (40, 'Suraj Singh Padiyar', 'x', 'x', 'no-image.jpg', '10/6/2012', 'Male', 'Prakash Singh', 'x', 'x@gmail.com', 'x', 'Prema', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041040', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (41, 'Akshat Saxena', '-x-', '-x-', 'no-image.jpg', '18/12/12', 'M', 'Amit Kumar Saxena', 'x', 'x@gmail.com', 'x', 'Vartika Saxena', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041041', '2018-19', 'nitin', '2018-07-23 08:59:14'),
 (42, 'Aayushi Joshi', '-x-', '-x-', 'no-image.jpg', '2011-08-19', 'F', 'Deep Chandra Joshi', 'x', 'x@gmail.com', 'x', 'Prema Joshi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041042', '2018-19', 'nitin', '2018-07-10 08:30:46'),
-(43, 'Abhishek Neolia', '-x-', '-x-', 'no-image.jpg', '2011-06-10', 'M', 'Prem Prakash', 'x', 'x@gmail.com', 'x', 'Geeta Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041043', '2018-19', 'nitin', '2018-07-10 14:02:12'),
+(43, 'Abhishek Neolia', '-x-', '-x-', 'no-image.jpg', '2011-06-10', 'M', 'Prem Prakash', 'x', 'x@gmail.com', 'x', 'Geeta Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041043', '2018-19', 'nitin', '2018-08-01 16:16:53'),
 (44, 'Amit Singh Sah', '-x-', '-x-', 'no-image.jpg', '2012-03-12', 'M', 'Chandan Singh Sah', 'x', 'x@gmail.com', 'x', 'Leela Sah', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041044', '2018-19', 'nitin', '2018-07-16 10:52:15'),
 (45, 'Anju Kashyap', '-x-', '-x-', 'no-image.jpg', '2011-01-12', 'F', 'Anil Kashyap', 'x', 'x@gmail.com', 'x', 'Pushpa Kashyap', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041045', '2018-19', 'nitin', '2018-07-16 12:13:24'),
 (46, 'Anushka Pandey', 'x', 'x', 'no-image.jpg', '2011-11-14', 'Female', 'Naveen Chandra Pandey', 'x', 'x@gmail.com', 'x', 'Pooja Pandey', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041046', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -3160,9 +3260,9 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (107, 'Devesh Tiwari', 'x', 'x', 'no-image.jpg', '21/01/2010', 'Male', 'Deep Chandra Tiwari', 'x', 'x@gmail.com', 'x', 'Lata Tiwari', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041107', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (108, 'Diksha Mehra', 'x', 'x', 'no-image.jpg', '22/04/2010', 'Female', 'Suresh Chandra Singh', 'x', 'x@gmail.com', 'x', 'Uma Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041108', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (109, 'Karan Bahuguna', 'x', 'x', 'no-image.jpg', 'x/x/x', 'Male', 'Bhola Dutt Bahuguna', 'x', 'x@gmail.com', 'x', 'Poonam Bahuguna', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041109', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(110, 'Akshat Ghugtyal', 'x', 'x', 'no-image.jpg', '10/2/2009', 'Male', 'Mohan Singh Ghugtyal', 'x', 'x@gmail.com', 'x', 'Deepa Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041110', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(111, 'Amit Joshi', 'x', 'x', 'no-image.jpg', '20/06/2010', 'Male', 'D.C.Joshi', 'x', 'x@gmail.com', 'x', 'Rekha Joshi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041111', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(112, 'Anjali Pal', 'x', 'x', 'no-image.jpg', '18/09/2009', 'Female', 'Nain Singh Pal', 'x', 'x@gmail.com', 'x', 'Hansi Devi Pal', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041112', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(110, 'Akshat Ghugtyal', '-x-', '-x-', 'no-image.jpg', '10/2/2009', 'M', 'Mohan Singh Ghugtyal', 'x', 'x@gmail.com', 'x', 'Deepa Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041110', '2018-19', 'nitin', '2018-08-04 18:42:45'),
+(111, 'Amit Joshi', '-x-', '-x-', 'no-image.jpg', '20/06/2010', 'M', 'D.C.Joshi', 'x', 'x@gmail.com', 'x', 'Rekha Joshi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041111', '2018-19', 'nitin', '2018-08-04 18:34:33'),
+(112, 'Anjali Pal', '-x-', '-x-', 'no-image.jpg', '18/09/2009', 'F', 'Nain Singh Pal', 'x', 'x@gmail.com', 'x', 'Hansi Devi Pal', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041112', '2018-19', 'nitin', '2018-08-04 19:07:47'),
 (113, 'Bhavesh Singh', 'x', 'x', 'no-image.jpg', '4/5/2009', 'Male', 'Harpal Singh', 'x', 'x@gmail.com', 'x', 'Kusumlata', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041113', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (114, 'Bhawesh Pant', 'x', 'x', 'no-image.jpg', '26/12/2008', 'Male', 'Vinod Pant', 'x', 'x@gmail.com', 'x', 'Deeepa Pant', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041114', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (115, 'Bhawna Kashyp', 'x', 'x', 'no-image.jpg', '4/5/2009', 'Female', 'Bhoop Ram', 'x', 'x@gmail.com', 'x', 'Rammurti Kashyap', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041115', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -3208,9 +3308,9 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (155, 'Nikita Pandey', 'x', 'x', 'no-image.jpg', '16/03/2009', 'Female', 'Girish Chandra Pandey', 'x', 'x@gmail.com', 'x', 'Mamta Pandey', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041155', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (156, 'Lakshmi Padiyar', 'x', 'x', 'no-image.jpg', '23/01/2010', 'Female', 'Prakash Singh', 'x', 'x@gmail.com', 'x', 'Prema', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041156', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (157, 'Mahi Danu', 'x', 'x', 'no-image.jpg', '16/09/2009', 'Female', 'Raghuvar Singh Danu', 'x', 'x@gmail.com', 'x', 'Khasti Danu', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041157', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(158, 'Ahyan Chandra', 'x', 'x', 'no-image.jpg', 'x/x/x', 'Male', 'Ganesh Chandra', 'x', 'x@gmail.com', 'x', 'Lata Chandra', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041158', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(158, 'Ahyan Chandra', '-x-', '-x-', 'no-image.jpg', 'x/x/x', 'M', 'Ganesh Chandra', 'x', 'x@gmail.com', 'x', 'Lata Chandra', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041158', '2018-19', 'nitin', '2018-08-04 13:43:41'),
 (159, 'Aditi Fulara', 'x', 'x', 'no-image.jpg', '3/12/2009', 'Female', 'Manoj Fulara', 'x', 'x@gmail.com', 'x', 'Prema Fulara', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041159', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(160, 'Aishwarya Joshi', 'x', 'x', 'no-image.jpg', '25/12/2008', 'Male', 'Dinesh Chandra Joshi', 'x', 'x@gmail.com', 'x', 'Kiran Joshi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041160', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(160, 'Aishwarya Joshi', '-x-', '-x-', 'no-image.jpg', '25/12/2008', 'M', 'Dinesh Chandra Joshi', 'x', 'x@gmail.com', 'x', 'Kiran Joshi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041160', '2018-19', 'nitin', '2018-08-01 16:20:56'),
 (161, 'Akshita Bhatt', 'x', 'x', 'no-image.jpg', '4/6/2008', 'Female', 'Basant Bhatt', 'x', 'x@gmail.com', 'x', 'Rekha Bhatt', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041161', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (162, 'Anjali Goswami', 'x', 'x', 'no-image.jpg', '29/09/2008', 'Female', 'Mohan Nath Goswami', 'x', 'x@gmail.com', 'x', 'Meena Goswami', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041162', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (163, 'Bhoomika Upadhyay', 'x', 'x', 'no-image.jpg', '3/4/2008', 'Female', 'Rajendra Kumar Upadhyay', 'x', 'x@gmail.com', 'x', 'Premlata Upadhyay', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041163', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -3332,7 +3432,7 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 (278, 'Vipin Chandra Joshi', 'x', 'x', 'no-image.jpg', '20/07/2007', 'Male', 'Chintamani Joshi', 'x', 'x@gmail.com', 'x', 'Pushpa Devi', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041278', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (279, 'Vivek Kotal', 'x', 'x', 'no-image.jpg', '22/10/2005', 'Male', 'Jeevan Lal Kotal', 'x', 'x@gmail.com', 'x', 'Sonam Kotal', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041279', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (280, 'Yashu Gupta', 'x', 'x', 'no-image.jpg', '2/9/2005', 'Male', 'Dinesh Kumar Gupta', 'x', 'x@gmail.com', 'x', 'Kavita Gupta', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041280', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(281, 'Aashi Sharma', '-x-', '-x-', 'no-image.jpg', '20/07/2005', 'F', 'Satish Sharma', 'x', 'x@gmail.com', 'x', 'Geeta Sharma', 'x', 'x@gmail.com', 'x', 'SC', '2018041281', '2018-19', 'nitin', '2018-07-10 16:40:31'),
+(281, 'Aashi Sharma', '-x-', '-x-', '2018041281.JPG', '20/07/2005', 'F', 'Satish Sharma', 'x', 'x@gmail.com', 'x', 'Geeta Sharma', 'x', 'x@gmail.com', 'x', 'SC', '2018041281', '2018-19', 'nitin', '2018-07-29 10:44:21'),
 (282, 'Akhilesh Pandey', 'x', 'x', 'no-image.jpg', '11/8/2005', 'Male', 'Tej Prakash Pandey', 'x', 'x@gmail.com', 'x', 'Radha Pandey', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041282', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (283, 'Akshit Singh Nayal', 'x', 'x', 'no-image.jpg', '4/11/2004', 'Male', 'Tej Singh Nayal', 'x', 'x@gmail.com', 'x', 'Deepa Nayal', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041283', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (284, 'Anjali Goswami', 'x', 'x', 'no-image.jpg', '19/01/2006', 'Female', 'Shankar Puri Goswami', 'x', 'x@gmail.com', 'x', 'Beena Goswami', 'x', 'x@gmail.com', 'x', 'GENERAL', '2018041284', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -3496,8 +3596,8 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 -- Table structure for table `master_8_stud_academics`
 --
 
-CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
-  `AC_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_8_stud_academics` (
+  `AC_ID` int(15) NOT NULL,
   `DOA` varchar(50) DEFAULT NULL,
   `CLASS_OF_ADMISSION` int(15) NOT NULL COMMENT 'ClassSessID from class_2_in_session',
   `STATUS_OF_ADMISSION` tinyint(1) NOT NULL COMMENT '0 means modification is possible and 1 means no changes from now',
@@ -3507,12 +3607,8 @@ CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `DOL` varchar(50) DEFAULT NULL COMMENT 'Date of Left School',
-  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school',
-  PRIMARY KEY (`AC_ID`),
-  UNIQUE KEY `regid_3` (`regid`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_8_stud_academics`
@@ -3561,7 +3657,7 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (40, '4/29/2018 16:13', 522, 1, '-x-', '2018041040', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (41, '4/29/2018 16:13', 522, 0, '-x-', '2018041041', '2018-19', 'nitin', '2018-07-23 08:59:14', NULL, 1),
 (42, '4/29/2018 16:13', 526, 0, '-x-', '2018041042', '2018-19', 'nitin', '2018-07-10 08:30:46', NULL, 1),
-(43, '4/29/2018 16:13', 526, 0, '-x-', '2018041043', '2018-19', 'nitin', '2018-07-10 14:02:12', NULL, 1),
+(43, '4/29/2018 16:13', 526, 0, '-x-', '2018041043', '2018-19', 'nitin', '2018-08-01 16:16:53', NULL, 1),
 (44, '4/29/2018 16:13', 526, 0, '-x-', '2018041044', '2018-19', 'nitin', '2018-07-16 10:52:15', NULL, 1),
 (45, '4/29/2018 16:13', 526, 0, '-x-', '2018041045', '2018-19', 'nitin', '2018-07-16 12:13:24', NULL, 1),
 (46, '4/29/2018 16:13', 526, 1, '-x-', '2018041046', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
@@ -3628,9 +3724,9 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (107, '4/29/2018 16:13', 527, 1, '-x-', '2018041107', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (108, '4/29/2018 16:13', 527, 1, '-x-', '2018041108', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (109, '4/29/2018 16:13', 527, 1, '-x-', '2018041109', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(110, '4/29/2018 16:13', 528, 1, '-x-', '2018041110', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(111, '4/29/2018 16:13', 528, 1, '-x-', '2018041111', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(112, '4/29/2018 16:13', 528, 1, '-x-', '2018041112', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(110, '4/29/2018 16:13', 528, 0, '-x-', '2018041110', '2018-19', 'nitin', '2018-08-04 18:42:45', NULL, 1),
+(111, '4/29/2018 16:13', 528, 0, '-x-', '2018041111', '2018-19', 'nitin', '2018-08-04 18:34:33', NULL, 1),
+(112, '4/29/2018 16:13', 528, 0, '-x-', '2018041112', '2018-19', 'nitin', '2018-08-04 19:07:47', NULL, 1),
 (113, '4/29/2018 16:13', 528, 1, '-x-', '2018041113', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (114, '4/29/2018 16:13', 528, 1, '-x-', '2018041114', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (115, '4/29/2018 16:13', 528, 1, '-x-', '2018041115', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
@@ -3676,9 +3772,9 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (155, '4/29/2018 16:13', 528, 1, '-x-', '2018041155', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (156, '4/29/2018 16:13', 528, 1, '-x-', '2018041156', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (157, '4/29/2018 16:13', 528, 1, '-x-', '2018041157', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(158, '4/29/2018 16:13', 528, 1, '-x-', '2018041158', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(158, '4/29/2018 16:13', 528, 0, '-x-', '2018041158', '2018-19', 'nitin', '2018-08-04 13:43:41', NULL, 1),
 (159, '4/29/2018 16:13', 529, 1, '-x-', '2018041159', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(160, '4/29/2018 16:13', 529, 1, '-x-', '2018041160', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
+(160, '4/29/2018 16:13', 529, 0, '-x-', '2018041160', '2018-19', 'nitin', '2018-08-01 16:20:56', NULL, 1),
 (161, '4/29/2018 16:13', 529, 1, '-x-', '2018041161', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (162, '4/29/2018 16:13', 529, 1, '-x-', '2018041162', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (163, '4/29/2018 16:13', 529, 1, '-x-', '2018041163', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
@@ -3799,7 +3895,7 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 (278, '4/29/2018 16:13', 531, 1, '-x-', '2018041278', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (279, '4/29/2018 16:13', 531, 1, '-x-', '2018041279', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (280, '4/29/2018 16:13', 531, 1, '-x-', '2018041280', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
-(281, '4/29/2018 16:13', 532, 1, '-x-', '2018041281', '2018-19', 'nitin', '2018-07-10 16:40:31', NULL, 1),
+(281, '4/29/2018 16:13', 532, 0, '-x-', '2018041281', '2018-19', 'nitin', '2018-07-29 10:44:21', NULL, 1),
 (282, '4/29/2018 16:13', 532, 1, '-x-', '2018041282', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (283, '4/29/2018 16:13', 532, 1, '-x-', '2018041283', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
 (284, '4/29/2018 16:13', 532, 1, '-x-', '2018041284', '2018-19', 'nitin', '0000-00-00 00:00:00', NULL, 1),
@@ -3963,8 +4059,8 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 -- Table structure for table `master_9_stud_address`
 --
 
-CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
-  `ADDRID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_9_stud_address` (
+  `ADDRID` int(15) NOT NULL,
   `STREET_1` text NOT NULL,
   `CITY_` varchar(25) NOT NULL,
   `PIN_` varchar(8) NOT NULL,
@@ -3977,12 +4073,8 @@ CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDRID`),
-  KEY `CITY_` (`CITY_`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=877 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_9_stud_address`
@@ -4072,7 +4164,7 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (81, 'RTO Road, Mangla Vihar', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041040', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (82, 'Himmatpur Talla Near trimurti mandir', 'Haldwani', 'Nainital', '263140', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041041', '2018-19', 'nitin', '2018-07-23 08:59:14'),
 (83, 'Himmatpur Talla', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041042', '2018-19', 'nitin', '2018-07-10 08:30:46'),
-(84, 'Narsingh Talla', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041043', '2018-19', 'nitin', '2018-07-10 14:02:12'),
+(84, 'Narsingh Talla', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041043', '2018-19', 'nitin', '2018-08-01 16:16:53'),
 (85, 'Haripur Nayak', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041044', '2018-19', 'nitin', '2018-07-16 10:52:15'),
 (86, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041045', '2018-19', 'nitin', '2018-07-16 12:13:24'),
 (87, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041046', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4100,7 +4192,7 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (109, 'RTO Road', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041068', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (110, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041069', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (111, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041042', '2018-19', 'nitin', '2018-07-10 08:30:46'),
-(112, 'Narsingh Talla', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041043', '2018-19', 'nitin', '2018-07-10 14:02:12'),
+(112, 'Narsingh Talla', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041043', '2018-19', 'nitin', '2018-08-01 16:16:53'),
 (113, 'Haripur Nayak', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041044', '2018-19', 'nitin', '2018-07-16 10:52:15'),
 (114, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041045', '2018-19', 'nitin', '2018-07-16 12:13:24'),
 (115, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041046', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4207,9 +4299,9 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (216, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041107', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (217, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041108', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (218, 'RTO Road', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041109', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(219, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041110', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(220, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041111', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(221, 'Kamalwaganja Kathgharia Road Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041112', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(219, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041110', '2018-19', 'nitin', '2018-08-04 18:42:45'),
+(220, 'Girija Vihar Haldwani', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041111', '2018-19', 'nitin', '2018-08-04 18:34:33'),
+(221, 'Kamalwaganja Kathgharia Road Haldwani', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041112', '2018-19', 'nitin', '2018-08-04 19:07:48'),
 (222, 'Narayan Nagar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041113', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (223, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041114', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (224, 'Jawahar jyoti Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041115', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4255,10 +4347,10 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (264, 'Haripur Nayak Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041155', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (265, 'RTO Office, Mangla Vihar', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041156', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (266, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041157', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(267, 'Bhagwanpur Bichla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041158', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(268, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041110', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(269, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041111', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(270, 'Kamalwaganja Kathgharia Road Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041112', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(267, 'Bhagwanpur Bichla', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041158', '2018-19', 'nitin', '2018-08-04 13:43:41'),
+(268, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041110', '2018-19', 'nitin', '2018-08-04 18:42:45'),
+(269, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041111', '2018-19', 'nitin', '2018-08-04 18:34:33'),
+(270, 'Kamalwaganja Kathgharia Road Haldwani', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041112', '2018-19', 'nitin', '2018-08-04 19:07:48'),
 (271, 'Narayan Nagar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041113', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (272, 'Girija Vihar Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041114', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (273, 'Jawahar jyoti Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041115', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4305,9 +4397,9 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (313, 'Haripur Nayak Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041155', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (314, 'RTO Office, Mangla Vihar', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041156', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (315, 'Govindpur Garwal', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041157', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(316, 'Bhagwanpur Bichla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041158', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(316, 'Bhagwanpur Bichla', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041158', '2018-19', 'nitin', '2018-08-04 13:43:41'),
 (317, 'Narsingh Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041159', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(318, 'Narsingh Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041160', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(318, 'Narsingh Talla Haldwani', 'Haldwani', '263139', 'Nainital', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041160', '2018-19', 'nitin', '2018-08-01 16:20:56'),
 (319, 'Satishfarm Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041161', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (320, ' Kamaluaganja ', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041162', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (321, 'Bhagwanpur Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041163', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4348,7 +4440,7 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (356, 'Kusumkhera ', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041198', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (357, 'Bhagwanpur Bichla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041199', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (358, 'Narsingh Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041159', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(359, 'Narsingh Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041160', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(359, 'Narsingh Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041160', '2018-19', 'nitin', '2018-08-01 16:20:56'),
 (360, 'Satishfarm Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041161', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (361, ' Kamaluaganja ', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041162', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (362, 'Bhagwanpur Talla Haldwani', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041163', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4551,7 +4643,7 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (558, 'Girija Vihar', 'Haldwani', 'Nainital', '263174', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041278', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (559, 'Heera Nagar', 'Haldwani', 'Nainital', '263175', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041279', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (560, 'Kusumkhera', 'Haldwani', 'Nainital', '263177', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041280', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(561, 'Near Block Office', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041281', '2018-19', 'nitin', '2018-07-10 16:40:31'),
+(561, 'Near Block Office', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041281', '2018-19', 'nitin', '2018-07-29 10:44:21'),
 (562, 'Bithoria No. 1', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041282', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (563, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041283', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (564, 'Girija Vihar', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041284', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4589,7 +4681,7 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 (596, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041316', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (597, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041317', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (598, 'RTO Road', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'PERMANENT', '2018041318', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(599, 'Near Block Office', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041281', '2018-19', 'nitin', '2018-07-10 16:40:31'),
+(599, 'Near Block Office', 'Haldwani', 'Nainital', '263139', 'UTTARAKHAND', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041281', '2018-19', 'nitin', '2018-07-29 10:44:21'),
 (600, 'Bithoria No. 1', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041282', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (601, 'Himmatpur Talla', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041283', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (602, 'Girija Vihar', 'Haldwani', 'Nainital', '263139', 'Uttarakhand', 'India', '4/29/2018 16:13', 1, 'CORRESPONDANCE', '2018041284', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -4873,8 +4965,8 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 -- Table structure for table `master_10_stud_contact`
 --
 
-CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
-  `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_10_stud_contact` (
+  `CNTCT_ID` int(15) NOT NULL,
   `MOBILE_S` varchar(50) NOT NULL,
   `PH_S` varchar(50) NOT NULL,
   `EMAIL_S` varchar(200) NOT NULL,
@@ -4884,11 +4976,8 @@ CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CNTCT_ID`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_10_stud_contact`
@@ -4937,7 +5026,7 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (40, '9925723660', '9925723660', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041040', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (41, '9917400510', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041041', '2018-19', 'nitin', '2018-07-23 08:59:14'),
 (42, '9410581459', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041042', '2018-19', 'nitin', '2018-07-10 08:30:46'),
-(43, '7351978988', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041043', '2018-19', 'nitin', '2018-07-10 14:02:12'),
+(43, '7351978988', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041043', '2018-19', 'nitin', '2018-08-01 16:16:53'),
 (44, '9411563037', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041044', '2018-19', 'nitin', '2018-07-16 10:52:15'),
 (45, '9761149486', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041045', '2018-19', 'nitin', '2018-07-16 12:13:24'),
 (46, '9639719605', '9639719605', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041046', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -5004,9 +5093,9 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (107, '9411134890', '9411134890', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041107', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (108, '9690924680', '9690924680', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041108', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (109, '9456776831', '9456776831', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041109', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(110, '8650249862', '8650249862', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041110', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(111, '8476028113', '8476028113', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041111', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(112, '9927013995', '9927013995', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041112', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(110, '8650249862', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041110', '2018-19', 'nitin', '2018-08-04 18:42:45'),
+(111, '8476028113', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041111', '2018-19', 'nitin', '2018-08-04 18:34:33'),
+(112, '9927013995', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041112', '2018-19', 'nitin', '2018-08-04 19:07:48'),
 (113, '8958713995', '8958713995', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041113', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (114, '8954055207', '8954055207', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041114', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (115, '9837431029', '9837431029', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041115', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -5052,9 +5141,9 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (155, '8126954926', '8126954926', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041155', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (156, '9925723660', '9925723660', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041156', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (157, '9927516043', '9927516043', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041157', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(158, '8057550726', '8057550726', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041158', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(158, '8057550726', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041158', '2018-19', 'nitin', '2018-08-04 13:43:41'),
 (159, '7830525468', '7830525468', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041159', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(160, '8476926637', '8476926637', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041160', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(160, '8476926637', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041160', '2018-19', 'nitin', '2018-08-01 16:20:56'),
 (161, '8958020924', '8958020924', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041161', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (162, '9012071609', '9012071609', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041162', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (163, '9411574525', '9411574525', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041163', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -5175,7 +5264,7 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (278, '8476028113', '8476028113', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041278', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (279, '8941020711', '8941020711', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041279', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (280, '9358313075', '9358313075', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041280', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(281, '9761938259', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041281', '2018-19', 'nitin', '2018-07-10 16:40:31'),
+(281, '9761938259', '-x-', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041281', '2018-19', 'nitin', '2018-07-29 10:44:21'),
 (282, '8979097944', '8979097944', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041282', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (283, '8958075603', '8958075603', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041283', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (284, '8477832082', '8477832082', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041284', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -5253,9 +5342,9 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 (356, '9760428101', '9760428101', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041356', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (357, '8279734997', '8279734997', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041357', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (358, '9411431032', '9411431032', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041358', '2018-19', 'nitin', '0000-00-00 00:00:00'),
-(359, '8958547530', '8958547530', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041359', '2018-19', 'nitin', '0000-00-00 00:00:00');
+(359, '8958547530', '8958547530', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041359', '2018-19', 'nitin', '0000-00-00 00:00:00'),
+(360, '9639131081', '9639131081', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041360', '2018-19', 'nitin', '0000-00-00 00:00:00');
 INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`, `DOC_`, `STATUS`, `CONTACT_STATUS`, `regid`, `SESSID`, `USERNAME_`, `DATE_`) VALUES
-(360, '9639131081', '9639131081', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041360', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (361, '7500845135', '7500845135', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041361', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (362, '7017596649', '7017596649', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041362', '2018-19', 'nitin', '0000-00-00 00:00:00'),
 (363, '7618173821', '7618173821', 'x@gmail.com', '4/29/2018', 1, 'CORRESPONDANCE', '2018041363', '2018-19', 'nitin', '0000-00-00 00:00:00'),
@@ -5340,15 +5429,14 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 -- Table structure for table `master_11_grading`
 --
 
-CREATE TABLE IF NOT EXISTS `master_11_grading` (
-  `gradeID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_11_grading` (
+  `gradeID` int(15) NOT NULL,
   `minMarks` int(10) NOT NULL,
   `maxMarks` int(10) NOT NULL,
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `description` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `clssessID` int(15) NOT NULL,
-  PRIMARY KEY (`gradeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+  `clssessID` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_11_grading`
@@ -5365,33 +5453,27 @@ INSERT INTO `master_11_grading` (`gradeID`, `minMarks`, `maxMarks`, `grade`, `de
 -- Table structure for table `master_12_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_12_subject` (
-  `subjectID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_12_subject` (
+  `subjectID` int(10) NOT NULL,
   `subName` varchar(100) CHARACTER SET utf8 NOT NULL,
   `classID` varchar(10) CHARACTER SET utf8 NOT NULL,
-  `status` varchar(10) CHARACTER SET utf8 NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`subjectID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
+  `priority` int(10) NOT NULL,
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_12_subject`
 --
 
-INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `status`, `SESSID`) VALUES
-(19, 'Science', '10A', 'TH', '2017-18'),
-(21, 'Social Science', '10A', 'TH', '2017-18'),
-(22, 'Social Science', '10A', 'PR', '2017-18'),
-(23, 'Mathematics', '10B', 'PR', '2017-18'),
-(25, 'Science', '10B', 'PR', '2017-18'),
-(26, 'Science', '10B', 'TH', '2017-18'),
-(27, 'SST', '10B', 'TH', '2017-18'),
-(28, 'English', '10B', 'TH', '2017-18'),
-(29, 'English', '12A', 'TH', '2017-18'),
-(30, 'Science', '12A', 'TH', '2017-18'),
-(31, 'Science', '12A', 'PR', '2017-18'),
-(32, 'Art', '10B', 'TH', '2017-18'),
-(33, 'Art', '10B', 'PR', '2017-18');
+INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `priority`, `SESSID`) VALUES
+(39, 'English', '1', 0, '2018-19'),
+(40, 'English', '3', 1, '2018-19'),
+(41, 'English', '7', 0, '2018-19'),
+(42, 'Hindi', '7', 0, '2018-19'),
+(43, 'Hindi', '2', 0, '2018-19'),
+(44, 'Hindi', '3', 2, '2018-19'),
+(45, 'Hindi', '4', 0, '2018-19'),
+(46, 'Hindi', '9', 0, '2018-19');
 
 -- --------------------------------------------------------
 
@@ -5399,15 +5481,14 @@ INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `status`, `S
 -- Table structure for table `master_13_staff`
 --
 
-CREATE TABLE IF NOT EXISTS `master_13_staff` (
-  `teacherID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_13_staff` (
+  `teacherID` int(13) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   `CATEGORY_ID` varchar(5) NOT NULL,
   `STATUS_` tinyint(1) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`teacherID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_13_staff`
@@ -5425,13 +5506,12 @@ INSERT INTO `master_13_staff` (`teacherID`, `name`, `CATEGORY_ID`, `STATUS_`, `U
 -- Table structure for table `master_14_teacher_wise_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_14_teacher_wise_subject` (
-  `tasID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_14_teacher_wise_subject` (
+  `tasID` int(13) NOT NULL,
   `teacherID` int(13) NOT NULL,
   `subjectID` int(10) NOT NULL,
-  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`tasID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_14_teacher_wise_subject`
@@ -5452,21 +5532,12 @@ INSERT INTO `master_14_teacher_wise_subject` (`tasID`, `teacherID`, `subjectID`,
 -- Table structure for table `master_15_subject_marks`
 --
 
-CREATE TABLE IF NOT EXISTS `master_15_subject_marks` (
-  `submarkID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_15_subject_marks` (
+  `submarkID` int(10) NOT NULL,
   `subjectID` int(10) NOT NULL,
   `maxMarks` int(3) NOT NULL,
-  `passMarks` int(3) NOT NULL,
-  PRIMARY KEY (`submarkID`),
-  KEY `subjectID` (`subjectID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `master_15_subject_marks`
---
-
-INSERT INTO `master_15_subject_marks` (`submarkID`, `subjectID`, `maxMarks`, `passMarks`) VALUES
-(2, 19, 70, 30);
+  `passMarks` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -5474,17 +5545,16 @@ INSERT INTO `master_15_subject_marks` (`submarkID`, `subjectID`, `maxMarks`, `pa
 -- Table structure for table `master_16_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `master_16_discount` (
-  `DID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_16_discount` (
+  `DID` int(11) NOT NULL,
   `ITEM_` varchar(200) NOT NULL,
   `ELIGIBLE_COUNT` int(11) NOT NULL DEFAULT '0',
   `STATUS_` varchar(30) NOT NULL COMMENT 'Percentage or Amount',
   `CATEGORY` varchar(10) NOT NULL,
   `AMOUNT` varchar(15) NOT NULL,
   `DESC_` text NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`DID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_16_discount`
@@ -5495,11 +5565,12 @@ INSERT INTO `master_16_discount` (`DID`, `ITEM_`, `ELIGIBLE_COUNT`, `STATUS_`, `
 (2, 'ST', 0, 'Percentage', 'CATEG', '8', '%age', '2018-07-01 18:45:45'),
 (4, 'OBC', 0, 'Amount', 'CATEG', '0', 'Amt', '2018-07-23 16:13:47'),
 (14, 'SIBLINGS', 3, 'Percentage', 'SIBLINGS', '70', '%age', '2018-07-12 10:50:49'),
-(15, 'RTE', 0, 'Amount', 'OTHER', '100', 'Amt', '2018-07-12 12:26:47'),
+(15, 'RTE', 0, 'Percentage', 'OTHER', '100', '%age', '2018-08-04 18:23:57'),
 (16, 'DISCOUNT_JUNIOR', 0, 'Amount', 'OTHER', '470', 'x', '2018-07-23 08:35:56'),
 (17, 'DISCOUNT_100', 0, 'Percentage', 'OTHER', '100', 'X', '2018-07-23 08:38:08'),
 (18, 'NEWSTAFF', 0, 'Percentage', 'OTHER', '50', 'x', '2018-07-23 08:58:35'),
-(19, 'OLD_STAFF', 0, 'Percentage', 'OTHER', '100', 'x', '2018-07-23 08:58:47');
+(19, 'OLD_STAFF', 0, 'Percentage', 'OTHER', '100', 'x', '2018-07-23 08:58:47'),
+(20, 'OTHER', 0, 'Amount', 'OTHER', '100', 'amnt', '2018-08-04 18:42:33');
 
 -- --------------------------------------------------------
 
@@ -5507,8 +5578,8 @@ INSERT INTO `master_16_discount` (`DID`, `ITEM_`, `ELIGIBLE_COUNT`, `STATUS_`, `
 -- Table structure for table `master_17_general`
 --
 
-CREATE TABLE IF NOT EXISTS `master_17_general` (
-  `SCH_ID` int(5) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_17_general` (
+  `SCH_ID` int(5) NOT NULL,
   `SCH_LOGO` varchar(50) NOT NULL,
   `SCH_NAME` varchar(100) NOT NULL,
   `SCH_CONTACT` varchar(65) NOT NULL,
@@ -5522,16 +5593,15 @@ CREATE TABLE IF NOT EXISTS `master_17_general` (
   `WEBSITE` varchar(200) NOT NULL,
   `REMARK` varchar(1000) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USERNAME` varchar(20) NOT NULL,
-  PRIMARY KEY (`SCH_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `USERNAME` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_17_general`
 --
 
 INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`, `SCH_EMAIL`, `SCH_ADD`, `SCH_CITY`, `SCH_DISITT`, `SCH_STATE`, `SCH_COUNTRY`, `AFFILIATION`, `WEBSITE`, `REMARK`, `DATE_`, `USERNAME`) VALUES
-(4, '4.png', 'G.D.J. Memorial Public School', '9410713666, 9917417797', 'gdjmpublicschoolchorgaliya@gmail.com', 'Naya Gaon Katan', 'Chorgaliya', 'Nainital', 'UTTARAKHAND', 'INDIA', '3530484', 'https://www.teamfreelancers.com', 'A CBSE New Delhi affiliated Co-Educational English Medium School', '2018-07-26 05:23:54', 'nitin');
+(4, '4.png', 'G.D.J. Memorial Public School', '9410713666, 9917417797', 'gdjmpublicschoolchorgaliya@gmail.com', 'Naya Gaon Katan', 'Chorgaliya', 'Nainital', 'UTTARAKHAND', 'INDIA', '3530484', '<a href="https://www.teamfreelancers.com">https://www.teamfreelancers.com</a>', 'A CBSE New Delhi affiliated Co-Educational English Medium School', '2018-07-29 10:32:07', 'nitin');
 
 -- --------------------------------------------------------
 
@@ -5539,14 +5609,13 @@ INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`
 -- Table structure for table `menu_1`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_1` (
-  `ID_` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_1` (
+  `ID_` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `MENU` varchar(30) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
-  `PRIORITY_` int(11) NOT NULL,
-  PRIMARY KEY (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  `PRIORITY_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_1`
@@ -5569,16 +5638,14 @@ INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 -- Table structure for table `menu_2_submenu`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_2_submenu` (
-  `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_2_submenu` (
+  `SUBMENUID` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `SUBMENU` varchar(150) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
   `PRIORITY` int(11) NOT NULL,
-  `ID_` int(11) NOT NULL,
-  PRIMARY KEY (`SUBMENUID`),
-  KEY `ID_` (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `ID_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_2_submenu`
@@ -5598,7 +5665,6 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (11, 'fa fa-user', 'Pay Fee', 'web/dashboard/6/13/payfee', 7, 6),
 (12, 'fa fa-user', 'New Attendance', 'web/dashboard/7/16/add_attendance', 1, 7),
 (13, 'fa fa-user', 'View Consolidate', 'web/dashboard/7/17/view_consolidate', 2, 7),
-(14, 'fa fa-user', 'Subject Marks', 'web/dashboard/8/20/subjectmarks', 8, 8),
 (15, 'fa fa-money', 'Scholastic items', 'web/dashboard/8/21/scholasticItems', 1, 8),
 (16, 'fa fa-money', 'Co-Scholastic items', 'web/dashboard/8/22/CoScholasticItem', 2, 8),
 (17, 'fa fa-money', 'Input Result', 'marks/input_result', 3, 8),
@@ -5620,14 +5686,13 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 -- Table structure for table `register_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `register_discount` (
+CREATE TABLE `register_discount` (
   `regid` varchar(25) NOT NULL,
   `DISCOUNT` text NOT NULL COMMENT 'Discounts seperated by comma(,)',
   `DISCOUNT_OFFERED` tinyint(1) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount',
-  PRIMARY KEY (`regid`)
+  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Used to store other discount if any';
 
 --
@@ -5641,10 +5706,14 @@ INSERT INTO `register_discount` (`regid`, `DISCOUNT`, `DISCOUNT_OFFERED`, `DATE_
 ('2018041005', 'RTE,ADVERTISEMENTCOUPON', 1, '2018-07-10 20:49:28', 'nitin', 1),
 ('2018041041', 'NEWSTAFF', 1, '2018-07-23 08:59:14', 'nitin', 1),
 ('2018041042', 'RTE', 1, '2018-07-10 08:30:46', 'nitin', 1),
-('2018041043', 'RTE,ADVERTISEMENTCOUPON', 1, '2018-07-10 14:02:12', 'nitin', 1),
+('2018041043', 'RTE,ADVERTISEMENTCOUPON', 1, '2018-08-01 16:16:53', 'nitin', 1),
 ('2018041044', 'RTE', 1, '2018-07-16 10:52:16', 'nitin', 1),
+('2018041110', 'RTE,OTHER', 1, '2018-08-04 18:42:45', 'nitin', 1),
+('2018041111', 'RTE', 1, '2018-08-04 18:34:33', 'nitin', 1),
+('2018041112', 'OTHER', 1, '2018-08-04 19:07:48', 'nitin', 1),
+('2018041158', 'RTE', 1, '2018-08-04 13:43:41', 'nitin', 1),
 ('2018041195', 'RTE,ADVERTISEMENTCOUPON', 1, '2018-07-10 16:31:56', 'nitin', 1),
-('2018041281', 'RTE', 1, '2018-07-10 16:40:31', 'nitin', 1),
+('2018041281', 'RTE', 1, '2018-07-29 10:44:21', 'nitin', 1),
 ('2018070149', 'RTE', 1, '2018-07-10 08:49:26', 'nitin', 1);
 
 -- --------------------------------------------------------
@@ -5653,14 +5722,13 @@ INSERT INTO `register_discount` (`regid`, `DISCOUNT`, `DISCOUNT_OFFERED`, `DATE_
 -- Table structure for table `register_sibling`
 --
 
-CREATE TABLE IF NOT EXISTS `register_sibling` (
+CREATE TABLE `register_sibling` (
   `regid` varchar(25) NOT NULL,
   `SIBLINGS` text NOT NULL COMMENT 'regids seperated by comma(,)',
   `DISCOUNT_OFFERED` tinyint(1) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount',
-  PRIMARY KEY (`regid`)
+  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Used to store siblings';
 
 --
@@ -5682,7 +5750,7 @@ INSERT INTO `register_sibling` (`regid`, `SIBLINGS`, `DISCOUNT_OFFERED`, `DATE_`
 ('2018041005', '2018041043', 1, '2018-07-10 20:49:28', 'nitin', 1),
 ('2018041041', '2018041160,2018041192', 1, '2018-07-23 08:59:14', 'nitin', 1),
 ('2018041195', '2018041042', 0, '2018-07-12 12:27:09', 'nitin', 0),
-('2018041281', '2018041042', 1, '2018-07-10 16:40:31', 'nitin', 1),
+('2018041281', '2018041042', 1, '2018-07-29 10:44:21', 'nitin', 1),
 ('2018070149', '2018041042', 1, '2018-07-10 08:49:26', 'nitin', 1);
 
 -- --------------------------------------------------------
@@ -5691,7 +5759,7 @@ INSERT INTO `register_sibling` (`regid`, `SIBLINGS`, `DISCOUNT_OFFERED`, `DATE_`
 -- Table structure for table `register_with_us`
 --
 
-CREATE TABLE IF NOT EXISTS `register_with_us` (
+CREATE TABLE `register_with_us` (
   `regid` varchar(25) NOT NULL,
   `FULLNAME` varchar(150) NOT NULL,
   `FATHER` varchar(150) NOT NULL,
@@ -5718,9 +5786,7 @@ CREATE TABLE IF NOT EXISTS `register_with_us` (
   `PASSWORD_` varchar(25) NOT NULL DEFAULT '123456',
   `DOR_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`regid`),
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6165,14 +6231,11 @@ INSERT INTO `register_with_us` (`regid`, `FULLNAME`, `FATHER`, `DOB_`, `PHOTO_`,
 -- Table structure for table `user_menu`
 --
 
-CREATE TABLE IF NOT EXISTS `user_menu` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_menu` (
+  `ID` int(11) NOT NULL,
   `MENU` int(11) NOT NULL,
-  `USER_` varchar(5) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `MENU` (`MENU`),
-  KEY `USER_` (`USER_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+  `USER_` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_menu`
@@ -6203,11 +6266,10 @@ INSERT INTO `user_menu` (`ID`, `MENU`, `USER_`) VALUES
 -- Table structure for table `_id_`
 --
 
-CREATE TABLE IF NOT EXISTS `_id_` (
-  `ID_` int(4) unsigned zerofill DEFAULT NULL,
+CREATE TABLE `_id_` (
+  `ID_` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
   `regid_` varchar(25) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6217,6 +6279,528 @@ CREATE TABLE IF NOT EXISTS `_id_` (
 INSERT INTO `_id_` (`ID_`, `regid_`, `SESSIONID`) VALUES
 (0149, '2018070149', '2018-19');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `class_1_classes`
+--
+ALTER TABLE `class_1_classes`
+  ADD PRIMARY KEY (`CLASSID`);
+
+--
+-- Indexes for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  ADD PRIMARY KEY (`CLSSESSID`),
+  ADD KEY `CLASSID` (`CLASSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  ADD PRIMARY KEY (`ID_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `USERNAME_` (`USERNAME_`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  ADD PRIMARY KEY (`ATTID`);
+
+--
+-- Indexes for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  ADD PRIMARY KEY (`itemID`);
+
+--
+-- Indexes for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  ADD PRIMARY KEY (`ADDSCHCLASSID`);
+
+--
+-- Indexes for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  ADD PRIMARY KEY (`coitemID`);
+
+--
+-- Indexes for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  ADD PRIMARY KEY (`ADDCOSCHCLASSID`);
+
+--
+-- Indexes for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  ADD PRIMARY KEY (`termID`);
+
+--
+-- Indexes for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  ADD PRIMARY KEY (`schID`);
+
+--
+-- Indexes for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  ADD PRIMARY KEY (`coschID`);
+
+--
+-- Indexes for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `fee_0_duration`
+--
+ALTER TABLE `fee_0_duration`
+  ADD PRIMARY KEY (`DURATION`);
+
+--
+-- Indexes for table `fee_1_type`
+--
+ALTER TABLE `fee_1_type`
+  ADD PRIMARY KEY (`FEETYPEID`);
+
+--
+-- Indexes for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  ADD PRIMARY KEY (`feeID`),
+  ADD KEY `regID` (`regID`,`date`),
+  ADD KEY `userID` (`username`),
+  ADD KEY `username` (`username`),
+  ADD KEY `username_2` (`username`),
+  ADD KEY `regID_2` (`regID`),
+  ADD KEY `feetype` (`feetype`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  ADD PRIMARY KEY (`ST_HD_ID`);
+
+--
+-- Indexes for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  ADD PRIMARY KEY (`FLX_HD_ID`);
+
+--
+-- Indexes for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  ADD PRIMARY KEY (`ADFLXFEESTUDID`),
+  ADD KEY `FLX_HD_ID` (`FLX_HD_ID`),
+  ADD KEY `REGID` (`REGID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  ADD PRIMARY KEY (`INVID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `fee_6_invoice_detail`
+--
+ALTER TABLE `fee_6_invoice_detail`
+  ADD PRIMARY KEY (`INVDETID`);
+
+--
+-- Indexes for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  ADD PRIMARY KEY (`RECPTID`),
+  ADD KEY `INVID` (`INVDETID`),
+  ADD KEY `regid` (`regid`);
+
+--
+-- Indexes for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  ADD PRIMARY KEY (`CFEEID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`);
+
+--
+-- Indexes for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  ADD PRIMARY KEY (`CFEESPLITID`),
+  ADD KEY `ST_HD_ID` (`ST_HD_ID`),
+  ADD KEY `CFEEID` (`CFEEID`);
+
+--
+-- Indexes for table `fee_10_class_fee_in_a_session`
+--
+ALTER TABLE `fee_10_class_fee_in_a_session`
+  ADD PRIMARY KEY (`CFEESESSID`);
+
+--
+-- Indexes for table `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`USERNAME_`),
+  ADD KEY `USER_STATUS` (`STAFFID`);
+
+--
+-- Indexes for table `master_0_country_`
+--
+ALTER TABLE `master_0_country_`
+  ADD PRIMARY KEY (`ABREV_`);
+
+--
+-- Indexes for table `master_1_zone_`
+--
+ALTER TABLE `master_1_zone_`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `master_2_zone_region`
+--
+ALTER TABLE `master_2_zone_region`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `master_4_city_`
+--
+ALTER TABLE `master_4_city_`
+  ADD PRIMARY KEY (`NAME_`);
+
+--
+-- Indexes for table `master_5_user_status`
+--
+ALTER TABLE `master_5_user_status`
+  ADD PRIMARY KEY (`ST_ID`);
+
+--
+-- Indexes for table `master_6_session`
+--
+ALTER TABLE `master_6_session`
+  ADD PRIMARY KEY (`SESSID`);
+
+--
+-- Indexes for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  ADD PRIMARY KEY (`STUD_ID`),
+  ADD UNIQUE KEY `regid_2` (`regid`),
+  ADD KEY `regid` (`regid`);
+
+--
+-- Indexes for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  ADD PRIMARY KEY (`AC_ID`),
+  ADD UNIQUE KEY `regid_3` (`regid`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  ADD PRIMARY KEY (`ADDRID`),
+  ADD KEY `CITY_` (`CITY_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  ADD PRIMARY KEY (`CNTCT_ID`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  ADD PRIMARY KEY (`gradeID`);
+
+--
+-- Indexes for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  ADD PRIMARY KEY (`subjectID`);
+
+--
+-- Indexes for table `master_13_staff`
+--
+ALTER TABLE `master_13_staff`
+  ADD PRIMARY KEY (`teacherID`);
+
+--
+-- Indexes for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  ADD PRIMARY KEY (`tasID`);
+
+--
+-- Indexes for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  ADD PRIMARY KEY (`submarkID`),
+  ADD KEY `subjectID` (`subjectID`);
+
+--
+-- Indexes for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  ADD PRIMARY KEY (`DID`);
+
+--
+-- Indexes for table `master_17_general`
+--
+ALTER TABLE `master_17_general`
+  ADD PRIMARY KEY (`SCH_ID`);
+
+--
+-- Indexes for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  ADD PRIMARY KEY (`SUBMENUID`),
+  ADD KEY `ID_` (`ID_`);
+
+--
+-- Indexes for table `register_discount`
+--
+ALTER TABLE `register_discount`
+  ADD PRIMARY KEY (`regid`);
+
+--
+-- Indexes for table `register_sibling`
+--
+ALTER TABLE `register_sibling`
+  ADD PRIMARY KEY (`regid`);
+
+--
+-- Indexes for table `register_with_us`
+--
+ALTER TABLE `register_with_us`
+  ADD PRIMARY KEY (`regid`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `MENU` (`MENU`),
+  ADD KEY `USER_` (`USER_`);
+
+--
+-- Indexes for table `_id_`
+--
+ALTER TABLE `_id_`
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  MODIFY `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=546;
+--
+-- AUTO_INCREMENT for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=320;
+--
+-- AUTO_INCREMENT for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  MODIFY `ATTID` bigint(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1269;
+--
+-- AUTO_INCREMENT for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  MODIFY `itemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  MODIFY `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  MODIFY `coitemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  MODIFY `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  MODIFY `termID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  MODIFY `schID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+--
+-- AUTO_INCREMENT for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  MODIFY `coschID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+--
+-- AUTO_INCREMENT for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  MODIFY `feeID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  MODIFY `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  MODIFY `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  MODIFY `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=434;
+--
+-- AUTO_INCREMENT for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+--
+-- AUTO_INCREMENT for table `fee_6_invoice_detail`
+--
+ALTER TABLE `fee_6_invoice_detail`
+  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+--
+-- AUTO_INCREMENT for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  MODIFY `RECPTID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+--
+-- AUTO_INCREMENT for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+--
+-- AUTO_INCREMENT for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=877;
+--
+-- AUTO_INCREMENT for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  MODIFY `gradeID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  MODIFY `subjectID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `master_13_staff`
+--
+ALTER TABLE `master_13_staff`
+  MODIFY `teacherID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  MODIFY `tasID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  MODIFY `submarkID` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `master_17_general`
+--
+ALTER TABLE `master_17_general`
+  MODIFY `SCH_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  MODIFY `ID_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Constraints for dumped tables
 --
