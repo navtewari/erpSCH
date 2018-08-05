@@ -255,7 +255,7 @@ class My_exam_model extends CI_Model {
     function mdelete_coScholastic($coscholasticID) {
         $this->db->where('coitemID', $coscholasticID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
-        $query1 = $this->db->get('exam_4_add_coscholastic_to_class');        
+        $query1 = $this->db->get('exam_4_add_coscholastic_to_class');
 
         if ($query1->num_rows() != 0) {
             $bool_ = array('res_' => FALSE, 'msg_' => '!! This Co-Scholastic Item is already Associated with Class Therefore Cannot be deleted !!');
@@ -383,10 +383,10 @@ class My_exam_model extends CI_Model {
         return $bool_;
     }
 
-    function mdeleteTerm($termID){
+    function mdeleteTerm($termID) {
         $this->db->where('termID', $termID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
-        $query1 = $this->db->get('exam_6_scholastic_result');        
+        $query1 = $this->db->get('exam_6_scholastic_result');
 
         $this->db->where('termID', $termID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
@@ -407,8 +407,8 @@ class My_exam_model extends CI_Model {
         }
         return $bool_;
     }
-    
-    function mget_scholastic_item_classwise($classID) {      
+
+    function mget_scholastic_item_classwise($classID) {
         $this->db->select('a.*, b.*');
         $this->db->from('exam_2_add_scholastic_to_class b');
         $this->db->join('exam_1_scholastic_items a', 'a.itemID = b.itemID');
@@ -419,13 +419,241 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
-    function mget_coscholastic_item_classwise($classID) {        
+    function mget_coscholastic_item_classwise($classID) {
         $this->db->select('a.*, b.*');
         $this->db->from('exam_4_add_coscholastic_to_class b');
         $this->db->join('exam_3_coscholastic_items a', 'a.coitemID = b.coitemID');
         $this->db->where('b.CLSSESSID', $classID);
         $this->db->order_by('a.priority', 'Asc');
-        $query = $this->db->get();        
-        return $query->result();        
+        $query = $this->db->get();
+        return $query->result();
     }
+
+    function mcheckData_entry_result() {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+
+        $subjectid = $this->input->post('cmbSubjectMarks');
+        $sessionid = $this->session->userdata('_current_year___');
+
+        if ($optScholastic == '1') {
+            //-----------------------Checking for already submitted result---
+            $this->db->where('termID', $termID);
+            $this->db->where('CLSSESSID', $classid);
+            $this->db->where('itemID', $AssItem);
+            $this->db->where('subjectID', $subjectid);
+            $this->db->where('SESSID', $sessionid);
+            $queryEdit = $this->db->get('exam_6_scholastic_result');
+
+            if ($queryEdit->num_rows() != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Scholastic Data already present for this combination');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mcheckcoSchData_entry_result() {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+
+        $sessionid = $this->session->userdata('_current_year___');
+
+        if ($optScholastic == '2') {
+            //-----------------------Checking for already submitted result---
+            $this->db->where('termID', $termID);
+            $this->db->where('CLSSESSID', $classid);
+            $this->db->where('coitemID', $AssItem);
+            $this->db->where('SESSID', $sessionid);
+            $queryEdit = $this->db->get('exam_7_coscholastic_result');
+
+            if ($queryEdit->num_rows() != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Co-Scholastic Data already present for this combination');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function get_maxMarks_in_assessmentarea($assItem) {
+        $this->db->where('itemID', $assItem);
+        $query = $this->db->get('exam_1_scholastic_items');
+
+        if ($query->num_rows() != 0) {
+            foreach ($query->result() as $row) {
+                $maxMarks = $row->maxMarks;
+            }
+        }
+        return $maxMarks;
+    }
+
+    function mget_students_in_class($classID) {
+        $year__ = $this->session->userdata('_current_year___');
+
+        $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->where('b.clssessid', $classID);
+        $this->db->where('c.SESSID', $year__);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    function mget_students_in_class_with_marks($classID) {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+        $subjectid = $this->input->post('cmbSubjectMarks');
+        $year__ = $this->session->userdata('_current_year___');
+
+        if ($optScholastic == '1') {
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->join('exam_6_scholastic_result d', 'a.regid=d.regid');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            
+            $this->db->where('d.termID', $termID);
+            $this->db->where('d.CLSSESSID', $classid);
+            $this->db->where('d.itemID', $AssItem);
+            $this->db->where('d.subjectID', $subjectid);
+            $this->db->where('d.SESSID', $year__);
+
+            $query = $this->db->get();
+        } else if ($optScholastic == '2') {
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->join('exam_7_coscholastic_result d', 'a.regid=d.regid');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            
+            $this->db->where('d.termID', $termID);
+            $this->db->where('d.CLSSESSID', $classid);
+            $this->db->where('d.coitemID', $AssItem);            
+            $this->db->where('d.SESSID', $year__);
+
+            $query = $this->db->get();
+        }
+
+        return $query->result();
+    }
+
+    function minputResult() {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+        $subjectid = $this->input->post('cmbSubjectMarks');
+        $sessionid = $this->session->userdata('_current_year___');
+
+        $obj = $this->input->post('marks_status');
+        $username = $this->session->userdata('_user___');
+
+        if ($optScholastic == '1') {
+            $this->db->where('itemID', $AssItem);
+            $query2 = $this->db->get('exam_1_scholastic_items');
+
+            if ($query2->num_rows() != 0) {
+                foreach ($query2->result() as $row2) {
+                    $maxMarks = $row2->maxMarks;
+                }
+            }
+
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'regid' => $key,
+                    'CLSSESSID' => $classid,
+                    'ROLLNO' => 0,
+                    'SESSID' => $sessionid,
+                    'subjectID' => $subjectid,
+                    'itemID' => $AssItem,
+                    'maxMarks' => $maxMarks,
+                    'marks' => $value,
+                    'termID' => $termID,
+                    'USERNAME_' => $username,
+                );
+
+                $query = $this->db->insert('exam_6_scholastic_result', $data);
+            }
+        } else if ($optScholastic == '2') {
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'regid' => $key,
+                    'CLSSESSID' => $classid,
+                    'ROLLNO' => 0,
+                    'SESSID' => $sessionid,
+                    'coitemID' => $AssItem,
+                    'grade' => $value,
+                    'termID' => $termID,
+                    'USERNAME_' => $username,
+                );
+
+                $query = $this->db->insert('exam_7_coscholastic_result', $data);
+            }
+        }
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Result Inserted Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
+    function mupdateInputResult() {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+        $subjectid = $this->input->post('cmbSubjectMarks');
+        $sessionid = $this->session->userdata('_current_year___');
+
+        $obj = $this->input->post('marks_status');
+        //$objResult=$this->input->post('resultID');
+        $username = $this->session->userdata('_user___');
+
+        if ($optScholastic == '1') {
+            $this->db->where('itemID', $AssItem);
+            $query2 = $this->db->get('exam_1_scholastic_items');
+
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'marks' => $value,
+                );
+                $this->db->where('schID', $key);
+                $query = $this->db->update('exam_6_scholastic_result', $data);
+            }
+        } else if ($optScholastic == '2') {
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'grade' => $value,
+                );
+                $this->db->where('coschID', $key);
+                $query = $this->db->update('exam_7_coscholastic_result', $data);
+            }
+        }
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Result Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
 }

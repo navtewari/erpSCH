@@ -9,21 +9,21 @@
             </div>
             <div class="widget-content tab-content">
                 <div class="tab-pane active" id="newClassEntry">
+                    <?php
+                    $attrib_ = array(
+                        'class' => 'form-horizontal',
+                        'name' => 'frmInputResult',
+                        'id' => 'frmInputResult',
+                    );
+                    ?>
+                    <?php echo form_open('#', $attrib_); ?>
                     <div class="span5">
                         <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5>Input Students Marks</h5>
                             </div>
                             <div class="widget-content nopadding">
-                                <div class="control-group">
-                                    <?php
-                                    $attrib_ = array(
-                                        'class' => 'form-horizontal',
-                                        'name' => 'frmInputResult',
-                                        'id' => 'frmInputResult',
-                                    );
-                                    ?>
-                                    <?php echo form_open('#', $attrib_); ?>
+                                <div class="control-group">                                    
                                     <div class="control-group">
                                         <div class="control-group">
                                             <label class="control-label">Select Exam Term</label>
@@ -84,7 +84,7 @@
                                                 $data = array(
                                                     'name' => 'cmbAssessmentItem',
                                                     'id' => 'cmbAssessmentItem',
-                                                    'required' => 'required'                                                    
+                                                    'required' => 'required'
                                                 );
                                                 $options = array();
                                                 $options['0'] = 'Select Above Assessment Area';
@@ -111,7 +111,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <?php echo form_close(); ?>
+
                                 </div>
                             </div>            
                         </div>
@@ -123,13 +123,13 @@
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                                 <h5 id="exitHeading">Scholastic items already present</h5>
                             </div>
-                            <div class="widget-content nopadding" style="height:200px; overflow: scroll">
+                            <div class="widget-content nopadding" style="height:auto; overflow: scroll">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
                                             <th style="text-align:left;width:40%">Reg. No.</th>
                                             <th style="text-align:left;width:40%">Student Name</th>                                           
-                                            <th style="text-align: center">Marks</th>                                                            
+                                            <th style="text-align: center" id="trMarks">Marks</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody id="tabStudentsMarks"> 
@@ -138,76 +138,16 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="span4">                       
-                        <div class="widget-box" id="editScholasticDiv" style="display:none;">
-                            <div class="widget-title"  style="color: #cc3300"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5 style="color: #cc3300">Update Scholastic Item</h5>
-                            </div>
-                            <div class="widget-content nopadding">
-                                <div class="control-group">
-                                    <?php
-                                    $attrib_ = array(
-                                        'class' => 'form-horizontal',
-                                        'name' => 'frmScholastic_edit',
-                                        'id' => 'frmScholastic_edit',
-                                    );
-                                    ?>
-                                    <?php echo form_open('#', $attrib_); ?>
-                                    <div class="control-group">
-                                        <label class="control-label" style="color:#cc3300">Scholastic Item</label>
-                                        <div class="controls">  
-                                            <?php
-                                            $data = array(
-                                                'type' => 'hidden',
-                                                'class' => 'span11 required',
-                                                'name' => 'ScholasticID_Edit',
-                                                'id' => 'ScholasticID_Edit',
-                                                'required' => 'required'
-                                            );
-                                            echo form_input($data);
-
-
-                                            $data = array(
-                                                'type' => 'text',
-                                                'autocomplete' => 'off',
-                                                'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtScholasticItem_edit',
-                                                'id' => 'txtScholasticItem_edit',
-                                                'value' => ''
-                                            );
-                                            echo form_input($data);
-                                            ?>                                                  
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" style="color:#cc3300">Marks Allotted</label>
-                                        <div class="controls">                        
-                                            <?php
-                                            $data = array(
-                                                'type' => 'text',
-                                                'autocomplete' => 'off',
-                                                'required' => 'required',
-                                                'class' => 'span11',
-                                                'name' => 'txtScholasticMarks_edit',
-                                                'id' => 'txtScholasticMarks_edit',
-                                                'value' => ''
-                                            );
-                                            echo form_input($data);
-                                            ?>                                                    
-                                        </div>
-                                    </div>
-                                    <div class="form-actions" align="right">                        
-                                        <input type="button" value="Update Scholastic Item" class="btn btn-success submitScholastic_edit">
-                                        <button type="reset" class="btn btn-primary">Reset</button>                             
-                                    </div>
-                                    <?php echo form_close(); ?>
-                                </div>
-                            </div>            
+                        <div class="form-actions" align="right" id="divSubmitResultMarks" style="display: none;">                        
+                            <input type="button" value="Submit Marks" class="btn btn-success submitMarks" style="width:300px;">                                                        
                         </div>
-                    </div>
+                        
+                        <div class="form-actions" align="right" id="divUpdateResultMarks" style="display: none;">                        
+                            <input type="button" value="Update Marks" class="btn btn-success updateMarks" style="width:300px;">                                                        
+                        </div>
+                    </div> 
+                    <?php echo form_close(); ?>
                 </div>
                 <div id="sessionClass" class="tab-pane">
                     <?php $this->load->view('exam/addExamTerm'); ?>

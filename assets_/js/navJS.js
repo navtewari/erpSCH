@@ -1885,8 +1885,19 @@ $(function () {
                     callSuccess(xhr.responseText);
                 }
             });
+        } else if ($(this).attr('class') === "form-control marks_0_1") {
+            var stuID = $(this).attr('id');
+            var arr_str = stuID.split('-');
+            var maxMarks_ = parseInt(arr_str[1]);
+            var marks = parseInt($(this).val());
+            if (maxMarks_ < marks) {
+                alert('Marks cannot be greater than ' + maxMarks_ + ' for selected Assessment Item');
+                $(this).val('');
+                $(this).focus();
+            }
         }
     });
+
     function fillTerm() {
         url_ = site_url_ + "/exam/get_examterm_in_session";
         $.ajax({
@@ -1939,6 +1950,7 @@ $(function () {
             });
         }
     });
+
     $('body').on('click', '.DeleteTerm', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -1964,6 +1976,7 @@ $(function () {
             });
         }
     });
+
     function fillExamTermCombo() {
         $('#s2id_cmbExamTerm span').text("Loading...");
         url_ = site_url_ + "/exam/get_examterm_in_session";
@@ -2010,14 +2023,13 @@ $(function () {
         $('#cmbAssessmentItem').empty();
         $('#s2id_cmbAssessmentItem span').text("Select Above Assessment Area");
         document.getElementById('subjectHidden').style.display = 'none';
-
+        $('#tabStudentsMarks').html('');
         if ($('#cmbClassofResult').val() != '') {
             data_ = $("#cmbClassofResult option:selected").text();
             var arr_str = data_.split(' ');
-
             var classID = arr_str[2];
             url_ = site_url_ + "/master/getClassSubject/" + classID;
-            alert(url_);
+            //alert(url_);
             $('#s2id_cmbSubjectMarks span').text("Checking...");
             $.ajax({
                 type: "POST",
@@ -2039,6 +2051,7 @@ $(function () {
         }
     });
     $('#cmbAssessment').change(function () {
+        $('#tabStudentsMarks').html('');
         var assArea = $('#cmbAssessment').val();
         if ($('#cmbClassofResult').val() != '') {
             if (assArea === '1') { //for Scholastic
@@ -2099,64 +2112,157 @@ $(function () {
             document.getElementById('subjectHidden').style.display = 'none';
         }
     });
-
     function getStudents() {
         if ($('#cmbAssessment').val() == '1') {
             if ($('#cmbExamTerm').val() != '' && $('#cmbClassofResult').val() != '' && $('#cmbAssessmentItem').val() != '' && $('#cmbSubjectMarks').val() != '') {
-                $examTerm = $('#cmbExamTerm').find(":selected").text();
-                $classID = $("#cmbClassofResult").val();
-                $className = $("#cmbClassofResult").find(":selected").text();                
-                $subject = $('#cmbSubjectMarks').find(":selected").text();
-                $assid = $('#cmbAssessmentItem').val();
+                var examTerm = $('#cmbExamTerm').find(":selected").text();
+                var classID = $("#cmbClassofResult").val();
+                var className = $("#cmbClassofResult").find(":selected").text();
+                var subject = $('#cmbSubjectMarks').find(":selected").text();
+                var assid = $('#cmbAssessmentItem').val();
+                var assName = $('#cmbAssessmentItem').find(":selected").text();
 
-                $('#exitHeading').html('<p align="center">Term - <span style="color:blue;margin-right:40px;">' + $examTerm + '</span> <span style="color:blue;margin-right:40px;">' + $className + '</span> Subject - <span style="color:blue">' + $subject + '</span></p>');
-                url_ = site_url_ + "/exam/getstudentsforclass/" + $classID + "/1/" + $assid;
+                $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Subject - <span style="color:blue">' + subject + ' (' + assName + ') ' + '</span>');
+                url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/1/" + assid;
                 data_ = $('#frmInputResult').serialize();
-
-                $('#tabStudentsMarks').html('Checking for availability. Please wait...');
+                $('#tabStudentsMarks').html('<td colspan="3">Checking for availability. Please wait...</td>');
                 $.ajax({
                     type: "POST",
                     url: url_,
                     data: data_,
                     success: function (data) {
-                        $('#tabStudentsMarks').html(data);
+                        var obj = JSON.parse(data);
+                        var str_html = '';
+                        if (obj.res_ !== '') {
+                            str_html = str_html + ('<tr><td colspan="3" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
+                        }
+                        if (obj.studentdata.length > 0) {
+                            for (i = 0; i < obj.studentdata.length; i++) {
+                                str_html = str_html + "<tr class='gradeX'>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
+                                if (obj.res_ !== '') {
+                                    str_html = str_html + "<td><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].schID + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='" + obj.studentdata[i].marks + "' /></td>";
+                                } else {
+                                    str_html = str_html + "<td><input type='text' required='required' style='width:100px;' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='' /></td>";
+                                }
+                                str_html = str_html + "</tr>";
+                            }
+                            $('#tabStudentsMarks').html(str_html);
+                            $('#trMarks').html('Marks');
+                            if (obj.res_ !== '') {
+                                document.getElementById('divSubmitResultMarks').style.display = 'none';
+                                document.getElementById('divUpdateResultMarks').style.display = 'block';
+                            } else {
+                                document.getElementById('divSubmitResultMarks').style.display = 'block';
+                                document.getElementById('divUpdateResultMarks').style.display = 'none';
+                            }
+                        } else {
+                            $('#tabStudentsMarks').html('<td colspan="3">No Student Present in this class for This Session</td>');
+                        }
                     }
                 });
             }
         } else if ($('#cmbAssessment').val() == '2') {
-            if ($('#cmbExamTerm').val() != '-' && $('#cmbClassMarksID_exam').val() != '' && $('#cmbAssItem').val() != '') {
+            if ($('#cmbExamTerm').val() != '' && $('#cmbClassofResult').val() != '' && $('#cmbAssessmentItem').val() != '') {
 
-                $examTerm = $('#cmbExamTerm').find(":selected").text();
-                data_ = $("#cmbClassMarksID_exam").val();
-                $assTerm = $('#cmbAssItem').find(":selected").text();
+                var examTerm = $('#cmbExamTerm').find(":selected").text();
+                var classID = $("#cmbClassofResult").val();
+                var className = $("#cmbClassofResult").find(":selected").text();
+                var assTerm = $('#cmbAssessmentItem').find(":selected").text();
 
-                $('#caption_for_student').html('<p align="center">Term - <span style="color:yellow;margin-right:40px;">' + $examTerm + '</span> Class <span style="color:yellow">' + data_ + '</span><br>Assessment Item - <span style="color:yellow">' + $assTerm + "</span></p>");
-                url_ = site_url_ + "/exam/getstudentsforclass/" + data_ + "/2";
-                data_ = $('#frmResult').serialize();
-
-                $('#students_here').html('Checking for availability. Please wait...');
+                $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Assessment Item - <span style="color:blue">' + assTerm + '</span>');
+                url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/2";
+                data_ = $('#frmInputResult').serialize();
+                $('#tabStudentsMarks').html('<td colspan="3">Checking for availability. Please wait...</td>');
                 $.ajax({
                     type: "POST",
                     url: url_,
                     data: data_,
                     success: function (data) {
-                        $('#students_here').html(data);
+                        var obj = JSON.parse(data);
+                        var str_html = '';
+                        if (obj.res_ !== '') {
+                            str_html = str_html + ('<tr><td colspan="3" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
+                        }
+                        if (obj.studentdata.length > 0) {
+                            for (i = 0; i < obj.studentdata.length; i++) {
+                                str_html = str_html + "<tr class='gradeX'>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
+                                if (obj.res_ !== '') {
+                                    str_html = str_html + "<td><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid+ "' value='" + obj.studentdata[i].grade+ "' /></td>";
+                                } else {
+                                    str_html = str_html + "<td><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
+                                }
+                                str_html = str_html + "</tr>";
+                            }
+                            $('#tabStudentsMarks').html(str_html);
+                            $('#trMarks').html('Grade');
+                            if (obj.res_ !== '') {
+                                document.getElementById('divSubmitResultMarks').style.display = 'none';
+                                document.getElementById('divUpdateResultMarks').style.display = 'block';
+                            } else {
+                                document.getElementById('divSubmitResultMarks').style.display = 'block';
+                                document.getElementById('divUpdateResultMarks').style.display = 'none';
+                            }
+                        } else {
+                            $('#tabStudentsMarks').html('<td colspan="3">No Student Present in this class for This Session</td>');
+                        }
                     }
                 });
             }
         }
     }
 
-    $('#cmbExamTerm').change(function () {
+    $('#cmbExamTerm').change(function () {        
         getStudents();
     });
-
-    $('#cmbAssessmentItem').change(function () {
-        getStudents();
+    $('#cmbAssessmentItem').change(function () {                
+        getStudents();        
     });
-
     $('#cmbSubjectMarks').change(function () {
         getStudents();
+    });
+
+    $('.submitMarks').click(function () {
+        data_ = $('#frmInputResult').serializeArray();
+        url_ = site_url_ + "/exam/inputResult";
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+    $('.updateMarks').click(function () {
+        data_ = $('#frmInputResult').serializeArray();
+        url_ = site_url_ + "/exam/updateInputResult";
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
