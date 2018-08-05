@@ -94,10 +94,10 @@
                                         </div>
                                     </div> 
 
-                                    <div style="display:none" id="subjectHidden">
-                                        <h3>Select Subject</h3>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
+                                    <div class="control-group" style="display:none" id="subjectHidden">
+                                        <div class="control-group">
+                                            <label class="control-label">Select Subject</label>
+                                            <div class="controls">                                            
                                                 <?php
                                                 $data = array(
                                                     'class' => 'required form-control m-bot8',

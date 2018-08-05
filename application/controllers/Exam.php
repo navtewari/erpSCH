@@ -126,7 +126,11 @@ class Exam extends CI_Controller {
     }
 
     function get_coscholastic_item_classwise($classID) {
-        $data = $this->mem->mget_coscholastic_item_classwise($classID);
+        $data['coscholasticItem'] = $this->mem->mget_coscholastic_item_classwise($classID);
         echo json_encode($data);
+    }
+    
+    function getstudentsforclass(){
+        
     }
 }

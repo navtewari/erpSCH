@@ -419,32 +419,13 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
-    function mget_coscholastic_item_classwise($classID) {
-        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
-        $this->db->where('CLASSID', $classID);
-        $query = $this->db->get('class_2_in_session');
-        if ($query->num_rows() != 0) {
-            foreach ($query->result() as $row) {
-                $classSessID = $row->CLSSESSID;
-            }
-        }
-
+    function mget_coscholastic_item_classwise($classID) {        
         $this->db->select('a.*, b.*');
         $this->db->from('exam_4_add_coscholastic_to_class b');
         $this->db->join('exam_3_coscholastic_items a', 'a.coitemID = b.coitemID');
-        $this->db->where('b.CLSSESSID', $classSessID);
-        $this->db->order_by('a.coitem', 'Asc');
-        $query1 = $this->db->get();
-
-        if ($query1->num_rows() != 0) {
-            $output = "<option value=''>Select</option>";
-            foreach ($query1->result() as $row1) {
-                $output .= "<option value='" . $row1->coitemID . "'>" . $row1->coitem . "</option>";
-            }
-        } else {
-            $output = "<option value='0'>NO ITEM AVAILABLE</option>";
-        }
-
-        return $output;
+        $this->db->where('b.CLSSESSID', $classID);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();        
+        return $query->result();        
     }
 }
