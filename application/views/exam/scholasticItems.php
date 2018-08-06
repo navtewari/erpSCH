@@ -155,7 +155,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" style="color:#cc3300">Marks Allotted</label>
+                                        <label class="control-label" style="color:#cc3300">Maximum Marks</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(
@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" style="color:#cc3300">Marks Allotted</label>
+                                        <label class="control-label" style="color:#cc3300">Passing Marks</label>
                                         <div class="controls">                        
                                             <?php
                                             $data = array(

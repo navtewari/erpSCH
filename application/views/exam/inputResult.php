@@ -112,6 +112,29 @@
                                         </div>
                                     </div>
 
+                                    <div class="control-group">
+                                        <div class="control-group">
+                                            <label class="control-label">Date of Exam</label>
+                                            <div class="controls"> 
+                                                <div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
+                                                <?php
+                                                $data = array(
+                                                    'type' => 'text',
+                                                    'class' => "required form-control span10",
+                                                    'data-date-format' => "dd-mm-yyyy",
+                                                    'autocomplete' => 'off',
+                                                    'name' => 'txtExamDate',
+                                                    'id' => 'txtExamDate',
+                                                    'value' => date('d-m-Y')
+                                                );
+                                                echo form_input($data);
+                                                ?>
+                                                <span class="add-on"><i class="icon-th"></i></span> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>            
                         </div>
@@ -142,7 +165,7 @@
                         <div class="form-actions" align="right" id="divSubmitResultMarks" style="display: none;">                        
                             <input type="button" value="Submit Marks" class="btn btn-success submitMarks" style="width:300px;">                                                        
                         </div>
-                        
+
                         <div class="form-actions" align="right" id="divUpdateResultMarks" style="display: none;">                        
                             <input type="button" value="Update Marks" class="btn btn-success updateMarks" style="width:300px;">                                                        
                         </div>

@@ -2238,6 +2238,7 @@ $(function () {
                     callDanger(obj.msg_);
                 } else {
                     callSuccess(obj.msg_);
+                    getStudents();
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);

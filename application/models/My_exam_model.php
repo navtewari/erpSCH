@@ -557,6 +557,7 @@ class My_exam_model extends CI_Model {
         $optScholastic = $this->input->post('cmbAssessment');
         $AssItem = $this->input->post('cmbAssessmentItem');
         $subjectid = $this->input->post('cmbSubjectMarks');
+        $examDate = $this->input->post('txtExamDate');
         $sessionid = $this->session->userdata('_current_year___');
 
         $obj = $this->input->post('marks_status');
@@ -584,6 +585,7 @@ class My_exam_model extends CI_Model {
                     'marks' => $value,
                     'termID' => $termID,
                     'USERNAME_' => $username,
+                    'DATEOFTEST' => $examDate,
                 );
 
                 $query = $this->db->insert('exam_6_scholastic_result', $data);
@@ -599,6 +601,7 @@ class My_exam_model extends CI_Model {
                     'grade' => $value,
                     'termID' => $termID,
                     'USERNAME_' => $username,
+                    'DATEOFTEST' => $examDate,
                 );
 
                 $query = $this->db->insert('exam_7_coscholastic_result', $data);
