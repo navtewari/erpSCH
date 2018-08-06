@@ -238,9 +238,9 @@ class My_fee_model extends CI_Model {
     function generateInvoice($class__, $yr_from, $mnth_from, $yr_to, $mnth_to, $regid_, $no_of_months){
         $s = 'x';
         // This code answers that if receipt of previous invoice is not generated then you cannot generate the new invoice
-            //$data = $this->previousReciptExists($regid_, $class__);
+            $data = $this->previousReciptExists($regid_, $class__);
         // 
-        if(1/*$data['res_'] == true*/){
+        if($data['res_'] == true){
             $data = $this->check_previous_individual_invoice($regid_, $class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
             $prevInvoiceID = $data['last_invoice_detail_id']['ID'];
             $prevInvoice_result = $data['last_invoice_detail_id']['res_'];
