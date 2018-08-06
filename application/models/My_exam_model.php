@@ -624,6 +624,7 @@ class My_exam_model extends CI_Model {
         $AssItem = $this->input->post('cmbAssessmentItem');
         $subjectid = $this->input->post('cmbSubjectMarks');
         $sessionid = $this->session->userdata('_current_year___');
+        $examDate = $this->input->post('txtExamDate');
 
         $obj = $this->input->post('marks_status');
         //$objResult=$this->input->post('resultID');
@@ -636,6 +637,7 @@ class My_exam_model extends CI_Model {
             foreach ($obj as $key => $value) {
                 $data = array(
                     'marks' => $value,
+                    'DATEOFTEST' => $examDate,
                 );
                 $this->db->where('schID', $key);
                 $query = $this->db->update('exam_6_scholastic_result', $data);
@@ -644,6 +646,7 @@ class My_exam_model extends CI_Model {
             foreach ($obj as $key => $value) {
                 $data = array(
                     'grade' => $value,
+                    'DATEOFTEST' => $examDate,
                 );
                 $this->db->where('coschID', $key);
                 $query = $this->db->update('exam_7_coscholastic_result', $data);

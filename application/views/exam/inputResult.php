@@ -125,6 +125,7 @@
                                                     'autocomplete' => 'off',
                                                     'name' => 'txtExamDate',
                                                     'id' => 'txtExamDate',
+                                                    'style' =>'background:#D6F6FF;',
                                                     'value' => date('d-m-Y')
                                                 );
                                                 echo form_input($data);
@@ -150,9 +151,10 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
-                                            <th style="text-align:left;width:40%">Reg. No.</th>
-                                            <th style="text-align:left;width:40%">Student Name</th>                                           
+                                            <th style="text-align:left;width:30%">Reg. No.</th>
+                                            <th style="text-align:left;width:30%">Student Name</th>                                           
                                             <th style="text-align: center" id="trMarks">Marks</th>                                            
+                                            <th style="text-align: center; width:15%">ABSENT</th>    
                                         </tr>
                                     </thead>
                                     <tbody id="tabStudentsMarks"> 
