@@ -153,7 +153,7 @@ class My_dashboard_reports_model extends CI_Model {
         if($year_ != 'x'){
             $this->db->where('a.SESSID', $year_);
         }
-        $this->db->select('sum((c.ACTUAL_PAID_AMT - c.DISCOUNT_AMOUNT) + c.FINE) as total_fee_collected');
+        $this->db->select('sum(c.PAID) as total_fee_collected');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
@@ -199,6 +199,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this -> db -> order_by('ABS(y.CLASS)', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
         $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->where('c.PAID<>', 0);
         $this->db->select('a.SESSID, x.CLASSID, c.*');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
@@ -210,10 +211,11 @@ class My_dashboard_reports_model extends CI_Model {
         return $query->result();
     }
 
-    function todays_collection(){
+    function todays_collection(){ // Receipt Collection for today
         //$this->db->where('MODE', 'cash');
         $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
-        $this->db->select('SUM((c.ACTUAL_PAID_AMT - c.DISCOUNT_AMOUNT) + c.FINE) as TODAYS_COLLECTION');
+        $this->db->where('c.PAID<>', 0);
+        $this->db->select('SUM(c.PAID) as TODAYS_COLLECTION');
         $query = $this->db->get('fee_7_receipts c');
 
         if($query->num_rows()!=0){

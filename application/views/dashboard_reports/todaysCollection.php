@@ -43,7 +43,7 @@
                                 <td><?php echo $item->RECPTID; ?></td>
                                 <td style="text-align: center"><?php echo $item->CLASSID; ?></td>
                                 <td style="text-align: center"><?php echo $item->INVDETID; ?></td>
-                                <td style="text-align: right"><?php echo number_format((($item->ACTUAL_PAID_AMT-$item->DISCOUNT_AMOUNT)+$item->FINE), 0,'.', ','); ?></td>
+                                <td style="text-align: right"><?php echo number_format(($item->PAID), 0,'.', ','); ?></td>
                                 <td style="text-align: center"><?php echo $item->MODE; ?></td>
                                 <td><a href="<?php echo site_url('/fee/fee_print/'.$item->RECPTID);?>" class="view_invoice_1" target="_blank">VIEW</a></td>
                             </tr>
