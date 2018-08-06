@@ -1897,7 +1897,6 @@ $(function () {
             }
         }
     });
-
     function fillTerm() {
         url_ = site_url_ + "/exam/get_examterm_in_session";
         $.ajax({
@@ -1950,7 +1949,6 @@ $(function () {
             });
         }
     });
-
     $('body').on('click', '.DeleteTerm', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -1976,7 +1974,6 @@ $(function () {
             });
         }
     });
-
     function fillExamTermCombo() {
         $('#s2id_cmbExamTerm span').text("Loading...");
         url_ = site_url_ + "/exam/get_examterm_in_session";
@@ -2121,7 +2118,6 @@ $(function () {
                 var subject = $('#cmbSubjectMarks').find(":selected").text();
                 var assid = $('#cmbAssessmentItem').val();
                 var assName = $('#cmbAssessmentItem').find(":selected").text();
-
                 $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Subject - <span style="color:blue">' + subject + ' (' + assName + ') ' + '</span>');
                 url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/1/" + assid;
                 data_ = $('#frmInputResult').serialize();
@@ -2134,7 +2130,7 @@ $(function () {
                         var obj = JSON.parse(data);
                         var str_html = '';
                         if (obj.res_ !== '') {
-                            str_html = str_html + ('<tr><td colspan="3" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
+                            str_html = str_html + ('<tr><td colspan="4" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
                         }
                         if (obj.studentdata.length > 0) {
                             for (i = 0; i < obj.studentdata.length; i++) {
@@ -2142,11 +2138,13 @@ $(function () {
                                 str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                                 str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                                 if (obj.res_ !== '') {
-                                    str_html = str_html + "<td><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].schID + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='" + obj.studentdata[i].marks + "' /></td>";
+                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;background:yellow' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].schID + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='" + obj.studentdata[i].marks + "' /></td>";
                                 } else {
-                                    str_html = str_html + "<td><input type='text' required='required' style='width:100px;' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='' /></td>";
+                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='' /></td>";
                                 }
+                                str_html = str_html + "<td><input type='checkbox' class='span9' id='chk-" + obj.studentdata[i].regid + "'/><b>AB</b></td>";
                                 str_html = str_html + "</tr>";
+                                $('#txtExamDate').val(obj.studentdata[i].DATEOFTEST);
                             }
                             $('#tabStudentsMarks').html(str_html);
                             $('#trMarks').html('Marks');
@@ -2158,7 +2156,7 @@ $(function () {
                                 document.getElementById('divUpdateResultMarks').style.display = 'none';
                             }
                         } else {
-                            $('#tabStudentsMarks').html('<td colspan="3">No Student Present in this class for This Session</td>');
+                            $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
                         }
                     }
                 });
@@ -2170,7 +2168,6 @@ $(function () {
                 var classID = $("#cmbClassofResult").val();
                 var className = $("#cmbClassofResult").find(":selected").text();
                 var assTerm = $('#cmbAssessmentItem').find(":selected").text();
-
                 $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Assessment Item - <span style="color:blue">' + assTerm + '</span>');
                 url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/2";
                 data_ = $('#frmInputResult').serialize();
@@ -2183,7 +2180,7 @@ $(function () {
                         var obj = JSON.parse(data);
                         var str_html = '';
                         if (obj.res_ !== '') {
-                            str_html = str_html + ('<tr><td colspan="3" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
+                            str_html = str_html + ('<tr><td colspan="4" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
                         }
                         if (obj.studentdata.length > 0) {
                             for (i = 0; i < obj.studentdata.length; i++) {
@@ -2191,11 +2188,13 @@ $(function () {
                                 str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                                 str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                                 if (obj.res_ !== '') {
-                                    str_html = str_html + "<td><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid+ "' value='" + obj.studentdata[i].grade+ "' /></td>";
+                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
                                 } else {
-                                    str_html = str_html + "<td><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
+                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
                                 }
+                                str_html = str_html + "<td><input type='checkbox' class='span9' id='chk-" + obj.studentdata[i].regid + "'/><b>AB</b></td>";
                                 str_html = str_html + "</tr>";
+                                $('#txtExamDate').val(obj.studentdata[i].DATEOFTEST);
                             }
                             $('#tabStudentsMarks').html(str_html);
                             $('#trMarks').html('Grade');
@@ -2207,7 +2206,7 @@ $(function () {
                                 document.getElementById('divUpdateResultMarks').style.display = 'none';
                             }
                         } else {
-                            $('#tabStudentsMarks').html('<td colspan="3">No Student Present in this class for This Session</td>');
+                            $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
                         }
                     }
                 });
@@ -2215,16 +2214,27 @@ $(function () {
         }
     }
 
-    $('#cmbExamTerm').change(function () {        
+    $('#tabStudentsMarks').on('change', '[type=checkbox]', function (e) {
+        data_=$(this).attr('id');
+        var arr_str = data_.split('-');
+        var studentID = arr_str[1];
+            
+        if ($(this).attr('checked')) {            
+            $("#td-"+studentID).find("input[type='text']").val('AB');
+        } else {
+            $("#td-"+studentID).find("input[type='text']").val('');
+        }        
+    });
+    
+    $('#cmbExamTerm').change(function () {
         getStudents();
     });
-    $('#cmbAssessmentItem').change(function () {                
-        getStudents();        
+    $('#cmbAssessmentItem').change(function () {
+        getStudents();
     });
     $('#cmbSubjectMarks').change(function () {
         getStudents();
     });
-
     $('.submitMarks').click(function () {
         data_ = $('#frmInputResult').serializeArray();
         url_ = site_url_ + "/exam/inputResult";
@@ -2238,13 +2248,13 @@ $(function () {
                     callDanger(obj.msg_);
                 } else {
                     callSuccess(obj.msg_);
+                    getStudents();
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
             }
         });
     });
-
     $('.updateMarks').click(function () {
         data_ = $('#frmInputResult').serializeArray();
         url_ = site_url_ + "/exam/updateInputResult";
