@@ -885,7 +885,7 @@ class My_fee_model extends CI_Model {
         //$new_due_amount = $due_amount - $due_amnt_input;
         $new_due_amount = $total_gross_amount - $paid__;
         // -------------------------------------------------------------------------
-        if($due_amount > 0){
+        if(1/*$due_amount > 0*/){
 
             if($flexiheads != ''){
                 $flexistatus = true;

@@ -168,12 +168,7 @@
 										</tr>
 										<?php 
 											$total_paid = $receipt->PAID;
-											$actualAmountToPay = $receipt->ACTUAL_PAID_AMT-$receipt->DISCOUNT_AMOUNT+$receipt->FINE;
 										?>
-										<tr>
-											<td class="label_">Amount Due </td>
-											<td class="content">Rs. <?php echo $actualAmountToPay; ?>/-</td>
-										</tr>
 									</table>
 								</td>
 								<td colspan="2" width="50%" valign="top">

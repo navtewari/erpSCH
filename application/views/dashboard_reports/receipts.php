@@ -32,7 +32,7 @@
     <div class="span9">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5 id="receipts_for_class">Invoice(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
+                <h5 id="receipts_for_class">Receipt(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
             </div>
             <div class="widget-content nopadding" style="overflow-y: scroll; overflow-x: auto; height: 450px; padding: 5px">
                 <table class="table table-bordered">
@@ -43,9 +43,10 @@
                             <th>Class</th>
                             <th style="text-align: left">RegID</th>
                             <th style="text-align: left">Name</th>
-                            <th style="text-align: right">Amount</th>
+                            <th style="text-align: right">Actual Fee</th>
                             <th style="text-align: right">Discount</th>
                             <th style="text-align: right">Fine</th>
+                            <th style="text-align: right">Paid Amount</th>
                             <th></th>
                         </tr>
                     </thead>

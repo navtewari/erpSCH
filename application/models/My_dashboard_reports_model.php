@@ -8,7 +8,7 @@ class My_dashboard_reports_model extends CI_Model {
         parent::__construct();
         $this->my_library->changeDB();
         // Exceptional Handling
-        	$this->load->model('My_error_model', 'error');
+            $this->load->model('My_error_model', 'error');
         // --------------------
     }
 
@@ -117,7 +117,7 @@ class My_dashboard_reports_model extends CI_Model {
         if($clssessid != 'x'){
             $this->db->where('a.CLSSESSID', $clssessid);   
         }
-        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT, b.STATUS, z.RECPTID, z.FLEXI_FEE_STATUS, z.ADFLXFEESTUDID, z.DISCOUNT_AMOUNT, z.ACTUAL_PAID_AMT, z.FINE');
+        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT, b.STATUS, z.RECPTID, z.FLEXI_FEE_STATUS, z.ADFLXFEESTUDID, z.DISCOUNT_AMOUNT, z.ACTUAL_PAID_AMT, z.PAID, z.FINE');
         $this->db->from('class_1_classes y');
         $this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
         $this->db->join('fee_6_invoice a', 'x.CLSSESSID=a.CLSSESSID');
@@ -250,6 +250,7 @@ class My_dashboard_reports_model extends CI_Model {
     }
     function todays_receipt_count(){
         $this->db->where('DATE_FORMAT(DATE(DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->where('a.PAID<>', 0);
         $this->db->select('COUNT(a.ACTUAL_PAID_AMT) AS RECEIPT_COUNT');
         $query = $this->db->get('fee_7_receipts a');
 

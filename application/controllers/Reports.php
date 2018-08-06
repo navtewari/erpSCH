@@ -22,6 +22,7 @@ class Reports extends CI_Controller {
 	    	$data['personal'] = $this->mrm->getPersonalDetail($stdid);
 	    	$data['p_address'] = $this->mrm->get_P_AddressDetail($stdid);
 	    	$data['c_address'] = $this->mrm->get_C_AddressDetail($stdid);
+            $data['c_contact'] = $this->mrm->get_c_ContactDetail($stdid);
 
     	} else {
     		$data['bool_'] = 0;

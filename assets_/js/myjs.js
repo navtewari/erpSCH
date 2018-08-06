@@ -1588,7 +1588,7 @@ $(function(){
 												                        	var due_amount = objreceipt.fetch_invoice_for_receipt[index].DUE_AMOUNT;
 												                            if(due_amount <= 0){
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
-												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><i class='icon-play' style='color: #DE9797'></i></td>";
+												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important' id='payFee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"_"+regid_+"_outer'><i class='icon-play myreceipt_from_invoice' id='payFee_"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"_"+regid_+"' style='color: #ff0000'></i></td>";
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: center !important'><a href='"+site_url_+"/fee/print_latest_receipt/"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee~"+objreceipt.fetch_invoice_for_receipt[index].INVDETID+"'></i></span></a></td>";
 												                            } else {
 												                            	str_html = str_html + "<td style='background: #FEF4F2; text-align: right !important' id='dueAmt_"+regid_+"'><span class='red_' title='"+due_amount+"'>"+due_amount+"</span></td>";
@@ -1899,7 +1899,7 @@ $(function(){
 				                            if(obj.fetch_invoice_for_receipt[index].STATUS == 1){
 					                            if(due_amount <= 0){
 					                            	str_html = str_html + "<td style='text-align: right !important'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
-					                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-play' style='color: #DE9797'></i></td>";
+					                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-play myreceipt' id='payFee_"+obj.fetch_invoice_for_receipt[index].INVDETID+"_"+obj.fetch_class_students[loop1].regid+"' style='color: #ff0000'></i></td>";
 					                            	str_html = str_html + "<td style='text-align: center !important'><a href='"+site_url_+"/fee/print_latest_receipt/"+obj.fetch_invoice_for_receipt[index].INVDETID+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee~"+obj.fetch_invoice_for_receipt[index].INVDETID+"'></i></span></a></td>";
 					                            } else {
 					                            	str_html = str_html + "<td style='text-align: right !important'><span class='red_' title='"+due_amount+"'>"+due_amount+"</span></td>";
@@ -1908,7 +1908,7 @@ $(function(){
 					                            }
 				                        	} else {
 				                        		str_html = str_html + "<td style='text-align: right !important'><span class='dimtext' title='"+due_amount+"'>"+due_amount+"</span></td>";
-				                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-remove' style='color: #DE9797'></i></td>";
+				                            	str_html = str_html + "<td style='text-align: center !important'><i class='icon-play myreceipt' id='payFee_"+obj.fetch_invoice_for_receipt[index].INVDETID+"_"+obj.fetch_class_students[loop1].regid+"' style='color: #ff0000'></i></td>";
 				                            	str_html = str_html + "<td style='text-align: center !important'><a href='"+site_url_+"/fee/print_latest_receipt/"+obj.fetch_invoice_for_receipt[index].INVDETID+"' target='_blank'><span class='print_invoice'><i class='icon-print print_latest_receipt' id='print_fee~"+obj.fetch_invoice_for_receipt[index].INVDETID+"'></i></span></a></td>";
 				                        	}
 
@@ -2116,11 +2116,14 @@ $(function(){
 		                // -----------------------------------------------
 		                var fine_if_any = 0;
 		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
+		                /*
 		                if(total_amount < 0){
 		                    total_amount = 0;
 		                }
+		                */
 		                var str_html='';
-		                var words = inWords(total_amount);
+		                var total_amount_words = Math.abs(total_amount);
+		                var words = inWords(total_amount_words);
 
 		                str_html = "<center>";
 		                str_html = str_html + "<form name='frmReceiptCreation' id='frmReceiptCreation'>";
@@ -2248,11 +2251,13 @@ $(function(){
 		                    str_html = str_html + ", "+flexi_heads;
 		                }
 		                str_html = str_html + "</td></tr>";
-		                if(total_amount > 0){
+		                
+		                //if(total_amount > 0){
 		                    display_ = 'visibility:visible;';
-		                } else {
-		                    display_ = 'visibility:hidden;';
-		                }
+		                //} else {
+		                //    display_ = 'visibility:hidden;';
+		                //}
+		                
 		                str_html = str_html + "<tr><td colspan='2'>";
 		                str_html = str_html + "<div class='col-sm-5' style='"+display_+"font-size: 10px; text-align: right' id='submit_print'>";
 		                str_html = str_html + "<input type='button' value='Submit Fee' class='btn btn-primary' id='cmbReceiptButton' />";
@@ -2296,18 +2301,19 @@ $(function(){
 		            var dis_ = parseInt($('#_discount_').val());
 		            var fine = parseInt($('#_fine_').val());
 		            var total_amnt = (due_amnt + fine) - dis_;
-		            if(total_amnt < 0){
+		            /*if(total_amnt < 0){
 		                total_amnt = 0;
 		            }
+		            */
 		            $('#total_amnt').val(total_amnt);
 		            $('#total_amnt_display').html(total_amnt);
-		            words_ = inWords(total_amnt);
+		            words_ = inWords(Math.abs(total_amount));
 		            $('#total_amnt_in_words').html(words_.toUpperCase());
 		            $('#paid_amount').val(total_amnt);
-		            if(total_amnt >= 0){
+		            //if(total_amnt >= 0){
 		                //desc_ = $('#txtDesc').val();
 		                $('#submit_print').css({'visibility':'visible'});
-		            }
+		            //}
 		        } else {
 		            $('#total_amnt_in_words').html('Please Check all values.');
 		            $('#submit_print').css({'visibility':'hidden'});
@@ -3235,11 +3241,15 @@ $(function(){
                             str = str + '<td>';
                             str = str + obj.invoices[i].FNAME;
                             str = str + '</td>';
-                            str = str + '<td style="text-align: rigth">';
-                            amnt = parseInt(obj.invoices[i].ACTUAL_DUE_AMOUNT,10) + parseInt(obj.invoices[i].PREV_DUE_AMOUNT,10);
+                            str = str + '<td style="text-align: right">';
+                            pd_amnt = parseInt(obj.invoices[i].PREV_DUE_AMOUNT,10);
+                            str = str + pd_amnt;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: right">';
+                            amnt = parseInt(obj.invoices[i].ACTUAL_DUE_AMOUNT,10);
                             str = str + amnt;
                             str = str + '</td>';
-                            str = str + '<td style="text-align: rigth">';
+                            str = str + '<td style="text-align: right">';
                             str = str + dueamnt;
                             str = str + '</td>';
                             str = str + '<td style="text-align: center">';
@@ -3262,7 +3272,7 @@ $(function(){
 			var data_ = "clssessid="+arr_[1];
 			var show_class = arr_[3];
 			var url_ = site_url_+'/dashboardReports/get_receipts_via_ajax';
-			$('#receipts_for_class').html("Invoice(s) for <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
+			$('#receipts_for_class').html("Receipt(s) for <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
 			$.ajax({
 				type: "POST",
 				url: url_,
@@ -3292,14 +3302,19 @@ $(function(){
                             str = str + '<td>';
                             str = str + obj.receipts[i].FNAME;
                             str = str + '</td>';
-                            str = str + '<td style="text-align: rigth">';
+                            str = str + '<td style="text-align: right">';
                             str = str + obj.receipts[i].ACTUAL_PAID_AMT;
                             str = str + '</td>';
-                            str = str + '<td style="text-align: rigth">';
-                            str = str + obj.receipts[i].DISCOUNT_AMOUNT;
+                            str = str + '<td style="text-align: right">';
+                            $discount = (obj.receipts[i].DISCOUNT_AMOUNT != 0) ? obj.receipts[i].DISCOUNT_AMOUNT: '';
+                            str = str + $discount;
                             str = str + '</td>';
-                            str = str + '<td style="text-align: rigth">';
-                            str = str + obj.receipts[i].FINE;
+                            str = str + '<td style="text-align: right">';
+                            $fine = (obj.receipts[i].FINE != 0) ? obj.receipts[i].FINE : '';
+                            str = str + $fine;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: right">';
+                            str = str + obj.receipts[i].PAID;
                             str = str + '</td>';
                             str = str + '<td style="text-align: center">';
                             str = str + '<a href="'+_url_+'" target="_blank"'+css_class+'>View</a>';
