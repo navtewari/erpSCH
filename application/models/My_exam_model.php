@@ -523,7 +523,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_6_scholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            
+
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
             $this->db->where('d.itemID', $AssItem);
@@ -539,15 +539,56 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_7_coscholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            
+
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
-            $this->db->where('d.coitemID', $AssItem);            
+            $this->db->where('d.coitemID', $AssItem);
             $this->db->where('d.SESSID', $year__);
 
             $query = $this->db->get();
         }
 
+        return $query->result();
+    }
+    
+    function checkStudentRemarks($classID){
+        $this->db->where('CLSSESSID', $classID);
+        $query2 = $this->db->get('exam_9_result_remarks');
+        if ($query2->num_rows() != 0) {
+            return ('1');
+        }else{
+            return ('2');
+        }
+    }
+
+    function mget_students_in_class_for_remarks($classID) {        
+        $this->db->where('CLSSESSID', $classID);
+        $query2 = $this->db->get('exam_9_result_remarks');
+        $year__ = $this->session->userdata('_current_year___');
+        
+        if ($query2->num_rows() != 0) {
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->join('exam_9_result_remarks d', 'a.regid=d.regid');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+
+            $this->db->where('d.CLSSESSID', $classID);
+            $this->db->where('d.SESSID', $year__);
+
+            $query = $this->db->get();
+        } else {
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            $query = $this->db->get();
+        }
+        
         return $query->result();
     }
 
@@ -662,4 +703,60 @@ class My_exam_model extends CI_Model {
         return $bool_;
     }
 
+    function mSubmitRemarks($clssessid) {
+        $sessionid = $this->session->userdata('_current_year___');
+
+        $obj = $this->input->post('stu_remark');
+        $obj1 = $this->input->post('stu_promoted');
+
+        $username = $this->session->userdata('_user___');
+        foreach ($obj as $key => $value) {
+            $data = array(
+                'regid' => $key,
+                'CLSSESSID' => $clssessid,
+                'ROLLNO' => 0,
+                'SESSID' => $sessionid,
+                'teacherRemark' => $value,
+                'promotedClass' => $obj1[$key],
+                'USERNAME_' => $username,
+            );
+
+            $query = $this->db->insert('exam_9_result_remarks', $data);
+        }
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Remarks Inserted Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
+    function mUpdateRemarks($clssessid) {
+        $sessionid = $this->session->userdata('_current_year___');
+
+        $obj = $this->input->post('stu_remark');
+        $obj1 = $this->input->post('stu_promoted');
+
+        $username = $this->session->userdata('_user___');
+        foreach ($obj as $key => $value) {
+            $data = array(                
+                'teacherRemark' => $value,
+                'promotedClass' => $obj1[$key],
+                'USERNAME_' => $username,
+            );
+            
+            $this->db->where('resultsubtotalID', $key);
+            $query = $this->db->update('exam_9_result_remarks', $data);
+        }
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Remarks Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
 }
