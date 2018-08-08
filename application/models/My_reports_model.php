@@ -38,5 +38,11 @@ class My_reports_model extends CI_Model {
     	$query = $this->db->get('master_9_stud_address');
     	return $query->row();	
     }
+    function get_c_ContactDetail($stdid){
+        $this->db->where('regid', $stdid);
+        $this->db->where('CONTACT_STATUS', 'CORRESPONDANCE');
+        $query = $this->db->get('master_10_stud_contact');
+        return $query->row();      
+    }
 
 }

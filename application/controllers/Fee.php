@@ -145,14 +145,44 @@ class Fee extends CI_Controller {
         echo json_encode($data);
     }
     function createReceipt(){
-        $rid = $this->fm->submitfee();
+        $data = $this->fm->submitfee();
 
-        if($rid != 'x'){
+        if($data['id_'] != 'x'){
             $data['receipt_msg'] = array("Fee Submitted Successfully");
-            $data['receipt_id'] = array($rid);
+            $data['receipt_id'] = $data['id_'];
+            $data['student'] = $this->fm->getMobileNo($this->input->post('txtREGID'), $data['id_']);
+            $data['sms_check'] = $this->session->userdata('sms_loginto');
         } else {
             $data['receipt_msg'] = array("Fee can't be submitted as no due amount is left in current invoice.");
-            $data['receipt_id'] = array($rid);
+            $data['receipt_id'] = array($data['id_']);
+        }
+        echo json_encode($data);
+    }
+
+    function sendSMS(){
+
+        $msg = $this->input->post('MessageToPrint');
+
+        if($this->input->post('check_sms') == 'yes'){
+            /* */ // Booking Message to Owner Mobile
+                $username = $this->session->userdata('sms_userid');
+                $password = $this->session->userdata('sms_pwd');
+                $number = $this->input->post("mobilenumbers");
+                $sender = $this->session->userdata('sms_senderid');
+                $msg1=$this->input->post("Fee_Message");
+                $message = rawurlencode($msg1);
+
+                
+                $url=$this->session->userdata('sms_loginto')."/unicodesmsapi.php?username=".trim($username,'"')."&password=".trim($password,'"')."&mobilenumber=".trim($number,'"')."&message=".trim($message,'"')."&senderid=".trim($sender,'"')."&type=3";
+
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            /* */
+            $data['msg_all'] = $msg.". And Fee SMS is also sent to the Registered Mobile.";
+        } else {
+            $data['msg_all'] = $msg." But without any sms as cancelled by you.";
         }
         echo json_encode($data);
     }
