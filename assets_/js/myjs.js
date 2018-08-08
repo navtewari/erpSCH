@@ -2408,9 +2408,23 @@ $(function(){
 				                data: data_,
 				                success: function(data){
 				                    obj = JSON.parse(data);
+				                    if(obj.sms_check != 'NA'){
+				                    	$('#myModal').modal('show');
+				                    	$('#mobilenumbers').val(obj.student.MOBILE_S);
+				                    	$feemsg_for_sms = $('#Fee_Message').val("Fee of Rs. "+obj.student.PAID+" against the Reg ID: "+obj.student.regid+" ("+obj.student.FNAME+") is successfully submitted today.")
+				                	} else {
+				                		$feemsg_for_sms = '';
+				                		if(obj.receipt_id != 'x'){
+				                			callSuccess(obj.receipt_msg);
+				                		} else {
+				                			callDanger(obj.receipt_msg);
+				                		}
+				                	}
 				                    if(obj.receipt_id != 'x'){
+				                    	$('#txtFeeSMS').val(obj.receipt_msg);
 				                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 0px 0px 0px'><a href='"+site_url_+'/fee/fee_print/'+obj.receipt_id+"' class='btn btn-danger' target='_blank'>Print Fee</a></div><div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
 				                    } else {
+				                    	$('#txtFeeSMS').val(obj.receipt_msg);
 				                    	$('#submit_print').html("<div style='float: right; color: #ff0000; padding: 0px 10px 0px 0px'>"+obj.receipt_msg+"</div>");
 				                    }
 				                    $('#receiptNo').html(obj.receipt_id);
@@ -2424,9 +2438,32 @@ $(function(){
 		        }
 		    return false;
 		    });
+
 		    $('body').on('blur', '#txtDesc', function(){
 		    	$('#txtDesc').css({'border':'#f0f0f0 solid 1px'});
 		    });
+
+		    $('.sendsmsForFee').click(function(){ 
+	    	var url_ = site_url_ + "/fee/sendSMS";
+	    	var str = this.id;
+	    	var arr_ = str.split('_');
+	    	var data_ = $('#frmSMS').serialize()+"&check_sms="+arr_[1];
+	    	$.ajax({
+	    		type: "POST",
+	    		url: url_,
+	    		data: data_,
+	    		success: function(data){
+	    			var obj = JSON.parse(data);
+	    			callSuccess($('#txtFeeSMS').val()+obj.msg_all);
+	    			$('#myModal').modal('hide');
+	    		}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+					$('#myModal').modal('hide');
+				}
+	    	});
+	    	
+	    	return false;
+	    });
 			// -------------------------------
 	// ----------
 	// Common Functions
@@ -2909,6 +2946,7 @@ $(function(){
 	    	
 	    	return false;
 	    });
+
 	    $('#atten_check').change(function(){
 	    	if($('#atten_check').prop('checked') == true){
 	    		$(".checkboxall").prop('checked', true);

@@ -850,6 +850,15 @@ class My_fee_model extends CI_Model {
         }
         return $bool_;
     }
+    function getMobileNo($regid_, $receipt_id){
+        $this->db->where('a.regid', $regid_);
+        $this->db->select('a.regid, a.FNAME, b.MOBILE_S, c.PAID');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_10_stud_contact b', 'a.regid=b.regid');
+        $this->db->join('fee_7_receipts c', 'a.regid=c.regid AND c.RECPTID='.$receipt_id);
+        $query = $this->db->get();
+        return $query->row();
+    }
     function submitfee(){
         $invdetid = $this->input->post('txtINVDETID');
         $regid = $this->input->post('txtREGID');
@@ -879,7 +888,7 @@ class My_fee_model extends CI_Model {
             $r = $query->row();
             $due_amount = $r->DUE_AMOUNT;
         } else {
-            $this->db->set_flashdata('blunder_error', 'OH NO!! Invoice Record is deleted. You should have to maintain the fee detail for '.$this->session->userdata('_current_year___')." against the registration id - ". $regid);
+            $this->session->set_flashdata('blunder_error', 'OH NO!! Invoice Record is deleted. You should have to maintain the fee detail for '.$this->session->userdata('_current_year___')." against the registration id - ". $regid);
             $due_amount = 0;
         }
         //$new_due_amount = $due_amount - $due_amnt_input;
@@ -927,7 +936,9 @@ class My_fee_model extends CI_Model {
         } else {
             $id_ = 'x';
         }
-        return $id_;
+        $data['paid_amt'] = $paid__;
+        $data['id_'] = $id_;
+        return $data;
     }
 
     function get_receipt($receipt_id){
