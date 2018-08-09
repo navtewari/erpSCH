@@ -161,4 +161,21 @@ class Exam extends CI_Controller {
         $data = $this->mem->mupdateInputResult();
         echo json_encode($data);
     }
+
+    function get_student_for_result($classID) {
+        $data['checkRemarks'] = $this->mem->checkStudentRemarks($classID);
+        $data['studentdata'] = $this->mem->mget_students_in_class_for_remarks($classID);
+        echo json_encode($data);
+    }
+
+    function submitRemarks($clssessid) {
+        $data = $this->mem->mSubmitRemarks($clssessid);
+        echo json_encode($data);
+    }
+    
+    function updateRemarks($clssessid) {
+        $data = $this->mem->mUpdateRemarks($clssessid);
+        echo json_encode($data);
+    }
+
 }

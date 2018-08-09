@@ -76,6 +76,10 @@ $(function () {
             fillExamTermCombo();
             fillClassforResult();
         }
+
+        if ($("#frmDisplayResult").length != 0) {
+            fillcmbClassforResult();
+        }
     });
     //-------------------------------------------General
     function fillStates(selector) {
@@ -2138,9 +2142,9 @@ $(function () {
                                 str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                                 str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                                 if (obj.res_ !== '') {
-                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;background:yellow' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].schID + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='" + obj.studentdata[i].marks + "' /></td>";
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;background:yellow' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].schID + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='" + obj.studentdata[i].marks + "' /></td>";
                                 } else {
-                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='' /></td>";
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;' class='form-control marks_0_1' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "-" + obj.maxMarks + "' value='' /></td>";
                                 }
                                 str_html = str_html + "<td><input type='checkbox' class='span9' id='chk-" + obj.studentdata[i].regid + "'/><b>AB</b></td>";
                                 str_html = str_html + "</tr>";
@@ -2188,9 +2192,9 @@ $(function () {
                                 str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                                 str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                                 if (obj.res_ !== '') {
-                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
                                 } else {
-                                    str_html = str_html + "<td id='td-"+obj.studentdata[i].regid+"'><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
                                 }
                                 str_html = str_html + "<td><input type='checkbox' class='span9' id='chk-" + obj.studentdata[i].regid + "'/><b>AB</b></td>";
                                 str_html = str_html + "</tr>";
@@ -2215,17 +2219,17 @@ $(function () {
     }
 
     $('#tabStudentsMarks').on('change', '[type=checkbox]', function (e) {
-        data_=$(this).attr('id');
+        data_ = $(this).attr('id');
         var arr_str = data_.split('-');
         var studentID = arr_str[1];
-            
-        if ($(this).attr('checked')) {            
-            $("#td-"+studentID).find("input[type='text']").val('AB');
+
+        if ($(this).attr('checked')) {
+            $("#td-" + studentID).find("input[type='text']").val('AB');
         } else {
-            $("#td-"+studentID).find("input[type='text']").val('');
-        }        
+            $("#td-" + studentID).find("input[type='text']").val('');
+        }
     });
-    
+
     $('#cmbExamTerm').change(function () {
         getStudents();
     });
@@ -2271,6 +2275,135 @@ $(function () {
                 }
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+    function fillcmbClassforResult() {
+        $('#s2id_cmbClassforResult span').text("Loading...");
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $('#cmbClassforResult').empty();
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                str_html = str_html + "<option value=''>Choose Class</option>";
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_in_session[i].CLSSESSID + "'> Class " + obj.class_in_session[i].CLASSID + "</option>";
+                }
+                $('#s2id_cmbClassforResult span').text("Choose Class");
+                $('#cmbClassforResult').html(str_html);
+            }
+        });
+    }
+
+    $('#cmbClassforResult').change(function () {
+        document.getElementById('divInfo').style.display = 'none';
+        $('#tabStudentForResult').html('');
+        if ($('#cmbClassforResult').val() != '') {
+            data_ = $('#cmbClassforResult').val();
+            classID_ = $("#cmbClassforResult").find(":selected").text();
+            url_ = site_url_ + "/exam/get_student_for_result/" + data_;
+
+            $.ajax({
+                type: "POST",
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    var str_html = '';
+                    if (obj.studentdata.length > 0) {
+                        for (i = 0; i < obj.studentdata.length; i++) {
+                            str_html = str_html + "<tr class='gradeX'>";
+                            str_html = str_html + "<td><button class='btn btn-info'><i class='fa fa-eye' aria-hidden='true'></i></button></td>";
+                            str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
+                            str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
+                            if (obj.checkRemarks === '1') {
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:400px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "_' value='" + obj.studentdata[i].teacherRemark + "'/></td>";
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:100px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "__' value='" + obj.studentdata[i].promotedClass + "'/></td>";
+                            } else if (obj.checkRemarks === '2') {
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:400px;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "_'/></td>";
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:100px;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "__'/></td>";
+                            }
+                            str_html = str_html + "</tr>";
+                        }
+                    }
+                    if (obj.checkRemarks === '1') {
+                        str_html = str_html + "<tr><td colspan='5'><input type='button' id='updateRemarks' class='btn btn-success' value='Update Student Data' style='width:400px;float:right; margin-right:80px;'></td></tr>";
+                    } else if (obj.checkRemarks === '2') {
+                        str_html = str_html + "<tr><td colspan='5'><input type='button' id='submitRemarks' class='btn btn-primary' value='Submit Student Data' style='width:400px;float:right; margin-right:80px;'></td></tr>";
+                    }
+                    $('#exitHeading').html('Student Detail of' + classID_);
+                    $('#tabStudentForResult').html(str_html);
+                    document.getElementById('divInfo').style.display = 'block';
+                    $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted. <br>Click <strong>View Result</strong>  to check Result");
+                }
+            });
+        } else {
+            document.getElementById('divInfo').style.display = 'none';
+        }
+    });
+
+    $('body').on('click', '.btnCopyRemarks', function () {
+        var data_ = $(".tdRemarks").find("input[type='text']").val();
+        if (data_ !== '') {
+            $(".tdRemarks").find("input[type='text']").val(data_);
+        } else {
+            $(".tdRemarks").find("input[type='text']").val('');
+        }
+    });
+
+    $('body').on('click', '.btnCopyPromoted', function () {
+        var data_ = $(".tdPromoted").find("input[type='text']").val();
+        if (data_ !== '') {
+            $(".tdPromoted").find("input[type='text']").val(data_);
+        } else {
+            $(".tdPromoted").find("input[type='text']").val('');
+        }
+    });
+
+    $('body').on('click', '#submitRemarks', function () {
+        classsessid = $('#cmbClassforResult').val();
+        data_ = $('#frmSubmitRemarks').serializeArray();
+        url_ = site_url_ + "/exam/submitRemarks/" + classsessid;
+
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });
+    
+    $('body').on('click', '#updateRemarks', function () {
+        classsessid = $('#cmbClassforResult').val();
+        data_ = $('#frmSubmitRemarks').serializeArray();
+        url_ = site_url_ + "/exam/updateRemarks/" + classsessid;
+
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
             }
         });
     });
