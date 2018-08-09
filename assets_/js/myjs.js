@@ -1981,6 +1981,7 @@ $(function(){
 		                name_ = name_ + ((obj.fetch_receipt_data[0].MNAME == "-x-") ? "":" "+obj.fetch_receipt_data[0].MNAME);
 		                name_ = name_ + ((obj.fetch_receipt_data[0].LNAME == "-x-") ? "":obj.fetch_receipt_data[0].LNAME);
 		                
+		                var nom_ = parseInt(obj.fetch_receipt_data[0].NOM);
 		                //amount_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT)/parseInt(obj.fetch_receipt_data[0].NOM);
 		                var amount_ = parseFloat(obj.fetch_receipt_data[0].DUE_AMOUNT);
 		                var pay_amount = obj.fetch_receipt_data[0].DUE_AMOUNT;
@@ -2037,7 +2038,7 @@ $(function(){
 		                					if(obj.fetch_other_discount_data[k].STATUS_ == 'Percentage'){
 		                						calculated_amount = parseInt(parseInt(amount_to_apply_discount)*(parseInt(obj.fetch_other_discount_data[k].AMOUNT)/100));
 		                					} else {
-		                						calculated_amount = obj.fetch_other_discount_data[k].AMOUNT;
+		                						calculated_amount = (obj.fetch_other_discount_data[k].AMOUNT*nom_);
 		                					}
 		                					total_other_discount_amount = parseInt(total_other_discount_amount) + parseInt(calculated_amount);
 		                				}
@@ -2077,9 +2078,9 @@ $(function(){
 		                	if(obj.fetch_category_discount_data != null){
 		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
 		                		if(obj.fetch_category_discount_data.STATUS_ == 'Percentage'){
-		                			var total_categ_discount_amount = parseInt(parseInt(actual_)*(parseInt(categ_discount_amnt)/100));
+		                			var total_categ_discount_amount = parseInt(parseInt(amount_to_apply_discount)*(parseInt(categ_discount_amnt)/100));
 		                		} else {
-		                			var total_categ_discount_amount = categ_discount_amnt;
+		                			var total_categ_discount_amount = (categ_discount_amnt*nom_);
 		                		}
 		                		if(discount_category != 'x'){
 		                			if(obj.fetch_category_discount_data.ITEM_ != 'GENERAL'){
@@ -2093,9 +2094,11 @@ $(function(){
 		                	} else {
 		                		var total_categ_discount_amount = 0;
 		                	}
+		                	
 		                	if(obj.other_discount_data != null){
 		                		discount_category = discount_category + "," + obj.other_discount_data.DISCOUNT + ""
 		                	}
+		                	
 		                	//alert(total_categ_discount_amount);
 		                	var category_amount_to_store = '';
 		                	if(total_sibling_discount_amount != 0){
@@ -2113,6 +2116,7 @@ $(function(){
 
 		                	var discount_if_any = 0;
 		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_sibling_discount_amount) + parseInt(total_categ_discount_amount) + parseInt(total_other_discount_amount);
+
 		                // -----------------------------------------------
 		                var fine_if_any = 0;
 		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
@@ -2191,7 +2195,9 @@ $(function(){
 		                str_html = str_html + "<tr>";
 		                str_html = str_html + "<td style='color: #909000'>Discount? <span style='float: right; padding: 8px 0px; font-size: 11px' class='fa fa-minus'></span>";
 		                str_html = str_html + "<div style='float: left; font-size: 8px; color: #0000ff; clear: both'>";
-		                str_html = str_html + other_discount_items;//+ "("+total_other_discount_amount;
+		                if(discount_category != '' && discount_category != 'x'){
+		                str_html = str_html + discount_category;//+ "("+total_other_discount_amount;
+		            	}
 		                str_html = str_html + "</div>";
 		                str_html = str_html + "</td>"
 		                str_html = str_html + "<td><label class='receipt_label'>: Rs.</label><span class='receipt_content'><input type='text' id='_discount_' name='_discount_' value="+discount_if_any+" style='width: 100px; padding: 0px; background: #f0f000; border:#000000 solid 0px' />/-</span></td>";

@@ -157,6 +157,28 @@ class DashboardReports extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');   
     }
+    function get_total_collection(){
+        $this->check_login();
+
+        $data['inner_page'] = 'totalCollection';
+        $data['active'] = 1;
+
+        $data['page_'] = 'dashboard_reports';
+        $data['title_'] = "Total Fee Collection";
+        
+        $data['total_collection'] = $this->dr->get_total_collection();
+        
+
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
+        $data['sub_menu'] = $this->mm->getsubmenu();
+
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/menu', $data);
+        $this->load->view('dashboard', $data);
+        $this->load->view('templates/footer');   
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

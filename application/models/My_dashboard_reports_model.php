@@ -194,7 +194,21 @@ class My_dashboard_reports_model extends CI_Model {
         }
         return $value;
     }
+    function get_total_collection(){
+        $this -> db -> order_by('ABS(y.CLASS)', 'asc');
+        $this -> db -> order_by('y.SECTION', 'asc');
+        //$this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->where('c.PAID<>', 0);
+        $this->db->select('a.SESSID, x.CLASSID, c.*');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
+        $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $query = $this->db->get();
 
+        return $query->result();
+    }
     function get_todays_collection(){
         $this -> db -> order_by('ABS(y.CLASS)', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');

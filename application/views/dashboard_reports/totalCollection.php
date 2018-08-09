@@ -21,7 +21,7 @@
     <div class="span6">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5 id="receipts_for_class">Today's Fee Collection</h5>
+                <h5 id="receipts_for_class">Today's Collection</h5>
             </div>
             <div class="widget-content nopadding" style="overflow-y: scroll; overflow-x: auto; height: auto; padding: 5px">
                 <table class="table table-bordered">
