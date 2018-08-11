@@ -109,5 +109,5 @@
     <?php echo form_close();?>
 </div>
 <div class="row-fluid">
-        <?php $this->load->view('reg_adm/view_student_data'); ?>
+        <?php //$this->load->view('reg_adm/view_student_data'); ?>
 </div>

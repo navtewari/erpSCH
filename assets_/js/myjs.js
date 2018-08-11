@@ -1976,7 +1976,7 @@ $(function(){
 		            data: data_,
 		            success: function(data){
 		                var obj = JSON.parse(data);
-
+                        
 		                var name_ = ((obj.fetch_receipt_data[0].FNAME == "-x-") ? "":obj.fetch_receipt_data[0].FNAME);
 		                name_ = name_ + ((obj.fetch_receipt_data[0].MNAME == "-x-") ? "":" "+obj.fetch_receipt_data[0].MNAME);
 		                name_ = name_ + ((obj.fetch_receipt_data[0].LNAME == "-x-") ? "":obj.fetch_receipt_data[0].LNAME);
@@ -2023,16 +2023,18 @@ $(function(){
 		                var total_other_discount_amount = 0;
 		                var calculated_amount = 0;
 		                var other_discount_items = '';
+
 		                if(amount_to_apply_discount != 0){
-		                	if(obj.other_discount_data != null){
-		                		var other_discount_arr = (obj.other_discount_data.DISCOUNT).split(',');
+		                	if(obj.other_discount_data.res_ == true){
+		                		var other_discount_arr = (obj.other_discount_data.data_['DISCOUNT']).split(',');
 		                		var other_discount_length = parseInt(other_discount_arr.length);
 
 		                		if(other_discount_arr.length != 0){
-		                			other_discount_items = obj.other_discount_data.DISCOUNT;
+		                			other_discount_items = obj.other_discount_data.data_['DISCOUNT'];
 		                		}
+                                
 		                		for(d=0;d<parseInt(other_discount_arr.length);d++){
-		                			for(k=0;k<obj.fetch_other_discount_data.length;k++){
+		                			for(k=0;k<parseInt(obj.fetch_other_discount_data.length);k++){
 		                				calculated_amount = 0;
 		                				if(other_discount_arr[d] == obj.fetch_other_discount_data[k].ITEM_){
 		                					if(obj.fetch_other_discount_data[k].STATUS_ == 'Percentage'){
@@ -2048,7 +2050,6 @@ $(function(){
 		                		var total_other_discount_amount = 0;
 		                	}
 		                }
-
 		                	var discount_category = 'x';
 		                	var total_sibling = 0;
 		                	var total_sibling_discount_amount = 0;
@@ -2075,28 +2076,28 @@ $(function(){
 		                	}
 		                	*/
 		                	//alert(total_sibling_discount_amount);
-		                	if(obj.fetch_category_discount_data != null){
-		                		var categ_discount_amnt = obj.fetch_category_discount_data.AMOUNT;
-		                		if(obj.fetch_category_discount_data.STATUS_ == 'Percentage'){
+		                	if(obj.fetch_category_discount_data.res_ == true){
+		                		var categ_discount_amnt = obj.fetch_category_discount_data.data_['AMOUNT'];
+		                		if(obj.fetch_category_discount_data.data_['STATUS_'] == 'Percentage'){
 		                			var total_categ_discount_amount = parseInt(parseInt(amount_to_apply_discount)*(parseInt(categ_discount_amnt)/100));
 		                		} else {
 		                			var total_categ_discount_amount = (categ_discount_amnt*nom_);
 		                		}
 		                		if(discount_category != 'x'){
-		                			if(obj.fetch_category_discount_data.ITEM_ != 'GENERAL'){
-		                				discount_category = discount_category + "," + obj.fetch_category_discount_data.ITEM_;
+		                			if(obj.fetch_category_discount_data.data_['ITEM_'] != 'GENERAL'){
+		                				discount_category = discount_category + "," + obj.fetch_category_discount_data.data_['ITEM_'];
 		                			}
 		                		} else {
-		                			if(obj.fetch_category_discount_data.ITEM_ != 'GENERAL'){
-		                				discount_category = obj.fetch_category_discount_data.ITEM_;
+		                			if(obj.fetch_category_discount_data.data_['ITEM_'] != 'GENERAL'){
+		                				discount_category = obj.fetch_category_discount_data.data_['ITEM_'];
 		                			}
 		                		}
 		                	} else {
 		                		var total_categ_discount_amount = 0;
 		                	}
 		                	
-		                	if(obj.other_discount_data != null){
-		                		discount_category = discount_category + "," + obj.other_discount_data.DISCOUNT + ""
+		                	if(obj.other_discount_data.res_ == true){
+		                		discount_category = discount_category + "," + obj.other_discount_data.data_['DISCOUNT'] + ""
 		                	}
 		                	
 		                	//alert(total_categ_discount_amount);
@@ -2116,7 +2117,7 @@ $(function(){
 
 		                	var discount_if_any = 0;
 		                	discount_if_any = parseInt(discount_if_any) + parseInt(total_sibling_discount_amount) + parseInt(total_categ_discount_amount) + parseInt(total_other_discount_amount);
-
+                            
 		                // -----------------------------------------------
 		                var fine_if_any = 0;
 		                total_amount = (parseFloat(pay_amount)+parseInt(fine_if_any))-parseInt(discount_if_any);
