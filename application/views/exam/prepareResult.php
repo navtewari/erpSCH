@@ -61,8 +61,8 @@
                             <td style="width:80px;">View Result</td>
                             <td>Reg. ID</td>
                             <td>Name</td>
-                            <td>Teacher's Remarks <input type="button" value="All" class="btn btn-success btnCopyRemarks"/></td>
-                            <td>Promoted to Class <input type="button" value="All" class="btn btn-success btnCopyPromoted"/></td>                            
+                            <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Teacher's Remarks </td>
+                            <td><input type="button" value="All" class="btn btn-success btnCopyPromoted"/> Promoted to Class </td>                            
                         </tr>
                     </thead>
 
