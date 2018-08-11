@@ -2317,7 +2317,7 @@ $(function () {
                     if (obj.studentdata.length > 0) {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
-                            str_html = str_html + "<td><button class='btn btn-info'><i class='fa fa-eye' aria-hidden='true'></i></button></td>";
+                            str_html = str_html + "<td><input type='button' class='btn btn-info btnseeResult' id='" + obj.studentdata[i].regid + "' value='check result'></input></td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
@@ -2385,7 +2385,7 @@ $(function () {
             }
         });
     });
-    
+
     $('body').on('click', '#updateRemarks', function () {
         classsessid = $('#cmbClassforResult').val();
         data_ = $('#frmSubmitRemarks').serializeArray();
@@ -2406,6 +2406,11 @@ $(function () {
                 callDanger(xhr.responseText);
             }
         });
+    });
+
+    $('body').on('click', '.btnseeResult', function () {
+        var classsessid = $('#cmbClassforResult').val();
+        var stuID = $(this).attr('id');
     });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
