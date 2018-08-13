@@ -198,7 +198,6 @@ class Fee extends CI_Controller {
         $data['sch_contact'] = _CONTACT_;
         $data['sch_email'] = _EMAIL_;
 
-
         $data['receipt'] = $this->fm->get_receipt($receipt_id);
 
         $this -> load -> view('fee/printreceipt', $data);

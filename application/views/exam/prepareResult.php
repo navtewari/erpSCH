@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="span11">
+    <div class="span11" id="divclassData">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5 id="exitHeading">Select Above Class to see students</h5>
@@ -75,4 +75,15 @@
             </div>
         </div>
     </div>    
+    
+    <div class="span11" id="divmarksheetPanel" style="display:none">
+        <div class="widget-box">
+            <div class="widget-title"><span class="icon"><i class="icon-th"></i></span>
+                <h5 id="marksheetHeading">Marksheet</h5>
+            </div>
+            <div class="widget-content nopadding" id="divMarksDisplay">
+                
+            </div>
+        </div>
+    </div>
 </div>

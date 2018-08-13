@@ -177,5 +177,38 @@ class Exam extends CI_Controller {
         $data = $this->mem->mUpdateRemarks($clssessid);
         echo json_encode($data);
     }
+    
+    function fetchResult($classSessID, $regID=0) {        
+        $this -> check_login();
+        $classID = $this->mem->mcheckClassID($classSessID);
+        $data['classID'] = $classID;
+        $data['session'] = array($this->session->userdata('_current_year___'));
+        $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
+        $data['exam_term'] = $this->mem->mget_examterm_in_session();
+        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
+        $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));        
+        $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
 
+        $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+
+       // $data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
+        $data['sch_name'] = $this->session->userdata('sch_name');
+        $data['sch_remark'] = $this->session->userdata('remark');
+        $data['sch_logo'] = $this->session->userdata('logo');
+        $data['sch_addr'] = $this->session->userdata('sch_addr');
+        $data['sch_contact'] = $this->session->userdata('sch_contact');        
+        $data['sch_email'] = $this->session->userdata('sch_email');
+        $data['reg_id'] = $regID;
+        
+        $this ->load-> view('exam/printResult', $data);
+    
+    }
+    
+    function check_login() {
+        if (!$this->session->userdata('_user___')) {
+            redirect('login/logout');
+        }
+    }   
 }

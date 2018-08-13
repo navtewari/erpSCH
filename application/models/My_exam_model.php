@@ -353,7 +353,7 @@ class My_exam_model extends CI_Model {
     function mget_examterm_in_session() {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('exam_5_term');
-
+        
         return $query->result();
     }
 
@@ -758,5 +758,103 @@ class My_exam_model extends CI_Model {
         }
 
         return $bool_;
+    }
+    
+    function mfetchStuPerData($regID) {
+        $this->db->where('regid', $regID);
+        $query = $this->db->get('master_7_stud_personal');
+
+        return $query->result();
+    }
+    
+    function mfetchterm_class($classsessID, $year_) {
+        $this->db->select('a.termName, b.*');
+        $this->db->from('exam_6_scholastic_result b');
+        $this->db->join('exam_5_term a', 'a.termID = b.termID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classsessID);
+        $this->db->group_by('b.termID');
+        $this->db->order_by('a.termName', 'Desc');
+        $query = $this->db->get();
+
+        // echo $this->db->last_query()."<br />";
+        return $query->result();
+    }
+    
+    function mfetchScholasticClassWise($classsessid, $year_) {
+        $this->db->select('a.item, a.maxMarks, b.*');
+        $this->db->from('exam_2_add_scholastic_to_class b');
+        $this->db->join('exam_1_scholastic_items a', 'a.itemID = b.itemID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classsessid);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+    
+    function mfetchcoScholasticClassWise($classsessid, $year_) {
+        $this->db->select('a.coitem, b.*');
+        $this->db->from('exam_4_add_coscholastic_to_class b');
+        $this->db->join('exam_3_coscholastic_items a', 'a.coitemID = b.coitemID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classsessid);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();
+
+        // echo $this->db->last_query()."<br />";
+        return $query->result();
+    }
+    
+    function mfetchSubClassWise($classID, $year_) {
+        $this->db->where('classID', $classID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('priority', 'Asc');
+        $query = $this->db->get('master_12_subject');        
+
+        return $query->result();
+    }
+    
+    function mfetchSubMarks($regID, $classSessID, $year_) {
+        $this->db->where('regid', $regID);
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $query = $this->db->get('exam_6_scholastic_result');
+
+        return $query->result();
+    }
+    
+    function mcoSchMarks($regID, $classSessID, $year_) {
+        $this->db->where('regid', $regID);
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $query = $this->db->get('exam_7_coscholastic_result');
+
+        return $query->result();
+    }
+    
+    function mfetchScholasticResult($regID, $year_, $classID,$classSessID) {
+        //$classID = $this->input->post('txtClassID');
+        //$classSessID = $this->input->post('txtClassSessID');
+
+        $this->db->where('regid', $regID);
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $query = $this->db->get('exam_6_scholastic_result');
+
+        return $query->result();
+    }
+    function mcheckClassID($classSessID){
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('CLSSESSID', $classSessID);
+        $query1 = $this->db->get('class_2_in_session');
+        //echo $this->db->last_query()."<br />";
+        //exit(0);
+        if ($query1->num_rows() != 0) {
+            foreach ($query1->result() as $row1) {
+                $classID = $row1->CLASSID;
+            }
+        }
+        return $classID;
     }
 }
