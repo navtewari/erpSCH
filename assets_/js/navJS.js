@@ -2323,7 +2323,7 @@ $(function () {
                     if (obj.studentdata.length > 0) {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
-                            str_html = str_html + "<td><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"'><i class='icon-play' title='Generate Result'></i></a></td>";
+                            str_html = str_html + "<td style='padding-left:40px;'><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"' target='_blank'><i class='icon-play' title='Generate Result'></i></a></td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {

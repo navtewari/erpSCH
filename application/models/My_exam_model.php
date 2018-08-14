@@ -857,4 +857,18 @@ class My_exam_model extends CI_Model {
         }
         return $classID;
     }
+    
+    function checkregIDRemark($regid, $classSessID, $session){
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('regid', $regid);
+        $this->db->where('SESSID', $session);
+        $query = $this->db->get('exam_9_result_remarks');
+        return $query->result(); 
+    }
+    
+    function get_grade_in_class($classSessID) {
+        $this->db->where('clssessID', $classSessID);
+        $query = $this->db->get('master_11_grading');
+        return $query->result();
+    }
 }

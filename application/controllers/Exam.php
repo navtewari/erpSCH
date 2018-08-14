@@ -192,6 +192,8 @@ class Exam extends CI_Controller {
 
         $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
         $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
 
        // $data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
         $data['sch_name'] = $this->session->userdata('sch_name');
