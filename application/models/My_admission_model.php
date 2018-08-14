@@ -100,7 +100,7 @@ class My_admission_model extends CI_Model {
         $year__ = $session;
         $this -> db -> select ('a.CLASSID, COUNT(c.regid) as TOTAL_STUDENTS, b.CLSSESSID');
         $this -> db -> where ('b.SESSID', $year__);
-        $this->db->where('e.STATUS_', 1);
+        $this -> db -> where('e.STATUS_', 1);
         $this -> db -> order_by('ABS(a.CLASS)', 'asc');
         $this -> db -> order_by('a.SECTION', 'asc');
         $this -> db -> group_by('c.CLSSESSID');
@@ -538,14 +538,20 @@ class My_admission_model extends CI_Model {
         return $query->row();
     }
     function get_siblings_4($regid_){
-        $this->db->where('regid', $regid_);
-        $query = $this->db->get('register_sibling');
+        $this -> db -> where('a.regid', $regid_);
+        $this -> db -> where('b.STATUS_', 1);
+        $this -> db -> from('register_sibling a');
+        $this -> db -> join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         return $query->row();   
     }
     function get_discount_5($regid_){
-        $this->db->where('regid', $regid_);
-        $query = $this->db->get('register_discount');
+        $this -> db -> where('a.regid', $regid_);
+        $this -> db -> where('b.STATUS_', 1);
+        $this -> db -> from('register_discount a');
+        $this -> db -> join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         return $query->row();   
     }
@@ -556,8 +562,11 @@ class My_admission_model extends CI_Model {
         return $query->result();
     }
     function get_student_category($regid){
-        $this->db->where('CATEGORY', $regid);
-        $query = $this->db->get('master_7_stud_personal');
+        $this->db->where('a.CATEGORY', $regid);
+        $this -> db -> where('b.STATUS_', 1);
+        $this -> db -> from('master_7_stud_personal a');
+        $this -> db -> join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         return $query->result();
     }

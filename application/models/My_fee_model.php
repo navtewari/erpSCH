@@ -879,10 +879,13 @@ class My_fee_model extends CI_Model {
         return $query->result();
     }
     function chkDiscountStatus($invdetid_){
-        $this->db->where('INVDETID', $invdetid_);
-        $this->db->where('DISCOUNT', 1);
-        $this->db->where('DISCOUNT_CATEGORY <>', '0');
-        $query = $this->db->get('fee_7_receipts');
+        $this->db->where('a.INVDETID', $invdetid_);
+        $this->db->where('a.DISCOUNT', 1);
+        $this->db->where('a.DISCOUNT_CATEGORY <>', '0');
+        $this->db->from('fee_7_receipts a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->where('b.STATUS_', 1);
+        $query = $this->db->get();
         if($query->num_rows()!=0){
             $bool_ = true;
         } else {

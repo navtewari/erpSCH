@@ -17,9 +17,11 @@ class My_attendance_model extends CI_Model {
         $this->db->order_by('ABS(x.CLASS)', 'asc');
     	$this->db->select('x.CLASS, a.CLASSID, a.CLSSESSID');
     	$this->db->distinct();
+        $this -> db -> where('c.STATUS_', 1);
         $this->db->from('class_1_classes x');
     	$this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
     	$this->db->join('class_3_class_wise_students b', 'a.CLSSESSID = b.CLSSESSID');
+        $this -> db -> join('master_8_stud_academics c', 'b.regid=c.regid');
     	$this->db->where('a.SESSID', $year__);
     	$query = $this->db->get();
 
@@ -54,11 +56,14 @@ class My_attendance_model extends CI_Model {
         $time_ = $this->input->post('time_');
 
         $this->db->distinct();
-        $this->db->select('ATTID');
-        $this->db->where('CLSSESSID',$clssessid);
-        $this->db->where('DATE_',$date_);
-        $this->db->where('TIME_',$time_);
-        $query = $this->db->get('class_4_class_wise_attendance');
+        $this->db->select('a.ATTID');
+        $this->db->where('a.CLSSESSID',$clssessid);
+        $this->db->where('a.DATE_',$date_);
+        $this->db->where('a.TIME_',$time_);
+        $this->db->where('b.STATUS_', 1);
+        $this -> db -> from('class_4_class_wise_attendance a');
+        $this -> db -> join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         // check transaction status
         $this->error->_db_error();
