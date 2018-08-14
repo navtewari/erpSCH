@@ -62,9 +62,11 @@ class My_fee_model extends CI_Model {
             $this->db->where('a.MONTH_FROM',$R->MONTH_FROM); 
             $this->db->where('a.YEAR_TO',$R->YEAR_TO);
             $this->db->where('a.MONTH_TO',$R->MONTH_TO);
+            $this->db->where('d.STATUS_', 1);
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail c', 'a.INVID = c.INVID');
             $this->db->join('master_7_stud_personal b', 'c.REGID=b.regid');
+            $this->db->join('master_8_stud_academics d', 'b.regid=d.regid');
             $this->db->order_by('cast(c.REGID AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
             $data = $query->result();
@@ -100,8 +102,11 @@ class My_fee_model extends CI_Model {
         $this->db->from('fee_4_flexible_heads a');
         $this->db->join('fee_5_add_flexi_head_to_students b', 'a.FLX_HD_ID = b.FLX_HD_ID', 'left');
         $this->db->join('master_7_stud_personal c', 'b.REGID=c.regid');
+        $this->db->join('master_8_stud_academics d', 'c.regid=d.regid');
+        $this -> db -> where('d.STATUS_', 1);
         $this -> db -> where('b.CLSSESSID', $class__);
         $this -> db -> where('b.STATUS', 1);
+
         if($regid_ != 'x'){
             $this -> db -> where('c.regid', $regid_);
         }
@@ -121,6 +126,8 @@ class My_fee_model extends CI_Model {
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->join('master_8_stud_academics d', 'b.regid=d.regid');
+        $this->db->where('d.STATUS_', 1);
         $this->db->where('b.clssessid', $clssessid);
         $query = $this->db->get();
         
@@ -188,6 +195,8 @@ class My_fee_model extends CI_Model {
         $this->db->select('a.INVID, b.REGID, b.INVDETID');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
+        $this->db->join('master_8_stud_academics c', 'b.REGID = c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->where('a.CLSSESSID', $class__);
         $this->db->where('a.YEAR_FROM', $yr_from);
         $this->db->where('a.MONTH_FROM', $mnth_from);
@@ -205,6 +214,8 @@ class My_fee_model extends CI_Model {
             $this->db->select('b.INVDETID');
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
+            $this->db->join('master_8_stud_academics c', 'b.REGID = C.regid');
+            $this->db->where('c.STATUS_', 1);
             $this->db->where('b.REGID', $regid_);
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
@@ -502,6 +513,8 @@ class My_fee_model extends CI_Model {
         $this->db->select('b.INVDETID, a.INVID, a.CLSSESSID, b.REGID');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
+        $this->db->join('master_8_stud_academics c', 'b.REGID=c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->where('b.REGID', $regid_);
         $this->db->where('a.CLSSESSID', $clssessid);
         $this->db->order_by('cast(a.YEAR_TO AS SIGNED INTEGER)', 'desc');
@@ -551,7 +564,11 @@ class My_fee_model extends CI_Model {
     function check_invoice_detail($invid, $regid){
         $this->db->where('INVID', $invid);
         $this->db->where('REGID', $regid);
+        $thid->db->from('fee_6_invoice_detail a');
+        $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
+        $this->db->where('b.STATUS_', 1);
         $query = $this->db->get('fee_6_invoice_detail');
+
         if($query->num_rows()!=0){
             $row = $query->row();
             $data['bool_'] = true;
@@ -566,6 +583,8 @@ class My_fee_model extends CI_Model {
     function fetch_invoice_data_for_receipt($invdetid_){
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_8_stud_academics c', 'b.REGID=c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->where('b.INVDETID', $invdetid_);
         $query = $this->db->get();
 
@@ -672,18 +691,23 @@ class My_fee_model extends CI_Model {
     }
 
     function fetch_due_amount_in_invoice($regid){
-        $this->db->where('REGID', $regid);
-        $this->db->select('INVDETID');
-        $this->db->from('fee_6_invoice_detail');
+        $this->db->where('a.REGID', $regid);
+        $this->db->select('a.INVDETID');
+        $this->db->from('fee_6_invoice_detail a');
+        $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
+        $this->db->where('b.STATUS_', 1);
         $this->db->order_by('INVID', 'desc');
         $query = $this->db->get();
         //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $row = $query->row();
             $invdetid = $row->INVDETID;
-            $this->db->select('DUE_AMOUNT');
-            $this->db->where('INVDETID', $invdetid);
-            $query = $this->db->get('fee_6_invoice_detail');
+            $this->db->select('a.DUE_AMOUNT');
+            $this->db->where('a.INVDETID', $invdetid);
+            $this->db->from('fee_6_invoice_detail a');
+            $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
+            $this->db->where('b.STATUS_', 1);
+            $query = $this->db->get();
             //echo $this->db->last_query();
             $r = $query->row();
             $bool_ = $r->DUE_AMOUNT;
@@ -749,6 +773,8 @@ class My_fee_model extends CI_Model {
         $this->db->order_by('cast(a.MONTH_TO AS SIGNED INTEGER)', 'desc');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_8_stud_academics c', 'b.REGID=c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->limit(1);
         $query = $this->db->get();
         if($query->num_rows()!=0){
@@ -768,6 +794,8 @@ class My_fee_model extends CI_Model {
             $this->db->join('fee_6_invoice_detail aa', 'a.INVID=aa.INVID');
             $this->db->join('master_7_stud_personal b', 'aa.regid=b.regid');
             $this->db->join('class_2_in_session c', 'a.CLSSESSID = c.CLSSESSID');
+            $this->db->join('master_8_stud_academics d', 'b.REGID=d.regid');
+            $this->db->where('d.STATUS_', 1);
             $this->db->order_by('cast(aa.regid AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
             //echo $this->db->last_query() . "<br />";
@@ -790,6 +818,8 @@ class My_fee_model extends CI_Model {
             $this->db->join('fee_6_invoice_detail d', 'a.INVID = d.INVID');
             $this->db->join('master_7_stud_personal b', 'd.REGID = b.regid');
             $this->db->join('class_2_in_session c', 'a.CLSSESSID = c.CLSSESSID');
+            $this->db->join('master_8_stud_academics e', 'b.REGID=e.regid');
+            $this->db->where('e.STATUS_', 1);
             $query = $this->db->get();
         return $query->result();
     }
@@ -866,6 +896,8 @@ class My_fee_model extends CI_Model {
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_10_stud_contact b', 'a.regid=b.regid');
         $this->db->join('fee_7_receipts c', 'a.regid=c.regid AND c.RECPTID='.$receipt_id);
+        $this->db->join('master_8_stud_academics d', 'a.regid=d.regid');
+        $this->db->where('d.STATUS_', 1);
         $query = $this->db->get();
         return $query->row();
     }
@@ -959,6 +991,8 @@ class My_fee_model extends CI_Model {
         $this->db->join('fee_7_receipts c', 'a.INVDETID = c.INVDETID');
         $this->db->join('class_2_in_session d', 'd.CLSSESSID=b.CLSSESSID');
         $this->db->join('master_7_stud_personal e', 'a.REGID=e.regid');
+        $this->db->join('master_8_stud_academics f', 'e.regid=f.regid');
+        $this->db->where('f.STATUS_', 1);
         $this->db->where('c.RECPTID', $receipt_id);
         $query = $this->db->get();
         //echo $this->db->last_query();

@@ -17,6 +17,7 @@ class My_admission_model extends CI_Model {
             $this->db->where('c.CLSSESSID',$classessid);
         }
         //$this->db->where('b.SESSID', $session);
+        $this->db->where('b.STATUS_', 1);
         $this->db->order_by('a.FNAME');
         $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY');
         if($classessid!=''){
@@ -37,6 +38,7 @@ class My_admission_model extends CI_Model {
             $this->db->where('c.CLSSESSID',$classessid);
         }
         $this->db->where('b.SESSID', $session);
+        $this->db->where('b.STATUS_', 1);
         $this->db->order_by('a.FNAME');
         $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY, d.CLASSID');
         $this->db->from('master_7_stud_personal a');
@@ -54,6 +56,7 @@ class My_admission_model extends CI_Model {
             $this->db->where('c.CLSSESSID',$classessid);
         }
         $this->db->where('c.SESSID', $session);
+        $this->db->where('b.STATUS_', 1);
         $this->db->order_by('a.FNAME');
         $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY, d.CLASSID');
         $this->db->from('master_7_stud_personal a');
@@ -70,6 +73,7 @@ class My_admission_model extends CI_Model {
     		$this->db->where('c.CLSSESSID',$classessid);
     	}
         $this->db->where('c.SESSID', $session);
+        $this->db->where('b.STATUS_', 1);
     	$this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, d.CLASSID, a.CATEGORY');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
@@ -96,12 +100,14 @@ class My_admission_model extends CI_Model {
         $year__ = $session;
         $this -> db -> select ('a.CLASSID, COUNT(c.regid) as TOTAL_STUDENTS, b.CLSSESSID');
         $this -> db -> where ('b.SESSID', $year__);
+        $this->db->where('e.STATUS_', 1);
         $this -> db -> order_by('ABS(a.CLASS)', 'asc');
         $this -> db -> order_by('a.SECTION', 'asc');
         $this -> db -> group_by('c.CLSSESSID');
         $this -> db -> from('class_1_classes a');
         $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID', 'left outer');
         $this -> db -> join('class_3_class_wise_students c', 'b.CLSSESSID=c.CLSSESSID', 'left outer');
+        $this -> db -> join('master_8_stud_academics e', 'c.regid=e.regid');
         $query = $this -> db -> get();
 
         return $query -> result();   
@@ -504,6 +510,7 @@ class My_admission_model extends CI_Model {
 
     function get_admission_detail_1($regid_){
         $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
+        //$this->db->where('b.STATUS_', 1); // This line is commented so that if need to see the detail of any candidate, it could be seen.
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session e', 'b.CLASS_OF_ADMISSION=e.CLSSESSID');

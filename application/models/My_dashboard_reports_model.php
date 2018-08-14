@@ -111,6 +111,7 @@ class My_dashboard_reports_model extends CI_Model {
         return $query->result();
     }
     function get_receipts_in_a_session($year_='x', $clssessid='x'){
+        $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
         if($year_ != 'x'){
             $this->db->where('a.SESSID', $year_);
         }
@@ -174,6 +175,7 @@ class My_dashboard_reports_model extends CI_Model {
     }
 
     function total_receipt_count($year_){
+        $this->db->where('d.STATUS_', 1);
         if($year_ != 'x'){
             $this->db->where('a.SESSID', $year_);
         }
@@ -181,6 +183,8 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this->db->join('master_8_stud_academics d', 'c.regid=d.regid');
+
         $query = $this->db->get();
         if($query->num_rows()!=0){
             $r = $query->row();
@@ -195,6 +199,7 @@ class My_dashboard_reports_model extends CI_Model {
         return $value;
     }
     function get_total_collection(){
+        $this->db->where('z.STATUS_', 1);
         $this -> db -> order_by('ABS(y.CLASS)', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
         //$this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
@@ -205,11 +210,13 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
         $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
         $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $this->db->join('master_8_stud_academics z', 'c.regid=z.regid');
         $query = $this->db->get();
 
         return $query->result();
     }
     function get_todays_collection(){
+        $this->db->where('z.STATUS_', 1);
         $this -> db -> order_by('ABS(y.CLASS)', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
         $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
@@ -220,6 +227,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
         $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
         $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $this->db->join('master_8_stud_academics z', 'c.regid=z.regid');
         $query = $this->db->get();
 
         return $query->result();
@@ -227,10 +235,13 @@ class My_dashboard_reports_model extends CI_Model {
 
     function todays_collection(){ // Receipt Collection for today
         //$this->db->where('MODE', 'cash');
+        $this->db->where('d.STATUS_', 1);
         $this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
         $this->db->where('c.PAID<>', 0);
         $this->db->select('SUM(c.PAID) as TODAYS_COLLECTION');
-        $query = $this->db->get('fee_7_receipts c');
+        $this->db->from('fee_7_receipts c');
+        $this->db->join('master_8_stud_academics d', 'c.regid=d.regid');
+        $query = $this->db->get();
 
         if($query->num_rows()!=0){
             $r = $query->row();
@@ -246,9 +257,12 @@ class My_dashboard_reports_model extends CI_Model {
     }
     function todays_cash_collection(){
         $this->db->where('MODE', 'cash');
+        $this->db->where('b.STATUS_', 1);
         $this->db->where('DATE_FORMAT(DATE(a.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
         $this->db->select('SUM((a.ACTUAL_PAID_AMT - a.DISCOUNT_AMOUNT) + a.FINE) as TODAYS_COLLECTION');
-        $query = $this->db->get('fee_7_receipts a');
+        $this->db->from('fee_7_receipts a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         if($query->num_rows()!=0){
             $r = $query->row();
@@ -263,10 +277,13 @@ class My_dashboard_reports_model extends CI_Model {
         return $value;
     }
     function todays_receipt_count(){
-        $this->db->where('DATE_FORMAT(DATE(DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this->db->where('b.STATUS_', 1);
+        $this->db->where('DATE_FORMAT(DATE(a.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
         $this->db->where('a.PAID<>', 0);
         $this->db->select('COUNT(a.ACTUAL_PAID_AMT) AS RECEIPT_COUNT');
-        $query = $this->db->get('fee_7_receipts a');
+        $this->db->from('fee_7_receipts a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $query = $this->db->get();
 
         if($query->num_rows()!=0){
             $r = $query->row();
