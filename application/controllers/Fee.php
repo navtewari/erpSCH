@@ -118,6 +118,7 @@ class Fee extends CI_Controller {
                 $data['fetch_other_discount_data'] = NULL;
             }
             
+            /*
             if($data['sibling_discount_eligiblity']['res_'] == true){
                 if(count($data['sibling_discount']) != 0){
                     $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
@@ -127,6 +128,9 @@ class Fee extends CI_Controller {
             } else {
                 $data['fetch_discount_data'] = NULL;
             }
+            */
+            $data['fetch_discount_data'] = NULL;
+            
             if($data['fetch_receipt_data'][0]->CATEGORY != '' && $data['fetch_receipt_data'][0]->CATEGORY != 'x'){
                 $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
             } else {
