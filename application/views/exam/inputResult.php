@@ -76,24 +76,6 @@
                                             </div>
                                         </div>
                                     </div> 
-                                    <div class="control-group">
-                                        <div class="control-group">
-                                            <label class="control-label">Select Assessment Item</label>
-                                            <div class="controls">
-                                                <?php
-                                                $data = array(
-                                                    'name' => 'cmbAssessmentItem',
-                                                    'id' => 'cmbAssessmentItem',
-                                                    'required' => 'required'
-                                                );
-                                                $options = array();
-                                                $options['0'] = 'Select Above Assessment Area';
-                                                ?>
-                                                <?php echo form_dropdown($data, $options, ''); ?>
-                                            </div>
-                                        </div>
-                                    </div> 
-
                                     <div class="control-group" style="display:none" id="subjectHidden">
                                         <div class="control-group">
                                             <label class="control-label">Select Subject</label>
@@ -111,6 +93,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <div class="control-group">
+                                            <label class="control-label">Select Assessment Item</label>
+                                            <div class="controls">
+                                                <?php
+                                                $data = array(
+                                                    'name' => 'cmbAssessmentItem',
+                                                    'id' => 'cmbAssessmentItem',
+                                                    'required' => 'required'
+                                                );
+                                                $options = array();
+                                                $options['0'] = 'Select Above Assessment Area';
+                                                ?>
+                                                <?php echo form_dropdown($data, $options, ''); ?>
+                                            </div>
+                                        </div>
+                                    </div>                                     
 
                                     <div class="control-group">
                                         <div class="control-group">

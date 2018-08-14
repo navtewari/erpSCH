@@ -2300,7 +2300,13 @@ $(function () {
     }
 
     $('#cmbClassforResult').change(function () {
+        getRemarks();
+    });
+
+    function getRemarks() {
         document.getElementById('divInfo').style.display = 'none';
+        document.getElementById('divclassData').style.display = 'block';
+        document.getElementById('divmarksheetPanel').style.display = 'none';
         $('#tabStudentForResult').html('');
         if ($('#cmbClassforResult').val() != '') {
             data_ = $('#cmbClassforResult').val();
@@ -2317,7 +2323,7 @@ $(function () {
                     if (obj.studentdata.length > 0) {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
-                            str_html = str_html + "<td><input type='button' class='btn btn-info btnseeResult' id='" + obj.studentdata[i].regid + "' value='check result'></input></td>";
+                            str_html = str_html + "<td><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"'><i class='icon-play' title='Generate Result'></i></a></td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
@@ -2344,8 +2350,7 @@ $(function () {
         } else {
             document.getElementById('divInfo').style.display = 'none';
         }
-    });
-
+    }
     $('body').on('click', '.btnCopyRemarks', function () {
         var data_ = $(".tdRemarks").find("input[type='text']").val();
         if (data_ !== '') {
@@ -2379,6 +2384,7 @@ $(function () {
                     callDanger(obj.msg_);
                 } else {
                     callSuccess(obj.msg_);
+                    getRemarks();
                 }
             }, error: function (xhr, status, error) {
                 callDanger(xhr.responseText);
@@ -2401,6 +2407,7 @@ $(function () {
                     callDanger(obj.msg_);
                 } else {
                     callSuccess(obj.msg_);
+                    getRemarks();
                 }
             }, error: function (xhr, status, error) {
                 callDanger(xhr.responseText);
@@ -2409,9 +2416,32 @@ $(function () {
     });
 
     $('body').on('click', '.btnseeResult', function () {
+        document.getElementById('divclassData').style.display = 'none';
+        document.getElementById('divmarksheetPanel').style.display = 'block';
         var classsessid = $('#cmbClassforResult').val();
-        var stuID = $(this).attr('id');
+        data_ = $("#cmbClassforResult option:selected").text();
+        var arr_str = data_.split(' ');
+        var classID = arr_str[2];
+        var regid = $(this).attr('id');
+        url_ = site_url_ + "/exam/fetchResult/" + classsessid + "/" + classID + "/" + regid;      
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);                    
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
     });
+
+
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
