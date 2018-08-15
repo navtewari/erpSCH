@@ -214,7 +214,7 @@ class My_fee_model extends CI_Model {
             $this->db->select('b.INVDETID');
             $this->db->from('fee_6_invoice a');
             $this->db->join('fee_6_invoice_detail b', 'a.INVID = b.INVID');
-            $this->db->join('master_8_stud_academics c', 'b.REGID = C.regid');
+            $this->db->join('master_8_stud_academics c', 'b.REGID = c.regid');
             $this->db->where('c.STATUS_', 1);
             $this->db->where('b.REGID', $regid_);
             $this->db->where('a.CLSSESSID', $class__);
