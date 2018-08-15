@@ -10,6 +10,10 @@
             <!-- font icon -->
             <link href="<?PHP echo base_url() . 'assets_/css/elegant-icons-style.css'; ?>" rel="stylesheet" />
             <link href="<?PHP echo base_url() . 'assets_/css/font-awesome.min.css'; ?>" rel="stylesheet" />
+            <style type="text/css" media="print">
+                body{ margin-top: 0px }
+                .hide_button{ display: none }
+            </style>
             <style>
                 td{font-size: 14px;font-weight: 600;}
                 .table_{
@@ -20,7 +24,7 @@
         <body>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-12" align="center">
+                    <div class="col-sm-12 hide_button" align="center">
                         <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                     </div>
                 </div>
@@ -107,7 +111,7 @@
                                             <tr>
                                                 <td><?php echo $subjectClass->subName ?></td>
                                                 <?php foreach ($exam_term as $exterm) { ?>
-                                                    <?php $totalNumber_subject = 0; ?>
+                                                    <?php $totalNumber_subject = -1; ?>
                                                     <?php foreach ($sch_data_class as $scho_items) { ?>
                                                         <?php $printData = false; ?>
                                                         <?php foreach ($subject_marks as $sub_marks) { ?>
@@ -130,7 +134,9 @@
                                                         }
                                                         ?>
                                                     <?php } ?>
-                                                    <td align="center"><?php echo $totalNumber_subject; ?></td>
+                                                    <td align="center">
+                                                        <?php if($totalNumber_subject==-1) {echo '';}else{ echo $totalNumber_subject; } ?>
+                                                    </td>
                                                     <td align="center">
                                                         <?php foreach($class_grade as $cgrade){?>
                                                         <?php if($totalNumber_subject>=$cgrade->minMarks && $totalNumber_subject<=$cgrade->maxMarks){

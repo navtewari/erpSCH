@@ -26,7 +26,7 @@
                             $options = array();
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>
-                        </div>
+                        </div>                       
                     </div>                                        
                     <?php echo form_close(); ?>
                 </div>
@@ -58,7 +58,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr style="font-weight:bold;">                            
-                            <td style="width:80px;">View Result</td>
+                            <td style="width:80px;" align="center" id="printAll">View Result</td>
                             <td>Reg. ID</td>
                             <td>Name</td>
                             <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Teacher's Remarks </td>
@@ -69,7 +69,6 @@
                     <tbody id="tabStudentForResult"> 
 
                     </tbody>
-
                 </table>
                 <?php echo form_close(); ?>
             </div>
@@ -77,13 +76,6 @@
     </div>    
     
     <div class="span11" id="divmarksheetPanel" style="display:none">
-        <div class="widget-box">
-            <div class="widget-title"><span class="icon"><i class="icon-th"></i></span>
-                <h5 id="marksheetHeading">Marksheet</h5>
-            </div>
-            <div class="widget-content nopadding" id="divMarksDisplay">
-                
-            </div>
-        </div>
+       
     </div>
 </div>

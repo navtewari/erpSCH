@@ -353,7 +353,7 @@ class My_exam_model extends CI_Model {
     function mget_examterm_in_session() {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('exam_5_term');
-        
+
         return $query->result();
     }
 
@@ -550,22 +550,22 @@ class My_exam_model extends CI_Model {
 
         return $query->result();
     }
-    
-    function checkStudentRemarks($classID){
+
+    function checkStudentRemarks($classID) {
         $this->db->where('CLSSESSID', $classID);
         $query2 = $this->db->get('exam_9_result_remarks');
         if ($query2->num_rows() != 0) {
             return ('1');
-        }else{
+        } else {
             return ('2');
         }
     }
 
-    function mget_students_in_class_for_remarks($classID) {        
+    function mget_students_in_class_for_remarks($classID) {
         $this->db->where('CLSSESSID', $classID);
         $query2 = $this->db->get('exam_9_result_remarks');
         $year__ = $this->session->userdata('_current_year___');
-        
+
         if ($query2->num_rows() != 0) {
             $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
             $this->db->from('master_7_stud_personal a');
@@ -588,7 +588,7 @@ class My_exam_model extends CI_Model {
             $this->db->where('c.SESSID', $year__);
             $query = $this->db->get();
         }
-        
+
         return $query->result();
     }
 
@@ -741,12 +741,12 @@ class My_exam_model extends CI_Model {
 
         $username = $this->session->userdata('_user___');
         foreach ($obj as $key => $value) {
-            $data = array(                
+            $data = array(
                 'teacherRemark' => $value,
                 'promotedClass' => $obj1[$key],
                 'USERNAME_' => $username,
             );
-            
+
             $this->db->where('resultsubtotalID', $key);
             $query = $this->db->update('exam_9_result_remarks', $data);
         }
@@ -759,14 +759,14 @@ class My_exam_model extends CI_Model {
 
         return $bool_;
     }
-    
+
     function mfetchStuPerData($regID) {
         $this->db->where('regid', $regID);
         $query = $this->db->get('master_7_stud_personal');
 
         return $query->result();
     }
-    
+
     function mfetchterm_class($classsessID, $year_) {
         $this->db->select('a.termName, b.*');
         $this->db->from('exam_6_scholastic_result b');
@@ -780,7 +780,7 @@ class My_exam_model extends CI_Model {
         // echo $this->db->last_query()."<br />";
         return $query->result();
     }
-    
+
     function mfetchScholasticClassWise($classsessid, $year_) {
         $this->db->select('a.item, a.maxMarks, b.*');
         $this->db->from('exam_2_add_scholastic_to_class b');
@@ -792,7 +792,7 @@ class My_exam_model extends CI_Model {
 
         return $query->result();
     }
-    
+
     function mfetchcoScholasticClassWise($classsessid, $year_) {
         $this->db->select('a.coitem, b.*');
         $this->db->from('exam_4_add_coscholastic_to_class b');
@@ -805,46 +805,53 @@ class My_exam_model extends CI_Model {
         // echo $this->db->last_query()."<br />";
         return $query->result();
     }
-    
+
     function mfetchSubClassWise($classID, $year_) {
         $this->db->where('classID', $classID);
         $this->db->where('SESSID', $year_);
         $this->db->order_by('priority', 'Asc');
-        $query = $this->db->get('master_12_subject');        
+        $query = $this->db->get('master_12_subject');
 
         return $query->result();
     }
-    
+
     function mfetchSubMarks($regID, $classSessID, $year_) {
-        $this->db->where('regid', $regID);
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
         $this->db->where('CLSSESSID', $classSessID);
         $this->db->where('SESSID', $year_);
         $query = $this->db->get('exam_6_scholastic_result');
 
         return $query->result();
     }
-    
+
     function mcoSchMarks($regID, $classSessID, $year_) {
-        $this->db->where('regid', $regID);
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
         $this->db->where('CLSSESSID', $classSessID);
         $this->db->where('SESSID', $year_);
         $query = $this->db->get('exam_7_coscholastic_result');
 
         return $query->result();
     }
-    
-    function mfetchScholasticResult($regID, $year_, $classID,$classSessID) {
+
+    function mfetchScholasticResult($regID, $year_, $classID, $classSessID) {
         //$classID = $this->input->post('txtClassID');
         //$classSessID = $this->input->post('txtClassSessID');
 
-        $this->db->where('regid', $regID);
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
         $this->db->where('CLSSESSID', $classSessID);
         $this->db->where('SESSID', $year_);
         $query = $this->db->get('exam_6_scholastic_result');
 
         return $query->result();
     }
-    function mcheckClassID($classSessID){
+
+    function mcheckClassID($classSessID) {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('CLSSESSID', $classSessID);
         $query1 = $this->db->get('class_2_in_session');
@@ -857,18 +864,35 @@ class My_exam_model extends CI_Model {
         }
         return $classID;
     }
-    
-    function checkregIDRemark($regid, $classSessID, $session){
+
+    function checkregIDRemark($regID, $classSessID, $session) {
         $this->db->where('CLSSESSID', $classSessID);
-        $this->db->where('regid', $regid);
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
         $this->db->where('SESSID', $session);
         $query = $this->db->get('exam_9_result_remarks');
-        return $query->result(); 
+        return $query->result();
     }
-    
+
     function get_grade_in_class($classSessID) {
         $this->db->where('clssessID', $classSessID);
         $query = $this->db->get('master_11_grading');
         return $query->result();
     }
+
+    function mfetchStuDatainClass($classSessID) {
+        $year__ = $this->session->userdata('_current_year___');
+
+        $this->db->select('a.*, c.CLASSID, b.clssessid, b.ID_');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->where('b.clssessid', $classSessID);
+        $this->db->where('c.SESSID', $year__);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
 }
