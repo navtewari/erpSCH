@@ -988,7 +988,18 @@ class My_fee_model extends CI_Model {
         $data['id_'] = $id_;
         return $data;
     }
-
+    function submit_sms($message, $no_of_sms, $number, $sender, $status){
+        $data = array(
+            'MESSAGE' => $message,
+            'NOOFSMS' => $no_of_sms,
+            'DATE_TIME' => date('Y-m-d H:i:s'),
+            'PHONE_NUMBERS' => $number,
+            'SENDERID' => $sender,
+            'STATUS' => $status,
+            'USERNAME_' => $this->session->userdata('_user___')
+        );
+        $this->db->insert('_fee_sms', $data);
+    }
     function get_receipt($receipt_id){
         $this->db->distinct();
         $this->db->select('e.FNAME, e.MNAME, e.LNAME, e.FATHER, b.YEAR_FROM, b.MONTH_FROM, b.YEAR_TO, b.MONTH_TO, b.NOM, a.DUE_AMOUNT, a.STATIC_HEADS_1_TIME,a.STATIC_SPLIT_AMT_1_TIME, a.STATIC_HEADS_N_TIMES, a.STATIC_SPLIT_AMT_N_TIME, a.FLEXIBLE_HEADS_1_TIME, a.FLEXI_SPLIT_AMT_1_TIME, a.FLEXIBLE_HEADS_N_TIMES, a.FLEXI_SPLIT_AMT_N_TIMES, c.MODE, c.DD_CQ_NO, c.DD_CQ_DATE, c.*, d.CLASSID, d.SESSID');

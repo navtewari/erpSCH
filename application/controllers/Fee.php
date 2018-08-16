@@ -167,16 +167,15 @@ class Fee extends CI_Controller {
 
         $msg = $this->input->post('MessageToPrint');
 
+        $username = $this->session->userdata('sms_userid');
+        $password = $this->session->userdata('sms_pwd');
+        $number = $this->input->post("mobilenumbers");
+        $sender = $this->session->userdata('sms_senderid');
+        $msg1=$this->input->post("Fee_Message");
+        $message = rawurlencode($msg1);
+
         if($this->input->post('check_sms') == 'yes'){
             /* */ // Booking Message to Owner Mobile
-                $username = $this->session->userdata('sms_userid');
-                $password = $this->session->userdata('sms_pwd');
-                $number = $this->input->post("mobilenumbers");
-                $sender = $this->session->userdata('sms_senderid');
-                $msg1=$this->input->post("Fee_Message");
-                $message = rawurlencode($msg1);
-
-                
                 $url=$this->session->userdata('sms_loginto')."/unicodesmsapi.php?username=".trim($username,'"')."&password=".trim($password,'"')."&mobilenumber=".trim($number,'"')."&message=".trim($message,'"')."&senderid=".trim($sender,'"')."&type=3";
 
                 $ch = curl_init($url);
@@ -185,8 +184,18 @@ class Fee extends CI_Controller {
                 curl_close($ch);
             /* */
             $data['msg_all'] = $msg.". And Fee SMS is also sent to the Registered Mobile.";
+
+            // Store the sent sms to the respective database
+                $nums = explode(",", $number);
+                $no_of_sms = count($nums);
+                $status = 'sent';
+                $this->fm->submit_sms($msg1, $no_of_sms, $number, $sender, $status);
+            // ---------------------------------------------
         } else {
             $data['msg_all'] = $msg." But without any sms as cancelled by you.";
+            $nums = explode(",", $number);
+            $no_of_sms = count($nums);
+            $this->fm->submit_sms($msg1, $no_of_sms, $number, $sender, 'cancelled');
         }
         echo json_encode($data);
     }

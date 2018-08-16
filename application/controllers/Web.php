@@ -13,6 +13,7 @@ class Web extends CI_Controller {
         $this->load->model('my_discount_model', 'mdm');
         $this->load->model('my_fee_model', 'fm');
         $this->load->model('my_dashboard_reports_model', 'dr');
+
     }
 
     function dashboard($active = 1, $subno = 1, $submenu = 'index') {
