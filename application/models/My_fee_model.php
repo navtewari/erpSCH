@@ -267,7 +267,8 @@ class My_fee_model extends CI_Model {
                     'MONTH_TO'=> $mnth_to,
                     'NOM'=>$no_of_months,
                     'DESCRIPTION_IFANY'=> 'X',
-                    'DATE_' => date('Y-m-d H:i:s')
+                    'DATE_' => date('Y-m-d H:i:s'),
+                    'USERNAME_'=> $this->session->userdata('_user___')
                 );
                 $query = $this->db->insert('fee_6_invoice', $data1);
                 if($query == true){
@@ -304,7 +305,8 @@ class My_fee_model extends CI_Model {
                     'ACTUAL_DUE_AMOUNT'=>$total_actual_amount,
                     'PREV_DUE_AMOUNT'=>$due_amount,
                     'DUE_AMOUNT'=>$total_amount_due,
-                    'DATE_'=> date('Y-m-d H:i:s')
+                    'DATE_'=> date('Y-m-d H:i:s'),
+                    'USERNAME_'=> $this->session->userdata('_user___')
                 );
                 $query = $this->db->insert('fee_6_invoice_detail', $data1);
                 if($query == true){
@@ -967,7 +969,8 @@ class My_fee_model extends CI_Model {
                 'DD_CQ_DATE'=>$ddcq_date,
                 'regid'=>$regid,
                 'INVDETID'=>$invdetid,
-                'DATE_'=> date('Y-m-d H:i:s')
+                'DATE_'=> date('Y-m-d H:i:s'),
+                'USERNAME_'=> $this->session->userdata('_user___')
                 );
             $this->db->insert('fee_7_receipts', $data);
             $id_ = $this->db->insert_id();

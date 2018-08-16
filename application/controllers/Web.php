@@ -185,6 +185,13 @@ class Web extends CI_Controller {
                 $data['title_'] = "Prepare Result of Students";
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
+            case 26:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / Drop Student';
+                $data['drop'] = ' active';
+                $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
+                $data['total_students'] = $this->mam->getStudents_in_class_in_session($this->session->userdata('_current_year___'));
+                break;
             default:
                 $data['page_'] = 'erorrs';
         }
