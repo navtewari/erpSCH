@@ -13,6 +13,7 @@ class Web extends CI_Controller {
         $this->load->model('my_discount_model', 'mdm');
         $this->load->model('my_fee_model', 'fm');
         $this->load->model('my_dashboard_reports_model', 'dr');
+
     }
 
     function dashboard($active = 1, $subno = 1, $submenu = 'index') {
@@ -184,6 +185,13 @@ class Web extends CI_Controller {
                 $data['page_'] = 'exam';
                 $data['title_'] = "Prepare Result of Students";
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
+            case 26:
+                $data['page_'] = 'master';
+                $data['title_'] = 'Master / Drop Student';
+                $data['drop'] = ' active';
+                $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
+                $data['total_students'] = $this->mam->getStudents_in_class_in_session($this->session->userdata('_current_year___'));
                 break;
             default:
                 $data['page_'] = 'erorrs';

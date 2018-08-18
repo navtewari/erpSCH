@@ -37,6 +37,10 @@ class Reg_adm extends CI_Controller {
         $data['students_'] = $this->mam->getstudents_for_dropdown_($this->session->userdata('_current_year___'), $studid);
         echo json_encode($data);
     }
+    function getstudents_for_dropdown_for_dropping($studid=''){
+        $data['students_'] = $this->mam->getstudents_for_dropdown_ALL($this->session->userdata('_current_year___'), $studid);
+        echo json_encode($data);
+    }
     function get_admitted_students(){
         $data['students_'] = $this->mam->get_admitted_students($this->session->userdata('_current_year___'));
         echo json_encode($data);   

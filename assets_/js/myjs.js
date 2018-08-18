@@ -15,7 +15,9 @@ $(function(){
 	$( window ).on( "load", function(){
 		
 		$(".page-loader").fadeOut("slow");
-
+		if($('#frmStudentToDrop').length != 0){
+			fillStudents_to_drop();
+		}
 		if($('#frmAdmission').length != 0){
 			$('input[type=radio]').css('opacity', '1');
 			fillStudents();
@@ -89,6 +91,27 @@ $(function(){
 			str = '<tr class="gradeX odd"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>';
 			str = str + '<tr class="gradeX even"><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>';
 			$('#student_data_here').html(str);
+		}
+		function fillStudents_to_drop(){
+			$('#s2id_cmbRegistrationID_to_Drop span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown_for_dropping";
+			$('#cmbRegistrationID_to_Drop').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value='select'>Select Student</option>";
+					for(i=0;i<obj.students_.length; i++){
+						str_html = str_html + "<option value='"+obj.students_[i].regid+"'>"+obj.students_[i].regid+" | "+obj.students_[i].FNAME+"</option>";
+					}
+					$('#s2id_cmbRegistrationID_to_Drop span').text("Select Student");
+					$('#cmbRegistrationID_to_Drop').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
 		}
 		function fillStudents(){
 			$('#s2id_cmbRegistrationID span').text("Loading...");
@@ -304,6 +327,92 @@ $(function(){
 			if($('#reload_or_not').val() == 'yes'){
 				reloadme();
 			}
+		});
+		$('#cmbRegistrationID_to_Drop').change(function(){
+			var regid_ = $('#cmbRegistrationID_to_Drop').val();
+				url_ = site_url_ + "/reg_adm/get_admision_detail/"+regid_;
+				$('#student_to_drop_detail').html('');
+				$('#student_to_drop_address').html('');
+				$.ajax({
+					type: 'post',
+					url: url_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						var dttime = obj.personal_academics.DOA;
+						var dttime = dttime.split(' ');
+						var dt = dttime[0].split('/');
+						$('#show_class_for_drop').html('Class ' + obj.personal_academics.CLASSID);
+						$('#show_DOA').html(dt[1]+"/"+dt[0]+"/"+dt[2]);
+						var str_html = '<table class="table table-bordered">';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="text-align: left">Reg. No. </th><td>'+regid_+'</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td><b>Name</b> </td><td>'+obj.personal_academics.FNAME+'</td>';
+						str_html = str_html + '</tr>';
+						if(obj.personal_academics.GENDER == 'M' || obj.personal_academics.GENDER == 'Male'){
+							str_html = str_html + '<tr>';
+							str_html = str_html + '<td><b>Gender</b> </td><td>Male</td>';
+							str_html = str_html + '</tr>';
+						} else {
+							str_html = str_html + '<tr>';
+							str_html = str_html + '<td><b>Gender</b> </td><td>Female</td>';
+							str_html = str_html + '</tr>';
+						}
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td><b>Father</b> </td><td> '+obj.personal_academics.FATHER+'<br><u>Mob.</u>: '+obj.personal_academics.F_MOBILE+'</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td><b>Mother</b> </td><td> '+obj.personal_academics.MOTHER+'<br><u>Mob.</u>: '+obj.personal_academics.M_MOBILE+'</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '</table>';
+						$('#student_to_drop_detail').html(str_html);
+
+						str_html = '<table class="table table-bordered">';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="text-align: left">Permanent</th>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.address_permanent.STREET_1+',<br>';
+						str_html = str_html + obj.address_permanent.CITY_+' - '+obj.address_permanent.PIN_+',<br>';
+						str_html = str_html + obj.address_permanent.DISTT_+',<br>';
+						str_html = str_html + obj.address_permanent.STATE_+' ('+obj.address_permanent.COUNTRY_+')';
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '</table>';
+
+						str_html = str_html + '<table class="table table-bordered">';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="text-align: left">Correspondance</th>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.address_correspondance.STREET_1+',<br>';
+						str_html = str_html + obj.address_correspondance.CITY_+' - '+obj.address_correspondance.PIN_+',<br>';
+						str_html = str_html + obj.address_correspondance.DISTT_+',<br>';
+						str_html = str_html + obj.address_correspondance.STATE_+' ('+obj.address_correspondance.COUNTRY_+')';
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '</table>';
+						$('#student_to_drop_address').html(str_html);
+
+						if(obj.personal_academics.STATUS_ == 1){
+							$('#drop_button').removeAttr('disabled');
+							$('#drop_button').val('Drop Student');
+							$('#drop_button').removeClass('btn-default')
+							$('#drop_button').addClass('btn-danger');
+						} else {
+							$('#drop_button').removeClass('btn-danger')
+							$('#drop_button').addClass('btn-default');
+							$('#drop_button').attr('disabled', 'disabled');
+							$('#drop_button').val('Already Dropped');
+						}
+						
+					}, error: function(xhr, status, error){
+						callDanger(xhr.responseText);
+					}
+				});
 		});
 		$('#cmbRegistrationID').change(function(){
 			if($('#cmbRegistrationID').val() == 'new'){

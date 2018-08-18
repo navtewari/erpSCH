@@ -31,7 +31,7 @@
                             <th style="text-align: left">Receipt ID</th>
                             <th>Class</th>
                             <th style="text-align: left">INVOICE</th>
-                            <th style="text-align: right">COLLECTION (Rs.)</th>
+                            <th style="text-align: right">COLLECTION (Rs.)<br>Rs. <?php echo number_format($figure['todays_collection'],0,".",","); ?> /-</th>
                             <th style="text-align: right">MODE</th>
                             <th></th>
                         </tr>

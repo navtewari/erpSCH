@@ -11,7 +11,25 @@ class My_admission_model extends CI_Model {
             $this->load->model('My_error_model', 'error');
         // --------------------
     }  
-
+    function getstudents_for_dropdown_ALL($session, $classessid=''){
+        if($classessid!=''){
+            $this->db->where('c.CLSSESSID',$classessid);
+        }
+        //$this->db->where('b.SESSID', $session);
+        $this->db->order_by('a.FNAME');
+        $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY');
+        if($classessid!=''){
+            $this->db->select('d.CLASSID');
+        }
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        if($classessid!=''){
+            $this->db->join('class_2_in_session d', 'b.CLASS_OF_ADMISSION=d.CLSSESSID');
+            $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
     function getstudents_for_dropdown_($session, $classessid=''){
         if($classessid!=''){
             $this->db->where('c.CLSSESSID',$classessid);
@@ -507,9 +525,8 @@ class My_admission_model extends CI_Model {
 
         return $path_;
     }
-
     function get_admission_detail_1($regid_){
-        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID');
+        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID, b.STATUS_');
         //$this->db->where('b.STATUS_', 1); // This line is commented so that if need to see the detail of any candidate, it could be seen.
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
