@@ -15,10 +15,12 @@
                 .hide_button{ display: none }
             </style>
             <style>
-                td{font-size: 14px;font-weight: 600;}
+                td{font-size: 13px;font-weight: 600;}
                 .table_{
-                    width: 95%; border: #000000 solid 2px;
-                }
+                    border: #000000 solid 1px;
+                    display: block !important;
+                    width:95%;
+                }                               
             </style>
         </head>
         <body>
@@ -29,7 +31,7 @@
                     </div>
                 </div>
                 <?php foreach ($student_per_data as $stuData) { ?>
-                    <div class="row" style="margin-top:50px;">
+                    <div class="row" style="margin-top:70px;page-break-after: always;">
                         <div class="col-sm-12">
                             <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
                                 <tr align="center">
@@ -170,8 +172,8 @@
                                             <tr><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
                                             <?php foreach ($cosch_data_class as $coSch) { ?>
                                                 <tr>
-                                                    <?php $printTD = false; ?>
-                                                    <?php foreach ($exam_term as $exterm) { ?>
+                                                   <?php foreach ($exam_term as $exterm) { ?>
+                                                        <?php $printTD1 = false; ?>
                                                         <td><?php echo $coSch->coitem; ?></td>
                                                         <?php foreach ($coSch_marks as $coSchMarks) { ?>
                                                             <?php if ($stuData->regid == $coSchMarks->regid) { ?>
@@ -180,18 +182,16 @@
                                                                         <td align="center">
                                                                             <?php
                                                                             echo $coSchMarks->grade;
-                                                                            $printTD = true;
+                                                                            $printTD1 = true;
                                                                             ?>
                                                                         </td>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         <?php } ?>
-                                                        <?php if ($printTD == false) { ?>
-                                                            <td></td>
-                                                            <?php
-                                                            $printTD = false;
-                                                        }
+                                                        <?php if ($printTD1 == false) { ?>
+                                                            <td> </td>
+                                                        <?php }
                                                         ?>
                                                     <?php } ?>
                                                 </tr>
@@ -240,7 +240,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
+                            <table border="0" width="95%" height="auto" cellpadding="10" align="center" style="border: #000000 solid 1px;">
                                 <tr>
                                     <td colspan="2" align="center"><h4 align="center">Instructions</h4>Grading Scale for Scholastic Areas: Grades are awarded on a 8-point grading scale as follows</td>
                                 </tr>
@@ -258,6 +258,10 @@
                                                     </td>
                                                     <td align="center">
                                                         <?php echo $cgrade->grade; ?>
+                                                        <?php if($cgrade->description!=''){
+                                                        echo '(' .$cgrade->description . ')';
+                                                        }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                             <?php } ?>

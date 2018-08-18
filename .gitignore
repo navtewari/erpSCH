@@ -47,3 +47,4 @@ Temporary Items
 .apdisk
 /nbproject/private/
 application/views/templates/footer.php
+application/config/database.php

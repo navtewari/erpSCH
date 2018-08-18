@@ -15,10 +15,12 @@
                 .hide_button{ display: none }
             </style>
             <style>
-                td{font-size: 14px;font-weight: 600;}
+                td{font-size: 13px;font-weight: 600;}
                 .table_{
-                    width: 95%; border: #000000 solid 2px;
-                }
+                    border: #000000 solid 1px;
+                    display: block !important;
+                    width:95%;
+                }                               
             </style>
         </head>
         <body>
@@ -27,7 +29,7 @@
                     <div class="col-sm-12 hide_button" align="center">
                         <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                     </div>
-                </div>
+                </div>                
                 <div class="row">
                     <div class="col-sm-12">
                         <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
@@ -59,8 +61,7 @@
                                                 <?php } ?>
                                             </td>
                                             <td style="padding-left: 100px;" valign="top">
-                                                <?php
-                                                foreach ($student_per_data as $stuData) {?>                                                    
+                                                <?php foreach ($student_per_data as $stuData) { ?>                                                    
                                                     Date Of Birth: <b><?php echo $stuData->DOB_; ?></b><br>
                                                     Class: <b><?php echo $classID; ?></b><br>
                                                 <?php } ?>
@@ -95,13 +96,13 @@
                                                 foreach ($sch_data_class as $scho_items) {
                                                     ?> <!-- for each Scholastic item -->
                                                     <td align="center"><?php echo $scho_items->item; ?><br> (<?php
-                                                        echo $scho_items->maxMarks;
-                                                        $totalMarks = $totalMarks + $scho_items->maxMarks;
-                                                        ?>)</td>
-                                                <?php } ?>
+                                        echo $scho_items->maxMarks;
+                                        $totalMarks = $totalMarks + $scho_items->maxMarks;
+                                                    ?>)</td>
+                                                    <?php } ?>
                                                 <td align="center">Marks<br>Obtained <br> <?php
-                                                    echo '(' . $totalMarks . ')';
-                                                    $totalMarks = 0;
+                                            echo '(' . $totalMarks . ')';
+                                            $totalMarks = 0;
                                                     ?></td>
                                                 <td align="center">Grade</td>
                                             <?php } ?>
@@ -135,20 +136,26 @@
                                                         ?>
                                                     <?php } ?>
                                                     <td align="center">
-                                                        <?php if($totalNumber_subject==-1) {echo '';}else{ echo $totalNumber_subject; } ?>
+                                                        <?php if ($totalNumber_subject == -1) {
+                                                            echo '';
+                                                        } else {
+                                                            echo $totalNumber_subject;
+                                                        } ?>
                                                     </td>
                                                     <td align="center">
-                                                        <?php foreach($class_grade as $cgrade){?>
-                                                        <?php if($totalNumber_subject>=$cgrade->minMarks && $totalNumber_subject<=$cgrade->maxMarks){
-                                                            echo $cgrade->grade;
-                                                        }else{
-                                                            echo '';
-                                                        }?>
-                                                    <?php }?>
+                                                        <?php foreach ($class_grade as $cgrade) { ?>
+                                                            <?php
+                                                            if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
+                                                                echo $cgrade->grade;
+                                                            } else {
+                                                                echo '';
+                                                            }
+                                                            ?>
+            <?php } ?>
                                                     </td>
-                                                <?php } ?>
+        <?php } ?>
                                             </tr>
-                                        <?php } ?>
+    <?php } ?>
                                     </table>
                                 </td>
                             </tr>
@@ -157,63 +164,69 @@
                                 <td colspan="2">
                                     <table border="1" cellpadding="5" width="100%">
                                         <tr>
-                                            <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                        <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
                                                 <td width="43%" align="center" colspan="2">Co-Scholastic Area: <?php echo $exterm->termName; ?> <font style="font-size: 11px;">(on a 3-point (A-C) grading scale)</font></td>                                                
-                                                <?php } ?>                                                
+                                            <?php } ?>                                                
                                         </tr>
                                         <tr><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
-                                        <?php foreach ($cosch_data_class as $coSch) { ?>
+                                            <?php foreach ($cosch_data_class as $coSch) { ?>
                                             <tr>
-                                                <?php $printTD = false; ?>
                                                 <?php foreach ($exam_term as $exterm) { ?>                                                    
                                                     <td><?php echo $coSch->coitem; ?></td>
-                                                    <?php foreach ($coSch_marks as $coSchMarks) { ?>
-                                                        <?php if ($coSchMarks->termID == $exterm->termID) { ?>
+                                                        <?php $printTD1 = false; ?>
+                                                        <?php foreach ($coSch_marks as $coSchMarks) { ?>
+                                                            <?php if ($coSchMarks->termID == $exterm->termID) { ?>
                                                             <?php if ($coSchMarks->coitemID == $coSch->coitemID) { ?>
                                                                 <td align="center">
-                                                                    <?php echo $coSchMarks->grade;
-                                                                    $printTD = true;
-                                                                    ?>
+                                                                <?php
+                                                                echo $coSchMarks->grade;
+                                                                $printTD1 = true;
+                                                                ?>
                                                                 </td>
                                                             <?php } ?>
                                                         <?php } ?>
-                                                    <?php } ?> 
-                                                    <?php if ($printTD == false) { ?>
+                                                <?php } ?> 
+                                                <?php if ($printTD1 == false) { ?>
                                                         <td></td>
-                                                        <?php $printTD = false;
-                                                    } ?>
-                                            <?php } ?>                                                                                                                                               
+                <?php $printTD1 = false;
+            }
+            ?>
+        <?php } ?>                                                                                                                                               
                                             </tr>
                                         <?php } ?>
                                     </table>
                                 </td>
                             </tr>
-                            
+
                             <tr height="50">
                                 <td colspan="2">Teacher's Remarks
                                     <span style='border-bottom: #999999 dashed 1px; font-size: 17px;'>
-                                        <?php foreach($teacher_remarks as $remarks){
-                                        echo $remarks->teacherRemark	;
-                                        }?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <?php
+    foreach ($teacher_remarks as $remarks) {
+        echo $remarks->teacherRemark;
+    }
+    ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </span>
                                 </td>
                             </tr>
-                            
+
                             <tr height="80">
                                 <td colspan="2">Promoted to Class
                                     <span style='border-bottom: #999999 dashed 1px; font-size: 17px;'>
-                                        <?php foreach($teacher_remarks as $remarks){
-                                        echo $remarks->promotedClass;
-                                        }?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <?php
+    foreach ($teacher_remarks as $remarks) {
+        echo $remarks->promotedClass;
+    }
+    ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </span>
                                 </td>
                             </tr>
-                            
+
                             <tr height="80px;">
                                 <td colspan="2" valign="bottom">
                                     <table border='0' width="100%">
                                         <tr>
-                                            <td align="center">Date: <?php echo date('d/m/Y');?></td>
+                                            <td align="center">Date: <?php echo date('d/m/Y'); ?></td>
                                             <td align="center">Signature of Class Teacher</td>
                                             <td align="center">Signature of Principal</td>
                                         </tr>
@@ -221,31 +234,36 @@
                                 </td> 
                             </tr>
                         </table>
-                        <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
+                        <table border="0" width="95%" height="auto" cellpadding="10" align="center" style="border: #000000 solid 1px;">
                             <tr>
                                 <td colspan="2" align="center"><h4 align="center">Instructions</h4>Grading Scale for Scholastic Areas: Grades are awarded on a 8-point grading scale as follows</td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="center">
+                                <td colspan="2" align="center">                                    
                                     <table width="40%" border="1" cellpadding="2">
                                         <tr>
                                             <td align="center">Marks Range</td>
                                             <td align="center">Grade</td>
                                         </tr>
-                                            <?php foreach($class_grade as $cgrade){?>
+                                                <?php foreach ($class_grade as $cgrade) { ?>
                                             <tr>                                
                                                 <td align="center">
-                                                   <?php echo $cgrade->minMarks;?> - <?php echo $cgrade->maxMarks;?>
+                                            <?php echo $cgrade->minMarks; ?> - <?php echo $cgrade->maxMarks; ?>
                                                 </td>
                                                 <td align="center">
-                                                    <?php echo $cgrade->grade;?>
+        <?php echo $cgrade->grade; ?>
+
+        <?php
+        if ($cgrade->description != '') {
+            echo '(' . $cgrade->description . ')';
+        }
+        ?>
                                                 </td>
                                             </tr>
-                                            <?php }?>                                        
-                                    </table>
+    <?php } ?>                                        
+                                    </table>                                    
                                 </td>
-                            </tr>
-                            
+                            </tr>                            
                         </table>
                     </div>
                 </div>
@@ -257,3 +275,4 @@
     echo 'No data Present for ' . $reg_id;
 }
 ?>
+

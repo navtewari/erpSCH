@@ -58,7 +58,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr style="font-weight:bold;">                            
-                            <td style="width:80px;" align="center" id="printAll">View Result</td>
+                            <td style="width:80px;padding-left: 20px;" align="center" id="printAll">View Result</td>
                             <td>Reg. ID</td>
                             <td>Name</td>
                             <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Teacher's Remarks </td>
@@ -74,8 +74,62 @@
             </div>
         </div>
     </div>    
-    
+
     <div class="span11" id="divmarksheetPanel" style="display:none">
-       
+
     </div>
 </div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Select Marksheet Layout</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $attrib_ = array(
+                    'class' => 'form-horizontal',
+                    'name' => 'frmgetResult',
+                    'id' => 'frmgetResult',
+                    'target' => '_blank',
+                );
+                ?>
+                <?php echo form_open('exam/fetchResult', $attrib_); ?>
+
+                <table border='0' width="100%" cellpadding="10">
+                    <tr>
+                        <td align='center' width="33%" style="background: #eff2f2">                                                        
+                            <h4>CLASS<br><span style="color: #006dcc"> I - VIII</span></h4>
+                            <input type='radio' value='1' name='reportLayout' class='form-control' required/>
+                        </td>
+
+                        <td align='center' width="33%" style="background: #f0e6ef">                              
+                            <h4>CLASS<br> IX - XII</h4>
+                            <input type='radio' value='1' name='reportLayout' class='form-control'/>                           
+                        </td>
+
+                        <td align='center' width="34%" style="background: #eff2f2">                              
+                            <h4>CLASS<br> Nursery - UKG</h4>
+                            <input type='radio' value='1' name='reportLayout' class='form-control'/>                           
+                        </td>
+                    </tr>
+                </table>               
+
+                <input type='hidden' id='stuHiddenID' name='stuHiddenID' value='0'/>
+                <input type='hidden' id='classSessHiddenID' name='classSessHiddenID' value='0' />                                                  
+
+                <div class="form-actions" align="right">                        
+                    <input type="submit" value="Check Result" class="btn btn-success btncheckResult">                                            
+                </div>
+                <?php echo form_close(); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>    

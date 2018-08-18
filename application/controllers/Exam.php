@@ -178,7 +178,12 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function fetchResult($classSessID, $regID = 0) {
+    function fetchResult() {
+
+        $classSessID = $this->input->post('classSessHiddenID');
+        $regID = $this->input->post('stuHiddenID');
+        $reportlayout = $this->input->post('reportLayout');
+
         $this->check_login();
         $classID = $this->mem->mcheckClassID($classSessID);
         $data['classID'] = $classID;
@@ -207,11 +212,15 @@ class Exam extends CI_Controller {
         $data['sch_contact'] = $this->session->userdata('sch_contact');
         $data['sch_email'] = $this->session->userdata('sch_email');
         $data['reg_id'] = $regID;
-        
-        if($regID==0){
-            $this->load->view('exam/printResult_All', $data);
+
+        if($reportlayout==1) {
+            if ($regID == 0) {
+                $this->load->view('exam/printResult_All', $data);
+            } else {
+                $this->load->view('exam/printResult', $data);
+            }
         }else{
-            $this->load->view('exam/printResult', $data);
+            die();
         }
     }
 

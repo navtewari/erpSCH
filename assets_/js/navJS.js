@@ -2305,7 +2305,7 @@ $(function () {
 
     function getRemarks() {
         document.getElementById('divInfo').style.display = 'none';
-        document.getElementById('divclassData').style.display = 'block';        
+        document.getElementById('divclassData').style.display = 'block';
         $('#tabStudentForResult').html('');
         if ($('#cmbClassforResult').val() != '') {
             data_ = $('#cmbClassforResult').val();
@@ -2322,7 +2322,8 @@ $(function () {
                     if (obj.studentdata.length > 0) {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
-                            str_html = str_html + "<td style='padding-left:40px;'><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"' target='_blank'><i class='fa fa-print fa-2x'></i></a></td>";
+                            //str_html = str_html + "<td style='padding-left:40px;'><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"' target='_blank'><i class='fa fa-print fa-2x'></i></a></td>";
+                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
@@ -2342,8 +2343,9 @@ $(function () {
                     }
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
-                    
-                    var printAllLink ="<font size='1'>Print All</font> <a href='" + site_url_ + "/exam/fetchResult/" + data_ +"' target='_blank'><i class='fa fa-print fa-2x' style='color:green'></i></a>";
+
+                    //var printAllLink = "<font size='1'>Print All</font> <a href='" + site_url_ + "/exam/fetchResult/" + data_ + "' target='_blank'><i class='fa fa-print fa-2x' style='color:green'></i></a>";
+                    var printAllLink = "<font size='1'>Print All</font> <a type='button' id='0' class='btn btn-success btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
                     document.getElementById('divInfo').style.display = 'block';
                     $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted. <br>Click <strong>View Result</strong>  to check Result");
@@ -2353,6 +2355,14 @@ $(function () {
             document.getElementById('divInfo').style.display = 'none';
         }
     }
+
+    $(document).on("click", ".open-Dialog", function () {
+        var stuId = $(this).attr('id');
+        $(".modal-body #stuHiddenID").val(stuId);
+        var classsessID = $('#cmbClassforResult').val();       
+        $(".modal-body #classSessHiddenID").val(classsessID);
+    });  
+
     $('body').on('click', '.btnCopyRemarks', function () {
         var data_ = $(".tdRemarks").find("input[type='text']").val();
         if (data_ !== '') {
@@ -2418,13 +2428,13 @@ $(function () {
     });
 
     $('body').on('click', '.btnseeResult', function () {
-        document.getElementById('divclassData').style.display = 'none';        
+        document.getElementById('divclassData').style.display = 'none';
         var classsessid = $('#cmbClassforResult').val();
         data_ = $("#cmbClassforResult option:selected").text();
         var arr_str = data_.split(' ');
         var classID = arr_str[2];
         var regid = $(this).attr('id');
-        url_ = site_url_ + "/exam/fetchResult/" + classsessid + "/" + classID + "/" + regid;      
+        url_ = site_url_ + "/exam/fetchResult/" + classsessid + "/" + classID + "/" + regid;
         $.ajax({
             type: 'POST',
             url: url_,
@@ -2434,14 +2444,13 @@ $(function () {
                 if (obj.res_ === false) {
                     callDanger(obj.msg_);
                 } else {
-                    callSuccess(obj.msg_);                    
+                    callSuccess(obj.msg_);
                 }
             }, error: function (xhr, status, error) {
                 callDanger(xhr.responseText);
             }
         });
     });
-
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
