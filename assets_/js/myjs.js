@@ -2563,7 +2563,7 @@ $(function(){
 	    	var url_ = site_url_ + "/fee/sendSMS";
 	    	var str = this.id;
 	    	var arr_ = str.split('_');
-	    	var data_ = $('#frmSMS').serialize()+"&check_sms="+arr_[1];
+	    	var data_ = $('#frmFeeSMS').serialize()+"&check_sms="+arr_[1];
 	    	$.ajax({
 	    		type: "POST",
 	    		url: url_,
