@@ -455,6 +455,7 @@ $(function(){
 							callDanger(obj.msg_);
 						}
 						fillStudents_to_drop();
+						$('#txtReasonToDrop').val('');
 						$('#show_class_for_drop').html('');
 						$('#show_DOA').html('');
 						$('#student_photo_here').html('');
