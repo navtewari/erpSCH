@@ -165,8 +165,6 @@ class Fee extends CI_Controller {
 
     function sendSMS(){
 
-        $msg = $this->input->post('MessageToPrint');
-
         $username = $this->session->userdata('sms_userid');
         $password = $this->session->userdata('sms_pwd');
         $number = $this->input->post("mobilenumbers");
@@ -183,7 +181,7 @@ class Fee extends CI_Controller {
                 $curl_scraped_page = curl_exec($ch);
                 curl_close($ch);
             /* */
-            $data['msg_all'] = $msg.". And Fee SMS is also sent to the Registered Mobile.";
+            $data['msg_all'] = ". And Fee SMS is also sent to the Registered Mobile.";
 
             // Store the sent sms to the respective database
                 $nums = explode(",", $number);
@@ -192,7 +190,7 @@ class Fee extends CI_Controller {
                 $this->fm->submit_sms($msg1, $no_of_sms, $number, $sender, $status);
             // ---------------------------------------------
         } else {
-            $data['msg_all'] = $msg." But without any sms as cancelled by you.";
+            $data['msg_all'] = " but without any sms as cancelled by you.";
             $nums = explode(",", $number);
             $no_of_sms = count($nums);
             $this->fm->submit_sms($msg1, $no_of_sms, $number, $sender, 'cancelled');

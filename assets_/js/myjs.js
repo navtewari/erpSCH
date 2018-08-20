@@ -343,6 +343,7 @@ $(function(){
 						var dt = dttime[0].split('/');
 						$('#show_class_for_drop').html('Class ' + obj.personal_academics.CLASSID);
 						$('#show_DOA').html(dt[1]+"/"+dt[0]+"/"+dt[2]);
+						$('#student_photo_here').html('<img src='+base_url_+'/assets_/'+_img_folder_+'/student_photo/'+obj.personal_academics.PHOTO_+' />');
 						var str_html = '<table class="table table-bordered">';
 						str_html = str_html + '<tr>';
 						str_html = str_html + '<th style="text-align: left">Reg. No. </th><td>'+regid_+'</td>';
@@ -413,6 +414,33 @@ $(function(){
 						callDanger(xhr.responseText);
 					}
 				});
+		});
+		$('body').on('click', '#drop_button', function(){
+			if($.trim($('#txtReasonToDrop').val())==''){
+				alert('please fill the reason first.');
+			} else {
+				var data_ = $('#frmStudentToDrop').serialize();
+				var url_ = site_url_ + '/DropStudent/dropstudent';
+				$.ajax({
+					type: "POST",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.res_ == true){
+							callSuccess(obj.msg_);
+						} else {
+							callDanger(obj.msg_);
+						}
+						fillStudents_to_drop();
+						$('#show_class_for_drop').html('');
+						$('#show_DOA').html('');
+						$('#student_photo_here').html('');
+						$('#student_to_drop_detail').html('');
+						$('#student_to_drop_address').html('');
+					}
+				});
+			}
 		});
 		$('#cmbRegistrationID').change(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
@@ -2563,7 +2591,7 @@ $(function(){
 	    	var url_ = site_url_ + "/fee/sendSMS";
 	    	var str = this.id;
 	    	var arr_ = str.split('_');
-	    	var data_ = $('#frmSMS').serialize()+"&check_sms="+arr_[1];
+	    	var data_ = $('#frmFeeSMS').serialize()+"&check_sms="+arr_[1];
 	    	$.ajax({
 	    		type: "POST",
 	    		url: url_,

@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="control-group">
-                	<label class="control-label">Admitted Class</span></label>
+                	<label class="control-label">Admitted Class</label>
                     <div class="controls" id="show_class_for_drop" style="color: #ff0000; font-weight: bold">
                         
                     </div>
