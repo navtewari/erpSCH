@@ -329,8 +329,9 @@ $(function(){
 			}
 		});
 		$('#cmbRegistrationID_to_Drop').change(function(){
+			if($('#cmbRegistrationID_to_Drop').val() != 'select'){
 			var regid_ = $('#cmbRegistrationID_to_Drop').val();
-				url_ = site_url_ + "/reg_adm/get_admision_detail/"+regid_;
+				url_ = site_url_ + "/DropStudent/get_admision_detail/"+regid_;
 				$('#student_to_drop_detail').html('');
 				$('#student_to_drop_address').html('');
 				$.ajax({
@@ -346,7 +347,7 @@ $(function(){
 						$('#student_photo_here').html('<img src='+base_url_+'/assets_/'+_img_folder_+'/student_photo/'+obj.personal_academics.PHOTO_+' />');
 						var str_html = '<table class="table table-bordered">';
 						str_html = str_html + '<tr>';
-						str_html = str_html + '<th style="text-align: left">Reg. No. </th><td>'+regid_+'</td>';
+						str_html = str_html + '<th style="text-align: left;color: #0000ff">Reg. No. </th><th style="text-align: left;color: #0000ff">'+regid_+'</th>';
 						str_html = str_html + '</tr>';
 						str_html = str_html + '<tr>';
 						str_html = str_html + '<td><b>Name</b> </td><td>'+obj.personal_academics.FNAME+'</td>';
@@ -365,6 +366,16 @@ $(function(){
 						str_html = str_html + '</tr>';
 						str_html = str_html + '<tr>';
 						str_html = str_html + '<td><b>Mother</b> </td><td> '+obj.personal_academics.MOTHER+'<br><u>Mob.</u>: '+obj.personal_academics.M_MOBILE+'</td>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '</table>';
+						str_html = str_html + '<table class="table table-bordered">';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<th style="text-align: left">Contact</th>';
+						str_html = str_html + '</tr>';
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td style="color: #0000ff; font-weight: bold">';
+						str_html = str_html + obj.personal_academics.MOBILE_S;
+						str_html = str_html + '</td>';
 						str_html = str_html + '</tr>';
 						str_html = str_html + '</table>';
 						$('#student_to_drop_detail').html(str_html);
@@ -399,11 +410,14 @@ $(function(){
 						$('#student_to_drop_address').html(str_html);
 
 						if(obj.personal_academics.STATUS_ == 1){
+							$('#txtReasonToDrop').val('');
 							$('#drop_button').removeAttr('disabled');
 							$('#drop_button').val('Drop Student');
 							$('#drop_button').removeClass('btn-default')
 							$('#drop_button').addClass('btn-danger');
+							$('#txtReasonToDrop').focus();
 						} else {
+							$('#txtReasonToDrop').val(obj.dropped.record.REASON);
 							$('#drop_button').removeClass('btn-danger')
 							$('#drop_button').addClass('btn-default');
 							$('#drop_button').attr('disabled', 'disabled');
@@ -414,6 +428,14 @@ $(function(){
 						callDanger(xhr.responseText);
 					}
 				});
+			} else {
+				$('#txtReasonToDrop').val('');
+				$('#show_class_for_drop').html('');
+				$('#show_DOA').html('');
+				$('#student_photo_here').html('');
+				$('#student_to_drop_detail').html('');
+				$('#student_to_drop_address').html('');
+			}
 		});
 		$('body').on('click', '#drop_button', function(){
 			if($.trim($('#txtReasonToDrop').val())==''){

@@ -526,10 +526,11 @@ class My_admission_model extends CI_Model {
         return $path_;
     }
     function get_admission_detail_1($regid_){
-        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID, b.STATUS_');
+        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID, b.STATUS_, f.MOBILE_S');
         //$this->db->where('b.STATUS_', 1); // This line is commented so that if need to see the detail of any candidate, it could be seen.
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('master_10_stud_contact f', 'a.regid=f.regid');
         $this->db->join('class_2_in_session e', 'b.CLASS_OF_ADMISSION=e.CLSSESSID');
         $this->db->where('a.regid', $regid_);
         //$this->db->where('b.STATUS_OF_ADMISSION', 0); //No Need as no registration table exists
