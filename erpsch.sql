@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.3
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2018 at 05:42 AM
--- Server version: 5.6.11
+-- Generation Time: Aug 20, 2018 at 06:27 PM
+-- Server version: 5.6.11-log
 -- PHP Version: 5.5.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -14,13 +14,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `erpsch`
 --
-CREATE DATABASE IF NOT EXISTS `erpsch` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `erpsch`;
 
 -- --------------------------------------------------------
 
@@ -28,12 +26,11 @@ USE `erpsch`;
 -- Table structure for table `class_1_classes`
 --
 
-CREATE TABLE IF NOT EXISTS `class_1_classes` (
+CREATE TABLE `class_1_classes` (
   `CLASSID` varchar(10) NOT NULL,
   `CLASS` varchar(100) NOT NULL,
   `SECTION` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLASSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -83,16 +80,13 @@ INSERT INTO `class_1_classes` (`CLASSID`, `CLASS`, `SECTION`, `DATE_`) VALUES
 -- Table structure for table `class_2_in_session`
 --
 
-CREATE TABLE IF NOT EXISTS `class_2_in_session` (
-  `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_2_in_session` (
+  `CLSSESSID` int(15) NOT NULL,
   `CLASSID` varchar(10) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `STATUS_` tinyint(1) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CLSSESSID`),
-  KEY `CLASSID` (`CLASSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=545 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_2_in_session`
@@ -129,20 +123,15 @@ INSERT INTO `class_2_in_session` (`CLSSESSID`, `CLASSID`, `SESSID`, `STATUS_`, `
 -- Table structure for table `class_3_class_wise_students`
 --
 
-CREATE TABLE IF NOT EXISTS `class_3_class_wise_students` (
-  `ID_` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_3_class_wise_students` (
+  `ID_` int(15) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSID` varchar(20) NOT NULL,
-  PRIMARY KEY (`ID_`),
-  KEY `regid` (`regid`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `USERNAME_` (`USERNAME_`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=319 ;
+  `SESSID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_3_class_wise_students`
@@ -474,8 +463,8 @@ INSERT INTO `class_3_class_wise_students` (`ID_`, `regid`, `ROLLNO`, `CLSSESSID`
 -- Table structure for table `class_4_class_wise_attendance`
 --
 
-CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
-  `ATTID` bigint(22) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_4_class_wise_attendance` (
+  `ATTID` bigint(22) NOT NULL,
   `regid` varchar(25) CHARACTER SET latin1 NOT NULL,
   `ROLLNO` int(11) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
@@ -483,9 +472,8 @@ CREATE TABLE IF NOT EXISTS `class_4_class_wise_attendance` (
   `DATE_` varchar(15) CHARACTER SET latin1 NOT NULL,
   `TIME_` varchar(12) CHARACTER SET latin1 NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
-  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ATTID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1187 ;
+  `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `class_4_class_wise_attendance`
@@ -1687,14 +1675,13 @@ INSERT INTO `class_4_class_wise_attendance` (`ATTID`, `regid`, `ROLLNO`, `CLSSES
 -- Table structure for table `exam_1_scholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_1_scholastic_items` (
-  `itemID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_1_scholastic_items` (
+  `itemID` int(10) NOT NULL,
   `item` varchar(200) CHARACTER SET utf8 NOT NULL,
   `maxMarks` int(3) NOT NULL,
   `minMarks` int(3) NOT NULL,
-  `priority` int(10) NOT NULL,
-  PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `priority` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_1_scholastic_items`
@@ -1711,15 +1698,14 @@ INSERT INTO `exam_1_scholastic_items` (`itemID`, `item`, `maxMarks`, `minMarks`,
 -- Table structure for table `exam_2_add_scholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_2_add_scholastic_to_class` (
-  `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_2_add_scholastic_to_class` (
+  `ADDSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `itemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_2_add_scholastic_to_class`
@@ -1751,12 +1737,11 @@ INSERT INTO `exam_2_add_scholastic_to_class` (`ADDSCHCLASSID`, `CLSSESSID`, `SES
 -- Table structure for table `exam_3_coscholastic_items`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_3_coscholastic_items` (
-  `coitemID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_3_coscholastic_items` (
+  `coitemID` int(10) NOT NULL,
   `coitem` varchar(200) CHARACTER SET utf8 NOT NULL,
-  `priority` int(10) NOT NULL,
-  PRIMARY KEY (`coitemID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+  `priority` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_3_coscholastic_items`
@@ -1773,15 +1758,14 @@ INSERT INTO `exam_3_coscholastic_items` (`coitemID`, `coitem`, `priority`) VALUE
 -- Table structure for table `exam_4_add_coscholastic_to_class`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_4_add_coscholastic_to_class` (
-  `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_4_add_coscholastic_to_class` (
+  `ADDCOSCHCLASSID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
   `coitemID` int(10) NOT NULL,
   `USERNAME_` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDCOSCHCLASSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_4_add_coscholastic_to_class`
@@ -1804,12 +1788,11 @@ INSERT INTO `exam_4_add_coscholastic_to_class` (`ADDCOSCHCLASSID`, `CLSSESSID`, 
 -- Table structure for table `exam_5_term`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_5_term` (
-  `termID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_5_term` (
+  `termID` int(10) NOT NULL,
   `termName` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`termID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_5_term`
@@ -1825,8 +1808,8 @@ INSERT INTO `exam_5_term` (`termID`, `termName`, `SESSID`) VALUES
 -- Table structure for table `exam_6_scholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
-  `schID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_6_scholastic_result` (
+  `schID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -1838,9 +1821,8 @@ CREATE TABLE IF NOT EXISTS `exam_6_scholastic_result` (
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATEOFTEST` varchar(15) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`schID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=206 ;
+  `DATEOFTEST` varchar(15) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_6_scholastic_result`
@@ -2059,8 +2041,8 @@ INSERT INTO `exam_6_scholastic_result` (`schID`, `regid`, `CLSSESSID`, `ROLLNO`,
 -- Table structure for table `exam_7_coscholastic_result`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
-  `coschID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_7_coscholastic_result` (
+  `coschID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -2070,9 +2052,8 @@ CREATE TABLE IF NOT EXISTS `exam_7_coscholastic_result` (
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATEOFTEST` varchar(15) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`coschID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=124 ;
+  `DATEOFTEST` varchar(15) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_7_coscholastic_result`
@@ -2209,8 +2190,8 @@ INSERT INTO `exam_7_coscholastic_result` (`coschID`, `regid`, `CLSSESSID`, `ROLL
 -- Table structure for table `exam_8_result_subject_total`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_8_result_subject_total` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -2220,9 +2201,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2230,8 +2210,8 @@ CREATE TABLE IF NOT EXISTS `exam_8_result_subject_total` (
 -- Table structure for table `exam_9_result_remarks`
 --
 
-CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
-  `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `exam_9_result_remarks` (
+  `resultsubtotalID` int(13) NOT NULL,
   `regid` varchar(25) CHARACTER SET utf8 NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `ROLLNO` int(11) NOT NULL,
@@ -2240,9 +2220,8 @@ CREATE TABLE IF NOT EXISTS `exam_9_result_remarks` (
   `promotedClass` varchar(10) CHARACTER SET utf8 NOT NULL,
   `termID` int(10) NOT NULL,
   `USERNAME_` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`resultsubtotalID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=159 ;
+  `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `exam_9_result_remarks`
@@ -2414,11 +2393,10 @@ INSERT INTO `exam_9_result_remarks` (`resultsubtotalID`, `regid`, `CLSSESSID`, `
 -- Table structure for table `fee_0_duration`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_0_duration` (
+CREATE TABLE `fee_0_duration` (
   `DURATION` varchar(2) NOT NULL,
   `ITEM` varchar(25) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`DURATION`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2435,12 +2413,11 @@ INSERT INTO `fee_0_duration` (`DURATION`, `ITEM`, `DATE_`) VALUES
 -- Table structure for table `fee_1_type`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_1_type` (
+CREATE TABLE `fee_1_type` (
   `FEETYPEID` int(15) NOT NULL,
   `TYPE_` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FEETYPEID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2449,8 +2426,8 @@ CREATE TABLE IF NOT EXISTS `fee_1_type` (
 -- Table structure for table `fee_2`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_2` (
-  `feeID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_2` (
+  `feeID` int(11) NOT NULL,
   `regID` varchar(25) NOT NULL,
   `date` varchar(20) NOT NULL,
   `Amount` int(11) NOT NULL,
@@ -2461,16 +2438,8 @@ CREATE TABLE IF NOT EXISTS `fee_2` (
   `dd_ch_no` varchar(20) NOT NULL,
   `dd_ch_date` varchar(20) NOT NULL,
   `DOE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`feeID`),
-  KEY `regID` (`regID`,`date`),
-  KEY `userID` (`username`),
-  KEY `username` (`username`),
-  KEY `username_2` (`username`),
-  KEY `regID_2` (`regID`),
-  KEY `feetype` (`feetype`),
-  KEY `SESSIONID` (`SESSIONID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `SESSIONID` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2478,15 +2447,14 @@ CREATE TABLE IF NOT EXISTS `fee_2` (
 -- Table structure for table `fee_3_static_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_3_static_heads` (
-  `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_3_static_heads` (
+  `ST_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `DURATION` varchar(2) NOT NULL,
   `DISCOUNT_APPLICABLE` tinyint(1) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ST_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_3_static_heads`
@@ -2508,15 +2476,14 @@ INSERT INTO `fee_3_static_heads` (`ST_HD_ID`, `FEE_HEAD`, `DURATION`, `DISCOUNT_
 -- Table structure for table `fee_4_flexible_heads`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_4_flexible_heads` (
-  `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_4_flexible_heads` (
+  `FLX_HD_ID` int(15) NOT NULL,
   `FEE_HEAD` varchar(100) NOT NULL,
   `DURATION` varchar(2) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`FLX_HD_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_4_flexible_heads`
@@ -2537,21 +2504,16 @@ INSERT INTO `fee_4_flexible_heads` (`FLX_HD_ID`, `FEE_HEAD`, `DURATION`, `AMOUNT
 -- Table structure for table `fee_5_add_flexi_head_to_students`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_5_add_flexi_head_to_students` (
-  `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_5_add_flexi_head_to_students` (
+  `ADFLXFEESTUDID` int(15) NOT NULL,
   `REGID` varchar(100) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `FLX_HD_ID` int(15) NOT NULL,
   `STATUS` tinyint(1) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADFLXFEESTUDID`),
-  KEY `FLX_HD_ID` (`FLX_HD_ID`),
-  KEY `REGID` (`REGID`),
-  KEY `CLSSESSID` (`CLSSESSID`),
-  KEY `SESSID` (`SESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_5_add_flexi_head_to_students`
@@ -2611,8 +2573,8 @@ INSERT INTO `fee_5_add_flexi_head_to_students` (`ADFLXFEESTUDID`, `REGID`, `CLSS
 -- Table structure for table `fee_6_invoice`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
-  `INVID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_6_invoice` (
+  `INVID` int(15) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `YEAR_FROM` varchar(15) NOT NULL,
@@ -2622,11 +2584,8 @@ CREATE TABLE IF NOT EXISTS `fee_6_invoice` (
   `NOM` int(11) NOT NULL,
   `DESCRIPTION_IFANY` text NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USERNAME_` varchar(40) NOT NULL,
-  PRIMARY KEY (`INVID`),
-  KEY `SESSID` (`SESSID`),
-  KEY `USERNAME_` (`USERNAME_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=66 ;
+  `USERNAME_` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_6_invoice`
@@ -2678,8 +2637,8 @@ INSERT INTO `fee_6_invoice` (`INVID`, `SESSID`, `CLSSESSID`, `YEAR_FROM`, `MONTH
 -- Table structure for table `fee_6_invoice_detail`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_6_invoice_detail` (
-  `INVDETID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_6_invoice_detail` (
+  `INVDETID` int(11) NOT NULL,
   `INVID` int(11) NOT NULL,
   `STATIC_HEADS_1_TIME` varchar(150) NOT NULL,
   `STATIC_SPLIT_AMT_1_TIME` varchar(150) NOT NULL,
@@ -2698,10 +2657,8 @@ CREATE TABLE IF NOT EXISTS `fee_6_invoice_detail` (
   `DUE_AMOUNT` int(11) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `STATUS` tinyint(1) NOT NULL DEFAULT '1',
-  `USERNAME_` varchar(40) NOT NULL,
-  PRIMARY KEY (`INVDETID`),
-  KEY `USERNAME_` (`USERNAME_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=91 ;
+  `USERNAME_` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_6_invoice_detail`
@@ -2763,8 +2720,8 @@ INSERT INTO `fee_6_invoice_detail` (`INVDETID`, `INVID`, `STATIC_HEADS_1_TIME`, 
 -- Table structure for table `fee_7_receipts`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
-  `RECPTID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_7_receipts` (
+  `RECPTID` int(15) NOT NULL,
   `FLEXI_FEE_STATUS` varchar(100) NOT NULL,
   `ADFLXFEESTUDID` text NOT NULL,
   `DISCOUNT` varchar(10) NOT NULL,
@@ -2780,12 +2737,8 @@ CREATE TABLE IF NOT EXISTS `fee_7_receipts` (
   `regid` varchar(25) NOT NULL,
   `INVDETID` int(15) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USERNAME_` varchar(40) NOT NULL,
-  PRIMARY KEY (`RECPTID`),
-  KEY `INVID` (`INVDETID`),
-  KEY `regid` (`regid`),
-  KEY `USERNAME_` (`USERNAME_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+  `USERNAME_` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_7_receipts`
@@ -2820,15 +2773,13 @@ INSERT INTO `fee_7_receipts` (`RECPTID`, `FLEXI_FEE_STATUS`, `ADFLXFEESTUDID`, `
 -- Table structure for table `fee_8_class_fee`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_8_class_fee` (
-  `CFEEID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_8_class_fee` (
+  `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `TOTFEE` varchar(100) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEEID`),
-  KEY `CLSSESSID` (`CLSSESSID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_8_class_fee`
@@ -2854,18 +2805,15 @@ INSERT INTO `fee_8_class_fee` (`CFEEID`, `CLSSESSID`, `TOTFEE`, `USERNAME`, `DAT
 -- Table structure for table `fee_9_class_fee_split`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_9_class_fee_split` (
-  `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fee_9_class_fee_split` (
+  `CFEESPLITID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `ST_HD_ID` int(15) NOT NULL,
   `AMOUNT` varchar(100) NOT NULL,
   `PAYMENT_STATUS` varchar(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESPLITID`),
-  KEY `ST_HD_ID` (`ST_HD_ID`),
-  KEY `CFEEID` (`CFEEID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fee_9_class_fee_split`
@@ -2909,14 +2857,13 @@ INSERT INTO `fee_9_class_fee_split` (`CFEESPLITID`, `CFEEID`, `ST_HD_ID`, `AMOUN
 -- Table structure for table `fee_10_class_fee_in_a_session`
 --
 
-CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
+CREATE TABLE `fee_10_class_fee_in_a_session` (
   `CFEESESSID` int(15) NOT NULL,
   `CFEEID` int(15) NOT NULL,
   `CLSSESSID` int(15) NOT NULL,
   `SESSID` int(15) NOT NULL,
   `USERNAME` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CFEESESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2925,13 +2872,11 @@ CREATE TABLE IF NOT EXISTS `fee_10_class_fee_in_a_session` (
 -- Table structure for table `login`
 --
 
-CREATE TABLE IF NOT EXISTS `login` (
+CREATE TABLE `login` (
   `USERNAME_` varchar(40) NOT NULL,
   `PASSWORD_` varchar(25) NOT NULL,
   `STAFFID` int(11) NOT NULL,
-  `ACTIVE` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`USERNAME_`),
-  KEY `USER_STATUS` (`STAFFID`)
+  `ACTIVE` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2950,10 +2895,9 @@ INSERT INTO `login` (`USERNAME_`, `PASSWORD_`, `STAFFID`, `ACTIVE`) VALUES
 -- Table structure for table `master_0_country_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_0_country_` (
+CREATE TABLE `master_0_country_` (
   `ABREV_` varchar(5) NOT NULL,
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`ABREV_`)
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3218,7 +3162,7 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 ('WF', 'Wallis and Futuna'),
 ('WK', 'Wake Island'),
 ('WS', 'Samoa'),
-('YD', 'People''s Democratic Repub'),
+('YD', 'People\'s Democratic Repub'),
 ('YE', 'Yemen'),
 ('YT', 'Mayotte'),
 ('ZA', 'South Africa'),
@@ -3232,10 +3176,9 @@ INSERT INTO `master_0_country_` (`ABREV_`, `NAME_`) VALUES
 -- Table structure for table `master_1_zone_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_1_zone_` (
+CREATE TABLE `master_1_zone_` (
   `ID` int(11) NOT NULL,
-  `ZONE` varchar(10) NOT NULL,
-  PRIMARY KEY (`ID`)
+  `ZONE` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3256,12 +3199,11 @@ INSERT INTO `master_1_zone_` (`ID`, `ZONE`) VALUES
 -- Table structure for table `master_2_zone_region`
 --
 
-CREATE TABLE IF NOT EXISTS `master_2_zone_region` (
+CREATE TABLE `master_2_zone_region` (
   `ID_` int(11) NOT NULL,
   `ZONE_` int(11) NOT NULL,
   `REGION` varchar(10) NOT NULL,
-  `REG_NAME` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID_`)
+  `REG_NAME` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3310,7 +3252,7 @@ INSERT INTO `master_2_zone_region` (`ID_`, `ZONE_`, `REGION`, `REG_NAME`) VALUES
 -- Table structure for table `master_3_state_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_3_state_` (
+CREATE TABLE `master_3_state_` (
   `NAME_` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -3332,9 +3274,8 @@ INSERT INTO `master_3_state_` (`NAME_`) VALUES
 -- Table structure for table `master_4_city_`
 --
 
-CREATE TABLE IF NOT EXISTS `master_4_city_` (
-  `NAME_` varchar(25) NOT NULL,
-  PRIMARY KEY (`NAME_`)
+CREATE TABLE `master_4_city_` (
+  `NAME_` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3356,10 +3297,9 @@ INSERT INTO `master_4_city_` (`NAME_`) VALUES
 -- Table structure for table `master_5_user_status`
 --
 
-CREATE TABLE IF NOT EXISTS `master_5_user_status` (
+CREATE TABLE `master_5_user_status` (
   `ST_ID` varchar(5) NOT NULL,
-  `STATUS` varchar(25) NOT NULL,
-  PRIMARY KEY (`ST_ID`)
+  `STATUS` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3380,12 +3320,11 @@ INSERT INTO `master_5_user_status` (`ST_ID`, `STATUS`) VALUES
 -- Table structure for table `master_6_session`
 --
 
-CREATE TABLE IF NOT EXISTS `master_6_session` (
+CREATE TABLE `master_6_session` (
   `SESSID` varchar(20) NOT NULL,
   `SESSSTART` varchar(100) NOT NULL,
   `SESSEND` varchar(100) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`SESSID`)
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3406,8 +3345,8 @@ INSERT INTO `master_6_session` (`SESSID`, `SESSSTART`, `SESSEND`, `DATE_`) VALUE
 -- Table structure for table `master_7_stud_personal`
 --
 
-CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
-  `STUD_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_7_stud_personal` (
+  `STUD_ID` int(11) NOT NULL,
   `FNAME` varchar(50) NOT NULL,
   `MNAME` varchar(50) NOT NULL DEFAULT '-x-',
   `LNAME` varchar(50) NOT NULL DEFAULT '-x-',
@@ -3426,11 +3365,8 @@ CREATE TABLE IF NOT EXISTS `master_7_stud_personal` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`STUD_ID`),
-  UNIQUE KEY `regid_2` (`regid`),
-  KEY `regid` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_7_stud_personal`
@@ -3882,8 +3818,8 @@ INSERT INTO `master_7_stud_personal` (`STUD_ID`, `FNAME`, `MNAME`, `LNAME`, `PHO
 -- Table structure for table `master_8_stud_academics`
 --
 
-CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
-  `AC_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_8_stud_academics` (
+  `AC_ID` int(15) NOT NULL,
   `DOA` varchar(50) DEFAULT NULL,
   `CLASS_OF_ADMISSION` int(15) NOT NULL COMMENT 'ClassSessID from class_2_in_session',
   `STATUS_OF_ADMISSION` tinyint(1) NOT NULL COMMENT '0 means modification is possible and 1 means no changes from now',
@@ -3893,12 +3829,8 @@ CREATE TABLE IF NOT EXISTS `master_8_stud_academics` (
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `DOL` varchar(50) DEFAULT NULL COMMENT 'Date of Left School',
-  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school',
-  PRIMARY KEY (`AC_ID`),
-  UNIQUE KEY `regid_3` (`regid`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `STATUS_` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 for exists and 0 for left school'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_8_stud_academics`
@@ -4349,8 +4281,8 @@ INSERT INTO `master_8_stud_academics` (`AC_ID`, `DOA`, `CLASS_OF_ADMISSION`, `ST
 -- Table structure for table `master_9_stud_address`
 --
 
-CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
-  `ADDRID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_9_stud_address` (
+  `ADDRID` int(15) NOT NULL,
   `STREET_1` text NOT NULL,
   `CITY_` varchar(25) NOT NULL,
   `PIN_` varchar(8) NOT NULL,
@@ -4363,12 +4295,8 @@ CREATE TABLE IF NOT EXISTS `master_9_stud_address` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ADDRID`),
-  KEY `CITY_` (`CITY_`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=877 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_9_stud_address`
@@ -5259,8 +5187,8 @@ INSERT INTO `master_9_stud_address` (`ADDRID`, `STREET_1`, `CITY_`, `PIN_`, `DIS
 -- Table structure for table `master_10_stud_contact`
 --
 
-CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
-  `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_10_stud_contact` (
+  `CNTCT_ID` int(15) NOT NULL,
   `MOBILE_S` varchar(50) NOT NULL,
   `PH_S` varchar(50) NOT NULL,
   `EMAIL_S` varchar(200) NOT NULL,
@@ -5270,11 +5198,8 @@ CREATE TABLE IF NOT EXISTS `master_10_stud_contact` (
   `regid` varchar(25) NOT NULL,
   `SESSID` varchar(20) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`CNTCT_ID`),
-  KEY `regid` (`regid`),
-  KEY `regid_2` (`regid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=439 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_10_stud_contact`
@@ -5726,15 +5651,14 @@ INSERT INTO `master_10_stud_contact` (`CNTCT_ID`, `MOBILE_S`, `PH_S`, `EMAIL_S`,
 -- Table structure for table `master_11_grading`
 --
 
-CREATE TABLE IF NOT EXISTS `master_11_grading` (
-  `gradeID` int(15) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_11_grading` (
+  `gradeID` int(15) NOT NULL,
   `minMarks` int(10) NOT NULL,
   `maxMarks` int(10) NOT NULL,
   `grade` varchar(10) CHARACTER SET utf8 NOT NULL,
   `description` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `clssessID` int(15) NOT NULL,
-  PRIMARY KEY (`gradeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+  `clssessID` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_11_grading`
@@ -5759,14 +5683,13 @@ INSERT INTO `master_11_grading` (`gradeID`, `minMarks`, `maxMarks`, `grade`, `de
 -- Table structure for table `master_12_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_12_subject` (
-  `subjectID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_12_subject` (
+  `subjectID` int(10) NOT NULL,
   `subName` varchar(100) CHARACTER SET utf8 NOT NULL,
   `classID` varchar(10) CHARACTER SET utf8 NOT NULL,
   `priority` int(10) NOT NULL,
-  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`subjectID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+  `SESSID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_12_subject`
@@ -5790,15 +5713,14 @@ INSERT INTO `master_12_subject` (`subjectID`, `subName`, `classID`, `priority`, 
 -- Table structure for table `master_13_staff`
 --
 
-CREATE TABLE IF NOT EXISTS `master_13_staff` (
-  `teacherID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_13_staff` (
+  `teacherID` int(13) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   `CATEGORY_ID` varchar(5) NOT NULL,
   `STATUS_` tinyint(1) NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`teacherID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_13_staff`
@@ -5816,13 +5738,12 @@ INSERT INTO `master_13_staff` (`teacherID`, `name`, `CATEGORY_ID`, `STATUS_`, `U
 -- Table structure for table `master_14_teacher_wise_subject`
 --
 
-CREATE TABLE IF NOT EXISTS `master_14_teacher_wise_subject` (
-  `tasID` int(13) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_14_teacher_wise_subject` (
+  `tasID` int(13) NOT NULL,
   `teacherID` int(13) NOT NULL,
   `subjectID` int(10) NOT NULL,
-  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`tasID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  `sessID` varchar(20) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master_14_teacher_wise_subject`
@@ -5843,14 +5764,12 @@ INSERT INTO `master_14_teacher_wise_subject` (`tasID`, `teacherID`, `subjectID`,
 -- Table structure for table `master_15_subject_marks`
 --
 
-CREATE TABLE IF NOT EXISTS `master_15_subject_marks` (
-  `submarkID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_15_subject_marks` (
+  `submarkID` int(10) NOT NULL,
   `subjectID` int(10) NOT NULL,
   `maxMarks` int(3) NOT NULL,
-  `passMarks` int(3) NOT NULL,
-  PRIMARY KEY (`submarkID`),
-  KEY `subjectID` (`subjectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `passMarks` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -5858,17 +5777,16 @@ CREATE TABLE IF NOT EXISTS `master_15_subject_marks` (
 -- Table structure for table `master_16_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `master_16_discount` (
-  `DID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_16_discount` (
+  `DID` int(11) NOT NULL,
   `ITEM_` varchar(200) NOT NULL,
   `ELIGIBLE_COUNT` int(11) NOT NULL DEFAULT '0',
   `STATUS_` varchar(30) NOT NULL COMMENT 'Percentage or Amount',
   `CATEGORY` varchar(10) NOT NULL,
   `AMOUNT` varchar(15) NOT NULL,
   `DESC_` text NOT NULL,
-  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`DID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_16_discount`
@@ -5891,8 +5809,8 @@ INSERT INTO `master_16_discount` (`DID`, `ITEM_`, `ELIGIBLE_COUNT`, `STATUS_`, `
 -- Table structure for table `master_17_general`
 --
 
-CREATE TABLE IF NOT EXISTS `master_17_general` (
-  `SCH_ID` int(5) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_17_general` (
+  `SCH_ID` int(5) NOT NULL,
   `SCH_LOGO` varchar(50) NOT NULL,
   `SCH_NAME` varchar(100) NOT NULL,
   `SCH_CONTACT` varchar(65) NOT NULL,
@@ -5906,9 +5824,8 @@ CREATE TABLE IF NOT EXISTS `master_17_general` (
   `WEBSITE` varchar(200) NOT NULL,
   `REMARK` varchar(1000) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USERNAME` varchar(20) NOT NULL,
-  PRIMARY KEY (`SCH_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `USERNAME` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `master_17_general`
@@ -5923,14 +5840,13 @@ INSERT INTO `master_17_general` (`SCH_ID`, `SCH_LOGO`, `SCH_NAME`, `SCH_CONTACT`
 -- Table structure for table `menu_1`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_1` (
-  `ID_` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_1` (
+  `ID_` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `MENU` varchar(30) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
-  `PRIORITY_` int(11) NOT NULL,
-  PRIMARY KEY (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  `PRIORITY_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_1`
@@ -5953,16 +5869,14 @@ INSERT INTO `menu_1` (`ID_`, `PRE_ICON`, `MENU`, `PATH_`, `PRIORITY_`) VALUES
 -- Table structure for table `menu_2_submenu`
 --
 
-CREATE TABLE IF NOT EXISTS `menu_2_submenu` (
-  `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_2_submenu` (
+  `SUBMENUID` int(11) NOT NULL,
   `PRE_ICON` varchar(150) NOT NULL,
   `SUBMENU` varchar(150) NOT NULL,
   `PATH_` varchar(300) NOT NULL,
   `PRIORITY` int(11) NOT NULL,
-  `ID_` int(11) NOT NULL,
-  PRIMARY KEY (`SUBMENUID`),
-  KEY `ID_` (`ID_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `ID_` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_2_submenu`
@@ -5995,7 +5909,8 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 (25, 'icon icon-pencil', 'Admission', 'web/dashboard/4/10', 3, 3),
 (26, 'icon icon-pencil', 'Create User', 'web/dashboard/10/0/create', 3, 10),
 (27, 'fa fa-user', 'View Daywise', 'web/dashboard/7/18/view_daywise', 2, 7),
-(28, 'fa fa-user', 'View Total', 'web/dashboard/7/19/view_total', 2, 7);
+(28, 'fa fa-user', 'View Total', 'web/dashboard/7/19/view_total', 2, 7),
+(29, 'fa fa-minus-sign', 'Drop Student', 'web/dashboard/2/26/drop', 9, 2);
 
 -- --------------------------------------------------------
 
@@ -6003,14 +5918,13 @@ INSERT INTO `menu_2_submenu` (`SUBMENUID`, `PRE_ICON`, `SUBMENU`, `PATH_`, `PRIO
 -- Table structure for table `register_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `register_discount` (
+CREATE TABLE `register_discount` (
   `regid` varchar(25) NOT NULL,
   `DISCOUNT` text NOT NULL COMMENT 'Discounts seperated by comma(,)',
   `DISCOUNT_OFFERED` tinyint(1) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount',
-  PRIMARY KEY (`regid`)
+  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Used to store other discount if any';
 
 --
@@ -6036,14 +5950,13 @@ INSERT INTO `register_discount` (`regid`, `DISCOUNT`, `DISCOUNT_OFFERED`, `DATE_
 -- Table structure for table `register_sibling`
 --
 
-CREATE TABLE IF NOT EXISTS `register_sibling` (
+CREATE TABLE `register_sibling` (
   `regid` varchar(25) NOT NULL,
   `SIBLINGS` text NOT NULL COMMENT 'regids seperated by comma(,)',
   `DISCOUNT_OFFERED` tinyint(1) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount',
-  PRIMARY KEY (`regid`)
+  `STATUS` tinyint(1) NOT NULL COMMENT '1 for discount, 0 for no discount'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Used to store siblings';
 
 --
@@ -6074,7 +5987,7 @@ INSERT INTO `register_sibling` (`regid`, `SIBLINGS`, `DISCOUNT_OFFERED`, `DATE_`
 -- Table structure for table `register_with_us`
 --
 
-CREATE TABLE IF NOT EXISTS `register_with_us` (
+CREATE TABLE `register_with_us` (
   `regid` varchar(25) NOT NULL,
   `FULLNAME` varchar(150) NOT NULL,
   `FATHER` varchar(150) NOT NULL,
@@ -6101,9 +6014,7 @@ CREATE TABLE IF NOT EXISTS `register_with_us` (
   `PASSWORD_` varchar(25) NOT NULL DEFAULT '123456',
   `DOR_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME_` varchar(40) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  PRIMARY KEY (`regid`),
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6548,14 +6459,11 @@ INSERT INTO `register_with_us` (`regid`, `FULLNAME`, `FATHER`, `DOB_`, `PHOTO_`,
 -- Table structure for table `user_menu`
 --
 
-CREATE TABLE IF NOT EXISTS `user_menu` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_menu` (
+  `ID` int(11) NOT NULL,
   `MENU` int(11) NOT NULL,
-  `USER_` varchar(5) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `MENU` (`MENU`),
-  KEY `USER_` (`USER_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+  `USER_` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_menu`
@@ -6586,17 +6494,15 @@ INSERT INTO `user_menu` (`ID`, `MENU`, `USER_`) VALUES
 -- Table structure for table `_drop_students`
 --
 
-CREATE TABLE IF NOT EXISTS `_drop_students` (
-  `DROPSTDID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `_drop_students` (
+  `DROPSTDID` int(11) NOT NULL,
   `regid` varchar(25) NOT NULL,
   `REASON` text NOT NULL,
   `USERNAME_` varchar(40) NOT NULL,
   `DATE_` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `SESSID` varchar(20) NOT NULL,
-  PRIMARY KEY (`DROPSTDID`),
-  KEY `regid` (`regid`),
-  KEY `USERNAME_` (`USERNAME_`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='stores the drop students' AUTO_INCREMENT=1 ;
+  `STATUS_` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='stores the drop students';
 
 -- --------------------------------------------------------
 
@@ -6604,17 +6510,16 @@ CREATE TABLE IF NOT EXISTS `_drop_students` (
 -- Table structure for table `_fee_sms`
 --
 
-CREATE TABLE IF NOT EXISTS `_fee_sms` (
-  `FEESMSID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `_fee_sms` (
+  `FEESMSID` int(11) NOT NULL,
   `MESSAGE` text NOT NULL,
   `NOOFSMS` int(5) NOT NULL,
   `DATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `PHONE_NUMBERS` text NOT NULL,
   `SENDERID` varchar(15) NOT NULL,
   `STATUS` varchar(10) NOT NULL,
-  `USERNAME_` varchar(40) NOT NULL,
-  PRIMARY KEY (`FEESMSID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `USERNAME_` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -6622,11 +6527,10 @@ CREATE TABLE IF NOT EXISTS `_fee_sms` (
 -- Table structure for table `_id_`
 --
 
-CREATE TABLE IF NOT EXISTS `_id_` (
-  `ID_` int(4) unsigned zerofill DEFAULT NULL,
+CREATE TABLE `_id_` (
+  `ID_` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
   `regid_` varchar(25) NOT NULL,
-  `SESSIONID` varchar(20) NOT NULL,
-  KEY `SESSIONID` (`SESSIONID`)
+  `SESSIONID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6636,6 +6540,555 @@ CREATE TABLE IF NOT EXISTS `_id_` (
 INSERT INTO `_id_` (`ID_`, `regid_`, `SESSIONID`) VALUES
 (0149, '2018070149', '2018-19');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `class_1_classes`
+--
+ALTER TABLE `class_1_classes`
+  ADD PRIMARY KEY (`CLASSID`);
+
+--
+-- Indexes for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  ADD PRIMARY KEY (`CLSSESSID`),
+  ADD KEY `CLASSID` (`CLASSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  ADD PRIMARY KEY (`ID_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `USERNAME_` (`USERNAME_`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  ADD PRIMARY KEY (`ATTID`);
+
+--
+-- Indexes for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  ADD PRIMARY KEY (`itemID`);
+
+--
+-- Indexes for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  ADD PRIMARY KEY (`ADDSCHCLASSID`);
+
+--
+-- Indexes for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  ADD PRIMARY KEY (`coitemID`);
+
+--
+-- Indexes for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  ADD PRIMARY KEY (`ADDCOSCHCLASSID`);
+
+--
+-- Indexes for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  ADD PRIMARY KEY (`termID`);
+
+--
+-- Indexes for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  ADD PRIMARY KEY (`schID`);
+
+--
+-- Indexes for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  ADD PRIMARY KEY (`coschID`);
+
+--
+-- Indexes for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  ADD PRIMARY KEY (`resultsubtotalID`);
+
+--
+-- Indexes for table `fee_0_duration`
+--
+ALTER TABLE `fee_0_duration`
+  ADD PRIMARY KEY (`DURATION`);
+
+--
+-- Indexes for table `fee_1_type`
+--
+ALTER TABLE `fee_1_type`
+  ADD PRIMARY KEY (`FEETYPEID`);
+
+--
+-- Indexes for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  ADD PRIMARY KEY (`feeID`),
+  ADD KEY `regID` (`regID`,`date`),
+  ADD KEY `userID` (`username`),
+  ADD KEY `username` (`username`),
+  ADD KEY `username_2` (`username`),
+  ADD KEY `regID_2` (`regID`),
+  ADD KEY `feetype` (`feetype`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  ADD PRIMARY KEY (`ST_HD_ID`);
+
+--
+-- Indexes for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  ADD PRIMARY KEY (`FLX_HD_ID`);
+
+--
+-- Indexes for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  ADD PRIMARY KEY (`ADFLXFEESTUDID`),
+  ADD KEY `FLX_HD_ID` (`FLX_HD_ID`),
+  ADD KEY `REGID` (`REGID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`),
+  ADD KEY `SESSID` (`SESSID`);
+
+--
+-- Indexes for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  ADD PRIMARY KEY (`INVID`),
+  ADD KEY `SESSID` (`SESSID`),
+  ADD KEY `USERNAME_` (`USERNAME_`);
+
+--
+-- Indexes for table `fee_6_invoice_detail`
+--
+ALTER TABLE `fee_6_invoice_detail`
+  ADD PRIMARY KEY (`INVDETID`),
+  ADD KEY `USERNAME_` (`USERNAME_`);
+
+--
+-- Indexes for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  ADD PRIMARY KEY (`RECPTID`),
+  ADD KEY `INVID` (`INVDETID`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `USERNAME_` (`USERNAME_`);
+
+--
+-- Indexes for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  ADD PRIMARY KEY (`CFEEID`),
+  ADD KEY `CLSSESSID` (`CLSSESSID`);
+
+--
+-- Indexes for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  ADD PRIMARY KEY (`CFEESPLITID`),
+  ADD KEY `ST_HD_ID` (`ST_HD_ID`),
+  ADD KEY `CFEEID` (`CFEEID`);
+
+--
+-- Indexes for table `fee_10_class_fee_in_a_session`
+--
+ALTER TABLE `fee_10_class_fee_in_a_session`
+  ADD PRIMARY KEY (`CFEESESSID`);
+
+--
+-- Indexes for table `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`USERNAME_`),
+  ADD KEY `USER_STATUS` (`STAFFID`);
+
+--
+-- Indexes for table `master_0_country_`
+--
+ALTER TABLE `master_0_country_`
+  ADD PRIMARY KEY (`ABREV_`);
+
+--
+-- Indexes for table `master_1_zone_`
+--
+ALTER TABLE `master_1_zone_`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `master_2_zone_region`
+--
+ALTER TABLE `master_2_zone_region`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `master_4_city_`
+--
+ALTER TABLE `master_4_city_`
+  ADD PRIMARY KEY (`NAME_`);
+
+--
+-- Indexes for table `master_5_user_status`
+--
+ALTER TABLE `master_5_user_status`
+  ADD PRIMARY KEY (`ST_ID`);
+
+--
+-- Indexes for table `master_6_session`
+--
+ALTER TABLE `master_6_session`
+  ADD PRIMARY KEY (`SESSID`);
+
+--
+-- Indexes for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  ADD PRIMARY KEY (`STUD_ID`),
+  ADD UNIQUE KEY `regid_2` (`regid`),
+  ADD KEY `regid` (`regid`);
+
+--
+-- Indexes for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  ADD PRIMARY KEY (`AC_ID`),
+  ADD UNIQUE KEY `regid_3` (`regid`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  ADD PRIMARY KEY (`ADDRID`),
+  ADD KEY `CITY_` (`CITY_`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  ADD PRIMARY KEY (`CNTCT_ID`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `regid_2` (`regid`);
+
+--
+-- Indexes for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  ADD PRIMARY KEY (`gradeID`);
+
+--
+-- Indexes for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  ADD PRIMARY KEY (`subjectID`);
+
+--
+-- Indexes for table `master_13_staff`
+--
+ALTER TABLE `master_13_staff`
+  ADD PRIMARY KEY (`teacherID`);
+
+--
+-- Indexes for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  ADD PRIMARY KEY (`tasID`);
+
+--
+-- Indexes for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  ADD PRIMARY KEY (`submarkID`),
+  ADD KEY `subjectID` (`subjectID`);
+
+--
+-- Indexes for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  ADD PRIMARY KEY (`DID`);
+
+--
+-- Indexes for table `master_17_general`
+--
+ALTER TABLE `master_17_general`
+  ADD PRIMARY KEY (`SCH_ID`);
+
+--
+-- Indexes for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  ADD PRIMARY KEY (`ID_`);
+
+--
+-- Indexes for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  ADD PRIMARY KEY (`SUBMENUID`),
+  ADD KEY `ID_` (`ID_`);
+
+--
+-- Indexes for table `register_discount`
+--
+ALTER TABLE `register_discount`
+  ADD PRIMARY KEY (`regid`);
+
+--
+-- Indexes for table `register_sibling`
+--
+ALTER TABLE `register_sibling`
+  ADD PRIMARY KEY (`regid`);
+
+--
+-- Indexes for table `register_with_us`
+--
+ALTER TABLE `register_with_us`
+  ADD PRIMARY KEY (`regid`),
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- Indexes for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `MENU` (`MENU`),
+  ADD KEY `USER_` (`USER_`);
+
+--
+-- Indexes for table `_drop_students`
+--
+ALTER TABLE `_drop_students`
+  ADD PRIMARY KEY (`DROPSTDID`),
+  ADD KEY `regid` (`regid`),
+  ADD KEY `USERNAME_` (`USERNAME_`);
+
+--
+-- Indexes for table `_fee_sms`
+--
+ALTER TABLE `_fee_sms`
+  ADD PRIMARY KEY (`FEESMSID`);
+
+--
+-- Indexes for table `_id_`
+--
+ALTER TABLE `_id_`
+  ADD KEY `SESSIONID` (`SESSIONID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `class_2_in_session`
+--
+ALTER TABLE `class_2_in_session`
+  MODIFY `CLSSESSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=545;
+--
+-- AUTO_INCREMENT for table `class_3_class_wise_students`
+--
+ALTER TABLE `class_3_class_wise_students`
+  MODIFY `ID_` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=319;
+--
+-- AUTO_INCREMENT for table `class_4_class_wise_attendance`
+--
+ALTER TABLE `class_4_class_wise_attendance`
+  MODIFY `ATTID` bigint(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1187;
+--
+-- AUTO_INCREMENT for table `exam_1_scholastic_items`
+--
+ALTER TABLE `exam_1_scholastic_items`
+  MODIFY `itemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `exam_2_add_scholastic_to_class`
+--
+ALTER TABLE `exam_2_add_scholastic_to_class`
+  MODIFY `ADDSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+--
+-- AUTO_INCREMENT for table `exam_3_coscholastic_items`
+--
+ALTER TABLE `exam_3_coscholastic_items`
+  MODIFY `coitemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `exam_4_add_coscholastic_to_class`
+--
+ALTER TABLE `exam_4_add_coscholastic_to_class`
+  MODIFY `ADDCOSCHCLASSID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `exam_5_term`
+--
+ALTER TABLE `exam_5_term`
+  MODIFY `termID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `exam_6_scholastic_result`
+--
+ALTER TABLE `exam_6_scholastic_result`
+  MODIFY `schID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+--
+-- AUTO_INCREMENT for table `exam_7_coscholastic_result`
+--
+ALTER TABLE `exam_7_coscholastic_result`
+  MODIFY `coschID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+--
+-- AUTO_INCREMENT for table `exam_8_result_subject_total`
+--
+ALTER TABLE `exam_8_result_subject_total`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `exam_9_result_remarks`
+--
+ALTER TABLE `exam_9_result_remarks`
+  MODIFY `resultsubtotalID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+--
+-- AUTO_INCREMENT for table `fee_2`
+--
+ALTER TABLE `fee_2`
+  MODIFY `feeID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `fee_3_static_heads`
+--
+ALTER TABLE `fee_3_static_heads`
+  MODIFY `ST_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `fee_4_flexible_heads`
+--
+ALTER TABLE `fee_4_flexible_heads`
+  MODIFY `FLX_HD_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `fee_5_add_flexi_head_to_students`
+--
+ALTER TABLE `fee_5_add_flexi_head_to_students`
+  MODIFY `ADFLXFEESTUDID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+--
+-- AUTO_INCREMENT for table `fee_6_invoice`
+--
+ALTER TABLE `fee_6_invoice`
+  MODIFY `INVID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+--
+-- AUTO_INCREMENT for table `fee_6_invoice_detail`
+--
+ALTER TABLE `fee_6_invoice_detail`
+  MODIFY `INVDETID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+--
+-- AUTO_INCREMENT for table `fee_7_receipts`
+--
+ALTER TABLE `fee_7_receipts`
+  MODIFY `RECPTID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `fee_8_class_fee`
+--
+ALTER TABLE `fee_8_class_fee`
+  MODIFY `CFEEID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `fee_9_class_fee_split`
+--
+ALTER TABLE `fee_9_class_fee_split`
+  MODIFY `CFEESPLITID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- AUTO_INCREMENT for table `master_7_stud_personal`
+--
+ALTER TABLE `master_7_stud_personal`
+  MODIFY `STUD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_8_stud_academics`
+--
+ALTER TABLE `master_8_stud_academics`
+  MODIFY `AC_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_9_stud_address`
+--
+ALTER TABLE `master_9_stud_address`
+  MODIFY `ADDRID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=877;
+--
+-- AUTO_INCREMENT for table `master_10_stud_contact`
+--
+ALTER TABLE `master_10_stud_contact`
+  MODIFY `CNTCT_ID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
+--
+-- AUTO_INCREMENT for table `master_11_grading`
+--
+ALTER TABLE `master_11_grading`
+  MODIFY `gradeID` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `master_12_subject`
+--
+ALTER TABLE `master_12_subject`
+  MODIFY `subjectID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+--
+-- AUTO_INCREMENT for table `master_13_staff`
+--
+ALTER TABLE `master_13_staff`
+  MODIFY `teacherID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `master_14_teacher_wise_subject`
+--
+ALTER TABLE `master_14_teacher_wise_subject`
+  MODIFY `tasID` int(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `master_15_subject_marks`
+--
+ALTER TABLE `master_15_subject_marks`
+  MODIFY `submarkID` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `master_16_discount`
+--
+ALTER TABLE `master_16_discount`
+  MODIFY `DID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `master_17_general`
+--
+ALTER TABLE `master_17_general`
+  MODIFY `SCH_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `menu_1`
+--
+ALTER TABLE `menu_1`
+  MODIFY `ID_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `menu_2_submenu`
+--
+ALTER TABLE `menu_2_submenu`
+  MODIFY `SUBMENUID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `_drop_students`
+--
+ALTER TABLE `_drop_students`
+  MODIFY `DROPSTDID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `_fee_sms`
+--
+ALTER TABLE `_fee_sms`
+  MODIFY `FEESMSID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
