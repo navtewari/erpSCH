@@ -29,6 +29,8 @@
 					<li class="bg_lb"> <a href="<?php echo site_url('DashboardReports/get_todays_collection');?>"> <span class="label label-important"><?php echo $figure['todays_receipt_count']; ?></span> Todays Collection<br><b style="color:#ffff00">Rs. <?php echo number_format($figure['todays_collection'],0,".",","); ?> /-</b>  </a> </li>
 
 					<li class="bg_lg"> <a href="<?php echo site_url('DashboardReports/get_total_collection');?>"> <span class="label label-important"><?php echo $figure['total_receipt_count']; ?></span> Total Collection<br><b style="color:#ffff00">Rs. <?php echo number_format($figure['total_fee_collected'],0,".",","); ?> /-</b>  </a> </li>
+
+					<li class="bg_lr"> <a href="<?php echo site_url('DashboardReports/get_total_dues_in_a_session');?>"> <span class="label label-success"><?php echo $figure['total_student_having_dues']; ?></span> Total Dues<br><b style="color:#ffff00">Rs. <?php echo number_format($figure['total_dues_in_a_session'],0,".",","); ?> /-</b>  </a> </li>
 				</ul>
 			</div>
 		</div>

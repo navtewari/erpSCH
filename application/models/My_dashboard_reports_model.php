@@ -22,6 +22,8 @@ class My_dashboard_reports_model extends CI_Model {
         $data['total_receipt_count'] = $this->total_receipt_count($year__);
         $data['todays_collection']= $this->todays_collection();
         $data['todays_receipt_count'] = $this->todays_receipt_count();
+        $data['total_dues_in_a_session'] = $this->total_dues_in_a_session();
+        $data['total_student_having_dues'] = $this->total_student_having_dues_in_a_session();
         return $data;
     }
 
@@ -296,6 +298,99 @@ class My_dashboard_reports_model extends CI_Model {
             $value = 0;
         }
         return $value;
+    }
+
+    function total_dues_in_a_session($clssessid='x'){
+        if($clssessid != 'x'){
+            $this->db->where('a.CLSSESSID', $clssessid);
+        }
+        $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.STATUS', 1); // means latest invoice
+        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->select('SUM(b.DUE_AMOUNT) AS DUES');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_8_stud_academics d', 'b.regid=d.regid');
+        $query = $this->db->get();
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->DUES != NULL){
+                $value = $r->DUES;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+
+    function total_student_having_dues_in_a_session(){
+        $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.STATUS', 1); // means latest invoice
+        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->select('COUNT(b.DUE_AMOUNT) AS DUES');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_8_stud_academics d', 'b.regid=d.regid');
+        $query = $this->db->get();
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            if($r->DUES != NULL){
+                $value = $r->DUES;
+            } else {
+                $value = 0;
+            }
+        } else {
+            $value = 0;
+        }
+        return $value;
+    }
+
+    function get_total_dues_in_a_session($year_='x', $clssessid='x'){     
+        if($year_ != 'x'){
+            $this->db->where('x.SESSID', $year_);
+        }
+        if($clssessid != 'x'){
+            $this->db->where('x.CLSSESSID', $clssessid);   
+        }
+        $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
+        $this->db->where('b.STATUS', 1); // means latest invoice   
+        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.STATIC_HEADS_1_TIME, b.STATIC_HEADS_N_TIMES, b.FLEXIBLE_HEADS_1_TIME, b.FLEXIBLE_HEADS_N_TIMES, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT');
+        $this->db->from('class_1_classes y');
+        $this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
+        $this->db->join('fee_6_invoice a', 'x.CLSSESSID=a.CLSSESSID');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_7_stud_personal c', 'c.regid=b.REGID');
+        $this->db->join('master_8_stud_academics d', 'd.regid=c.regid');
+        $this->db->order_by('ABS(a.YEAR_FROM)', 'desc');
+        $this->db->order_by('ABS(a.MONTH_FROM)', 'desc');
+        $this->db->order_by('c.regid');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getClasses_in_session_having_dues($session){
+        $year__ = $session;
+        $this->db->select('a.CLASSID, b.CLSSESSID, SUM(d.DUE_AMOUNT) AS DUES');
+        $this -> db -> where ('b.SESSID', $year__);
+        $this -> db -> where('e.STATUS_', 1);
+        $this -> db -> where('d.STATUS', 1);
+        $this->db->where('d.DUE_AMOUNT<>', 0);
+        $this -> db -> order_by('ABS(a.CLASSID)');
+        $this -> db -> order_by('a.SECTION');
+        $this -> db -> group_by('b.CLSSESSID');
+        $this -> db -> from('class_1_classes a');
+        $this -> db -> join('class_2_in_session b', 'a.CLASSID=b.CLASSID');
+        $this -> db -> join('fee_6_invoice c', 'b.CLSSESSID=c.CLSSESSID');
+        $this -> db -> join('fee_6_invoice_detail d', 'c.INVID=d.INVID');
+        $this -> db -> join('master_8_stud_academics e', 'e.regid=d.regid');
+        $query = $this -> db -> get();
+
+        return $query -> result();
     }
 
 }

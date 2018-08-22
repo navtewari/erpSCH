@@ -17,8 +17,9 @@
                             <tr class="gradeX">
                                 <td>
                                     <div style="font-size: 12px; padding: 0px 2px;">
-                                        <a href="#" id="class~<?php echo $class_->CLSSESSID;?>~ID~<?php echo $class_->CLASSID;?>" class="classwise_invoices">
-                                            <?php echo 'Class ' . $class_->CLASSID;?>        
+                                        <a href="#" id="class~<?php echo $class_->CLSSESSID;?>~ID~<?php echo $class_->CLASSID;?>" class="classwise_dues">
+                                            <?php echo 'Class ' . $class_->CLASSID;?>       
+                                        <div style="background: #CCFCF9; padding: 0px 5px; border: #96EAFD solid 1px; border-radius: 5px; width: auto; float: right">Rs. <?php echo $class_->DUES; ?> /-</div>
                                         </a>
                                     </div>
                                 </td>
@@ -32,24 +33,23 @@
     <div class="span9">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5 id="invoice_for_class">Invoice(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
+                <h5 id="dues_for_class">Total Due(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
+                <h5 style="float: right">Total Dues: <b style="color:#ff0000">Rs. <?php echo number_format($figure['total_dues_in_a_session'],0,".",","); ?> /-</b></h5>
             </div>
             <div class="widget-content nopadding" style="overflow-y: scroll; overflow-x: auto; height: 450px; padding: 5px">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>INV. ID</th>
-                            <th>Class</th>
-                            <th style="text-align: left">RegID</th>
-                            <th style="text-align: left">Name</th>
-                            <th style="text-align: right">Previous Due</th>
-                            <th style="text-align: right">Invoice Amount</th>
-                            <th style="text-align: right">Need to Pay</th>
-                            <th></th>
+                            <th>INV ID</th>
+                            <th style="text-align: left; width: 100px; vertical-align: middle;">Duration</th>
+                            <th style="text-align: left; vertical-align: middle;">Months</th>
+                            <th style="text-align: left; vertical-align: middle;">RegID</th>
+                            <th style="text-align: left; width: 100px; vertical-align: middle;">Name</th>
+                            <th style="text-align: left; width: 100px; vertical-align: middle;">Applied Heads</th>
+                            <th style="text-align: right; vertical-align: middle;" id="dues_from_class">Amount Due (Rs.)</th>
                         </tr>
                     </thead>
-                    <tbody id="student_invoice_data_here" style="font-size: 12px">
+                    <tbody id="student_dues_data_here" style="font-size: 12px">
                     </tbody>
                 </table>
             </div>

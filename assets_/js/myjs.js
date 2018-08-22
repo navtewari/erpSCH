@@ -1612,7 +1612,7 @@ $(function(){
 			$('#show_message').css('display', 'none');
 			$('#show_message').html("");
 			data_ = $('#frmInvoice').serialize();
-	        
+	        $("#class_invoices_here").html("<h5 style='text-align: center'>Please wait...</h5>");
                 // Fetching form data
                 var year_from = parseInt($('#cmbYearFromForInvoice').val(),10);
                 var month_from = parseInt($('#cmbMonthFromForInvoice').val(),10);
@@ -3511,8 +3511,8 @@ $(function(){
                             str = str + obj.receipts[i].ACTUAL_PAID_AMT;
                             str = str + '</td>';
                             str = str + '<td style="text-align: right">';
-                            $discount = (obj.receipts[i].DISCOUNT_AMOUNT != 0) ? obj.receipts[i].DISCOUNT_AMOUNT: '';
-                            str = str + $discount;
+                            discount = (obj.receipts[i].DISCOUNT_AMOUNT != 0) ? obj.receipts[i].DISCOUNT_AMOUNT: '';
+                            str = str + discount;
                             str = str + '</td>';
                             str = str + '<td style="text-align: right">';
                             $fine = (obj.receipts[i].FINE != 0) ? obj.receipts[i].FINE : '';
@@ -3534,6 +3534,86 @@ $(function(){
 					$('#student_receipts_data_here').html(xhr.responsetext);
 				}
 			});
+		});
+
+		$('body').on('click', '.classwise_dues', function(){
+			var str = this.id;
+			var arr_ = str.split('~');
+			var data_ = "clssessid="+arr_[1];
+			var show_class = arr_[3];
+			var url_ = site_url_+'/dashboardReports/get_total_dues_via_ajax';
+			$('#dues_for_class').html("Total Due(s) in <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
+			$("#student_dues_data_here").html("<tr><td colspan='6'><h5 style='text-align: center'>Please wait...</h5></td></tr>");
+			$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'></span>");
+			$.ajax({
+				type: "POST",
+				url: url_,
+				data: data_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str = '';
+					var total_dues = obj.total_dues.length;
+					$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'>Rs. "+obj.total_class_dues+"/-</span>")
+					if(total_dues > 0){
+						for(i=0; i< total_dues; i++){
+							var duration = obj.total_dues[i].YEAR_FROM+", "+obj.fetch_month[obj.total_dues[i].MONTH_FROM]+" <b style='color:#000090'>to</b><br> "+obj.total_dues[i].YEAR_TO+", "+obj.fetch_month[obj.total_dues[i].MONTH_TO];
+							var css_class = ' class="view_invoice_1"';
+							str = str + '<tr class="gradeX">';
+                            str = str + '<td style="text-align: center">';
+                            str = str + obj.total_dues[i].INVDETID;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left;">';
+                            str = str + duration;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left;">';
+                            str = str + obj.total_dues[i].NOM;
+                            str = str + '</td>';
+                            str = str + '<td>';
+                            str = str + obj.total_dues[i].regid;
+                            str = str + '</td>';
+                            str = str + '<td>';
+                            str = str + obj.total_dues[i].FNAME;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left">';
+                            var sth1 = obj.total_dues[i].STATIC_HEADS_1_TIME;
+                            var sth1 = sth1.split(',');
+                            for(temp=0;temp<sth1.length;temp++){
+                            	sth1[temp] = sth1[temp].split('@')[0];
+                            }
+                            var sthn = obj.total_dues[i].STATIC_HEADS_N_TIMES;
+                            var sthn = sthn.split(',');
+                            for(temp=0;temp<sthn.length;temp++){
+                            	sthn[temp] = sthn[temp].split('@')[0];
+                            }
+                            var flx1 = obj.total_dues[i].FLEXIBLE_HEADS_1_TIME;
+                            var flx1 = flx1.split(',');
+                            for(temp=0;temp<flx1.length;temp++){
+                            	flx1[temp] = flx1[temp].split('@')[0];
+                            }temp
+                            var flxn = obj.total_dues[i].FLEXIBLE_HEADS_N_TIMES;
+                            var flxn = flxn.split(',');
+                            for(temp=0;temp<flxn.length;temp++){
+                            	flxn[temp] = flxn[temp].split('@')[0];
+                            }
+                            var heads_ =$.merge([], sth1);
+                            heads_ = $.merge(heads_, sthn);
+                            heads_ = $.merge(heads_, flx1);
+                            heads_ = $.merge(heads_, flxn);
+                            heads_ = heads_.join('| ')
+                            str = str + heads_
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: right">';
+                            str = str + obj.total_dues[i].DUE_AMOUNT+" /-";
+                            str = str + '</td>';
+                            str = str + '</tr>';
+						}
+					} else {
+						str = "<td colspan='8' style='color: #ff0000; text-align: center; font-weight: bold; padding:10px'>No Dues Left...</td>";
+					}
+					$('#student_dues_data_here').html(str);
+				}
+			});
+			
 		});
 	// -----------------
 	// Popup boxes

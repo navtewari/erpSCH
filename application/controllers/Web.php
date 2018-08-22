@@ -118,13 +118,13 @@ class Web extends CI_Controller {
                 $data['page_'] = 'fee';
                 $data['title_'] = 'Manage Invoice';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
-                $data['fetch_month'] = $this->getMonths();
+                $data['fetch_month'] = $this->my_library->getMonths();
                 break;
             case 13:
                 $data['page_'] = 'fee';
                 $data['title_'] = 'Pay Fee';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
-                $data['fetch_month'] = $this->getMonths();
+                $data['fetch_month'] = $this->my_library->getMonths();
                 break;
             case 14:
                 $data['page_'] = 'promote';
@@ -209,11 +209,6 @@ class Web extends CI_Controller {
         $nextyr = date('y')+1;
         $live_ = $thisyr . "-" . $nextyr;
         $this->session->set_userdata('live__' , $live_);
-    }
-
-    function getMonths(){
-        $data = array(1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July', 8=>'August', 9=>'September', 10=>'October', 11=>'November', 12=>'December');
-        return $data;
     }
 
 }
