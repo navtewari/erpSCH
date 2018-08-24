@@ -108,12 +108,12 @@
 
                         <td align='center' width="33%" style="background: #f0e6ef">                              
                             <h4>CLASS<br> IX - XII</h4>
-                            <input type='radio' value='1' name='reportLayout' class='form-control'/>                           
+                            <input type='radio' value='2' name='reportLayout' class='form-control'/>                           
                         </td>
 
                         <td align='center' width="34%" style="background: #eff2f2">                              
                             <h4>CLASS<br> Nursery - UKG</h4>
-                            <input type='radio' value='1' name='reportLayout' class='form-control'/>                           
+                            <input type='radio' value='3' name='reportLayout' class='form-control'/>                           
                         </td>
                     </tr>
                 </table>               
