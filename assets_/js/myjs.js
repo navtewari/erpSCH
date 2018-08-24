@@ -3543,7 +3543,7 @@ $(function(){
 			var show_class = arr_[3];
 			var url_ = site_url_+'/dashboardReports/get_total_dues_via_ajax';
 			$('#dues_for_class').html("Total Due(s) in <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
-			$("#student_dues_data_here").html("<tr><td colspan='6'><h5 style='text-align: center'>Please wait...</h5></td></tr>");
+			$("#student_dues_data_here").html("<tr><td colspan='7'><h5 style='text-align: center'>Please wait...</h5></td></tr>");
 			$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'></span>");
 			$.ajax({
 				type: "POST",
@@ -3602,7 +3602,11 @@ $(function(){
                             heads_ = heads_.join('| ')
                             str = str + heads_
                             str = str + '</td>';
-                            str = str + '<td style="text-align: right">';
+                            if(obj.total_dues[i].DUE_AMOUNT <= 0){
+                            	str = str + '<td style="text-align: right; color: #07BF3F" title="No Dues">';
+                        	} else {
+                        		str = str + '<td style="text-align: right" title="Dues">';
+                        	}
                             str = str + obj.total_dues[i].DUE_AMOUNT+" /-";
                             str = str + '</td>';
                             str = str + '</tr>';
