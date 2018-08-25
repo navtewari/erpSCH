@@ -3602,11 +3602,7 @@ $(function(){
                             heads_ = heads_.join('| ')
                             str = str + heads_
                             str = str + '</td>';
-                            if(obj.total_dues[i].DUE_AMOUNT <= 0){
-                            	str = str + '<td style="text-align: right; color: #07BF3F" title="No Dues">';
-                        	} else {
-                        		str = str + '<td style="text-align: right" title="Dues">';
-                        	}
+                            str = str + '<td style="text-align: right" title="Dues">';
                             str = str + obj.total_dues[i].DUE_AMOUNT+" /-";
                             str = str + '</td>';
                             str = str + '</tr>';

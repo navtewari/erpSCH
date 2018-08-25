@@ -307,7 +307,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('b.STATUS', 1); // means latest invoice
-        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->where('b.DUE_AMOUNT>', 0);
         $this->db->select('SUM(b.DUE_AMOUNT) AS DUES');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
@@ -330,7 +330,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('b.STATUS', 1); // means latest invoice
-        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->where('b.DUE_AMOUNT>', 0);
         $this->db->select('COUNT(b.DUE_AMOUNT) AS DUES');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
@@ -358,7 +358,7 @@ class My_dashboard_reports_model extends CI_Model {
         }
         $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
         $this->db->where('b.STATUS', 1); // means latest invoice   
-        $this->db->where('b.DUE_AMOUNT<>', 0);
+        $this->db->where('b.DUE_AMOUNT>', 0);
         $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.STATIC_HEADS_1_TIME, b.STATIC_HEADS_N_TIMES, b.FLEXIBLE_HEADS_1_TIME, b.FLEXIBLE_HEADS_N_TIMES, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT');
         $this->db->from('class_1_classes y');
         $this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
@@ -379,7 +379,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this -> db -> where ('b.SESSID', $year__);
         $this -> db -> where('e.STATUS_', 1);
         $this -> db -> where('d.STATUS', 1);
-        $this->db->where('d.DUE_AMOUNT<>', 0);
+        $this->db->where('d.DUE_AMOUNT>', 0);
         $this -> db -> order_by('ABS(a.CLASSID)');
         $this -> db -> order_by('a.SECTION');
         $this -> db -> group_by('b.CLSSESSID');
