@@ -51,12 +51,12 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('c.CLSSESSID',$classessid);
         $this->db->where('c.SESSID', $session);
         
-        $this->db->order_by('a.regid');
+        $this->db->order_by('a.FNAME');
         $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, b.CLASS_OF_ADMISSION, b.DOA, a.CATEGORY, d.CLASSID');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
-        $this->db->join('class_2_in_session d', 'b.CLASS_OF_ADMISSION=d.CLSSESSID');
         $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
+        $this->db->join('class_2_in_session d', 'c.CLSSESSID=d.CLSSESSID');
         
         $query = $this->db->get();
 

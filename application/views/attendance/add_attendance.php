@@ -54,6 +54,7 @@
                     <div class="controls">
                         <div class="controls span3">
                         <?php
+                                $hour_ = array('7', '8', '9', '10', '11', '12', '1', '2', '3', '4', '5', '6');
                                 $data = array(
                                     'name' => 'attendanceHour',
                                     'id' => 'attendanceHour',
@@ -61,8 +62,8 @@
                                 );
                                 $options = array();
                                 $options['x'] = 'HR';
-                                for($i=1; $i<=12; $i++){
-                                	$options[$i] = $i;
+                                foreach($hour_ as $i){
+                                    $options[$i] = $i;
                                 }
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>

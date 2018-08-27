@@ -207,6 +207,7 @@ class DashboardReports extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }
+    
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

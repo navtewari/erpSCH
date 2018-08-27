@@ -38,7 +38,6 @@
                         <tr>
                             <th style="text-align: left">Class</th>
                             <th>Total Student(s)</th>
-                            <th>Download</th>
                         </tr>
                     </thead>
                     <tbody id="student_data_here" style="font-size: 12px">
@@ -55,13 +54,6 @@
                                         <div style="background: #00AFEC; color: #ffffff; padding: 0px 2px; min-width: 10px; max-width: 50px; border-radius: 8px">
                                             <a href="#" id="<?php echo $stduents->CLSSESSID."~".$stduents->CLASSID;?>" style="color: #ffffff" class="show_students_as_per_class"><?php echo $stduents->TOTAL_STUDENTS; ?></a>
                                         </div>
-                                    </center>
-                                </td>
-                                <td>
-                                    <center>
-                                    <a href="<?php echo site_url('exporting/toCsv/'.$stduents->CLSSESSID.'/'.$stduents->CLASSID);?>">
-                                        <div style="padding: 0px 3px; background: #65c71d; color: #ffffff; font-weight: bold; width: 50px; border-radius: 5px"><li class="icon-download-alt">.csv</li></div>
-                                    </a>
                                     </center>
                                 </td>
                             </tr>

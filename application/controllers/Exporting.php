@@ -1,13 +1,21 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-
-class ExportDataInDifferentFormats extends CI_Controller
+class Exporting extends CI_Controller
 {
+    function __construct(){
+        parent::__construct();
+        $this->load->model('my_export_model', 'mem');
+    }
 
-	function index(){
+	function toCsv($clssessid, $cls){
+        $this->mem->toCsv($clssessid, $cls);
+    }
 
+    function backup(){
+        $backup = $this->mem->backup();
+    }
+
+    function pendingCode_notWorking(){
         require APPATH . '/third_party/PHPExcel/Classes/PHPExcel.php';
         require APPATH . '/third_party/PHPExcel/Classes/PHPExcel/writer/Excel2007.php';
         $data['lgn'] = $this->mm->getlogin();
