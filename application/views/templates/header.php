@@ -66,13 +66,17 @@
                             <li class=""><a title="" href="<?php echo site_url('web/dashboard/2/9/general'); ?>"><i class="icon icon-edit"></i> <span class="text">Change School Profile</span></a></li>                                           
                             <li class="divider"></li>
                         <?php } ?>
-                        <li><a href="<?php echo site_url('login/logout'); ?>"><i class="icon-key"></i> Log Out</a></li>                                               
+                        <li><a href="<?php echo site_url('exporting/backup'); ?>"><i class="icon-envelope-alt"></i> Take Backup</a></li>                                               
                     </ul>
-                </li>                                
-                <li class=""><a title="" href="<?php echo site_url('login/logout'); ?>"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
-                </li>                                
+                </li>                                                              
+                <li class=""><a title="" style="color: #00ffff" href="<?php echo site_url('login/logout'); ?>"><i class="icon icon-key"></i> <span class="text">&nbsp;Log-out?</span></a></li>
                 <li class=""><a title="" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text"> &nbsp;Session <?php echo $this->session->userdata('_current_year___'); ?></span></a></li>
             </ul>
+            <?php if($this->session->userdata('bckup')){?>
+                <div style="margin-left: auto; margin-right: auto;border: #A0A0A0 dotted 1px; display: inline-block; position: absolute; top: 45px; background: #F7E563; color:#625600; padding: 0px 5px; border-radius: 5px; width: 80%"><?php echo $this->session->userdata('bckup');?><a href="#" onclick="$(this).parent().remove();" style="float: right"><span class="label label-important">X</span></a>
+                </div>
+            <?php $this->session->unset_userdata('bckup'); } ?>
+        </ul>
         </div>
         <!--close-top-Header-menu-->
 

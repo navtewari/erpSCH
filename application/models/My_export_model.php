@@ -35,12 +35,38 @@ class My_export_model extends CI_Model
     function backup(){
         $this->load->dbutil();
         $backup = $this->dbutil->backup();
-
+        $fake = 'Backup taken';
         // Load the file helper and write the file to your server
-        write_file(base_url('/assets_/mybackup.gz'), $backup);
-
+        $bckup_name = FCPATH . '/assets_/'.$this->session->userdata('db2').'/backup/'.date('d_m_Y h:i:s A').'_backup.gz';
+        write_file($bckup_name, $backup);
+        $this->email_db_backup($bckup_name); // Email the backup
         // Load the download helper and send the file to your desktop
-        force_download('mybackup.gz', $backup);
+        //force_download(date('d/m/Y h:i:s A').'_backup.gz', $fake);
+        $this->session->set_userdata('bckup', 'Backup successfully taken. Thank you.');
+    }
+
+
+    function email_db_backup($bckup_name) {
+        //-------------
+        $this->email->set_mailtype("html");
+
+        $msg_ = "<h2 style='color: #000090'>Attached Database Backup for ".$this->session->userdata('school_name')."</h2>";
+
+        $from_ = "ttchld@gmail.com";
+        $name_ = "Teamfreelancers.com";
+
+        $this->email->from($from_, $name_);
+        $this->email->to('ttchld@gmail.com');
+        $this->email->bcc('nitin.d12@gmail.com, navtewari@gmail.com');
+
+        $this->email->subject('Database Backup');
+        $this->email->message($msg_);
+        $this->email->attach($bckup_name);
+        if ($this->email->send()) {
+            $ret_data = "Thanks for your query. We will get back soon...";
+        } else {
+            $ret_data = "X: Server Error !! Try Again...";
+        }
     }
 
 }

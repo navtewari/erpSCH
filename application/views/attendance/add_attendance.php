@@ -66,7 +66,7 @@
                                     $options[$i] = $i;
                                 }
                             ?>
-                            <?php echo form_dropdown($data, $options, ''); ?>
+                            <?php echo form_dropdown($data, $options, date('h')); ?>
                         </div>
                         <div class="controls span3">
                             <?php
@@ -81,7 +81,7 @@
                                 	$options[$i] = $i;
                                 }
                             ?>
-                            <?php echo form_dropdown($data, $options, ''); ?>
+                            <?php echo form_dropdown($data, $options, date('i')); ?>
                         </div>
                         <div class="controls span4">
                             <?php
@@ -95,7 +95,7 @@
                                 $options['AM'] = 'AM';
                                 $options['PM'] = 'PM';
                             ?>
-                            <?php echo form_dropdown($data, $options, ''); ?>
+                            <?php echo form_dropdown($data, $options, date('A')); ?>
                             <input type="reset" value="" id="resetAttendForm" name="resetAttendForm" style="display: none;" />
                         </div>
                     </div>

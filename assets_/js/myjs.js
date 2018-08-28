@@ -2997,8 +2997,9 @@ $(function(){
 	                            	var str_html = '';
 	                            	for(i=0; i<obj.length; i++){
 		                            	str_html = str_html + "<tr>";
-		                            	str_html = str_html + "<td style='width:30px; text-align: left; background: #f0f0f0'>";
-		                            	str_html = str_html + "<input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj[i].regid+"' />";
+		                            	str_html = str_html + "<td style='width:30px; text-align: center; background: #f0f0f0'>";
+		                            	str_html = str_html + "<div style='float: left; padding: 1px; text-align: center'><input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj[i].regid+"' /></div>";
+		                            	str_html = str_html + "<div style='float: right; text-align: center; border-radius:5px; padding: 0px 2px; background:#ffff00; color:#ff0000; font-weight: bold' class='attd_status' id='"+obj[i].regid+"_status'>A</div>"
 		                            	str_html = str_html + "</td>";
 		                            	str_html = str_html + "<td style='width:120px; text-align: left; background: #ffffff'>";
 		                            	str_html = str_html + obj[i].regid;
@@ -3084,11 +3085,8 @@ $(function(){
 	        return false;
 	    });
 	    function resetAttendanceForm(){
-	    	$('#resetAttendForm').click();
+	    	//$('#resetAttendForm').click();
 	    	fillClasses_for_attendance();
-	    	$('#s2id_attendanceHour span').text('HR');
-	    	$('#s2id_attendanceMin span').text('MIN');
-	    	$('#s2id_attendanceAMPM span').text('AM/PM');
 	    	$('#atten_check').prop('checked', false);
 			$('#uniform-atten_check span').removeClass('checked');
 	    }
@@ -3118,9 +3116,15 @@ $(function(){
 	    	if($('#atten_check').prop('checked') == true){
 	    		$(".checkboxall").prop('checked', true);
 	        	$('.attendance_0_1').val('1');
+	        	$('.attd_status').html('P');
+	            $('.attd_status').css('color', '#009000');
+	            $('.attd_status').css('background', '#ffffff');
 	    	} else {
 	    		$(".checkboxall").prop('checked', false);
 	        	$('.attendance_0_1').val('0');
+	        	$('.attd_status').html('A');
+	            $('.attd_status').css('color', '#ff0000');
+	            $('.attd_status').css('background', '#ffff00');
 	    	}
 	    });
 	    
@@ -3128,8 +3132,14 @@ $(function(){
 	    $(".checkboxall").live('click', function(){
 	        if($('#'+this.id).prop( "checked" ) == true){
 	            $('#'+this.id+'_').val('1');
+	            $('#'+this.id+'_status').html('P');
+	            $('#'+this.id+'_status').css('color', '#009000');
+	            $('#'+this.id+'_status').css('background', '#ffffff');
 	        } else {
 	            $('#'+this.id+'_').val('0');
+	            $('#'+this.id+'_status').html('A');
+	            $('#'+this.id+'_status').css('color', '#ff0000');
+	            $('#'+this.id+'_status').css('background', '#ffff00');
 	        }
 	    });
 

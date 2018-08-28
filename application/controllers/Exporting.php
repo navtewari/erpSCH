@@ -13,6 +13,7 @@ class Exporting extends CI_Controller
 
     function backup(){
         $backup = $this->mem->backup();
+        redirect($_SERVER['HTTP_REFERER']);
     }
 
     function pendingCode_notWorking(){
