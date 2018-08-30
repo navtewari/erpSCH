@@ -1,5 +1,5 @@
 <!--sidebar-menu-->
-<div id="sidebar"><a href="#" class="visible-phone">               
+<div id="sidebar"><a href="#" class="visible-phone"> Menu </a>              
     <ul>               
         <?php foreach ($menu as $menu_item) {?>
             <?php 
