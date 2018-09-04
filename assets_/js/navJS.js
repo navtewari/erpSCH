@@ -1823,6 +1823,30 @@ $(function () {
             }
         });
     });
+
+    $('body').on('blur', '.textB', function () {
+        var assoID = this.id;
+        var arr_str = assoID.split('-');
+        var assoID = arr_str[1];
+        var ida = 'txt-' + assoID;
+        var contactNo = $('#' + ida).val();
+        url_ = site_url_ + "/master/submitStudentContact/" + assoID + "/" + contactNo;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });
+
     $(document).on('keyup', "input[type='text']", function () {
         if ($(this).attr('class') === "span7 txtPriority") {
             var priority = $(this).val();
@@ -2359,9 +2383,9 @@ $(function () {
     $(document).on("click", ".open-Dialog", function () {
         var stuId = $(this).attr('id');
         $(".modal-body #stuHiddenID").val(stuId);
-        var classsessID = $('#cmbClassforResult').val();       
+        var classsessID = $('#cmbClassforResult').val();
         $(".modal-body #classSessHiddenID").val(classsessID);
-    });  
+    });
 
     $('body').on('click', '.btnCopyRemarks', function () {
         var data_ = $(".tdRemarks").find("input[type='text']").val();
