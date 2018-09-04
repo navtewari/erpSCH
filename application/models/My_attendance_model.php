@@ -78,6 +78,35 @@ class My_attendance_model extends CI_Model {
         return $bool_;
     }
 
+    function checkExistingAttendance_with_data(){
+        $clssessid = $this->input->post('ClassSessid_');
+        $date_ = $this->input->post('date_');
+        $time_ = $this->input->post('time_');
+
+        $this -> db -> distinct();
+        $this -> db -> select('a.ATTID, a.regid, c.FNAME, a.STATUS');
+        $this -> db -> where('a.CLSSESSID',$clssessid);
+        $this -> db -> where('a.DATE_',$date_);
+        $this -> db -> where('a.TIME_',$time_);
+        $this -> db -> where('b.STATUS_', 1);
+        $this -> db -> from('class_4_class_wise_attendance a');
+        $this -> db -> join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this -> db -> join('master_7_stud_personal c', 'b.regid=c.regid');
+        $query = $this->db->get();
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
+        if($query->num_rows() != 0){
+            $bool_ = array('res_'=>2, 'record'=>$query->result());
+        } else {
+            $bool_ = array('res_'=>1, 'record'=>'x');
+        }
+
+        return $bool_;
+    }
+
     function takeattendance(){
 
         $clssessid = $this->input->post('cmbClassesForStudents');
@@ -88,25 +117,40 @@ class My_attendance_model extends CI_Model {
         if($query->num_rows()!=0){
             $row = $query->row();
             $class = $row->CLASSID;
+            $editingStatus = $this->input->post('status_of_editting');
             $obj = $this->input->post('hidden_attendance_status');
             $username = $this -> session -> userdata('_user___');
             $sessionid =  $this->session->userdata('_current_year___');
             $doe_ = date('Y-m-d H:i:s');
             $dt_ = $this->input->post('attendancedate');
             $time_ = $this->input->post('attendanceHour').":".$this->input->post('attendanceMin').":".$this->input->post('attendanceAMPM');
-
-            foreach($obj as $key => $value){
-                $data = array(
-                    'regid' => $key,
-                    'ROLLNO'=> 0,
-                    'CLSSESSID'=>$clssessid,
-                    'USERNAME_'=>$username,
-                    'DATE_' => $dt_,
-                    'TIME_' => $time_,
-                    'STATUS' => $value,
-                    'DOE_' => $doe_
-                    );
-                $bool_ = $this->db->insert('class_4_class_wise_attendance', $data);
+            if($editingStatus == 'new'){
+                foreach($obj as $key => $value){
+                    $data = array(
+                        'regid' => $key,
+                        'ROLLNO'=> 0,
+                        'CLSSESSID'=>$clssessid,
+                        'USERNAME_'=>$username,
+                        'DATE_' => $dt_,
+                        'TIME_' => $time_,
+                        'STATUS' => $value,
+                        'DOE_' => $doe_
+                        );
+                    $bool_ = $this->db->insert('class_4_class_wise_attendance', $data);
+                }
+            } else {
+                $objATTID = $this->input->post('hidden_attendance_id');
+                foreach($obj as $key => $value){
+                    $this->db->where('ATTID', $objATTID[$key]);
+                    $data = array(
+                        'USERNAME_'=>$username,
+                        'DATE_' => $dt_,
+                        'TIME_' => $time_,
+                        'STATUS' => $value,
+                        'DOE_' => $doe_
+                        );
+                    $bool_ = $this->db->update('class_4_class_wise_attendance', $data);
+                }
             }
   
             if($bool_== true){

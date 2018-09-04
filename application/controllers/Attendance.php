@@ -37,8 +37,9 @@ class Attendance extends CI_Controller {
     }
 
     function checkExistingAttendance(){
-        $bool_ = $this->mam->checkExistingAttendance();
-        echo $bool_;
+        //$bool_ = $this->mam->checkExistingAttendance();
+        $bool_ = $this->mam->checkExistingAttendance_with_data();
+        echo json_encode($bool_);
     }
 
     function takeattendance(){
@@ -46,7 +47,6 @@ class Attendance extends CI_Controller {
         $data['sms_check'] = $this->session->userdata('sms_loginto');
         echo json_encode($data);
     }
-
     function viewconsolidate(){
         $this -> check_login();
 

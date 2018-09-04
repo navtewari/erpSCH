@@ -138,7 +138,7 @@ class Web extends CI_Controller {
                 break;
             case 16:
                 $data['page_'] = 'attendance';
-                $data['title_'] = 'Add Attendance';
+                $data['title_'] = 'Add/ Update Attendance';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
             case 17:

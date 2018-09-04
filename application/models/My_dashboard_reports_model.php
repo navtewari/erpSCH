@@ -359,13 +359,14 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
         $this->db->where('b.STATUS', 1); // means latest invoice   
         $this->db->where('b.DUE_AMOUNT>', 0);
-        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.STATIC_HEADS_1_TIME, b.STATIC_HEADS_N_TIMES, b.FLEXIBLE_HEADS_1_TIME, b.FLEXIBLE_HEADS_N_TIMES, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT');
+        $this->db->select('x.CLASSID, x.CLSSESSID, c.FNAME, c.MNAME, c.LNAME, c.regid, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, b.STATIC_HEADS_1_TIME, b.STATIC_HEADS_N_TIMES, b.FLEXIBLE_HEADS_1_TIME, b.FLEXIBLE_HEADS_N_TIMES, b.INVDETID, b.ACTUAL_DUE_AMOUNT, b.PREV_DUE_AMOUNT, b.DUE_AMOUNT, e.MOBILE_S');
         $this->db->from('class_1_classes y');
         $this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
         $this->db->join('fee_6_invoice a', 'x.CLSSESSID=a.CLSSESSID');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('master_7_stud_personal c', 'c.regid=b.REGID');
         $this->db->join('master_8_stud_academics d', 'd.regid=c.regid');
+        $this->db->join('master_10_stud_contact e', 'd.regid=e.regid');
         $this->db->order_by('ABS(a.YEAR_FROM)', 'desc');
         $this->db->order_by('ABS(a.MONTH_FROM)', 'desc');
         $this->db->order_by('c.regid');
@@ -391,6 +392,22 @@ class My_dashboard_reports_model extends CI_Model {
         $query = $this -> db -> get();
 
         return $query -> result();
+    }
+
+    function submit_sms($class, $message, $no_of_sms, $number, $sender, $status){
+        $data = array(
+            'CLASS' => $class,
+            'CONTACTS' => $number,
+            'NOOFSMS' => $no_of_sms,
+            'MESSAGE' => $message,
+            'SESSID' =>$this->session->userdata('_current_year___'),
+            'DATE_' => date('Y-m-d H:i:s'),
+            'USERNAME_' => $this->session->userdata('_user___'),
+            'SENDERID' => $sender,
+            'STATUS_' => $status,
+            
+        );
+        $this->db->insert('_fee_reminders', $data);
     }
 
 }

@@ -230,6 +230,9 @@ $(function(){
 				$('.filename').text("No file selected");
 				$('#show_siblings').html('');
 				$('#show_discount').html('');
+				$('#cmbClassofAdmission').removeAttr('disabled', 'disabled');
+				$('#s2id_cmbClassofAdmission').removeClass('disabledbutton');
+				$('#txtAdmitStatus').val('new');
 				fillStudents();
 				fillClasses();
 				fillStates('cmbPState');
@@ -479,8 +482,17 @@ $(function(){
 						// Filling Personal & Academics Detail
 						if(jQuery.isEmptyObject(obj.personal_academics) == false){
 							$('#student_photo_here').html('<img src='+base_url_+'/assets_/'+_img_folder_+'/student_photo/'+obj.personal_academics.PHOTO_+' />');
-							$('#cmbClassofAdmission').val(obj.personal_academics.CLASS_OF_ADMISSION);
-							$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
+							if(obj.curr_sess_admission == 'current'){
+								$('#cmbClassofAdmission').removeAttr('disabled', 'disabled');
+								$('#s2id_cmbClassofAdmission').removeClass('disabledbutton');
+								$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
+								$('#cmbClassofAdmission').val(obj.personal_academics.CLASS_OF_ADMISSION);
+							} else {
+								$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID+" (Admitted in "+obj.personal_academics.SESSID+")");
+								$('#cmbClassofAdmission').attr('disabled', 'disabled');
+								$('#s2id_cmbClassofAdmission').addClass('disabledbutton');
+							}
+							$('#txtAdmitStatus').val(obj.curr_sess_admission);
 							if(obj.personal_academics.DOA != ''){
 								$('#txtDOA').val(obj.personal_academics.DOA);
 							}
@@ -499,6 +511,7 @@ $(function(){
 									$('#uniform-optStuFemale').addClass('focus');
 								}
 							}
+							$('#txtStudentAdhaarCardNo').val(obj.personal_academics.ADHAARCARD_STUDENT);
 							// Filling Parents Detail
 							$('#txtFatherName').val(obj.personal_academics.FATHER);
 							$('#txtFatherMobile').val(obj.personal_academics.F_MOBILE);
@@ -574,13 +587,16 @@ $(function(){
 		});
 		$('.submit_or_update_admission').click(function(e){
 			e.preventDefault();
-			if($('#cmbClassofAdmission').val() == ''){
+			if($('#cmbClassofAdmission').val() == '' && ($('#txtAdmitStatus').val() == 'new' || $('#txtAdmitStatus').val() == 'current') ){
 				callDanger("Please select Class of Admission !!");
 			} else if($('#txtFullName').val() == '') {
 				callDanger("Please fill student Name !!");
 			} else if($("#optStuMale").prop("checked")==false && $("#optStuFemale").prop("checked") == false){
 				callDanger("Please select gender. !!");
 			} else {
+				if($.trim($('#txtStudentAdhaarCardNo').val()) == ''){
+					$('#txtStudentAdhaarCardNo').val('x');
+				}
 				data_ = new FormData($('#frmAdmission')[0]);
 				url_ = site_url_ + "/reg_adm/update_Admission";
 				$.ajax({
@@ -2980,12 +2996,20 @@ $(function(){
 	                url     : url_,
 	                data    : checkdata_,
 	                success : function(data){
-	                    if(data == 1){
+	                	var obj0 = JSON.parse(data);
+	                	
+	                    if(obj0.res_ == 1){
+	                    	$('#status_of_editting').val('new');
 	                        if($('#cmbClassesForStudents').find('option:selected').text() == 'Select'){
-	                            $('#caption_for_class').html("STUDENTS FOR CLASS -");
+	                            $('#caption_for_class').html("ATTENDANCE FOR CLASS -");
 	                        } else {
-	                            $('#caption_for_class').html("STUDENTS FOR "+$('#cmbClassesForStudents').find('option:selected').text().toUpperCase());
+	                            $('#caption_for_class').html("ATTENDANCE FOR "+$('#cmbClassesForStudents').find('option:selected').text().toUpperCase());
 	                        }
+	                        $('#caption_for_class').css('color', '#666666');
+	                        $('.student_class_info').css('background', '#efefef');
+	                        $('#cmbAddClassSubmit').val('Submit Attendance');
+	                        $('#cmbAddClassSubmit').removeClass('btn-danger');
+	                        $('#cmbAddClassSubmit').addClass('btn-success');
 	                        url_ = site_url_ + '/attendance/getstudentsforclass';
 	                        data_ = 'ClassSessid_='+$('#cmbClassesForStudents').val();
 	                        $.ajax({
@@ -2998,13 +3022,13 @@ $(function(){
 	                            	for(i=0; i<obj.length; i++){
 		                            	str_html = str_html + "<tr>";
 		                            	str_html = str_html + "<td style='width:30px; text-align: center; background: #f0f0f0'>";
-		                            	str_html = str_html + "<div style='float: left; padding: 1px; text-align: center'><input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj[i].regid+"' /></div>";
-		                            	str_html = str_html + "<div style='float: right; text-align: center; border-radius:5px; padding: 0px 2px; background:#ffff00; color:#ff0000; font-weight: bold' class='attd_status' id='"+obj[i].regid+"_status'>A</div>"
+		                            	str_html = str_html + "<div style='float: left; padding: 0px 3px; text-align: center'><input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj[i].regid+"' /></div>";
+		                            	str_html = str_html + "<div style='float: left; text-align: center; border-radius:5px; padding: 0px 2px; background:transparent; color:#ff0000; font-weight: bold' class='attd_status' id='"+obj[i].regid+"_status'>Absent</div>"
 		                            	str_html = str_html + "</td>";
 		                            	str_html = str_html + "<td style='width:120px; text-align: left; background: #ffffff'>";
 		                            	str_html = str_html + obj[i].regid;
 		                            	str_html = str_html + "</td>";
-		                            	str_html = str_html + "<td style='width:auto; text-align: left; background: #f0f0f0'>";
+		                            	str_html = str_html + "<td style='width:auto; text-align: left; background: #ffffff'>";
 		                            	str_html = str_html + "<input type='hidden' class='attendance_0_1' name='hidden_attendance_status["+obj[i].regid+"]' id='"+obj[i].regid+"_' value='0' />"+obj[i].FNAME;
 		                            	str_html = str_html + "</td>";
 		                            	str_html = str_html + "</tr>";
@@ -3016,9 +3040,45 @@ $(function(){
 								}
 	                        });
 	                    } else {
-	                    	var str_html = '';
-	                        str_html = str_html + "<tr><td colspan='3' style='color: #ff0000; background: #ffffff; width:100%; border-radius: 5px; padding: 10px; text-align: center; font-size: 15px'>Attendance for <b>Class "+class_+"</b> with selected date & time is already entered. Please Select another class/ date/ time.</td></tr>";
-	                        $('#students_here').html(str_html);
+	                    	$('#status_of_editting').val('old');
+	                    	//var str_html = '';
+	                        //str_html = str_html + "<tr><td colspan='3' style='color: #ff0000; background: #ffffff; width:100%; border-radius: 5px; padding: 10px; text-align: center; font-size: 15px'>Attendance for <b>Class "+class_+"</b> with selected date & time is already entered. Please Select another class/ date/ time.</td></tr>";
+	                        var str_html = '';
+	                        if($('#cmbClassesForStudents').find('option:selected').text() == 'Select'){
+	                            $('#caption_for_class').html("ATTENDANCE FOR CLASS -");
+	                        } else {
+	                            $('#caption_for_class').html("UPDATE ATTENDANCE FOR "+$('#cmbClassesForStudents').find('option:selected').text().toUpperCase());
+	                        }
+	                        $('#caption_for_class').css('color', '#ffffff');
+	                        $('.student_class_info').css('background', '#ff0000');
+	                        $('#cmbAddClassSubmit').val('Update Attendance');
+	                        $('#cmbAddClassSubmit').removeClass('btn-success');
+	                        $('#cmbAddClassSubmit').addClass('btn-danger');
+	                            	for(i=0; i<obj0.record.length; i++){
+		                            	str_html = str_html + "<tr>";
+		                            	str_html = str_html + "<td style='width:30px; text-align: center; background: #f0f0f0'>";
+		                            	if(obj0.record[i].STATUS == 0){
+		                            		str_html = str_html + "<div style='float: left; padding: 0px 2px; text-align: center'><input type='checkbox' class='checkboxall' name='attendance_status' id='"+obj0.record[i].regid+"' /></div>";
+		                            		str_html = str_html + "<div style='float: left; text-align: center; border-radius:5px; padding: 0px 2px; background:transparent; color:#ff0000; font-weight: bold' class='attd_status' id='"+obj0.record[i].regid+"_status'>Absent</div>"
+		                            	} else {
+		                            		str_html = str_html + "<div style='float: left; padding: 0px 2px; text-align: center'><input type='checkbox' checked='checked' class='checkboxall' name='attendance_status' id='"+obj0.record[i].regid+"' /></div>";
+		                            		str_html = str_html + "<div style='float: left; text-align: center; border-radius:5px; padding: 0px 2px; background:transparent; color:#009000; font-weight: bold' class='attd_status' id='"+obj0.record[i].regid+"_status'>Present</div>"
+		                            	}
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "<td style='width:120px; text-align: left; background: #ffffff'>";
+		                            	str_html = str_html + obj0.record[i].regid;
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "<td style='width:auto; text-align: left; background: #ffffff'>";
+		                            	if(obj0.record[i].STATUS == 0){
+		                            	str_html = str_html + "<input type='hidden' class='attendance_0_1' name='hidden_attendance_status["+obj0.record[i].regid+"]' id='"+obj0.record[i].regid+"_' value='0' />"+obj0.record[i].FNAME;
+		                            	} else {
+		                            	str_html = str_html + "<input type='hidden' class='attendance_0_1' name='hidden_attendance_status["+obj0.record[i].regid+"]' id='"+obj0.record[i].regid+"_' value='1' />"+obj0.record[i].FNAME;	
+		                            	}
+		                            	str_html = str_html + "<input type='hidden' class='attendance_id' name='hidden_attendance_id["+obj0.record[i].regid+"]' id='"+obj0.record[i].ATTID+"_' value='"+obj0.record[i].ATTID+"' />";
+		                            	str_html = str_html + "</td>";
+		                            	str_html = str_html + "</tr>";
+	                            	}
+	                                $('#students_here').html(str_html);
 	                        
 	                    }
 	                }, error: function(xhr, status, error){
@@ -3026,7 +3086,7 @@ $(function(){
 					}
 	            });
 	        } else {
-	            $('#caption_for_class').html("STUDENTS FOR CLASS -");
+	            $('#caption_for_class').html("ATTENDANCE FOR CLASS -");
 	            $('#students_here').html('');
 	        }
 	    });
@@ -3046,7 +3106,7 @@ $(function(){
 	                        if(obj.no__['nos'].length != 0){
 	                            str = '';
 	                            moblength = obj.no__['nos'].length;
-	                            if(obj.sms_check != 'NA'){
+	                            if(obj.sms_check != 'NA' && $('#status_of_editting').val() == 'new'){
 		                            /* // This below code will be used when you want to send sms to absantee's parents */
 		                            for(i=0;i<moblength;i++){
 		                                if(i < moblength-1){
@@ -3068,7 +3128,9 @@ $(function(){
 									$('#myModal').modal('show');
 									/**/
 								}
-	                            callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
+								if($('#status_of_editting').val() == 'old'){
+	                            	callSuccess("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully updated.");
+	                        	}
 	                        }
 	                    } else if(obj.no__['messageNo'] == 2){   
 	                        $('#msg_here').html("Something goes wrong. Please try again...");
@@ -3115,16 +3177,18 @@ $(function(){
 	    $('#atten_check').change(function(){
 	    	if($('#atten_check').prop('checked') == true){
 	    		$(".checkboxall").prop('checked', true);
+	    		$('#selectall_label').html('De-Select All');
 	        	$('.attendance_0_1').val('1');
-	        	$('.attd_status').html('P');
+	        	$('.attd_status').html('Present');
 	            $('.attd_status').css('color', '#009000');
-	            $('.attd_status').css('background', '#ffffff');
+	            $('.attd_status').css('background', 'transparent');
 	    	} else {
 	    		$(".checkboxall").prop('checked', false);
+	    		$('#selectall_label').html('Select All');
 	        	$('.attendance_0_1').val('0');
-	        	$('.attd_status').html('A');
+	        	$('.attd_status').html('Absent');
 	            $('.attd_status').css('color', '#ff0000');
-	            $('.attd_status').css('background', '#ffff00');
+	            $('.attd_status').css('background', 'transparent');
 	    	}
 	    });
 	    
@@ -3132,14 +3196,14 @@ $(function(){
 	    $(".checkboxall").live('click', function(){
 	        if($('#'+this.id).prop( "checked" ) == true){
 	            $('#'+this.id+'_').val('1');
-	            $('#'+this.id+'_status').html('P');
+	            $('#'+this.id+'_status').html('Present');
 	            $('#'+this.id+'_status').css('color', '#009000');
-	            $('#'+this.id+'_status').css('background', '#ffffff');
+	            $('#'+this.id+'_status').css('background', 'transparent');
 	        } else {
 	            $('#'+this.id+'_').val('0');
-	            $('#'+this.id+'_status').html('A');
+	            $('#'+this.id+'_status').html('Absent');
 	            $('#'+this.id+'_status').css('color', '#ff0000');
-	            $('#'+this.id+'_status').css('background', '#ffff00');
+	            $('#'+this.id+'_status').css('background', 'transparent');
 	        }
 	    });
 
@@ -3547,11 +3611,15 @@ $(function(){
 		});
 
 		$('body').on('click', '.classwise_dues', function(){
+			$('#chkReminderALL').prop('checked', false);
+			$('#uniform-chkReminderALL span').removeClass('checked');
+			$('#selectall_reminder').html('Select All');
 			var str = this.id;
 			var arr_ = str.split('~');
 			var data_ = "clssessid="+arr_[1];
 			var show_class = arr_[3];
 			var url_ = site_url_+'/dashboardReports/get_total_dues_via_ajax';
+			$('#class_reminder').val(show_class);
 			$('#dues_for_class').html("Total Due(s) in <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
 			$("#student_dues_data_here").html("<tr><td colspan='7'><h5 style='text-align: center'>Please wait...</h5></td></tr>");
 			$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'></span>");
@@ -3571,6 +3639,12 @@ $(function(){
 							str = str + '<tr class="gradeX">';
                             str = str + '<td style="text-align: center">';
                             str = str + obj.total_dues[i].INVDETID;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left">';
+                            str = str + '<div style="float: left; margin: 0px 2px">';
+                            str = str + '<input type="checkbox" class="chkReminder" name="chkReminder" value="'+obj.total_dues[i].MOBILE_S+'" id="'+obj.total_dues[i].regid+'_'+obj.total_dues[i].INVDETID+'_'+obj.total_dues[i].MOBILE_S+'">';
+                            str = str + '</div>';
+                            str = str + '<div style="float: left" class="label_reminder" id="label_'+obj.total_dues[i].regid+'"></div>'
                             str = str + '</td>';
                             str = str + '<td style="text-align: left;">';
                             str = str + duration;
@@ -3625,6 +3699,74 @@ $(function(){
 			});
 			
 		});
+	$('#chkReminderALL').click(function(){
+		if($('.chkReminder').length != 0){
+			if($('#chkReminderALL').prop('checked') == true){
+					$('#selectall_reminder').html('De-Select All');
+					$(".chkReminder").prop('checked', true);
+
+					$('.label_reminder').removeClass('transparent-label');
+					$('.label_reminder').addClass('for_reminder_label');
+					$('.label_reminder').html('Fee Reminder');
+			} else {
+					$('#selectall_reminder').html('Select All');
+					$(".chkReminder").prop('checked', false);
+
+					$('.label_reminder').removeClass('for_reminder_label');
+					$('.label_reminder').addClass('transparent-label');
+					$('.label_reminder').html('');
+			}
+		} else {
+			$("#chkReminderALL").prop('checked', false);
+		}
+	});
+
+	$('body').on('click', '.chkReminder', function(){
+		var chkbx_id = this.id;
+		var regid = chkbx_id.split('_');
+
+		if($('#'+this.id).prop('checked') == true){
+			$('#label_'+regid[0]).removeClass('transparent-label');
+			$('#label_'+regid[0]).addClass('for_reminder_label');
+			$('#label_'+regid[0]).html('Fee Reminder')
+		} else {
+			$('#label_'+regid[0]).removeClass('for_reminder_label');
+			$('#label_'+regid[0]).addClass('transparent-label');
+			$('#label_'+regid[0]).html('')
+		}
+		
+	});
+
+	$('#send_fee_reminder').click(function(){
+		var selected_nos = [];
+		$.each($("input[name='chkReminder']:checked"), function(){            
+                selected_nos.push($(this).val());
+        });
+        $('#mobilenumbers').val(selected_nos.join(", "))
+		$('#myModal').modal('show');
+	});
+	$('.sendreminder').click(function(){
+		var url_ = site_url_ + "/dashboardReports/sendReminder";
+    	var str = this.id;
+    	var arr_ = str.split('_');
+    	var class__ = $('#class_reminder').val();
+    	var data_ = $('#frmFeeReminder').serialize()+"&class_reminder="+class__+"&check_sms="+arr_[1];
+    	$.ajax({
+    		type: "POST",
+    		url: url_,
+    		data: data_,
+    		success: function(data){
+    			var obj = JSON.parse(data);
+    			callSuccess(obj.msg_all);
+    			$('#myModal').modal('hide');
+    		}, error: function(xhr, status, error){
+				callDanger(xhr.responseText);
+				$('#myModal').modal('hide');
+			}
+    	});
+    	
+    	return false;
+	});
 	// -----------------
 	// Popup boxes
 		function callDanger(message){

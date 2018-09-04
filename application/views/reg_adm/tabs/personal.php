@@ -1,5 +1,23 @@
 <div class="row-fluid">
-    <div class="control-group span12">
+    <div class="control-group">
+        <div class="controls span4">
+            <label class="control-label">Upload Photo</label>
+            <?php
+            $data = array(
+                'type' => 'file',
+                'class' => "span12",
+                'placeholder' => 'First Name',
+                'autocomplete' => 'off',
+                'required' => 'required',
+                'name' => 'txtPhotoUpload',
+                'id' => 'txtPhotoUpload'
+            );
+            echo form_input($data);
+            ?>
+        </div>
+    </div>
+    <div style="clear: both; height: 8px"></div>
+    <div class="control-group">
         <div class="controls span4">
             <label class="control-label">Full Name</label>
             <?php
@@ -75,16 +93,15 @@
             ?>
         </div>
         <div class="controls span4">
-            <label class="control-label">Upload Photo</label>
+            <label class="control-label">Adhaar Card No.</label>
             <?php
             $data = array(
-                'type' => 'file',
-                'class' => "span4",
-                'placeholder' => 'First Name',
+                'type' => 'text',
+                'class' => "span12 mask text",
                 'autocomplete' => 'off',
-                'required' => 'required',
-                'name' => 'txtPhotoUpload',
-                'id' => 'txtPhotoUpload'
+                'maxlength' => '14',
+                'name' => 'txtStudentAdhaarCardNo',
+                'id' => 'txtStudentAdhaarCardNo'
             );
             echo form_input($data);
             ?>

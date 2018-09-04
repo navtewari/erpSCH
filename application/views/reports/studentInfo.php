@@ -42,6 +42,10 @@
 										<td><b>DOB</b></td>
 										<td><?php echo $personal->DOB_; ?></td>
 									</tr>
+									<tr>
+										<td><b>Adhaar Card No</b></td>
+										<td><?php echo $personal->ADHAARCARD_STUDENT; ?></td>
+									</tr>
 				                    <tr>
 										<td><b>Father</b></td> 
 										<td>

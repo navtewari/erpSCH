@@ -208,6 +208,40 @@ class DashboardReports extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
+    function sendReminder(){
+        $username = $this->session->userdata('sms_userid');
+        $password = $this->session->userdata('sms_pwd');
+        $number = $this->input->post("mobilenumbers");
+        $sender = $this->session->userdata('sms_senderid');
+        $msg1=$this->input->post("FeeReminderMsg");
+        $class_ = $this->input->post('class_reminder');
+        $message = rawurlencode($msg1);
+
+        if($this->input->post('check_sms') == 'yes'){
+            /* */ // Booking Message to Owner Mobile
+                $url=$this->session->userdata('sms_loginto')."/unicodesmsapi.php?username=".trim($username,'"')."&password=".trim($password,'"')."&mobilenumber=".trim($number,'"')."&message=".trim($message,'"')."&senderid=".trim($sender,'"')."&type=3";
+
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            /* */
+            $data['msg_all'] = "Fee reminder SMS is sent to the selected Registered Mobile numbers.";
+
+            // Store the sent sms to the respective database
+                $nums = explode(",", $number);
+                $no_of_sms = count($nums);
+                $status = 'sent';
+                $this->dr->submit_sms($class_, $msg1, $no_of_sms, $number, $sender, $status);
+            // ---------------------------------------------
+        } else {
+            $data['msg_all'] = "Sending SMS is cancelled by you. No SMS sent.";
+            $nums = explode(",", $number);
+            $no_of_sms = count($nums);
+            $this->dr->submit_sms($class_, $msg1, $no_of_sms, $number, $sender, 'cancelled');
+        }
+        echo json_encode($data);
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

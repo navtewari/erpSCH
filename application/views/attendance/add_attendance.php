@@ -106,7 +106,7 @@
 	<div class="controls span6">
 		<div class="control-group">
 			<div class="widget-box">
-				<div class="widget-title">
+				<div class="widget-title student_class_info">
 					<div>
 						
 					</div>
@@ -117,7 +117,10 @@
 					<table class="table table-bordered table-striped with-check">
 						<thead>
 							<tr>
-								<th style="text-align: left; min-width: 10%;"><input type="checkbox" id="atten_check" /></th>
+								<th style="text-align: left; min-width: 10%; width: 100px">
+                                    <div style="float: left"><input type="checkbox" id="atten_check" /></div>
+                                    <div id="selectall_label" style="float: left; background: #ffffff; padding: 0px 5px; border-radius: 7px">Select All</div>
+                                </th>
 								<th style="text-align: left; min-width: 10%">Reg. No.</th>
 								<th style="text-align: left; min-width: 80%">Student Name</th>
 							</tr>
@@ -126,6 +129,7 @@
 
 						</tbody>
 					</table>
+                    <input type="hidden" value="new" name="status_of_editting" id="status_of_editting">
 				</div>
 			</div>
 		</div>

@@ -52,3 +52,7 @@
      border: #A0A0A0 solid 1px;
      padding: 1px 5px;
 }
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}

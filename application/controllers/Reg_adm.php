@@ -11,7 +11,7 @@ class Reg_adm extends CI_Controller {
     }
     
     function index($active = 1, $submenu = 'index'){
-    	$this->check_login();
+        $this->check_login();
         $data['active'] = $active;
         
         // fetching page according to active status
@@ -62,6 +62,7 @@ class Reg_adm extends CI_Controller {
         echo json_encode($data);
     }
     function get_admision_detail($regid){
+        $data['curr_sess_admission'] = $this->mam->check_current_admission($regid);
         $data['personal_academics'] = $this->mam->get_admission_detail_1($regid);
         $data['address_permanent'] = $this->mam->get_admission_detail_2($regid, 'PERMANENT');
         $data['address_correspondance'] = $this->mam->get_admission_detail_2($regid, 'CORRESPONDANCE');

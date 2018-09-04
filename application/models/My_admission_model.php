@@ -168,7 +168,8 @@ class My_admission_model extends CI_Model {
                 'regid' => $regid_,
                 'SESSID' => $this->session->userdata('_current_year___'),
                 'USERNAME_' => $this->session->userdata('_user___'),
-                'DATE_' => date('Y-m-d H:i:s')
+                'DATE_' => date('Y-m-d H:i:s'),
+                'ADHAARCARD_STUDENT' => $this->input->post('txtStudentAdhaarCardNo')
                 );
                 $dataAcademics = array(
                     'DOA' => $this->input->post('txtDOA'),
@@ -290,16 +291,26 @@ class My_admission_model extends CI_Model {
             'M_EMAIL' => $this->input->post('txtMotherEmail'),
             'M_PROFESSION' => $this->input->post('txtMotherProfession'),
             'USERNAME_' => $this->session->userdata('_user___'),
-            'DATE_' => date('Y-m-d H:i:s')
+            'DATE_' => date('Y-m-d H:i:s'),
+            'ADHAARCARD_STUDENT' => $this->input->post('txtStudentAdhaarCardNo')
             );
-
-            $dataAcademics = array(
-                'CLASS_OF_ADMISSION' => $class_this_session,
-                'STATUS_OF_ADMISSION' => 0,
-                'ANY_REMARK' => '-x-',
-                'USERNAME_' => $this->session->userdata('_user___'),
-                'DATE_' => date('Y-m-d H:i:s'),
-            );
+            $res_ = $this->check_current_admission($regid_);
+            if($res_ == 'current'){
+                $dataAcademics = array(
+                    'CLASS_OF_ADMISSION' => $class_this_session,
+                    'STATUS_OF_ADMISSION' => 0,
+                    'ANY_REMARK' => '-x-',
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s'),
+                );
+            } else {
+                $dataAcademics = array(
+                    'STATUS_OF_ADMISSION' => 0,
+                    'ANY_REMARK' => '-x-',
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s'),
+                );
+            }
             $dataCorresAdd = array(
                 'STREET_1' => $this->input->post('txtCAddress'),
                 'CITY_' => $this->input->post('txtCCity'),
@@ -525,8 +536,24 @@ class My_admission_model extends CI_Model {
 
         return $path_;
     }
+    function check_current_admission($regid_){
+        $this->db->where('regid', $regid_);
+        $query = $this->db->get('master_8_stud_academics');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            // Need to check the session of admission if yes its current otherwise its not current
+            if($r->SESSID == $this->session->userdata('_current_year___')){
+                $bool_ = 'current';
+            } else {
+                $bool_ = 'not-current';
+            }
+        } else {
+            $bool_ = 'not-admitted-yet';
+        }
+        return $bool_;
+    }
     function get_admission_detail_1($regid_){
-        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID, b.STATUS_, f.MOBILE_S');
+        $this->db->select('a.STUD_ID, a.FNAME, a.PHOTO_, a.DOB_, a.GENDER, a.FATHER, a.F_MOBILE, a.F_EMAIL, a.F_PROFESSION, a.MOTHER, a.CATEGORY, a.M_MOBILE, a.M_EMAIL, a.M_PROFESSION, a.SESSID, a.USERNAME_, b.DOA, b.CLASS_OF_ADMISSION, b.SESSID, e.CLASSID, b.STATUS_, f.MOBILE_S,a.ADHAARCARD_STUDENT');
         //$this->db->where('b.STATUS_', 1); // This line is commented so that if need to see the detail of any candidate, it could be seen.
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');

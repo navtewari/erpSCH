@@ -42,6 +42,17 @@
                                 $options['x'] = 'Select Class';
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>
+                            <?php
+                                $data = array(
+                                    'type' => 'hidden',
+                                    'class' => 'span3',
+                                    'name' => 'txtAdmitStatus',
+                                    'id' => 'txtAdmitStatus',
+                                    'required' => 'required',
+                                    'value' => 'new'
+                                );
+                            ?>
+                            <?php echo form_input($data); ?>
                         </div>
                 </div>
                 <div class="control-group">
