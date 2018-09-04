@@ -74,7 +74,7 @@
 					<li class="bg_lr"> 
 						<a href="<?php echo site_url('DashboardReports/get_total_dues_in_a_session');?>"> 
 							<span class="label label-success"><?php echo $figure['total_student_having_dues']; ?></span> 
-							Total Dues<br><b style="color:#ffff00">Rs. <?php echo number_format($figure['total_dues_in_a_session'],0,".",","); ?> /-</b>  
+							Total Dues <b style="color:#ffff00">Rs. <?php echo number_format($figure['total_dues_in_a_session'],0,".",","); ?> /-</b><br><span style="font-size: 10px">&amp; Also Send Reminders</span>
 						</a> 
 					</li>
 				</ul>

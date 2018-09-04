@@ -46,7 +46,7 @@
     <div class="span9">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <input type="text" id="class_reminder" name="class_reminder">
+                <input type="hidden" id="class_reminder" name="class_reminder">
                 <h5 style="float: left" id="dues_for_class">Total Due(s) in <?php echo $this -> session -> userdata('_current_year___'); ?></h5>
                 <div style="float: left; text-align: center; margin-top: 3px">
                     <div class="btn btn-primary" style="font-size: 10px; border-radius: 5px" id="send_fee_reminder">Send Reminder</div>
