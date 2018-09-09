@@ -10,6 +10,22 @@ class My_fee_model extends CI_Model {
         // --------------------
     }  
 
+    function discount_associated($class__){
+        $this->db->select('c.*');
+        $this->db->where('b.STATUS_', 1);
+        $this->db->where('a.CLSSESSID', $class__);
+        $this->db->from('class_3_class_wise_students a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('register_discount c', 'a.regid=c.regid');
+        $query=$this->db->get();
+        if($query->num_rows()!=0){
+            $data = $query->result();
+        } else  {
+            $data = array();
+        }
+        return $data;
+    }
+
     function check_previous_invoice_generation($class__){
         $this->db->where('CLSSESSID', $class__);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));

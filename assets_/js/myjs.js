@@ -1692,7 +1692,7 @@ $(function(){
 								                        }
 								                        totalFixHeadsAmount = fixHeadsAmount;
 								                            str_html = str_html + "<tr style='background: #ffffff'>";
-								                            str_html = str_html + "<td colspan='8' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
+								                            str_html = str_html + "<td colspan='9' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
 								                            str_html = str_html + "<div style='float: left'><b>Note: </b>Generate/ Print Invoice for "+total_months+" month(s). </div></td>"
 								                            str_html = str_html + "<td colspan='3' style='background: #FEF4F2; text-align: center; vertical-align: middle'><h5>Receipt Area</h5></td></tr>";
 								                            str_html = str_html + "<tr>";
@@ -1700,6 +1700,7 @@ $(function(){
 								                            str_html = str_html + "<tr class='gradeX'>";
 								                            str_html = str_html + "<th>Reg. No</th>";
 								                            str_html = str_html + "<th>Name</th>";      
+								                            str_html = str_html + "<th>Discount</th>";      
 								                            str_html = str_html + "<th style='text-align: right !important'>Fix Fee</th>";
 								                                str_html = str_html + "<th style='min-width: 100px; max-width: 200px'>Opted Fee</th>";
 								                                str_html = str_html + "<th style='text-align: right !important'>Amount</th>";
@@ -1710,6 +1711,8 @@ $(function(){
 								                            str_html = str_html + "<th width='100' style='text-align: center !important'>Pay Fee</th>";
 								                            str_html = str_html + "<th width='100' style='text-align: center !important'>Print Receipt</th>";
 								                            str_html = str_html + "</tr>";
+
+								                            var student_discount = obj.discount_associated;
 								                        for(loop1=0;loop1<obj.fetch_class_students.length; loop1++){
 								                        	invoice_already_generated = false;
 								                        	for(pinvoiceloop=0;pinvoiceloop<obj.previous_invoice.length;pinvoiceloop++){
@@ -1719,9 +1722,24 @@ $(function(){
 								                        			break;
 								                        		}
 								                        	}
+								                        	var st_discount_data = '';
+								                        	$.each( student_discount, function( key, value ) {
+								                        		if(obj.fetch_class_students[loop1].regid == value.regid){
+								                        			var st_dis_data = value.DISCOUNT;
+								                        			var ar_ = st_dis_data.split(',');
+								                        			for(i=0; i<ar_.length; i++){
+								                        				st_discount_data = st_discount_data + "<div class='discount_lable'>"+ar_[i]+"</div>";	
+								                        			}
+															  		
+															  		return;
+															  	}
+															});
+								                        	//var st_arr_discount = st_discount_data.split(',');
+
 								                            str_html = str_html + "<tr class='gradeX'>";
 								                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].regid+"</td>";
 								                            str_html = str_html + "<td style='width: 150px'>"+obj.fetch_class_students[loop1].FNAME+"</td>";
+								                            str_html = str_html + "<td>"+st_discount_data+"</td>";
 								                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText'>"+totalFixHeadsAmount+"</span></td>";
 								                            flexifee = ''
 								                            flexiAmount = 0;

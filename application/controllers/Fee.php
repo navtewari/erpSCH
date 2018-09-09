@@ -35,6 +35,7 @@ class Fee extends CI_Controller {
         $data['flexible_head_to_class'] = $this->fm->get_flexible_fee_head_for_class($class__);
         $data['previous_invoice'] = $this->fm->get_invoice_data($class__,$yr_from, $mnth_from, $yr_to, $mnth_to);
         $data['prev_invoice_generated_month_year'] = $this->fm->check_previous_invoice_generation($class__);
+        $data['discount_associated'] = $this->fm->discount_associated($class__);
 
         echo json_encode($data);
     }
@@ -115,7 +116,7 @@ class Fee extends CI_Controller {
             if(count($data['other_discount_data'])!=0){
                 $data['fetch_other_discount_data'] = $this->fm->get_other_discount('OTHER');
             } else {
-                $data['fetch_other_discount_data'] = NULL;
+                $data['fetch_other_discount_data'] = array('res_'=>NULL);
             }
             
             /*
@@ -134,12 +135,13 @@ class Fee extends CI_Controller {
             if($data['fetch_receipt_data'][0]->CATEGORY != '' && $data['fetch_receipt_data'][0]->CATEGORY != 'x'){
                 $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
             } else {
-                $data['fetch_category_discount_data'] = NULL;
+                $data['fetch_category_discount_data'] = array('res_'=>NULL);
             }
         } else {
-            $data['fetch_discount_data'] = NULL;
-            $data['fetch_category_discount_data'] = NULL;
-            $data['fetch_other_discount_data'] = NULL;
+            $data['other_discount_data'] = array('res_' => 'NULL');
+            $data['fetch_discount_data'] = array('res_'=>NULL);
+            $data['fetch_category_discount_data'] = array('res_'=>NULL);
+            $data['fetch_other_discount_data'] = array('res_'=>NULL);
         }
         $data['date_'] = array(date('d/m/Y')); 
         $data['sch_name'] = array($this->session->userdata('sch_name'));
