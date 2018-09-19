@@ -1,0 +1,55 @@
+2070040242 (1) DONE
+2070040255 (4) DONE
+2070040273 (5) DONE
+2070040283 (6) DONE
+2070040289 (7) DONE
+2070040294 (8) DONE
+2070040303 (9) DONE
+2070040305 (2) DONE
+2070040306 (10) DONE
+2070040342 (3)
+ -- 2014040374
+2070040502 (11) DONE
+-- 2014040511
+2070040527 (12) DONE
+
+
+select regid from master_10_stud_contact where regid not in (select regid from master_7_stud_personal)
+select regid from master_7_stud_personal where regid not in (select regid from master_10_stud_contact)
+
+
+2010040242 (1)
+2010040305 (2)
+2010040342 (3)
+2011040255 (4)
+2011040273 (5)
+2011040283 (6) 
+2011040289 (7)
+2011040294 (8)
+2011040303 (9)
+2011040306 (10)
+2011040502 (11)
+2011040527 (12)
+
+
+
+
+
+2015040688 (Prabhleen Kaur) admitted in class 1 (Reason to drop  - TC)
+2015040698 (Akriti Sharma) admitted in class 1 (Reason to drop  - TC)
+2015040715 (Bhawani Mehta) admitted in class 1 (Reason to drop  - TC)
+2015040823 (Rashmi Bughani) admitted in class 1 (Reason to drop  - TC)
+2015040713 (Vivek Tamta) admitted in class 1 (Reason to drop  - TC)
+2018090927 (Somya Bhakuni) admitted in class 1 (Reason to drop  - Del it)
+
+
+
+delete from master_7_stud_personal where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from master_8_stud_academics where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from master_9_stud_address where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from master_10_stud_contact where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from class_3_class_wise_students where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from class_4_class_wise_attendance where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from fee_6_invoice_detail where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+delete from fee_7_receipts where regid = '2015040688' or regid = '2015040698' or regid = '2015040715' or regid = '2015040823' or regid = '2015040713' or regid = '2018090927';
+

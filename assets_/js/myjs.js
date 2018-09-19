@@ -11,7 +11,18 @@ $(function(){
 		$('#loading_process').html('');	
 	});
 
-	$("#txtStudentPhone").mask("(999) 999-9999");
+	//$("#txtStudentPhone").mask("(999) 999-9999");
+	$("#txtStudentPhone").blur(function(){
+		var ph = $("#txtStudentPhone").val();
+
+		if(ph.length < 10 || ph.length > 10){
+			$('#ph_error').css('background', '#ffff00');
+			$('#ph_error').html('10 digits please!!')
+		} else {
+			$('#ph_error').css('background', 'transparent');
+			$('#ph_error').html('');
+		}
+	});
 	$( window ).on( "load", function(){
 		
 		$(".page-loader").fadeOut("slow");
@@ -26,6 +37,8 @@ $(function(){
 			fillStates('cmbCState');
 			fillSiblings();
 			fillDiscount();
+			$('#ph_error').css('background', 'transparent');
+			$('#ph_error').html('');
 		}
 		if($('#frmAssociateStaticFee').length != 0){
 			fillClasses_for_current_session();
@@ -3283,7 +3296,8 @@ $(function(){
 	                            for(loop2=0;loop2<obj.daywise.length; loop2++){
 	                                if(obj.time_[tm].TIME_ == obj.daywise[loop2].TIME_ && obj.students[loop1].regid == obj.daywise[loop2].regid){
 	                                    total = total + parseInt(obj.daywise[loop2].STATUS);
-	                                    str_html = str_html + "<td align='left'>" + obj.daywise[loop2].STATUS + "</td>";
+	                                    if(obj.daywise[loop2].STATUS==1){st_ = "<span style='font-weight: bold'>P</span>";}else{st_ = "<span style='color: #ff0000; font-weight: bold'>A</span>";}
+	                                    str_html = str_html + "<td align='left'>" +st_+ "</td>";
 	                                }
 	                            }
 	                        }
@@ -3340,11 +3354,11 @@ $(function(){
 
 	                    for(tm=0; tm<obj.date_.length; tm++){
 	                        DT_ = obj.date_[tm].DATE_;
-	                        str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
+	                        str_html = str_html + "<th style='text-align: center !important'>"+DT_+"</th>";
 	                    }
-	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
-	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
-	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
+	                    str_html = str_html + "<th style='text-align: center !important'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center !important'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: right !important'>%age</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
@@ -3354,21 +3368,23 @@ $(function(){
 	                        var total = 0; // It is used to store the total classes attended by the student
 	                        for(tm=0; tm<obj.date_.length; tm++){
 	                            var t_ = 0; // It is a temporary variable to calculate the total attended classes datewise
+	                            var stc_ = '';
 	                            for(loop2=0;loop2<obj.consolidate.length; loop2++){
 	                                if(obj.date_[tm].DATE_ == obj.consolidate[loop2].DATE_ && obj.students[loop1].regid == obj.consolidate[loop2].regid){
 	                                   t_ = t_ + parseInt(obj.consolidate[loop2].STATUS);
+	                                   if(obj.consolidate[loop2].STATUS==1){stc_ = stc_ + "<span style='font-weight: bold; margin: 0px 1px'>P</span>";}else{stc_ = stc_ + "<span style='color: #ff0000; font-weight: bold; margin: 0px 1px'>A</span>";}
 	                                }
 	                            }
-	                            str_html = str_html + "<td style='text-align: center'>" + t_ + "</td>";
+	                            str_html = str_html + "<td style='text-align: center !important'>" + stc_ + "</td>";
 	                            total = total + t_;
 	                        }
 	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
-	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center !important'>" + totalClasses + "</td>";
 	                        per = (total/totalClasses)*100;
 	                        if(per < limitpercentage){
-	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        } else {
-	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #009000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        }
 	                        str_html = str_html + "</tr>";
 	                    }
@@ -3414,9 +3430,9 @@ $(function(){
 	                        DT_ = obj.date_[tm].DATE_;
 	                        //str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
 	                    }
-	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
-	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
-	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
+	                    str_html = str_html + "<th style='text-align: center !important'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center !important'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: right !important'>%age</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
@@ -3435,12 +3451,12 @@ $(function(){
 	                            total = total + t_;
 	                        }
 	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
-	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center !important'>" + totalClasses + "</td>";
 	                        per = (total/totalClasses)*100;
 	                        if(per < limitpercentage){
-	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        } else {
-	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #009000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        }
 	                        str_html = str_html + "</tr>";
 	                    }

@@ -67,11 +67,12 @@
     </div>
     <div class="control-group" style="clear: both;">
         <div class="controls span4">
-            <label class="control-label">Contact <span style="font-size: 11px; color: #0000ff">(999) 999-9999</span></label>
+            <label class="control-label">Contact&nbsp;&nbsp;<span style="padding: 0px 4px 0px 0px; font-size: 10px; float: right; color: #ff0000" id="ph_error"></span></label>
             <?php
             $data = array(
                 'type' => 'text',
                 'class' => "span12 mask text",
+                'maxlength' => 10,
                 'autocomplete' => 'off',
                 'name' => 'txtStudentPhone',
                 'id' => 'txtStudentPhone'
