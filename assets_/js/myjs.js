@@ -3152,9 +3152,9 @@ $(function(){
 		                            $('#mobilenumbers').val(str);
 
 		                            d = obj.no__['nos'][0].DATE_;
-		                            dt = d.split('/');
+		                            dt = d.split('-');
 		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.no__['nos'][0].DATE_+"). Please motivate him/her to attend classes regularly.");
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt__+"). Please motivate him/her to attend classes regularly.");
 		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
 									$('#myModal').modal('show');
 									/**/
@@ -3353,8 +3353,10 @@ $(function(){
 						str_html = str_html + '<th style="min-width: 80%">Student Name</th>';
 
 	                    for(tm=0; tm<obj.date_.length; tm++){
-	                        DT_ = obj.date_[tm].DATE_;
-	                        str_html = str_html + "<th style='text-align: center !important'>"+DT_+"</th>";
+	                        d = obj.date_[tm].DATE_;
+	                        dt = d.split('-');
+		                    dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
+	                        str_html = str_html + "<th style='text-align: center !important'>"+dt_+"</th>";
 	                    }
 	                    str_html = str_html + "<th style='text-align: center !important'>Attended</th>";
 	                    str_html = str_html + "<th style='color: #0000ff; text-align: center !important'>Total held</th>";
