@@ -45,4 +45,8 @@ class Reports extends CI_Controller {
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');
     }
+
+    function invoice_receipt_detail($invdetid){
+        echo $invdetid;
+    }
 }

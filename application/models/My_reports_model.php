@@ -77,16 +77,17 @@ class My_reports_model extends CI_Model {
     function getAllInvoices($stdid){
         $this->db->group_by('c.INVDETID');
         $this->db->order_by('c.INVDETID');
-        $this->db->select('a.INVID, c.INVDETID, a.SESSID, e.CLSSESSID, e.CLASSID, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, c.ACTUAL_DUE_AMOUNT, c.DUE_AMOUNT, sum(f.DISCOUNT_AMOUNT) as DISCOUNT_AMOUNT, sum(f.PAID) as PAID, sum(f.FINE) as FINE');
+        $this->db->select('a.INVID, c.INVDETID, a.SESSID, e.CLSSESSID, e.CLASSID, a.YEAR_FROM, a.MONTH_FROM, a.YEAR_TO, a.MONTH_TO, a.NOM, c.ACTUAL_DUE_AMOUNT, c.DUE_AMOUNT, f.RECPTID, sum(f.DISCOUNT_AMOUNT) as DISCOUNT_AMOUNT, sum(f.PAID) as PAID, sum(f.FINE) as FINE, f.DESCRIPTION_IFANY');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail c', 'a.INVID=c.INVID');
         $this->db->join('master_8_stud_academics d', 'd.regid=c.regid');
         $this->db->join('class_2_in_session e', 'a.CLSSESSID=e.CLSSESSID');
-        $this->db->join('fee_7_receipts f', 'c.INVDETID=f.INVDETID');
+        $this->db->join('fee_7_receipts f', 'c.INVDETID=f.INVDETID', 'left outer');
         $this->db->where('c.REGID', $stdid);
         $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
         $this->db->where('d.STATUS_', 1);
         $query=$this->db->get();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
