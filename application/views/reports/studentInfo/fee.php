@@ -5,10 +5,23 @@
       	$fine = 0;
       	$total_paid = 0;
       	$nom = 0;
-      	$arr = end($allInvoices);
+      	$final_due = 0;
+      	if(count($allInvoices)!=0){
+      		$arr = end($allInvoices);
+      	}
     ?>
 	        	<h5 style="float: left">Fee Detail</h5>
-	        	<h5 style="float: right"><?php if($arr->DUE_AMOUNT > 0){echo "<span style='color: #ff0000'>";}else{echo "<span>";}?>Dues: Rs. <?php echo $arr->DUE_AMOUNT;?>/-</span></h5>
+	        	<h5 style="float: right">
+	        		<?php
+	        		if(count($allInvoices)!=0){
+        			if($arr->DUE_AMOUNT > 0){
+        				echo "<span style='color: #ff0000'>";
+        			} else {
+        				echo "<span>";
+        			} echo 'Dues: Rs.' . $arr->DUE_AMOUNT.'/-'; }?>
+
+	        		</span>
+	        	</h5>
 	        	</div>
 		            <div class="row-fluid">
 		            	<div class="span12">
