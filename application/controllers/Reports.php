@@ -23,6 +23,9 @@ class Reports extends CI_Controller {
 	    	$data['p_address'] = $this->mrm->get_P_AddressDetail($stdid);
 	    	$data['c_address'] = $this->mrm->get_C_AddressDetail($stdid);
             $data['c_contact'] = $this->mrm->get_c_ContactDetail($stdid);
+            $data['currentClass'] = $this->mrm->getCurrentClass($stdid);
+            $data['allClasses'] = $this->mrm->getAllClasses($stdid);
+            $data['allInvoices'] = $this->mrm->getAllInvoices($stdid);
 
     	} else {
     		$data['bool_'] = 0;
