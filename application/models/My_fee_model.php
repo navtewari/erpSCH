@@ -62,10 +62,6 @@ class My_fee_model extends CI_Model {
         $this->db->where('MONTH_TO', $mnth_to);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $this->db->order_by('INVID', 'desc');
-        //$this->db->order_by("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d')", 'desc');
-        //$this->db->order_by('cast(YEAR_TO AS SIGNED INTEGER)', 'desc');
-        //$this->db->order_by('cast(MONTH_TO AS SIGNED INTEGER)', 'desc');
-        //$this->db->limit(1);
         $query = $this->db->get('fee_6_invoice');
         //echo $this->db->last_query();
         
@@ -87,7 +83,50 @@ class My_fee_model extends CI_Model {
             $query = $this->db->get();
             $data = $query->result();
         } else {
-            $data = array();
+            $data = array("NA"=>'No Data Found');
+        }
+
+        // check transaction status
+        $this->error->_db_error();
+        // ------------------------
+  
+        return $data;
+    }
+
+    function get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
+        $this->db->group_by('YEAR_TO, MONTH_TO');
+        $this->db->where('CLSSESSID', $class__);
+        $this->db->where('YEAR_FROM', $yr_from);
+        $this->db->where('MONTH_FROM', $mnth_from);
+        $this->db->where('YEAR_TO', $yr_to);
+        $this->db->where('MONTH_TO', $mnth_to);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('INVID', 'desc');
+        $query = $this->db->get('fee_6_invoice');
+        
+        if($query->num_rows()!=0){
+            $R = $query->row();
+            $this->db->select('a.*, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT, c.STATUS');
+            $this->db->from('fee_6_invoice a');
+            $this->db->from('fee_6_invoice_detail c');
+            $this->db->from('fee_7_receipts e');
+            $this->db->from('master_8_stud_academics d');
+            $this->db->where('a.INVID = c.INVID');
+            $this->db->where('a.CLSSESSID', $class__);
+            $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+            $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
+            $this->db->where('a.MONTH_FROM',$R->MONTH_FROM); 
+            $this->db->where('a.YEAR_TO',$R->YEAR_TO);
+            $this->db->where('a.MONTH_TO',$R->MONTH_TO);
+            $this->db->where('c.INVDETID NOT IN (SELECT INVDETID FROM fee_7_receipts)');
+            $this->db->where('d.STATUS_', 1);
+            $this->db->group_by('c.INVDETID');
+            $this->db->order_by('cast(c.REGID AS SIGNED INT)', 'ASC');
+            $query = $this->db->get();
+
+            $data = $query->result();
+        } else {
+            $data = array("NA"=>'No Data Found');
         }
 
         // check transaction status
@@ -222,9 +261,10 @@ class My_fee_model extends CI_Model {
         // check transaction status
         $this->error->_db_error();
         // ------------------------
-  
+
         return $query->result();
     }
+
     function previousReciptExists($regid_, $class__){
         // Below is to find last invoice for a student 
             $this->db->select('b.INVDETID');

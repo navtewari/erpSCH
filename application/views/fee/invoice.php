@@ -105,6 +105,7 @@
 	                            }
 	                        ?>
 	                        <?php echo form_dropdown($data, $options, date('m')); ?>
+	                        <input type="button" value="0" name="cmdPayZeroReceipt" id="cmdPayZeroReceipt" class="span12">
 	                    </div>
 	            </div>
                 <div class="control-group"></div>

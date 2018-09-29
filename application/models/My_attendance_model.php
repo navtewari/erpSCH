@@ -127,19 +127,27 @@ class My_attendance_model extends CI_Model {
             $dt_ = explode("/",$this->input->post('attendancedate'));
             $date__ = $dt_[2]."-".$dt_[1]."-".$dt_[0];
             $time_ = $this->input->post('attendanceHour').":".$this->input->post('attendanceMin').":".$this->input->post('attendanceAMPM');
+
             if($editingStatus == 'new'){
-                foreach($obj as $key => $value){
-                    $data = array(
-                        'regid' => $key,
-                        'ROLLNO'=> 0,
-                        'CLSSESSID'=>$clssessid,
-                        'USERNAME_'=>$username,
-                        'DATE_' => $date__,
-                        'TIME_' => $time_,
-                        'STATUS' => $value,
-                        'DOE_' => $doe_
-                        );
-                    $bool_ = $this->db->insert('class_4_class_wise_attendance', $data);
+                $this->db->where('CLSSESSID', $clssessid);
+                $this->db->where('DATE_', $date__);
+                $this->db->where('TIME_', $time_);
+                if($this->db->get('class_4_class_wise_attendance')->num_rows()!=0){
+                    $bool_ = false;
+                } else {
+                    foreach($obj as $key => $value){
+                        $data = array(
+                            'regid' => $key,
+                            'ROLLNO'=> 0,
+                            'CLSSESSID'=>$clssessid,
+                            'USERNAME_'=>$username,
+                            'DATE_' => $date__,
+                            'TIME_' => $time_,
+                            'STATUS' => $value,
+                            'DOE_' => $doe_
+                            );
+                        $bool_ = $this->db->insert('class_4_class_wise_attendance', $data);
+                    }
                 }
             } else {
                 $objATTID = $this->input->post('hidden_attendance_id');
@@ -172,7 +180,7 @@ class My_attendance_model extends CI_Model {
             } else {
                 $data_['messageNo'] = 2; //'Something goes wrong. Please try again...';
                 $data_['nos'] = 0;
-                $this->session->set_flashdata('msg_all', 'Something goes wrong. Please try again...');
+                $this->session->set_flashdata('msg_all', '<b>Attendance already exists</b> OR Something goes wrong. Please try again...');
             }
         } else {
             $data_['messageNo'] = 3; //'Something goes wrong. Please try again...';

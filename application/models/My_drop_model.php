@@ -17,6 +17,7 @@ class My_drop_model extends CI_Model {
 
     	$this->db->where('regid', $regid);
     	$data = array(
+            'DOL' => date('Y-m-d H:i:s'),
     		'STATUS_' => 0
     	);
     	if($this->db->update('master_8_stud_academics', $data) == true){

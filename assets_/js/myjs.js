@@ -2157,6 +2157,33 @@ $(function(){
 	        	}
 	    	return false;
 	    	});
+			$('#cmdPayZeroReceipt').click(function(){
+				if($('#cmbClassForInvoice').val() != "x"){
+		            var class_ = $('#cmbClassForInvoice').val();
+		            var year_from = parseInt($('#cmbYearFromForInvoice').val(),10);
+	                var month_from = parseInt($('#cmbMonthFromForInvoice').val(),10);
+	                var year_to = parseInt($('#cmbYearToForInvoice').val(),10);
+	                var month_to = parseInt($('#cmbMonthToForInvoice').val(),10);
+	                var total_amount_for_class = 0;
+                	if(class_ != "x" && year_from != "" && month_from != "" && year_to != "" && month_to != ""){
+                		data_ = $('#frmInvoice').serialize();
+		            	url_ = site_url_ + "/fee/pay_zero_amount";
+		            	$.ajax({
+		            		type: "POST",
+		            		url: url_,
+		            		data: data_,
+		            		success: function(data){
+		            			$('#class_invoices_here').html(data);
+		            		},
+		            		error: function(xhr, status, error){
+
+		            		}
+		            	});
+		            }
+		        } else {
+		        	alert('Please select class first.');
+		        }
+			});
 			$('body').on('click', '.myreceipt_from_invoice', function(){
 				var id_ = this.id;
 				var class__ = 'cmbClassForInvoice';
@@ -3021,7 +3048,7 @@ $(function(){
 
 	            url_ = site_url_ + '/attendance/checkExistingAttendance';
 	            checkdata_ = 'ClassSessid_='+classid+'&date_='+date_+'&time_='+time__;
-	            
+	            $('#students_here').html('<tr><td colspan="4"><h6 style="text-align: center">Please wait its loading...</h6></td></tr>');
 	            $.ajax({
 	                type    : 'POST',
 	                url     : url_,
@@ -3065,7 +3092,6 @@ $(function(){
 		                            	str_html = str_html + "</tr>";
 	                            	}
 	                                $('#students_here').html(str_html);
-
 	                            }, error: function(xhr, status, error){
 									callDanger(xhr.responseText);
 								}
@@ -3154,9 +3180,9 @@ $(function(){
 		                            d = obj.no__['nos'][0].DATE_;
 		                            dt = d.split('-');
 		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt__+"). Please motivate him/her to attend classes regularly.");
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt_+"). Please motivate him/her to attend classes regularly.");
 		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
-									$('#myModal').modal('show');
+									$('#myModal').modal('show'); // This line will not execute at local machine when obj.sms_check is equals to 'NA'
 									/**/
 								}
 								if($('#status_of_editting').val() == 'old'){
@@ -3260,7 +3286,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchdaywiseresult';
 	        data_ = $('#frmViewDaywiseAttendance').serialize();
 	        $('#printHead').html('Attendance -');
-	        
+	        $('#view_day_wise_attendance').html('<h6 style="text-align: center">Please wait its loading...</h6>');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3331,7 +3357,7 @@ $(function(){
 	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewConsolidateAttendance').serialize();
-	        
+	        $('#view_consolidate_attendance').html('<h6 style="text-align: center">Please wait its loading...');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3407,7 +3433,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewTotalAttendance').serialize();
 	        $('#printHead').html('Total Attendance for - ');
-	        
+	        $('#view_consolidate_attendance').html('<h6 style="text-align: center">Please wait its loading...</h6>');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3822,7 +3848,7 @@ $(function(){
 				class_name: 'gritter-success'
 			});
 		}
-	// -----------
+	// ---------------
 
 	// Change Password
 		$('#changepwdbutt').click(function(){

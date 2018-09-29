@@ -23,7 +23,34 @@ class Fee extends CI_Controller {
         $data['check_selected_year_month_'] = $this->fm->check_previous_invoice($class__, $yr_from, $mnth_from);
         echo json_encode($data);
     }
+
+    function show_invoice_needs_to_be_generated_for_zero_receipt(){
+        /* 
+            If you are changing something then please replicate the changes 
+            in the below function 'show_invoice_needs_to_be_generated' also
+        */
+        $class__ = $this->input->post('cmbClassForInvoice');
+        $yr_from = $this->input->post('cmbYearFromForInvoice');
+        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+        $yr_to = $this->input->post('cmbYearToForInvoice');
+        $mnth_to = $this->input->post('cmbMonthToForInvoice');
+
+        $data['fetch_class_students'] = $this->fm->get_students_in_class($class__);
+        $data['static_fee_to_class'] = $this->fm->get_static_heads_to_class($class__);
+        $data['flexible_head_to_class'] = $this->fm->get_flexible_fee_head_for_class($class__);
+        $data['previous_invoice'] = $this->fm->get_invoice_data($class__,$yr_from, $mnth_from, $yr_to, $mnth_to);
+        $data['prev_invoice_generated_month_year'] = $this->fm->check_previous_invoice_generation($class__);
+        $data['discount_associated'] = $this->fm->discount_associated($class__);
+
+        return $data;
+
+    }
+
     function show_invoice_needs_to_be_generated() {
+        /* 
+            If you are changing something then please replicate the changes 
+            in the above function 'show_invoice_needs_to_be_generated_for_zero_receipt' also 
+        */
         $class__ = $this->input->post('cmbClassForInvoice');
         $yr_from = $this->input->post('cmbYearFromForInvoice');
         $mnth_from = $this->input->post('cmbMonthFromForInvoice');
@@ -104,9 +131,62 @@ class Fee extends CI_Controller {
     }
     
     function show_student_data_for_receipt(){
+        /*
+            If you are changing something then please replicate the changes 
+            in the below function 'show_student_data_for_receipt_for_zero_receipt' also 
+        */
         $invdetid_ =  $this->input->post('invdetid');
         $clssessid = $this->input->post('clssessid');
         $regid_ = $this->input->post('regid_');
+        $data['sibling_discount_eligiblity'] = $this->fm->check_eligibility_for_sibling_discount($regid_);
+        $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
+        if($this->fm->chkDiscountStatus($invdetid_) == false){
+            $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
+            $data['other_discount_data'] = $this->fm->get_specific_other_discount_for_fee_discount($regid_);
+
+            if(count($data['other_discount_data'])!=0){
+                $data['fetch_other_discount_data'] = $this->fm->get_other_discount('OTHER');
+            } else {
+                $data['fetch_other_discount_data'] = array('res_'=>NULL);
+            }
+            
+            /*
+            if($data['sibling_discount_eligiblity']['res_'] == true){
+                if(count($data['sibling_discount']) != 0){
+                    $data['fetch_discount_data'] = $this->fm->get_student_discount('SIBLINGS');
+                } else {
+                    $data['fetch_discount_data'] = NULL;
+                }
+            } else {
+                $data['fetch_discount_data'] = NULL;
+            }
+            */
+            $data['fetch_discount_data'] = NULL;
+            
+            if($data['fetch_receipt_data'][0]->CATEGORY != '' && $data['fetch_receipt_data'][0]->CATEGORY != 'x'){
+                $data['fetch_category_discount_data'] = $this->fm->get_student_discount($data['fetch_receipt_data'][0]->CATEGORY);
+            } else {
+                $data['fetch_category_discount_data'] = array('res_'=>NULL);
+            }
+        } else {
+            $data['other_discount_data'] = array('res_' => 'NULL');
+            $data['fetch_discount_data'] = array('res_'=>NULL);
+            $data['fetch_category_discount_data'] = array('res_'=>NULL);
+            $data['fetch_other_discount_data'] = array('res_'=>NULL);
+        }
+        $data['date_'] = array(date('d/m/Y')); 
+        $data['sch_name'] = array($this->session->userdata('sch_name'));
+        $data['sch_address'] = array($this->session->userdata('sch_addr'));
+        $data['sch_contact'] = array($this->session->userdata('sch_contact'));
+        $data['sch_email'] = array($this->session->userdata('sch_email'));
+        echo json_encode($data);
+    }
+
+    function show_student_data_for_receipt_for_zero_receipt($invdetid_='x', $clssessid='x', $regid_ = 'x'){
+        /*
+            If you are changing something then please replicate the changes 
+            in the above function 'show_student_data_for_receipt' also 
+        */
         $data['sibling_discount_eligiblity'] = $this->fm->check_eligibility_for_sibling_discount($regid_);
         $data['fetch_receipt_data'] = $this->fm->get_student_receipt($invdetid_, $clssessid);
         if($this->fm->chkDiscountStatus($invdetid_) == false){
@@ -228,4 +308,23 @@ class Fee extends CI_Controller {
             redirect('login/logout');
         }
     }
+
+    // For Zero Receipt or a specific class
+        //show_invoice_needs_to_be_generated_for_zero_receipt
+        function pay_zero_amount(){
+            $class__ = $this->input->post('cmbClassForInvoice');
+            $yr_from = $this->input->post('cmbYearFromForInvoice');
+            $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+            $yr_to = $this->input->post('cmbYearToForInvoice');
+            $mnth_to = $this->input->post('cmbMonthToForInvoice');
+
+            $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
+            //$data['fetch_class_students'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'), $class__);
+            //for($loop1=0;$loop1<count($data['fetch_class_students']); $loop1++){
+                //$data['flexi_heads'] = $this->fm->fetch_flexi_heads_to_students($class__, $data['fetch_class_students'][$loop1]->regid);
+                //echo $data['fetch_class_students'][$loop1]->FNAME . " - " . $data['flexi_heads']['flexi_heads'] . "<br><br>";
+            //}
+            echo json_encode($data);
+        }
+    // ------------------------------------
 }
