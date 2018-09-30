@@ -2168,6 +2168,7 @@ $(function(){
                 	if(class_ != "x" && year_from != "" && month_from != "" && year_to != "" && month_to != ""){
                 		data_ = $('#frmInvoice').serialize();
 		            	url_ = site_url_ + "/fee/pay_zero_amount";
+		            	$('#cmdPayZeroReceipt').val('Loading...');
 		            	$.ajax({
 		            		type: "POST",
 		            		url: url_,
@@ -2203,6 +2204,7 @@ $(function(){
 		            				str = "No Data Found for 0 receipt."
 		            			}
 		            			$('#class_invoices_here').html(str);
+		            			$('#cmdPayZeroReceipt').val('Zero Receipt');
 		            		},
 		            		error: function(xhr, status, error){
 

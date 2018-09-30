@@ -36,9 +36,8 @@
 	cursor: pointer;
 }
 .view_invoice_0{
-     color: #808080; 
-     background: #f0f0f0;
      color: #ff0000;
+     background: #f0f0f0;
      border-radius: 4px;
      border: #A0A0A0 solid 1px;
      padding: 1px 5px;
@@ -72,4 +71,11 @@
     padding: 0px 3px;
     border-radius: 5px;
     border: #e0e0e0 solid 1px;
+}
+.zero_receipt{
+    color: #0000ff; 
+    background: #FEF8F5;
+    border-radius: 4px;
+    border: #A0A0A0 solid 1px;
+    padding: 1px 10px;
 }
