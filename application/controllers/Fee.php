@@ -312,18 +312,7 @@ class Fee extends CI_Controller {
     // For Zero Receipt or a specific class
         //show_invoice_needs_to_be_generated_for_zero_receipt
         function pay_zero_amount(){
-            $class__ = $this->input->post('cmbClassForInvoice');
-            $yr_from = $this->input->post('cmbYearFromForInvoice');
-            $mnth_from = $this->input->post('cmbMonthFromForInvoice');
-            $yr_to = $this->input->post('cmbYearToForInvoice');
-            $mnth_to = $this->input->post('cmbMonthToForInvoice');
-
-            $data['fetch_invoice_for_receipt'] = $this->fm->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
-            //$data['fetch_class_students'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'), $class__);
-            //for($loop1=0;$loop1<count($data['fetch_class_students']); $loop1++){
-                //$data['flexi_heads'] = $this->fm->fetch_flexi_heads_to_students($class__, $data['fetch_class_students'][$loop1]->regid);
-                //echo $data['fetch_class_students'][$loop1]->FNAME . " - " . $data['flexi_heads']['flexi_heads'] . "<br><br>";
-            //}
+            $data = $this->fm->pay_zero_amount();
             echo json_encode($data);
         }
     // ------------------------------------

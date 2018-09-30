@@ -106,12 +106,14 @@ class My_fee_model extends CI_Model {
         
         if($query->num_rows()!=0){
             $R = $query->row();
-            $this->db->select('a.*, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT, c.STATUS');
+            $this->db->select('a.*, p.CATEGORY, c.REGID, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT, c.STATUS');
             $this->db->from('fee_6_invoice a');
             $this->db->from('fee_6_invoice_detail c');
             $this->db->from('fee_7_receipts e');
             $this->db->from('master_8_stud_academics d');
+            $this->db->from('master_7_stud_personal p');
             $this->db->where('a.INVID = c.INVID');
+            $this->db->where('d.regid = p.regid');
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
             $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
@@ -123,12 +125,10 @@ class My_fee_model extends CI_Model {
             $this->db->group_by('c.INVDETID');
             $this->db->order_by('cast(c.REGID AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
-
             $data = $query->result();
         } else {
             $data = array("NA"=>'No Data Found');
         }
-
         // check transaction status
         $this->error->_db_error();
         // ------------------------
@@ -962,7 +962,237 @@ class My_fee_model extends CI_Model {
         $query = $this->db->get();
         return $query->row();
     }
+    function evaluate_discount($data){
+        /*
+            If need to change something in this code then also change the same in myjs.js {call_myreceipt jquery function} 
+            because they both are doing the same operation. Actually this code is used to prepare the receipt for zero amount
+        */
+        $dd['nom_'] = $data['fetch_receipt_data'][0]->NOM;
+        //amount_ = parseFloat(obj.fetch_receipt_data[0].ACTUAL_AMOUNT)/parseInt(obj.fetch_receipt_data[0].NOM);
+        $dd['amount_'] = $data['fetch_receipt_data'][0]->DUE_AMOUNT;
+        $dd['pay_amount'] = $data['fetch_receipt_data'][0]->DUE_AMOUNT;
+        $dd['actual_'] = $data['fetch_receipt_data'][0]->ACTUAL_AMOUNT;
+        $dd['amount_to_apply_discount'] = $data['fetch_receipt_data'][0]->APPLICABLE_DISCOUNT_AMOUNT;
+        $dd['due_actual'] = $dd['amount_'] - $data['fetch_receipt_data'][0]->ACTUAL_AMOUNT;
+        $dd['total_categ_discount_amount'] = 0;
+        $dd['total_sibling_discount_amount'] = 0;
+        $dd['total_other_discount_amount'] = 0;
+
+        if($dd['amount_to_apply_discount'] != 0){
+            if($data['other_discount_data']['res_'] == true){
+                $other_discount_arr = explode(',', $data['other_discount_data']['data_']->DISCOUNT);
+                $other_discount_length = count($other_discount_arr);
+                if($other_discount_length != 0){
+                    $other_discount_items = $data['other_discount_data']['data_']->DISCOUNT;
+                }
+
+                for($d=0;$d<$other_discount_length;$d++){
+                    for($k=0;$k<count($data['fetch_other_discount_data']);$k++){
+                        $calculated_amount = 0;
+                        if($other_discount_arr[$d] == $data['fetch_other_discount_data'][$k]->ITEM_){
+                            if($data['fetch_other_discount_data'][$k]->STATUS_ == 'Percentage'){
+                                $calculated_amount = ($dd['amount_to_apply_discount']*$data['fetch_other_discount_data'][$k]->AMOUNT)/100;
+                            } else {
+                                $calculated_amount = ($data['fetch_other_discount_data'][$k]->AMOUNT*nom_);
+                            }
+                            $dd['total_other_discount_amount'] = $dd['total_other_discount_amount'] + $calculated_amount;
+                        }
+                    }
+                }
+            } else {
+                $dd['total_other_discount_amount'] = 0;
+            }
+        }
+        $dd['discount_category'] = 'x';
+        $dd['total_sibling'] = 0;
+        $dd['total_sibling_discount_amount'] = 0;
+
+        if($data['fetch_category_discount_data']['res_'] == true){
+            $dd['categ_discount_amnt'] = $data['fetch_category_discount_data']['data_']->AMOUNT;
+            if($data['fetch_category_discount_data']['data_']->STATUS_ == 'Percentage'){
+                $dd['total_categ_discount_amount'] = parseInt(parseInt($dd['amount_to_apply_discount'])*(parseInt($dd['categ_discount_amnt'])/100));
+            } else {
+                $dd['total_categ_discount_amount'] = ($dd['categ_discount_amnt']*$dd['nom_']);
+            }
+            if($dd['discount_category'] != 'x'){
+                if($data['fetch_category_discount_data']['data_']->ITEM_ != 'GENERAL'){
+                    $dd['discount_category'] = $dd['discount_category'] + "," + $data['fetch_category_discount_data']['data_']['ITEM_'];
+                }
+            } else {
+                if($data['fetch_category_discount_data']['data_']->ITEM_ != 'GENERAL'){
+                    $dd['discount_category'] = $data['fetch_category_discount_data']['data_']['ITEM_'];
+                }
+            }
+        } else {
+            $dd['total_categ_discount_amount'] = 0;
+        }
+        
+        if($data['other_discount_data']['res_'] == true){
+            $dd['discount_category'] = $dd['discount_category'] + "," + $data['other_discount_data']['data_']->DISCOUNT + "";
+        }
+        
+        //alert(total_categ_discount_amount);
+        $dd['category_amount_to_store'] = '';
+        if($dd['total_sibling_discount_amount'] != 0){
+            $dd['category_amount_to_store'] = $dd['category_amount_to_store'] + $d['total_sibling_discount_amount'];
+        }
+        if($dd['total_categ_discount_amount'] != 0 && $dd['category_amount_to_store'] != ''){
+            $dd['category_amount_to_store'] = $dd['category_amount_to_store'] + "," + $dd['total_categ_discount_amount'];    
+        } else if($dd['total_categ_discount_amount'] != 0){
+            $dd['category_amount_to_store'] = $dd['category_amount_to_store'] + $dd['total_categ_discount_amount'];
+        }
+
+        if($dd['total_other_discount_amount'] != 0){
+            $dd['category_amount_to_store'] = $dd['category_amount_to_store'] + "," + $dd['total_other_discount_amount'];
+        }
+
+        $dd['discount_if_any'] = 0;
+        $dd['discount_if_any'] = $dd['discount_if_any'] + $dd['total_sibling_discount_amount'] + $dd['total_categ_discount_amount'] + $dd['total_other_discount_amount'];
+        return $dd;
+    }
+    function pay_zero_amount(){
+        /*
+            If need to change something in this code then also change the same in myjs.js {call_myreceipt jquery function} 
+            because they both are doing the same operation. Actually this code is used to prepare the receipt for zero amount
+        */
+        $class__ = $this->input->post('cmbClassForInvoice');
+        $yr_from = $this->input->post('cmbYearFromForInvoice');
+        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+        $yr_to = $this->input->post('cmbYearToForInvoice');
+        $mnth_to = $this->input->post('cmbMonthToForInvoice');
+
+        $d['fetch_invoice_for_receipt'] = $this->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
+        //print_r($d['fetch_invoice_for_receipt'])."<br>";
+        //echo count($d['fetch_invoice_for_receipt']);
+        $ret_data = array();
+        if(count($d['fetch_invoice_for_receipt']) != 1 || (count($d['fetch_invoice_for_receipt']) == 1 && !isset($d['fetch_invoice_for_receipt']['NA']))){
+            for($loop1=0;$loop1<count($d['fetch_invoice_for_receipt']); $loop1++){
+                $d_['flexi_heads'] = $this->fetch_flexi_heads_to_students($class__, $d['fetch_invoice_for_receipt'][$loop1]->REGID);
+                
+                /*echo*/ $d['invdetid'] = $d['fetch_invoice_for_receipt'][$loop1]->INVDETID;
+                /*echo*/ $d['regid'] = $d['fetch_invoice_for_receipt'][$loop1]->REGID;
+                /*echo*/ $d['flexiheads'] = $d_['flexi_heads']['flexi_heads'];
+                $d['fetch_receipt_data'] = $this->get_student_receipt($d['invdetid'], $class__);
+                if($this->chkDiscountStatus($d['invdetid']) == false){
+                    $d['sibling_discount'] = $this->get_specific_sibling_for_fee_discount($d['regid']);
+                    $d['other_discount_data'] = $this->get_specific_other_discount_for_fee_discount($d['regid']);
+
+                    if(count($d['other_discount_data'])!=0){
+                        $d['fetch_other_discount_data'] = $this->get_other_discount('OTHER');
+                    } else {
+                        $d['fetch_other_discount_data'] = array('res_'=>NULL);
+                    }
+                    $d['fetch_discount_data'] = NULL;
+
+                    $d['fetch_category_discount_data'] = $this->get_student_discount($d['fetch_invoice_for_receipt'][$loop1]->CATEGORY);
+                    
+                    /*echo*/ "-<br>-";
+                    /*print_r*/ $d['discount_overall'] = $this->evaluate_discount($d);
+                } else {
+                    $d['other_discount_data'] = array('res_' => 'NULL');
+                    $d['fetch_discount_data'] = array('res_'=>NULL);
+                    $d['fetch_category_discount_data'] = array('res_'=>NULL);
+                    $d['fetch_other_discount_data'] = array('res_'=>NULL);
+                }
+                $id_reg_paid = $this->submit_zero_fee($d);
+                $ret_data[] =  array('zero_receipt_id'=>$id_reg_paid['id_'], 'zero_regid'=>$id_reg_paid['regid']);
+            }
+        } else if(count($d['fetch_invoice_for_receipt']) == 1 && isset($d['fetch_invoice_for_receipt']['NA'])){
+            echo $d['fetch_invoice_for_receipt']['NA'];
+        }
+        print_r( $ret_data);
+    }
+    function submit_zero_fee($data){
+        /*
+            If need to change something in this code then also change the same in the below function {submitfee}
+            because they both are doing the same operation. Actually this code is used to submit the receipt for 
+            zero amount
+        */
+        $invdetid = $data['invdetid'];
+        $regid = $data['regid'];
+        $flexiheads = trim($data['flexiheads']);
+        $discount_category = trim($data['discount_overall']['discount_category']."|".$data['discount_overall']['category_amount_to_store']);
+        $desc_ = 'Auto Receipt for Zero payment';
+
+        $fine = 0;
+        $total_gross_amount = ($data['discount_overall']['pay_amount']+$fine) - $data['discount_overall']['discount_if_any'];
+        $due_amnt_input = $data['discount_overall']['pay_amount'];
+        $paid__ = 0; // This will always be 0 as this auto-function is used to cut the zero receipt
+        $discount_amount = trim($data['discount_overall']['discount_if_any']);
+        $mode = 'cash';
+
+        $ddcq_no = 'x'; // zero paid amount hypothetically means cash
+        $ddcq_date = 'x'; // zero paid amount hypothetically means cash
+
+        // Calculation to reduce due amount from invoice against the receipt payment
+        $this->db->select('DUE_AMOUNT');
+        $this->db->where('INVDETID', $invdetid);
+        $query = $this->db->get('fee_6_invoice_detail');
+        if($query->num_rows()!=0){
+            $r = $query->row();
+            $due_amount = $r->DUE_AMOUNT;
+        } else {
+            $this->session->set_flashdata('blunder_error', 'OH NO!! Invoice Record is deleted. You should have to maintain the fee detail for '.$this->session->userdata('_current_year___')." against the registration id - ". $regid);
+            $due_amount = 0;
+        }
+        //$new_due_amount = $due_amount - $due_amnt_input;
+        $new_due_amount = $total_gross_amount - $paid__;
+        
+        // -------------------------------------------------------------------------
+        if(1/*$due_amount > 0*/){
+
+            if($flexiheads != ''){
+                $flexistatus = true;
+            } else {
+                $flexistatus = false;
+            }
+            if($discount_amount != 0 && $discount_amount != ''){
+                $discount = true;
+            } else {
+                $discount = false;
+            }
+
+            $data = array(
+                'FLEXI_FEE_STATUS' =>$flexistatus,
+                'ADFLXFEESTUDID' =>$flexiheads,
+                'DISCOUNT' =>$discount,
+                'DISCOUNT_CATEGORY' => $discount_category,
+                'DISCOUNT_AMOUNT'=>trim($discount_amount),
+                'DESCRIPTION_IFANY'=>$desc_,
+                'ACTUAL_PAID_AMT'=>trim($due_amnt_input),
+                'PAID' => trim($paid__),
+                'FINE'=>trim($fine),
+                'MODE'=>$mode,
+                'DD_CQ_NO' =>$ddcq_no,
+                'DD_CQ_DATE'=>$ddcq_date,
+                'regid'=>$regid,
+                'INVDETID'=>$invdetid,
+                'DATE_'=> date('Y-m-d H:i:s'),
+                'USERNAME_'=> $this->session->userdata('_user___')
+                );
+            $this->db->insert('fee_7_receipts', $data);
+            $id_ = $this->db->insert_id();
+            // Update the due amount ----------------------
+                $data = array(
+                    'DUE_AMOUNT' => $new_due_amount
+                    );
+                $this->db->where('INVDETID', $invdetid);
+                $this->db->update('fee_6_invoice_detail', $data);
+            // --------------------------------------------
+        } else {
+            $id_ = 'x';
+        }
+        $data['regid'] = $regid;
+        $data['paid_amt'] = $paid__;
+        $data['id_'] = $id_;
+        return $data;
+    }
     function submitfee(){
+        /*
+            If need to change something in this code then also change the same in the above function {submit_zero_fee}
+            because they both are doing the same operation. This code is used to submit the receipt for 
+            actual paid amount
+        */
         $invdetid = $this->input->post('txtINVDETID');
         $regid = $this->input->post('txtREGID');
         $flexiheads = trim($this->input->post('txtFlexiHeads'));

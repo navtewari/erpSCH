@@ -2197,6 +2197,13 @@ $(function(){
                 call_myreceipt(id_, class__, container_);
 			});
 			function call_myreceipt(id_, class__, container_){
+
+				/*
+		            If need to change something in this code then also change the same in My_fee_model.php {pay_zero_amount AND evaluate_discount functions} 
+		            because they both are doing the same operation. Actually pay_zero_amount AND evaluate_discount functions are used to prepare the receipt 
+		            for zero amount
+		        */
+
 		        var arr = id_.split('_');
 		        var invdetid = arr[1];
 		        var regid_ = arr[2];
