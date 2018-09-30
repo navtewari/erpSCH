@@ -2173,7 +2173,36 @@ $(function(){
 		            		url: url_,
 		            		data: data_,
 		            		success: function(data){
-		            			$('#class_invoices_here').html(data);
+		            			var obj = JSON.parse(data);
+		            			var str = '';
+		            			var sno = 0;
+		            			if(obj.length > 1){
+			            			str = str + "<table class='table table-bordered'>";
+			            			str = str + "<tr>";
+			            			str = str + "<th colspan='5' style='background: #3F3C3B !important; color: #ffffff !important'>Below are the Auto Receipts with zero payment.</th>";
+			            			str = str + "</tr>";
+			            			str = str + "<tr>";
+			            			str = str + "<th>SNO</th>";
+			            			str = str + "<th>Reg ID</th>"
+			            			str = str + "<th>Discount</th>"
+			            			str = str + "<th>Auto Paid Amount (Rs.)</th>"
+			            			str = str + "<th>Receipt</th>";
+			            			str = str + "</tr>";
+			            			for(i=0; i<obj.length; i++){
+			            				sno++;
+			            				str = str + "<tr>";
+			            				str = str + "<td>"+sno+"</td>";
+			            				str = str + "<td>"+obj[i].zero_regid+"</td>";
+			            				str = str + "<td>"+obj[i].discount+"</td>";
+			            				str = str + "<td>Rs. 0/-</td>";
+			            				str = str + "<td><a href='"+site_url_+"/fee/fee_print/"+obj[i].zero_receipt_id+"' class='view_invoice_1' target='_blank'>View</a></td>";
+			            				str = str + "</tr>";
+			            			}
+		            				str = str + "</table>"
+		            			} else {
+		            				str = "No Data Found for 0 receipt."
+		            			}
+		            			$('#class_invoices_here').html(str);
 		            		},
 		            		error: function(xhr, status, error){
 

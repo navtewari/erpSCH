@@ -977,7 +977,7 @@ class My_fee_model extends CI_Model {
         $dd['total_categ_discount_amount'] = 0;
         $dd['total_sibling_discount_amount'] = 0;
         $dd['total_other_discount_amount'] = 0;
-
+        $dd['other_discount'] = 'x';
         if($dd['amount_to_apply_discount'] != 0){
             if($data['other_discount_data']['res_'] == true){
                 $other_discount_arr = explode(',', $data['other_discount_data']['data_']->DISCOUNT);
@@ -990,10 +990,15 @@ class My_fee_model extends CI_Model {
                     for($k=0;$k<count($data['fetch_other_discount_data']);$k++){
                         $calculated_amount = 0;
                         if($other_discount_arr[$d] == $data['fetch_other_discount_data'][$k]->ITEM_){
+                            if($dd['other_discount'] != 'x'){
+                                $dd['other_discount'] = $dd['other_discount'] . "," . $other_discount_arr[$d];
+                            } else {
+                                $dd['other_discount'] = $other_discount_arr[$d];
+                            }
                             if($data['fetch_other_discount_data'][$k]->STATUS_ == 'Percentage'){
                                 $calculated_amount = ($dd['amount_to_apply_discount']*$data['fetch_other_discount_data'][$k]->AMOUNT)/100;
                             } else {
-                                $calculated_amount = ($data['fetch_other_discount_data'][$k]->AMOUNT*nom_);
+                                $calculated_amount = ($data['fetch_other_discount_data'][$k]->AMOUNT*$dd['nom_']);
                             }
                             $dd['total_other_discount_amount'] = $dd['total_other_discount_amount'] + $calculated_amount;
                         }
@@ -1026,11 +1031,13 @@ class My_fee_model extends CI_Model {
         } else {
             $dd['total_categ_discount_amount'] = 0;
         }
-        
         if($data['other_discount_data']['res_'] == true){
-            $dd['discount_category'] = $dd['discount_category'] + "," + $data['other_discount_data']['data_']->DISCOUNT + "";
+            if($dd['discount_category'] != 'x'){
+                $dd['discount_category'] = $dd['discount_category'] + "," + $dd['other_discount']; 
+            } else {
+                $dd['discount_category'] = $dd['other_discount']; 
+            }
         }
-        
         //alert(total_categ_discount_amount);
         $dd['category_amount_to_store'] = '';
         if($dd['total_sibling_discount_amount'] != 0){
@@ -1095,12 +1102,12 @@ class My_fee_model extends CI_Model {
                     $d['fetch_other_discount_data'] = array('res_'=>NULL);
                 }
                 $id_reg_paid = $this->submit_zero_fee($d);
-                $ret_data[] =  array('zero_receipt_id'=>$id_reg_paid['id_'], 'zero_regid'=>$id_reg_paid['regid']);
+                $ret_data[] =  array('res_'=>true, 'zero_receipt_id'=>$id_reg_paid['id_'], 'discount'=>$d['discount_overall']['discount_category'], 'zero_regid'=>$id_reg_paid['regid']);
             }
         } else if(count($d['fetch_invoice_for_receipt']) == 1 && isset($d['fetch_invoice_for_receipt']['NA'])){
-            echo $d['fetch_invoice_for_receipt']['NA'];
+            $ret_data[] = array('res_'=>false, 'msg_'=>$d['fetch_invoice_for_receipt']['NA']);
         }
-        print_r( $ret_data);
+        return $ret_data;
     }
     function submit_zero_fee($data){
         /*
