@@ -18,7 +18,7 @@
                 td{font-size: 13px;font-weight: 600;}
                 .table_{
                     border: #000000 solid 1px;
-                    display: block !important;
+                    
                     width:95%;
                 }                               
             </style>

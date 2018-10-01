@@ -217,7 +217,13 @@ class Exam extends CI_Controller {
             if ($regID == 0) {
                 $this->load->view('exam/printResult_All', $data);
             } else {
-                $this->load->view('exam/printResult', $data);
+                $this->load->view('exam/printResult-1to8', $data);
+            }
+        }else if($reportlayout==2){
+            if ($regID == 0) {
+                $this->load->view('exam/printResult_All', $data);
+            } else {
+                $this->load->view('exam/printResult-9', $data);
             }
         }else{
             die();
