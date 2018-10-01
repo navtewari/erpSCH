@@ -111,7 +111,7 @@
 		    	</h5>
 		        <h5 style="float: right" id="total_students"></h5>
 		    </div>
-		    <div class="widget-content nopadding" id="view_consolidate_attendance">
+		    <div class="widget-content nopadding" id="view_consolidate_attendance" style="overflow: auto">
 		    </div>
 		</div>
 </div>

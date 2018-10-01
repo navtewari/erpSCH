@@ -345,12 +345,19 @@
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3" style="height: 10px; text-align: right; vertical-align: top; font-size: 9px">(<?php echo $inwords->convert_number($total_amount); ?>)</td>
+											<td colspan="3" style="height: 10px; text-align: right; vertical-align: top; font-size: 9px">
+												<?php if($total_amount >= 0){?>
+													(<?php echo $inwords->convert_number($total_amount); ?>)
+												<?php } else { ?>
+													<?php $t = 0-$total_amount; ?>
+													[Excess Paid] (<?php echo $inwords->convert_number($t); ?>)
+												<?php } ?>
+											</td>
 										</tr>
 										<tr>
 											<td class="myline_" colspan="3"></td>
 										</tr>
-										<tr>
+										<tr> 
 											<td colspan="3" style="height: 10px;"></td>
 										</tr>
 										<tr>

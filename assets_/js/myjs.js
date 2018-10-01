@@ -11,7 +11,18 @@ $(function(){
 		$('#loading_process').html('');	
 	});
 
-	$("#txtStudentPhone").mask("(999) 999-9999");
+	//$("#txtStudentPhone").mask("(999) 999-9999");
+	$("#txtStudentPhone").blur(function(){
+		var ph = $("#txtStudentPhone").val();
+
+		if(ph.length < 10 || ph.length > 10){
+			$('#ph_error').css('background', '#ffff00');
+			$('#ph_error').html('10 digits please!!')
+		} else {
+			$('#ph_error').css('background', 'transparent');
+			$('#ph_error').html('');
+		}
+	});
 	$( window ).on( "load", function(){
 		
 		$(".page-loader").fadeOut("slow");
@@ -26,6 +37,8 @@ $(function(){
 			fillStates('cmbCState');
 			fillSiblings();
 			fillDiscount();
+			$('#ph_error').css('background', 'transparent');
+			$('#ph_error').html('');
 		}
 		if($('#frmAssociateStaticFee').length != 0){
 			fillClasses_for_current_session();
@@ -1692,7 +1705,7 @@ $(function(){
 								                        }
 								                        totalFixHeadsAmount = fixHeadsAmount;
 								                            str_html = str_html + "<tr style='background: #ffffff'>";
-								                            str_html = str_html + "<td colspan='8' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
+								                            str_html = str_html + "<td colspan='9' style='vertical-align: middle'> <div style='float:  left'>Standard Fix Fee for this class-&nbsp;&nbsp;</div>"+fixHeads+'<div style="clear: both"></div>';
 								                            str_html = str_html + "<div style='float: left'><b>Note: </b>Generate/ Print Invoice for "+total_months+" month(s). </div></td>"
 								                            str_html = str_html + "<td colspan='3' style='background: #FEF4F2; text-align: center; vertical-align: middle'><h5>Receipt Area</h5></td></tr>";
 								                            str_html = str_html + "<tr>";
@@ -1700,6 +1713,7 @@ $(function(){
 								                            str_html = str_html + "<tr class='gradeX'>";
 								                            str_html = str_html + "<th>Reg. No</th>";
 								                            str_html = str_html + "<th>Name</th>";      
+								                            str_html = str_html + "<th>Discount</th>";      
 								                            str_html = str_html + "<th style='text-align: right !important'>Fix Fee</th>";
 								                                str_html = str_html + "<th style='min-width: 100px; max-width: 200px'>Opted Fee</th>";
 								                                str_html = str_html + "<th style='text-align: right !important'>Amount</th>";
@@ -1710,6 +1724,8 @@ $(function(){
 								                            str_html = str_html + "<th width='100' style='text-align: center !important'>Pay Fee</th>";
 								                            str_html = str_html + "<th width='100' style='text-align: center !important'>Print Receipt</th>";
 								                            str_html = str_html + "</tr>";
+
+								                            var student_discount = obj.discount_associated;
 								                        for(loop1=0;loop1<obj.fetch_class_students.length; loop1++){
 								                        	invoice_already_generated = false;
 								                        	for(pinvoiceloop=0;pinvoiceloop<obj.previous_invoice.length;pinvoiceloop++){
@@ -1719,9 +1735,24 @@ $(function(){
 								                        			break;
 								                        		}
 								                        	}
+								                        	var st_discount_data = '';
+								                        	$.each( student_discount, function( key, value ) {
+								                        		if(obj.fetch_class_students[loop1].regid == value.regid){
+								                        			var st_dis_data = value.DISCOUNT;
+								                        			var ar_ = st_dis_data.split(',');
+								                        			for(i=0; i<ar_.length; i++){
+								                        				st_discount_data = st_discount_data + "<div class='discount_lable'>"+ar_[i]+"</div>";	
+								                        			}
+															  		
+															  		return;
+															  	}
+															});
+								                        	//var st_arr_discount = st_discount_data.split(',');
+
 								                            str_html = str_html + "<tr class='gradeX'>";
 								                            str_html = str_html + "<td>"+obj.fetch_class_students[loop1].regid+"</td>";
 								                            str_html = str_html + "<td style='width: 150px'>"+obj.fetch_class_students[loop1].FNAME+"</td>";
+								                            str_html = str_html + "<td>"+st_discount_data+"</td>";
 								                            str_html = str_html + "<td style='text-align: right !important'><span class='highlightText'>"+totalFixHeadsAmount+"</span></td>";
 								                            flexifee = ''
 								                            flexiAmount = 0;
@@ -2126,6 +2157,64 @@ $(function(){
 	        	}
 	    	return false;
 	    	});
+			$('#cmdPayZeroReceipt').click(function(){
+				if($('#cmbClassForInvoice').val() != "x"){
+		            var class_ = $('#cmbClassForInvoice').val();
+		            var year_from = parseInt($('#cmbYearFromForInvoice').val(),10);
+	                var month_from = parseInt($('#cmbMonthFromForInvoice').val(),10);
+	                var year_to = parseInt($('#cmbYearToForInvoice').val(),10);
+	                var month_to = parseInt($('#cmbMonthToForInvoice').val(),10);
+	                var total_amount_for_class = 0;
+                	if(class_ != "x" && year_from != "" && month_from != "" && year_to != "" && month_to != ""){
+                		data_ = $('#frmInvoice').serialize();
+		            	url_ = site_url_ + "/fee/pay_zero_amount";
+		            	$('#cmdPayZeroReceipt').val('Loading...');
+		            	$.ajax({
+		            		type: "POST",
+		            		url: url_,
+		            		data: data_,
+		            		success: function(data){
+		            			var obj = JSON.parse(data);
+		            			var str = '';
+		            			var sno = 0;
+		            			if(obj.length > 1){
+			            			str = str + "<table class='table table-bordered'>";
+			            			str = str + "<tr>";
+			            			str = str + "<th colspan='5' style='background: #3F3C3B !important; color: #ffffff !important'>Below are the Auto Receipts with zero payment.</th>";
+			            			str = str + "</tr>";
+			            			str = str + "<tr>";
+			            			str = str + "<th>SNO</th>";
+			            			str = str + "<th>Reg ID</th>"
+			            			str = str + "<th>Discount</th>"
+			            			str = str + "<th>Auto Paid Amount (Rs.)</th>"
+			            			str = str + "<th>Receipt</th>";
+			            			str = str + "</tr>";
+			            			for(i=0; i<obj.length; i++){
+			            				sno++;
+			            				str = str + "<tr>";
+			            				str = str + "<td>"+sno+"</td>";
+			            				str = str + "<td>"+obj[i].zero_regid+"</td>";
+			            				str = str + "<td>"+obj[i].discount+"</td>";
+			            				str = str + "<td>Rs. 0/-</td>";
+			            				str = str + "<td><a href='"+site_url_+"/fee/fee_print/"+obj[i].zero_receipt_id+"' class='view_invoice_1' target='_blank'>View</a></td>";
+			            				str = str + "</tr>";
+			            			}
+		            				str = str + "</table>"
+		            			} else {
+		            				str = "No Data Found for 0 receipt."
+		            			}
+		            			$('#class_invoices_here').html(str);
+		            			$('#cmdPayZeroReceipt').val('Zero Receipt');
+		            		},
+		            		error: function(xhr, status, error){
+
+		            		}
+		            	});
+		            }
+		        } else {
+		        	alert('Please select class first.');
+		        }
+			});
 			$('body').on('click', '.myreceipt_from_invoice', function(){
 				var id_ = this.id;
 				var class__ = 'cmbClassForInvoice';
@@ -2139,6 +2228,13 @@ $(function(){
                 call_myreceipt(id_, class__, container_);
 			});
 			function call_myreceipt(id_, class__, container_){
+
+				/*
+		            If need to change something in this code then also change the same in My_fee_model.php {pay_zero_amount AND evaluate_discount functions} 
+		            because they both are doing the same operation. Actually pay_zero_amount AND evaluate_discount functions are used to prepare the receipt 
+		            for zero amount
+		        */
+
 		        var arr = id_.split('_');
 		        var invdetid = arr[1];
 		        var regid_ = arr[2];
@@ -2990,7 +3086,7 @@ $(function(){
 
 	            url_ = site_url_ + '/attendance/checkExistingAttendance';
 	            checkdata_ = 'ClassSessid_='+classid+'&date_='+date_+'&time_='+time__;
-	            
+	            $('#students_here').html('<tr><td colspan="4"><h6 style="text-align: center">Please wait its loading...</h6></td></tr>');
 	            $.ajax({
 	                type    : 'POST',
 	                url     : url_,
@@ -3034,7 +3130,6 @@ $(function(){
 		                            	str_html = str_html + "</tr>";
 	                            	}
 	                                $('#students_here').html(str_html);
-
 	                            }, error: function(xhr, status, error){
 									callDanger(xhr.responseText);
 								}
@@ -3121,11 +3216,11 @@ $(function(){
 		                            $('#mobilenumbers').val(str);
 
 		                            d = obj.no__['nos'][0].DATE_;
-		                            dt = d.split('/');
+		                            dt = d.split('-');
 		                            dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
-		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+obj.no__['nos'][0].DATE_+"). Please motivate him/her to attend classes regularly.");
+		                            $('#Absent_Message').val("Your ward is absent today i.e. ("+dt_+"). Please motivate him/her to attend classes regularly.");
 		                            $('#MessageToPrint').val("Attendance for class <span style='font-weight: bold; color: #ffff00'>"+class_+"</span> successfully submitted.");
-									$('#myModal').modal('show');
+									$('#myModal').modal('show'); // This line will not execute at local machine when obj.sms_check is equals to 'NA'
 									/**/
 								}
 								if($('#status_of_editting').val() == 'old'){
@@ -3229,7 +3324,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchdaywiseresult';
 	        data_ = $('#frmViewDaywiseAttendance').serialize();
 	        $('#printHead').html('Attendance -');
-	        
+	        $('#view_day_wise_attendance').html('<h6 style="text-align: center">Please wait its loading...</h6>');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3265,7 +3360,8 @@ $(function(){
 	                            for(loop2=0;loop2<obj.daywise.length; loop2++){
 	                                if(obj.time_[tm].TIME_ == obj.daywise[loop2].TIME_ && obj.students[loop1].regid == obj.daywise[loop2].regid){
 	                                    total = total + parseInt(obj.daywise[loop2].STATUS);
-	                                    str_html = str_html + "<td align='left'>" + obj.daywise[loop2].STATUS + "</td>";
+	                                    if(obj.daywise[loop2].STATUS==1){st_ = "<span style='font-weight: bold'>P</span>";}else{st_ = "<span style='color: #ff0000; font-weight: bold'>A</span>";}
+	                                    str_html = str_html + "<td align='left'>" +st_+ "</td>";
 	                                }
 	                            }
 	                        }
@@ -3299,7 +3395,7 @@ $(function(){
 	        class_ = $('#cmbClassesForStudents_view').find('option:selected').text();
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewConsolidateAttendance').serialize();
-	        
+	        $('#view_consolidate_attendance').html('<h6 style="text-align: center">Please wait its loading...');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3321,12 +3417,14 @@ $(function(){
 						str_html = str_html + '<th style="min-width: 80%">Student Name</th>';
 
 	                    for(tm=0; tm<obj.date_.length; tm++){
-	                        DT_ = obj.date_[tm].DATE_;
-	                        str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
+	                        d = obj.date_[tm].DATE_;
+	                        dt = d.split('-');
+		                    dt_ = dt[2]+"/"+dt[1]+"/"+dt[0];
+	                        str_html = str_html + "<th style='text-align: center !important'>"+dt_+"</th>";
 	                    }
-	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
-	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
-	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
+	                    str_html = str_html + "<th style='text-align: center !important'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center !important'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: right !important'>%age</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
@@ -3336,21 +3434,23 @@ $(function(){
 	                        var total = 0; // It is used to store the total classes attended by the student
 	                        for(tm=0; tm<obj.date_.length; tm++){
 	                            var t_ = 0; // It is a temporary variable to calculate the total attended classes datewise
+	                            var stc_ = '';
 	                            for(loop2=0;loop2<obj.consolidate.length; loop2++){
 	                                if(obj.date_[tm].DATE_ == obj.consolidate[loop2].DATE_ && obj.students[loop1].regid == obj.consolidate[loop2].regid){
 	                                   t_ = t_ + parseInt(obj.consolidate[loop2].STATUS);
+	                                   if(obj.consolidate[loop2].STATUS==1){stc_ = stc_ + "<span style='font-weight: bold; margin: 0px 1px'>P</span>";}else{stc_ = stc_ + "<span style='color: #ff0000; font-weight: bold; margin: 0px 1px'>A</span>";}
 	                                }
 	                            }
-	                            str_html = str_html + "<td style='text-align: center'>" + t_ + "</td>";
+	                            str_html = str_html + "<td style='text-align: center !important'>" + stc_ + "</td>";
 	                            total = total + t_;
 	                        }
 	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
-	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center !important'>" + totalClasses + "</td>";
 	                        per = (total/totalClasses)*100;
 	                        if(per < limitpercentage){
-	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        } else {
-	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #009000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        }
 	                        str_html = str_html + "</tr>";
 	                    }
@@ -3371,7 +3471,7 @@ $(function(){
 	        url_ = site_url_+'/attendance/fetchConsolidateresult';
 	        data_ = $('#frmViewTotalAttendance').serialize();
 	        $('#printHead').html('Total Attendance for - ');
-	        
+	        $('#view_consolidate_attendance').html('<h6 style="text-align: center">Please wait its loading...</h6>');
 	        $.ajax({
 	            type    : 'POST',
 	            url     : url_,
@@ -3396,9 +3496,9 @@ $(function(){
 	                        DT_ = obj.date_[tm].DATE_;
 	                        //str_html = str_html + "<th style='text-align: center'>"+DT_+"</th>";
 	                    }
-	                    str_html = str_html + "<th style='text-align: center'>Attended</th>";
-	                    str_html = str_html + "<th style='color: #0000ff; text-align: center'>Total held</th>";
-	                    str_html = str_html + "<th style='color: #ff0000; text-align: center'>%age</th>";
+	                    str_html = str_html + "<th style='text-align: center !important'>Attended</th>";
+	                    str_html = str_html + "<th style='color: #0000ff; text-align: center !important'>Total held</th>";
+	                    str_html = str_html + "<th style='color: #ff0000; text-align: right !important'>%age</th>";
 	                    str_html = str_html + "</tr>";
 
 	                    for(loop1 = 0; loop1<obj.students.length; loop1++){
@@ -3417,12 +3517,12 @@ $(function(){
 	                            total = total + t_;
 	                        }
 	                        str_html = str_html + "<td style='text-align: center'>" + total + "</td>";
-	                        str_html = str_html + "<td style='color: #0000ff;text-align: center'>" + totalClasses + "</td>";
+	                        str_html = str_html + "<td style='color: #0000ff;text-align: center !important'>" + totalClasses + "</td>";
 	                        per = (total/totalClasses)*100;
 	                        if(per < limitpercentage){
-	                            str_html = str_html + "<td style='color: #ff0000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #ff0000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        } else {
-	                            str_html = str_html + "<td style='color: #009000;text-align: center'>" + per.toFixed(2) + "</td>";
+	                            str_html = str_html + "<td style='color: #009000;text-align: right !important'>" + per.toFixed(2) + "</td>";
 	                        }
 	                        str_html = str_html + "</tr>";
 	                    }
@@ -3786,7 +3886,7 @@ $(function(){
 				class_name: 'gritter-success'
 			});
 		}
-	// -----------
+	// ---------------
 
 	// Change Password
 		$('#changepwdbutt').click(function(){

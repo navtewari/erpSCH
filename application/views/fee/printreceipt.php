@@ -280,7 +280,12 @@ if (count($receipt) != 0) {
                                                                                         <tr valign="top">
                                                                                             <td class="label_">Total Paid</td>
                                                                                             <td class="content"><b>Rs. <?php echo $total_paid; ?></b>/- &nbsp;
-                                                                                                (<?php echo $inwords->convert_number($total_paid); ?>)
+                                                                                                <?php if($total_paid >= 0){?>
+                                                                                                    (<?php echo $inwords->convert_number($total_paid); ?>)
+                                                                                                <?php } else { ?>
+                                                                                                    <?php $t = 0-$total_paid; ?>
+                                                                                                    (<?php echo $inwords->convert_number($t); ?>)
+                                                                                                <?php } ?>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>

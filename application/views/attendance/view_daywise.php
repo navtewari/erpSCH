@@ -52,7 +52,7 @@
                     </div>
                 </div>
 	            <div class="control-group span3">
-	                <label class="control-label"> Date From <span style="font-size: 9px">(dd/mm/yyyy)</span></label>
+	                <label class="control-label"> For Date <span style="font-size: 9px">(dd/mm/yyyy)</span></label>
                     <div class="controls">
                         <div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
                         <?php

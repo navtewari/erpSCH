@@ -105,9 +105,16 @@
 	                            }
 	                        ?>
 	                        <?php echo form_dropdown($data, $options, date('m')); ?>
+	                        
 	                    </div>
 	            </div>
-                <div class="control-group"></div>
+	            <?php if($this->session->userdata('_status_') == 'adm'){ ?>
+	                <div class="control-group" style="border: #ff0000 solid 0px">
+		                <input type="button" value="Zero Receipt" name="cmdPayZeroReceipt" id="cmdPayZeroReceipt" class="span4 zero_receipt" style="float: right; width: auto">
+	                </div>
+	            <?php } else { ?>
+	            	<div class="control-group"></div>
+	            <?php } ?>
             </div>
         </div>
     </div>
