@@ -4,11 +4,10 @@
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Class</h5>
             </div>
-            <div class="widget-content nopadding">
-                <div class="control-group">
+            <div class="widget-content">               
                     <?php
                     $attrib_ = array(
-                        'class' => 'form-horizontal',
+                        'class' => 'form-vertical',
                         'name' => 'frmStudentContact',
                         'id' => 'frmStudentContact',
                     );
@@ -20,16 +19,15 @@
                             <?php
                             $data = array(
                                 'name' => 'stuClassID',
-                                'id' => 'stuClassID',                                
-                                'required' => 'required'
+                                'id' => 'stuClassID',                                   
+                                'required' => 'required'                                
                             );
                             $options = array();
                             ?>
                             <?php echo form_dropdown($data, $options, ''); ?>
                         </div>
                     </div>                                        
-                    <?php echo form_close(); ?>
-                </div>
+                    <?php echo form_close(); ?>                
             </div>            
         </div>
     </div>

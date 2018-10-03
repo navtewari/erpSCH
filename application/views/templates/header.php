@@ -26,8 +26,8 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/jquery.easy-pie-chart.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/jquery.gritter.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-style.css'); ?>" />
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-media.css'); ?>" />
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/select2.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-media.css'); ?>" />        
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/select2.css'); ?>?version=<?php echo JS_VERSION_NAVEEN;?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/datepicker.css');?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/uniform.css'); ?>" />
         <link  rel="stylesheet" href="<?PHP echo base_url() . 'assets_/multiSelect/css/style.css'; ?>">

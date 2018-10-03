@@ -4,11 +4,10 @@
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Select Class to see Result</h5>
             </div>
-            <div class="widget-content nopadding">
-                <div class="control-group">
+            <div class="widget-content">                
                     <?php
                     $attrib_ = array(
-                        'class' => 'form-horizontal',
+                        'class' => 'form-vertical',
                         'name' => 'frmDisplayResult',
                         'id' => 'frmDisplayResult',
                     );
@@ -28,8 +27,7 @@
                             <?php echo form_dropdown($data, $options, ''); ?>
                         </div>                       
                     </div>                                        
-                    <?php echo form_close(); ?>
-                </div>
+                    <?php echo form_close(); ?>                
             </div>            
         </div>
     </div>
@@ -133,3 +131,4 @@
 
     </div>
 </div>    
+
