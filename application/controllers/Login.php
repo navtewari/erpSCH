@@ -21,7 +21,7 @@ class Login extends CI_Controller {
     function authenticate(){
     	if($this->mm->authenticate() == true){
             redirect('web/dashboard');
-        } else {
+        } else {    
             redirect('login');
         }
     }
