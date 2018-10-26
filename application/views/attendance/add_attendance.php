@@ -16,7 +16,7 @@
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group">
                     <label class="control-label">Select Class</label>
-                        <div class="controls">
+                        <div class="">
                             <?php
                                 $data = array(
                                     'name' => 'cmbClassesForStudents',

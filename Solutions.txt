@@ -1,0 +1,12 @@
+Solutions:
+-----------
+
+Problem - If need to change the date-format in existing data.
+Solution-
+update class_4_class_wise_attendance set DATE_ = CONCAT(SUBSTRING_INDEX(DATE_, "/", -1), "-", SUBSTRING_INDEX(SUBSTRING_INDEX(DATE_, "/", 2), '/', -1), "-", SUBSTRING_INDEX(DATE_, "/", 1)) where 1
+
+
+Problem - If need to change the value of auto-increment value in the existing data.
+Solution-
+select @i := 0;
+update bar set c = (select @i := @i + 1);

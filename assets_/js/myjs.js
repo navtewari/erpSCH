@@ -2207,7 +2207,7 @@ $(function(){
 		            			$('#cmdPayZeroReceipt').val('Zero Receipt');
 		            		},
 		            		error: function(xhr, status, error){
-
+		            			$('#class_invoices_here').html(xhr.responsetext);
 		            		}
 		            	});
 		            }

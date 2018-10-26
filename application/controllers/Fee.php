@@ -314,5 +314,8 @@ class Fee extends CI_Controller {
             $data = $this->fm->pay_zero_amount();
             echo json_encode($data);
         }
+        function prac($class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
+            print_r($this->fm->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to));
+        }
     // ------------------------------------
 }
