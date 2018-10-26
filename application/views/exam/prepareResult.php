@@ -5,37 +5,40 @@
                 <h5>Select Class to see Result</h5>
             </div>
             <div class="widget-content">                
-                    <?php
-                    $attrib_ = array(
-                        'class' => 'form-vertical',
-                        'name' => 'frmDisplayResult',
-                        'id' => 'frmDisplayResult',
-                    );
-                    ?>
-                    <?php echo form_open('#', $attrib_); ?>
-                    <div class="control-group">
-                        <label class="control-label">Select Class</label>
-                        <div class="controls">
-                            <?php
-                            $data = array(
-                                'name' => 'cmbClassforResult',
-                                'id' => 'cmbClassforResult',
-                                'required' => 'required'
-                            );
-                            $options = array();
-                            ?>
-                            <?php echo form_dropdown($data, $options, ''); ?>
-                        </div>                       
-                    </div>                                        
-                    <?php echo form_close(); ?>                
+                <?php
+                $attrib_ = array(
+                    'class' => 'form-vertical',
+                    'name' => 'frmDisplayResult',
+                    'id' => 'frmDisplayResult',
+                );
+                ?>
+                <?php echo form_open('#', $attrib_); ?>
+                <div class="control-group">
+                    <label class="control-label">Select Class</label>
+                    <div class="controls">
+                        <?php
+                        $data = array(
+                            'name' => 'cmbClassforResult',
+                            'id' => 'cmbClassforResult',
+                            'required' => 'required'
+                        );
+                        $options = array();
+                        ?>
+                        <?php echo form_dropdown($data, $options, ''); ?>
+                    </div>                       
+                </div>                                        
+                <?php echo form_close(); ?>                
             </div>            
         </div>
     </div>
     <div class="span7" id="divInfo" style="display:none;">
         <div class="widget-box">
-            <div class="widget-content nopadding" style="background:#fdebeb;"> </span>
-                <p id="information" style="color:red; padding:10px;font-size:13px;"></p>
+            <div class="widget-content" style="background:#fdebeb;">
+                <input type="button" class="btn btn-danger" id="btnCalculateResult" value="Calculate Result"/> Click if result is not CALCULATED <span style="font-weight: bold; color:red;">OR</span> if result has to be RECALCULATED
             </div>
+            <div class="widget-content nopadding" style="background:#fdebeb;">
+                <p id="information" style="color:red; padding:10px;font-size:13px;"></p>                
+            </div>                        
         </div>
     </div>
 
@@ -56,7 +59,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr style="font-weight:bold;">                            
-                            <td style="width:80px;padding-left: 20px;" align="center" id="printAll">View Result</td>
+                            <td style="width:50px;padding-left: 20px;" align="center" id="printAll">View Marks</td>
+                            <td style="width:50px;padding-left: 20px;" align="center" id="printFront">View Front</td>
                             <td>Reg. ID</td>
                             <td>Name</td>
                             <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Teacher's Remarks </td>
@@ -64,21 +68,21 @@
                         </tr>
                     </thead>
 
-                    <tbody id="tabStudentForResult"> 
-
-                    </tbody>
+                    <tbody id="tabStudentForResult"></tbody>
                 </table>
                 <?php echo form_close(); ?>
             </div>
         </div>
     </div>    
 
-    <div class="span11" id="divmarksheetPanel" style="display:none">
-
-    </div>
+    <div class="span11" id="divmarksheetPanel" style="display:none"></div>
 </div>
-
-<div id="myModal" class="modal fade" role="dialog">
+<style>
+    input[type='radio']{
+        width:2em; height:2em;        
+    }
+</style>
+<div id="myModal" class="modal fade" role="dialog" style="position:absolute">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -99,9 +103,26 @@
 
                 <table border='0' width="100%" cellpadding="10">
                     <tr>
+                        <td colspan="3" width="33%" style="background: #ffffcc" align="center">                                                            
+                            <table border='0' width="100%" cellpadding="10">
+                                <tr>
+                                    <td align="center">
+                                        <h4>Single Sided</h4>
+                                        <input type='radio' value='1' name='sideLayout' class='form-control' required/>
+                                    </td>
+                                    <td align="center">
+                                        <h4>Double Sided</h4>
+                                        <input type='radio' value='2' name='sideLayout' class='form-control' required/>
+                                    </td>    
+                                </tr>                                
+                            </table>                                                        
+                        </td>
+                    </tr>
+                    <tr style='height:20px;'><td colspan='3'></td></tr>
+                    <tr>
                         <td align='center' width="33%" style="background: #eff2f2">                                                        
                             <h4>CLASS<br><span style="color: #006dcc"> I - VIII</span></h4>
-                            <input type='radio' value='1' name='reportLayout' class='form-control' required/>
+                            <input type='radio' value='1' name='reportLayout' class='form-control' required/>                                                        
                         </td>
 
                         <td align='center' width="33%" style="background: #f0e6ef">                              
@@ -128,7 +149,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>    
 

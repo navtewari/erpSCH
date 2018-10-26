@@ -193,6 +193,11 @@ class Web extends CI_Controller {
                 $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
                 $data['total_students'] = $this->mam->getStudents_in_class_in_session($this->session->userdata('_current_year___'));
                 break;
+            case 27:
+                $data['page_'] = 'exam';
+                $data['title_'] = 'Discipline';
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break; 
             default:
                 $data['page_'] = 'erorrs';
         }

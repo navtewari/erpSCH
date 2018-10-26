@@ -43,7 +43,6 @@ class Fee extends CI_Controller {
         $data['discount_associated'] = $this->fm->discount_associated($class__);
 
         return $data;
-
     }
 
     function show_invoice_needs_to_be_generated() {

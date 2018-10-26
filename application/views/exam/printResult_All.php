@@ -18,12 +18,12 @@
                 td{font-size: 13px;font-weight: 600;}
                 .table_{
                     border: #000000 solid 1px;
-                    
+
                     width:95%;
                 }                               
             </style>
         </head>
-        <body>
+        <body>            
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12 hide_button" align="center">
@@ -107,9 +107,8 @@
 
                                             <?php foreach ($subject_class as $subjectClass) { ?>
                                                 <tr>
-                                                    <td><?php echo $subjectClass->subName ?></td>
-                                                    <?php foreach ($exam_term as $exterm) { ?>
-                                                        <?php $totalNumber_subject = -1; ?>
+                                                    <td><?php echo $subjectClass->subName; $term=1; ?></td>
+                                                    <?php foreach ($exam_term as $exterm) { ?>                                                       
                                                         <?php foreach ($sch_data_class as $scho_items) { ?>
                                                             <?php $printData = false; ?>
                                                             <?php foreach ($subject_marks as $sub_marks) { ?>
@@ -119,7 +118,6 @@
                                                                             <td align="center">
                                                                                 <?php
                                                                                 echo $sub_marks->marks;
-                                                                                $totalNumber_subject = $totalNumber_subject + $sub_marks->marks;
                                                                                 $printData = true;
                                                                                 ?>
                                                                             </td>
@@ -136,10 +134,26 @@
                                                         <?php } ?>
                                                         <td align="center">
                                                             <?php
-                                                            if ($totalNumber_subject == -1) {
-                                                                echo '';
-                                                            } else {
-                                                                echo $totalNumber_subject;
+                                                            foreach ($overall_result as $over_result) {
+                                                                if ($stuData->regid == $over_result->regid) {
+                                                                    $subjectID = explode(",", $over_result->subjectID);
+                                                                    if ($term == 1) {
+                                                                        $subjectTotal = explode(",", $over_result->term1Result);
+                                                                    } else {
+                                                                        $subjectTotal = explode(",", $over_result->term2Result);
+                                                                    }
+                                                                    for ($loop = 1; $loop < count($subjectID); $loop++) {
+                                                                        if ($subjectID[$loop] == $subjectClass->subjectID) {
+                                                                            echo $subjectTotal[$loop];
+                                                                            $totalNumber_subject = $subjectTotal[$loop];
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            if ($term == 1) {
+                                                                $term++;
+                                                            } else if ($term == 2) {
+                                                                $term--;
                                                             }
                                                             ?>
                                                         </td>
@@ -172,7 +186,7 @@
                                             <tr><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
                                             <?php foreach ($cosch_data_class as $coSch) { ?>
                                                 <tr>
-                                                   <?php foreach ($exam_term as $exterm) { ?>
+                                                    <?php foreach ($exam_term as $exterm) { ?>
                                                         <?php $printTD1 = false; ?>
                                                         <td><?php echo $coSch->coitem; ?></td>
                                                         <?php foreach ($coSch_marks as $coSchMarks) { ?>
@@ -258,8 +272,9 @@
                                                     </td>
                                                     <td align="center">
                                                         <?php echo $cgrade->grade; ?>
-                                                        <?php if($cgrade->description!=''){
-                                                        echo '(' .$cgrade->description . ')';
+                                                        <?php
+                                                        if ($cgrade->description != '') {
+                                                            echo '(' . $cgrade->description . ')';
                                                         }
                                                         ?>
                                                     </td>

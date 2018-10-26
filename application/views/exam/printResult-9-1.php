@@ -33,19 +33,27 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
-                                <tr align="center" style="border-top:#000000 solid 1px;line-height:25px;">
+                                <tr align="center">
+                                    <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
                                     <td>
-                                        <h4><b>Academic Year - (<?php echo $this->session->userdata('_current_year___'); ?>)</b></h4>
-                                    </td>
-                                    <td>
-                                        <h4><b>Progress Report of Class <?php echo $classID; ?></b></h4>
+                                        <h1><?php echo $sch_name; ?></h1>
+                                        <h4><?php echo $sch_remark; ?></h4>                                    
+                                        <h4><?php echo $sch_addr . ', Disitt. ' . $sch_distt . ', ' . $sch_state . ', ' . $sch_country; ?></h4>                                    
+                                        <h5>Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
                                     </td>
                                 </tr>
-                                <tr style="border-top:#000000 solid 1px;">
+                                <tr align="center" style="border-top:#000000 solid 0px;">
+                                    <td colspan="2"><h2 style="margin: 0px;"><u>REPORT CARD</u></h2></td>
+                                </tr>
+                                <tr align="center" style="border-top:#000000 solid 0px;line-height:25px;">
+                                    <td colspan="2"><h5><b><span style="float:left;">Class: <?php echo $classID; ?> </span><span style="float:right;">Academic Year: (<?php echo $this->session->userdata('_current_year___'); ?>)</span></b></h5></td>
+                                </tr>
+                                <!-- Student Information -->
+                                <tr style="border-top:#000000 solid 0px;">
                                     <td colspan="2">
                                         <table border="0" style="line-height:25px;" width="100%">
                                             <tr>
-                                                <td width='33%' valign="top">
+                                                <td width='50%'>
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
@@ -53,34 +61,19 @@
                                                         $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
-                                                        Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
-                                                        Date Of Birth: <b><?php echo $stuData->DOB_; ?></b>
-
+                                                        Student's Name: <b><?php echo $name_ ?></b><br>
+                                                        Father's Name: <b><?php echo $stuData->FATHER; ?></b><br>
+                                                        Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br>
+                                                        Date Of Birth: <b><?php echo $stuData->DOB_; ?></b><br>
                                                     <?php } ?>
-                                                </td>        
-                                                <td width='33%' valign="top">
-                                                    <?php
-                                                    foreach ($student_per_data as $stuData) {
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-
-                                                        Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
-                                                        Class: <b><?php echo $classID; ?></b>
-                                                    <?php } ?>
-                                                </td>        
-                                                <td valign="top">
-                                                    <?php
-                                                    foreach ($student_per_data as $stuData) {
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-
-                                                        Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                    
-                                                    <?php } ?>
-                                                </td>        
+                                                </td>
+                                                <td style="padding-left: 100px;" valign="top">
+                                                    <span style="float:right">
+                                                        <?php foreach ($student_per_data as $stuData) { ?>
+                                                            Admission No: <b><?php echo $reg_id; ?></b><br>
+                                                        <?php } ?>
+                                                    </span>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
@@ -421,52 +414,39 @@
                             <div class="col-sm-12">
                                 <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
                                     <tr align="center">
-                                    <td>
-                                    <h4><b>Academic Year - (<?php echo $this->session->userdata('_current_year___'); ?>)</b></h4>
-                                </td>
-                                <td>
-                                    <h4><b>Progress Report of Class <?php echo $classID; ?></b></h4>
-                                </td>
-                                </tr>                                
-                                <!-- Student Information -->
-                                <tr style="border-top:#000000 solid 1px;">
-                                    <td colspan="2">
-                                        <table border="0" style="line-height:25px;" width="100%">
-                                            <tr>
-                                            <td width='33%' valign="top">
-                                                <?php                                                
-                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                    ?>
+                                        <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
+                                        <td>
+                                            <h1><?php echo $sch_name; ?></h1>
+                                            <h4><?php echo $sch_remark; ?></h4>                                    
+                                            <h4><?php echo $sch_addr . ', Disitt. ' . $sch_distt . ', ' . $sch_state . ', ' . $sch_country; ?></h4>                                    
+                                            <h5>Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
+                                        </td>
+                                    </tr>    
+                                    <tr align="center" style="border-top:#000000 solid 1px;line-height:25px;"><td colspan="2"><b>Academic Year - (<?php echo $this->session->userdata('_current_year___'); ?>)<br>Progress Report of Class <?php echo $classID; ?></b></td></tr>
+                                    <!-- Student Information -->
+                                    <tr style="border-top:#000000 solid 1px;">
+                                        <td colspan="2">
+                                            <table border="0" style="line-height:25px;" width="100%">
+                                                <tr>
+                                                    <td width='50%'>
+                                                        <?php
+                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
+                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        ?>
 
-                                                    Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
-                                                    Date Of Birth: <b><?php echo $stuData->DOB_; ?></b>
-                                                                                                    
-                                            </td>        
-                                            <td width='33%' valign="top">
-                                                <?php                                                
-                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                    ?>
-
-                                                    Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
-                                                    Class: <b><?php echo $classID; ?></b>                                                
-                                            </td>        
-                                            <td valign="top">
-                                                <?php                                                
-                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                    ?>
-                                                                                                       
-                                                    Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                                                                    
-                                            </td>        
-                                        </tr>
-                                        </table>
-                                    </td>
-                                </tr>
+                                                        Student's Name: <b><?php echo $name_ ?></b><br>
+                                                        Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br>
+                                                        Father's Name: <b><?php echo $stuData->FATHER; ?></b><br>
+                                                    </td>
+                                                    <td style="padding-left: 100px;" valign="top">
+                                                        Date Of Birth: <b><?php echo $stuData->DOB_; ?></b><br>
+                                                        Class: <b><?php echo $classID; ?></b><br>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <!-- Scholastic Area -->
                                     <tr>
                                         <td colspan="2">
