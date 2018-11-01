@@ -350,6 +350,145 @@ class My_exam_model extends CI_Model {
         return $bool_;
     }
 
+    function mdelAssociated_coscholastic_class($assocID) {
+        $this->db->where('ADDCOSCHCLASSID', $assocID);
+        $query = $this->db->delete('exam_4_add_coscholastic_to_class');
+        // echo $this->db->last_query()."<br />";
+        //exit();
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Associated Co-Scholastic Item Deleted from Class Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
+    function mgetAllDisciplineItems() {
+        $this->db->order_by('priority', 'Asc');
+        $query = $this->db->get('exam_10_discipline_items');
+        return $query->result();
+    }
+
+    function msubmitDisciplineItem() {
+        $disciplineItem = $this->input->post('txtDisciplineItem');
+
+        $this->db->where('disciplineitem', $disciplineItem);
+        $query = $this->db->get('exam_10_discipline_items');
+
+        if ($query->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => ' This Discipline Item already present');
+        } else {
+            $data = array(
+                'disciplineitem' => $disciplineItem,
+            );
+
+            $query = $this->db->insert('exam_10_discipline_items', $data);
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Discipline Item Inserted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelete_discipline($disciplineID) {
+        $this->db->where('disciplineID', $disciplineID);
+        $this->db->where('SESSID', $this->session->userdata('_current_year___'));
+        $query1 = $this->db->get('exam_11_add_discipline_to_class');
+
+        if ($query1->num_rows() != 0) {
+            $bool_ = array('res_' => FALSE, 'msg_' => '!! This Discipline Item is already Associated with Class, Therefore Cannot be deleted !!');
+        } else {
+            $this->db->where('disciplineID', $disciplineID);
+            $query = $this->db->delete('exam_10_discipline_items');
+
+            if ($query == TRUE) {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'Discipline Item Deleted Successfully');
+            } else {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function msetdisciplinePriority($disciplineID, $priority) {
+        $data = array(
+            'priority' => $priority,
+        );
+
+        $this->db->where('disciplineID', $disciplineID);
+        $query = $this->db->update('exam_10_discipline_items', $data);
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Discipline Priority Updated');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error!! Try Again');
+        }
+        return $bool_;
+    }
+
+    function mget_class_discipline_in_session($classID) {
+        $this->db->select('a.CLSSESSID, a.CLASSID, b.*,  c.*');
+        $this->db->from('exam_11_add_discipline_to_class b');
+        $this->db->join('class_2_in_session a', 'a.CLSSESSID = b.CLSSESSID', 'left');
+        $this->db->join('exam_10_discipline_items c', 'b.disciplineID = c.disciplineID');
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.CLSSESSID', $classID);
+        $this->db->order_by('c.priority', 'Asc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function mAddDisciplinetoClass($classsessID) {
+        $discipline_item = $this->input->post('chkDiscipline');
+        $seleted_classes = $classsessID;
+        $session = $this->session->userdata('_current_year___');
+
+        for ($loop1 = 0; $loop1 < count($discipline_item); $loop1++) {
+            $this->db->where('CLSSESSID', $seleted_classes);
+            $this->db->where('disciplineID', $discipline_item[$loop1]);
+            $this->db->where('SESSID', $session);
+            $query = $this->db->get('exam_11_add_discipline_to_class');
+
+            if ($query->num_rows($query) != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Already Exists');
+            } else {
+                $data = array(
+                    'CLSSESSID' => $seleted_classes,
+                    'SESSID' => $session,
+                    'disciplineID' => $discipline_item[$loop1],
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                    'DATE_' => date('Y-m-d H:i:s')
+                );
+                $query = $this->db->insert('exam_11_add_discipline_to_class', $data);
+
+                if ($query == TRUE) {
+                    $bool_ = array('res_' => TRUE, 'msg_' => 'Discipline Associated Successfully');
+                } else {
+                    $bool_ = array('res_' => FALSE, 'msg_' => 'Something goes wrong. Please try again');
+                }
+            }
+        }
+        return $bool_;
+    }
+
+    function mdelAssociated_discipline_class($assocID) {
+        $this->db->where('ADDDISCIPLINECLASSID', $assocID);
+        $query = $this->db->delete('exam_11_add_discipline_to_class');
+        // echo $this->db->last_query()."<br />";
+        //exit();
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Associated Discipline Item Deleted from Class Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
     function mget_examterm_in_session() {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('exam_5_term');
@@ -429,6 +568,16 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
+    function mget_discipline_item_classwise($classID) {
+        $this->db->select('a.*, b.*');
+        $this->db->from('exam_11_add_discipline_to_class b');
+        $this->db->join('exam_10_discipline_items a', 'a.disciplineID = b.disciplineID');
+        $this->db->where('b.CLSSESSID', $classID);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function mcheckData_entry_result() {
         $termID = $this->input->post('cmbExamTerm');
         $classid = $this->input->post('cmbClassofResult');
@@ -474,6 +623,31 @@ class My_exam_model extends CI_Model {
 
             if ($queryEdit->num_rows() != 0) {
                 $bool_ = array('res_' => FALSE, 'msg_' => 'Co-Scholastic Data already present for this combination');
+            } else {
+                $bool_ = array('res_' => TRUE, 'msg_' => 'error');
+            }
+        }
+        return $bool_;
+    }
+
+    function mcheckdisciplineData_entry_result() {
+        $termID = $this->input->post('cmbExamTerm');
+        $classid = $this->input->post('cmbClassofResult');
+        $optScholastic = $this->input->post('cmbAssessment');
+        $AssItem = $this->input->post('cmbAssessmentItem');
+
+        $sessionid = $this->session->userdata('_current_year___');
+
+        if ($optScholastic == '3') {
+            //-----------------------Checking for already submitted result---
+            $this->db->where('termID', $termID);
+            $this->db->where('CLSSESSID', $classid);
+            $this->db->where('disciplineID', $AssItem);
+            $this->db->where('SESSID', $sessionid);
+            $queryEdit = $this->db->get('exam_12_discipline_result');
+
+            if ($queryEdit->num_rows() != 0) {
+                $bool_ = array('res_' => FALSE, 'msg_' => 'Discipline Data already present for this combination');
             } else {
                 $bool_ = array('res_' => TRUE, 'msg_' => 'error');
             }
@@ -543,6 +717,21 @@ class My_exam_model extends CI_Model {
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
             $this->db->where('d.coitemID', $AssItem);
+            $this->db->where('d.SESSID', $year__);
+
+            $query = $this->db->get();
+        } else if ($optScholastic == '3') {
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->join('exam_12_discipline_result d', 'a.regid=d.regid');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+
+            $this->db->where('d.termID', $termID);
+            $this->db->where('d.CLSSESSID', $classid);
+            $this->db->where('d.disciplineID', $AssItem);
             $this->db->where('d.SESSID', $year__);
 
             $query = $this->db->get();
@@ -647,6 +836,22 @@ class My_exam_model extends CI_Model {
 
                 $query = $this->db->insert('exam_7_coscholastic_result', $data);
             }
+        } else if ($optScholastic == '3') {
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'regid' => $key,
+                    'CLSSESSID' => $classid,
+                    'ROLLNO' => 0,
+                    'SESSID' => $sessionid,
+                    'disciplineID' => $AssItem,
+                    'grade' => $value,
+                    'termID' => $termID,
+                    'USERNAME_' => $username,
+                    'DATEOFTEST' => $examDate,
+                );
+
+                $query = $this->db->insert('exam_12_discipline_result', $data);
+            }
         }
 
         if ($query == TRUE) {
@@ -672,8 +877,8 @@ class My_exam_model extends CI_Model {
         $username = $this->session->userdata('_user___');
 
         if ($optScholastic == '1') {
-            $this->db->where('itemID', $AssItem);
-            $query2 = $this->db->get('exam_1_scholastic_items');
+            //$this->db->where('itemID', $AssItem);
+            //$query2 = $this->db->get('exam_1_scholastic_items');
 
             foreach ($obj as $key => $value) {
                 $data = array(
@@ -691,6 +896,15 @@ class My_exam_model extends CI_Model {
                 );
                 $this->db->where('coschID', $key);
                 $query = $this->db->update('exam_7_coscholastic_result', $data);
+            }
+        } else if ($optScholastic == '3') {
+            foreach ($obj as $key => $value) {
+                $data = array(
+                    'grade' => $value,
+                    'DATEOFTEST' => $examDate,
+                );
+                $this->db->where('disResultID', $key);
+                $query = $this->db->update('exam_12_discipline_result', $data);
             }
         }
 
@@ -806,6 +1020,19 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
+    function mfetchdisciplineClassWise($classsessid, $year_) {
+        $this->db->select('a.disciplineitem, b.*');
+        $this->db->from('exam_11_add_discipline_to_class b');
+        $this->db->join('exam_10_discipline_items a', 'a.disciplineID = b.disciplineID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classsessid);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();
+
+        // echo $this->db->last_query()."<br />";
+        return $query->result();
+    }
+
     function mfetchSubClassWise($classID, $year_) {
         $this->db->where('classID', $classID);
         $this->db->where('SESSID', $year_);
@@ -833,6 +1060,17 @@ class My_exam_model extends CI_Model {
         $this->db->where('CLSSESSID', $classSessID);
         $this->db->where('SESSID', $year_);
         $query = $this->db->get('exam_7_coscholastic_result');
+
+        return $query->result();
+    }
+
+    function mdisciplineMarks($regID, $classSessID, $year_) {
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $query = $this->db->get('exam_12_discipline_result');
 
         return $query->result();
     }
@@ -892,6 +1130,229 @@ class My_exam_model extends CI_Model {
         $this->db->where('c.SESSID', $year__);
         $query = $this->db->get();
 
+        return $query->result();
+    }
+
+    function mcalculateResult($classSessID) {
+        $regID = 0;
+        $year__ = $this->session->userdata('_current_year___');
+        $classID = $this->mcheckClassID($classSessID);
+
+        $subject_class = $this->mfetchSubClassWise($classID, $year__);
+        $student_per_data = $this->mfetchStuDatainClass($classSessID); //studentData
+        $subject_marks = $this->mfetchSubMarks($regID, $classSessID, $year__); //Subject Marks                        
+        $exam_term = $this->mget_examterm_in_session(); // Term
+        $sch_data_class = $this->mfetchScholasticClassWise($classSessID, $year__); //SchData
+
+        foreach ($student_per_data as $stuData) {
+            $term1 = '';
+            $term2 = '';
+            $term = 0;
+            foreach ($exam_term as $exterm) {
+                $term++;
+                $subject = '';
+                foreach ($subject_class as $subjectClass) {
+                    $subject = $subject . ',' . $subjectClass->subjectID;
+                    $totalNumber_subject = 0;
+                    foreach ($sch_data_class as $scho_items) {
+                        foreach ($subject_marks as $sub_marks) {
+                            if ($stuData->regid == $sub_marks->regid) {
+                                if ($subjectClass->subjectID == $sub_marks->subjectID) {
+                                    if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) {
+                                        $totalNumber_subject = $totalNumber_subject + $sub_marks->marks;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ($term == 1) {
+                        $term1 = $term1 . ',' . $totalNumber_subject;
+                    } else if ($term == 2) {
+                        $term2 = $term2 . ',' . $totalNumber_subject;
+                    }
+                }
+            }
+
+            //----------------------Calculating Average Subject Marks
+            $term1Average = explode(",", $term1);
+            $term2Average = explode(",", $term2);
+            $subjectAverage = '';
+            for ($loop = 1; $loop < count($term1Average); $loop++) {
+                $average1 = $term1Average[$loop] / 2;
+                $average2 = $term2Average[$loop] / 2;
+                $subjectAverage = $subjectAverage . ',' . ($average1 + $average2);
+            }
+
+            //-----------------------Calculating Grade each subject            
+            $Grade = explode(",", $subjectAverage);
+            $subjectGrade = '';
+            $class_grade = $this->get_grade_in_class($classSessID);
+
+            for ($loop = 1; $loop < count($Grade); $loop++) {
+                foreach ($class_grade as $cgrade) {
+                    if ($Grade[$loop] >= $cgrade->minMarks && $Grade[$loop] <= $cgrade->maxMarks) {
+                        $subjectGrade = $subjectGrade . ',' . $cgrade->grade;
+                    }
+                }
+            }
+
+            //---------------------------Updating/Inserting in Database
+            $this->db->where('regid', $stuData->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->get('exam_13_calculated_result');
+
+            if ($query->num_rows($query) != 0) {
+                $data = array(
+                    'subjectID' => $subject,
+                    'term1Result' => $term1,
+                    'term2Result' => $term2,
+                    'averageResult' => $subjectAverage,
+                    'subjectGrade' => $subjectGrade,
+                    'subjectRank' => '',
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                );
+                $this->db->where('regid', $stuData->regid);
+                $this->db->where('CLSSESSID', $classSessID);
+                $this->db->where('SESSID', $year__);
+                $query = $this->db->update('exam_13_calculated_result', $data);
+            } else {
+                $data = array(
+                    'regid' => $stuData->regid,
+                    'CLSSESSID' => $classSessID,
+                    'ROLLNO' => 0,
+                    'subjectID' => $subject,
+                    'term1Result' => $term1,
+                    'term2Result' => $term2,
+                    'averageResult' => $subjectAverage,
+                    'subjectGrade' => $subjectGrade,
+                    'SESSID' => $year__,
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                );
+
+                $query = $this->db->insert('exam_13_calculated_result', $data);
+            }
+        }
+
+        //-----------------Calculating Rank-------------------------
+        $noOfsubject = explode(",", $subject);
+        $countSubject = count($noOfsubject);
+
+        for ($loop = 2; $loop <= $countSubject; $loop++) {
+
+            $sql = "SELECT regid,subjectRank, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(averageResult,',', '" . $loop . "'), ',',-1) AS DECIMAL( 4, 1 ) ) AS avgResult FROM  exam_13_calculated_result WHERE  CLSSESSID =  '" . $classSessID . "' AND  SESSID=  '" . $year__ . "' ORDER BY avgResult DESC ";
+            $query = $this->db->query($sql);
+
+            $avg = -1;
+            $rank = 1;
+            foreach ($query->result() as $row) {
+                if ($avg != -1) {
+                    if ($avg == $row->avgResult) {
+                        $rank = $rank;
+                    } else {
+                        $rank++;
+                    }
+                }
+
+                $subRank = $row->subjectRank;
+                $subRank = $subRank . ',' . $rank;
+
+                $data = array(
+                    'subjectRank' => $subRank,
+                );
+
+                $this->db->where('regid', $row->regid);
+                $this->db->where('CLSSESSID', $classSessID);
+                $this->db->where('SESSID', $year__);
+                $query = $this->db->update('exam_13_calculated_result', $data);
+
+                $avg = $row->avgResult;
+            }
+        }
+        //-----------------End Rank Calculation---------------------
+        //-----------------Update Overall Result--------------------
+
+        $this->db->select('regid, averageResult');
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year__);
+        $query1 = $this->db->get('exam_13_calculated_result');
+
+        foreach ($query1->result() as $row) {
+            $overall = '';
+            $total = 0;
+            $avgResult = explode(",", $row->averageResult);
+            for ($loop = 1; $loop < count($avgResult); $loop++) {
+                $total = $total + (float) $avgResult[$loop];
+            }
+            $overall = $overall . ',' . $total;
+            $percentage = $total / ($countSubject - 1);
+            $overall = $overall . ',' . $percentage;
+
+            foreach ($class_grade as $cgrade) {
+                if ($percentage >= $cgrade->minMarks && $percentage <= $cgrade->maxMarks) {
+                    $overall = $overall . ',' . $cgrade->grade;
+                }
+            }
+
+            $data = array(
+                'overallResult' => $overall,
+            );
+            $this->db->where('regid', $row->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->update('exam_13_calculated_result', $data);
+        }
+
+        //-----------------End Overall Result-----------------------
+        //-----------------Overall Rank-----------------------------
+        $sql = "SELECT regid,overallResult, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(overallResult,',',2), ',',-1) AS DECIMAL( 4, 1 ) ) AS result FROM  exam_13_calculated_result WHERE  CLSSESSID =  '" . $classSessID . "' AND  SESSID=  '" . $year__ . "' ORDER BY result DESC ";
+        $query = $this->db->query($sql);
+
+        $avg = -1;
+        $rank = 1;
+        foreach ($query->result() as $row) {
+            if ($avg != -1) {
+                if ($avg == $row->result) {
+                    $rank = $rank;
+                } else {
+                    $rank++;
+                }
+            }
+
+            $overallRank = $row->overallResult;
+            $overallRank = $overallRank . ',' . $rank;
+
+            $data = array(
+                'overallResult' => $overallRank,
+            );
+
+            $this->db->where('regid', $row->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->update('exam_13_calculated_result', $data);
+
+            $avg = $row->result;
+        }
+        //-----------------End Overall Rank-------------------------
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Result Updated/Calculated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Error! Please try after sometime');
+        }
+
+        return $bool_;
+    }
+
+    function get_overall_result_in_class($regID,$classSessID) {
+        $year__ = $this->session->userdata('_current_year___');
+        
+        if($regID != 0){
+            $this->db->where('regid', $regID);    
+        }
+        $this->db->where('CLSSESSID', $classSessID);        
+        $this->db->where('SESSID', $year__);
+        $query = $this->db->get('exam_13_calculated_result');
+        
         return $query->result();
     }
 

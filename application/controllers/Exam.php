@@ -104,7 +104,47 @@ class Exam extends CI_Controller {
         $data = $this->mem->msetcoSchoPriority($coschoID, $priority);
         echo json_encode($data);
     }
+    
+    function delAssociated_coscholastic_class($assocID) {
+        $data = $this->mem->mdelAssociated_coscholastic_class($assocID);
+        echo json_encode($data);
+    }
+    
+    function setdisciplinePriority($disciplineID, $priority) {
+        $data = $this->mem->msetdisciplinePriority($disciplineID, $priority);
+        echo json_encode($data);
+    }
+    
+    function getAllDisciplineItems() {
+        $data['Discipline'] = $this->mem->mgetAllDisciplineItems();
+        echo json_encode($data);
+    }
+    
+    function submitDisciplineItem() {
+        $data = $this->mem->msubmitDisciplineItem();
+        echo json_encode($data);
+    }
 
+    function delete_discipline($disciplineID) {
+        $data = $this->mem->mdelete_discipline($disciplineID);
+        echo json_encode($data);
+    }
+    
+    function get_class_discipline_in_session($classID) {
+        $data['disciplineinclass'] = $this->mem->mget_class_discipline_in_session($classID);
+        echo json_encode($data);
+    }
+    
+    function AddDisciplinetoClass($classsessID) {
+        $data = $this->mem->mAddDisciplinetoClass($classsessID);
+        echo json_encode($data);
+    }
+    
+    function delAssociated_discipline_class($assocID) {
+        $data = $this->mem->mdelAssociated_discipline_class($assocID);
+        echo json_encode($data);
+    }
+    
     function get_examterm_in_session() {
         $data['examTerm'] = $this->mem->mget_examterm_in_session();
         echo json_encode($data);
@@ -129,13 +169,21 @@ class Exam extends CI_Controller {
         $data['coscholasticItem'] = $this->mem->mget_coscholastic_item_classwise($classID);
         echo json_encode($data);
     }
+    
+    function get_discipline_item_classwise($classID) {
+        $data['disciplineItem'] = $this->mem->mget_discipline_item_classwise($classID);
+        echo json_encode($data);
+    }
 
     function getstudentsforclass($classID, $assmID, $assID = 0) {
         if ($assmID == 1) {
             $res_ = $this->mem->mcheckData_entry_result();
-        } else {
+        }else if ($assmID == 2){
             $res_ = $this->mem->mcheckcoSchData_entry_result();
+        }else if ($assmID == 3){
+            $res_ = $this->mem->mcheckdisciplineData_entry_result();
         }
+        
         $data['res_'] = '';
 
         $maxMarks = 0;
@@ -179,10 +227,10 @@ class Exam extends CI_Controller {
     }
 
     function fetchResult() {
-
         $classSessID = $this->input->post('classSessHiddenID');
         $regID = $this->input->post('stuHiddenID');
         $reportlayout = $this->input->post('reportLayout');
+        $sidelayout = $this->input->post('sideLayout');
 
         $this->check_login();
         $classID = $this->mem->mcheckClassID($classSessID);
@@ -197,36 +245,82 @@ class Exam extends CI_Controller {
         $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
         $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+        $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
 
         $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
         $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
         $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));
         $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+        $data['overall_result'] = $this->mem->get_overall_result_in_class($regID,$classSessID);
 
-        // $data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
+        //$data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
         $data['sch_name'] = $this->session->userdata('sch_name');
         $data['sch_remark'] = $this->session->userdata('remark');
         $data['sch_logo'] = $this->session->userdata('logo');
         $data['sch_addr'] = $this->session->userdata('sch_addr');
         $data['sch_contact'] = $this->session->userdata('sch_contact');
-        $data['sch_email'] = $this->session->userdata('sch_email');
+        $data['sch_email'] = $this->session->userdata('sch_email');                
+        $data['sch_distt'] = $this->session->userdata('sch_distt');
+        $data['sch_state'] = $this->session->userdata('sch_state');
+        $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['website'] = $this->session->userdata('website');
         $data['reg_id'] = $regID;
 
-        if($reportlayout==1) {
-            if ($regID == 0) {
-                $this->load->view('exam/printResult_All', $data);
-            } else {
-                $this->load->view('exam/printResult-1to8', $data);
-            }
-        }else if($reportlayout==2){
-            if ($regID == 0) {
-                $this->load->view('exam/printResult_All', $data);
-            } else {
-                $this->load->view('exam/printResult-9', $data);
-            }
+        if($reportlayout==1 && $sidelayout == 1) {
+                $this->load->view('exam/printResult-1to8-1', $data);            
+        }else if($reportlayout==2 && $sidelayout == 1){ 
+                $this->load->view('exam/printResult-9-1', $data);            
+        }else if($reportlayout==1 && $sidelayout == 2) {
+                $this->load->view('exam/printResult-1to8', $data);            
+        }else if($reportlayout==2 && $sidelayout == 2){ 
+                $this->load->view('exam/printResult-9', $data);            
         }else{
             die();
+        }
+    }
+    
+    function calculateResult($classSessID) {       
+        $this->check_login();        
+        $data = $this->mem->mcalculateResult($classSessID);
+        echo json_encode($data);
+    }
+    
+    function frontPrint($classSessID, $regID, $print_=0){
+        $this->check_login();
+        $classID = $this->mem->mcheckClassID($classSessID);
+        $data['classID'] = $classID;
+        $data['classSessID'] =$classSessID;
+        $data['session'] = array($this->session->userdata('_current_year___'));
+        if ($regID == 0) {
+            $data['student_per_data'] = $this->mem->mfetchStuDatainClass($classSessID);
+        } else {
+            $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
+        }
+        $data['exam_term'] = $this->mem->mget_examterm_in_session();
+        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));        
+        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
+        
+        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+        $data['overall_result'] = $this->mem->get_overall_result_in_class($regID,$classSessID);
+        $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['sch_name'] = $this->session->userdata('sch_name');
+        $data['sch_remark'] = $this->session->userdata('remark');
+        $data['sch_logo'] = $this->session->userdata('logo');
+        $data['sch_addr'] = $this->session->userdata('sch_addr');
+        $data['sch_contact'] = $this->session->userdata('sch_contact');
+        $data['sch_email'] = $this->session->userdata('sch_email');                
+        $data['sch_distt'] = $this->session->userdata('sch_distt');
+        $data['sch_state'] = $this->session->userdata('sch_state');
+        $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['website'] = $this->session->userdata('website');
+        
+        $data['reg_id'] = $regID;
+        if($print_==0){
+            $this->load->view('exam/printResult-front', $data);
+        }elseif($print_==1){
+           echo json_encode($data);
         }
     }
 

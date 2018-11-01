@@ -71,6 +71,7 @@
                                                 $options['0'] = 'Choose Assessment Area';
                                                 $options['1'] = 'SCHOLASTIC';
                                                 $options['2'] = 'CO-SCHOLASTIC';
+                                                $options['3'] = 'DISCIPLINE';
                                                 ?>
                                                 <?php echo form_dropdown($data, $options, ''); ?>
                                             </div>
@@ -124,6 +125,7 @@
                                                     'autocomplete' => 'off',
                                                     'name' => 'txtExamDate',
                                                     'id' => 'txtExamDate',
+                                                    'required' => 'required',
                                                     'style' =>'background:#D6F6FF;',
                                                     'value' => date('d-m-Y')
                                                 );

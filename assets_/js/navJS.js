@@ -63,6 +63,15 @@ $(function () {
             fillcoscholastic_forclass();
             fillClasses_forcoscholastic();
         }
+        
+        if ($("#frmDiscipline").length != 0) {
+            fillDiscipline_item();
+        }
+
+        if ($("#frmdisciplineAddClass").length != 0) {
+            filldiscipline_forclass();
+            fillClasses_fordiscipline();
+        }
 
         if ($("#frmStudentContact").length != 0) {
             fillClasses_forContact();
@@ -1523,6 +1532,7 @@ $(function () {
     $('#fillclass').on('change', '[type=radio]', function (e) {
         fillAssociatedScholasticItem();
     });
+    
     $('body').on('click', '.Add_scholastic_class', function () {
         var classsid = $('input[type=radio][name=classSch]:checked').attr('id');
         data_ = $('#frmScholasticAddClass').serializeArray();
@@ -1545,7 +1555,7 @@ $(function () {
         });
     });
     $('body').on('click', '.deleteAssociatedScholastic', function () {
-        var assoID = this.id;
+        var assoID = this.id;        
         url_ = site_url_ + "/exam/delAssociated_scholastic_class/" + assoID;
         if (confirm('Are you sure you want to delete this Scholastic Item from Class')) {
             $.ajax({
@@ -1557,7 +1567,7 @@ $(function () {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillAssociatedScholasticItem();
+                        fillAssociatedScholasticItem();                        
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1716,7 +1726,7 @@ $(function () {
                             str_html = str_html + "<tr class='gradeX'>";
                             str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.coscholasticinclass[i].coitem + "</b></td>";
                             str_html = str_html + '<td class="taskOptions">';
-                            str_html = str_html + "<a href='#' class='tip deleteAssociatedScholastic' id='" + obj.coscholasticinclass[i].ADDCOSCHCLASSID + "'><i class='icon-remove'></i></a>";
+                            str_html = str_html + "<a href='#' class='tip deleteAssociatedcoScholastic' id='" + obj.coscholasticinclass[i].ADDCOSCHCLASSID + "'><i class='icon-remove'></i></a>";
                             str_html = str_html + '</td>';
                             str_html = str_html + "</tr>";
                         }
@@ -1757,6 +1767,29 @@ $(function () {
             }
         });
     });
+    
+    $('body').on('click', '.deleteAssociatedcoScholastic', function () {
+        var assoID = this.id;        
+        url_ = site_url_ + "/exam/delAssociated_coscholastic_class/" + assoID;
+        if (confirm('Are you sure you want to delete this Co-Scholastic Item from Class')) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillAssociatedcoScholasticItem();                        
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
     function fillClasses_forContact() {
         $('#s2id_stuClassID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -1907,7 +1940,29 @@ $(function () {
                     } else {
                         callSuccess(obj.msg_);
                         fillCoScholastic_item();
-                        fillcoscholastic_forclass
+                        fillcoscholastic_forclass();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }else if ($(this).attr('class') === "span9 txtdisciplinePriority") {
+            var priority = $(this).val();
+            var disciplineItemID = $(this).attr('id');
+            var arr_str = disciplineItemID.split('-');
+            var disciplineID = arr_str[1];
+            url_ = site_url_ + "/exam/setdisciplinePriority/" + disciplineID + "/" + priority;
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillDiscipline_item();
+                        filldiscipline_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -2080,8 +2135,7 @@ $(function () {
         var assArea = $('#cmbAssessment').val();
         if ($('#cmbClassofResult').val() != '') {
             if (assArea === '1') { //for Scholastic
-                data_ = $('#cmbClassofResult').val();
-                //alert(data_);
+                data_ = $('#cmbClassofResult').val();                
                 url_ = site_url_ + "/exam/get_scholastic_item_classwise/" + data_;
                 //alert(url_);                
                 $('#cmbAssessmentItem').html('Checking ...');
@@ -2125,6 +2179,29 @@ $(function () {
                         getStudents();
                     }
                 });
+            }else if (assArea === '3') {//for discipline                 
+                document.getElementById('subjectHidden').style.display = 'none';
+                data_ = $('#cmbClassofResult').val();
+                //alert(data_);
+                url_ = site_url_ + "/exam/get_discipline_item_classwise/" + data_;
+                //alert(url_);                
+                $('#cmbAssessmentItem').html('Checking ...');
+                $.ajax({
+                    type: "POST",
+                    url: url_,
+                    data: data_,
+                    success: function (data) {
+                        var obj = JSON.parse(data);
+                        var str_html = '';
+                        str_html = str_html + "<option value=''>Choose Discipline Item</option>";
+                        for (i = 0; i < obj.disciplineItem.length; i++) {
+                            str_html = str_html + "<option value='" + obj.disciplineItem[i].disciplineID + "'>" + obj.disciplineItem[i].disciplineitem + "</option>";
+                        }
+                        $('#s2id_cmbAssessmentItem span').text("Choose Discipline Item");
+                        $('#cmbAssessmentItem').html(str_html);
+                        getStudents();
+                    }
+                });
             } else {
                 callDanger('Select Proper Assessment Area');
             }
@@ -2138,8 +2215,8 @@ $(function () {
         }
     });
     function getStudents() {
-        if ($('#cmbAssessment').val() == '1') {
-            if ($('#cmbExamTerm').val() != '' && $('#cmbClassofResult').val() != '' && $('#cmbAssessmentItem').val() != '' && $('#cmbSubjectMarks').val() != '') {
+        if ($('#cmbAssessment').val() === '1') {
+            if ($('#cmbExamTerm').val() !== '' && $('#cmbClassofResult').val() !== '' && $('#cmbAssessmentItem').val() !== '' && $('#cmbSubjectMarks').val() !== '') {
                 var examTerm = $('#cmbExamTerm').find(":selected").text();
                 var classID = $("#cmbClassofResult").val();
                 var className = $("#cmbClassofResult").find(":selected").text();
@@ -2189,8 +2266,8 @@ $(function () {
                     }
                 });
             }
-        } else if ($('#cmbAssessment').val() == '2') {
-            if ($('#cmbExamTerm').val() != '' && $('#cmbClassofResult').val() != '' && $('#cmbAssessmentItem').val() != '') {
+        } else if ($('#cmbAssessment').val() === '2') {
+            if ($('#cmbExamTerm').val() !== '' && $('#cmbClassofResult').val() !== '' && $('#cmbAssessmentItem').val() !== '') {
 
                 var examTerm = $('#cmbExamTerm').find(":selected").text();
                 var classID = $("#cmbClassofResult").val();
@@ -2216,7 +2293,56 @@ $(function () {
                                 str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                                 str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                                 if (obj.res_ !== '') {
-                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' resuired='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].coschID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
+                                } else {
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
+                                }
+                                str_html = str_html + "<td><input type='checkbox' class='span9' id='chk-" + obj.studentdata[i].regid + "'/><b>AB</b></td>";
+                                str_html = str_html + "</tr>";
+                                $('#txtExamDate').val(obj.studentdata[i].DATEOFTEST);
+                            }
+                            $('#tabStudentsMarks').html(str_html);
+                            $('#trMarks').html('Grade');
+                            if (obj.res_ !== '') {
+                                document.getElementById('divSubmitResultMarks').style.display = 'none';
+                                document.getElementById('divUpdateResultMarks').style.display = 'block';
+                            } else {
+                                document.getElementById('divSubmitResultMarks').style.display = 'block';
+                                document.getElementById('divUpdateResultMarks').style.display = 'none';
+                            }
+                        } else {
+                            $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
+                        }
+                    }
+                });
+            }
+        }else if ($('#cmbAssessment').val() === '3') {
+            if ($('#cmbExamTerm').val() !== '' && $('#cmbClassofResult').val() !== '' && $('#cmbAssessmentItem').val() !== '') {
+                var examTerm = $('#cmbExamTerm').find(":selected").text();
+                var classID = $("#cmbClassofResult").val();
+                var className = $("#cmbClassofResult").find(":selected").text();
+                var assTerm = $('#cmbAssessmentItem').find(":selected").text();
+                $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Assessment Item - <span style="color:blue">' + assTerm + '</span>');
+                url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/3";
+                data_ = $('#frmInputResult').serialize();
+                $('#tabStudentsMarks').html('<td colspan="3">Checking for availability. Please wait...</td>');
+                $.ajax({
+                    type: "POST",
+                    url: url_,
+                    data: data_,
+                    success: function (data) {
+                        var obj = JSON.parse(data);                        
+                        var str_html = '';
+                        if (obj.res_ !== '') {
+                            str_html = str_html + ('<tr><td colspan="4" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
+                        }
+                        if (obj.studentdata.length > 0) {
+                            for (i = 0; i < obj.studentdata.length; i++) {
+                                str_html = str_html + "<tr class='gradeX'>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
+                                str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
+                                if (obj.res_ !== '') {
+                                    str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;background:yellow' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].disResultID + "]' id='" + obj.studentdata[i].regid + "' value='" + obj.studentdata[i].grade + "' /></td>";
                                 } else {
                                     str_html = str_html + "<td id='td-" + obj.studentdata[i].regid + "'><input type='text' required='required' style='width:100px;' class='form-control marks_0_2' name='marks_status[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "' value='' /></td>";
                                 }
@@ -2334,8 +2460,9 @@ $(function () {
         if ($('#cmbClassforResult').val() != '') {
             data_ = $('#cmbClassforResult').val();
             classID_ = $("#cmbClassforResult").find(":selected").text();
+            url_design = site_url_ + "/exam/frontPrint/" + data_ +"/";            
             url_ = site_url_ + "/exam/get_student_for_result/" + data_;
-
+            
             $.ajax({
                 type: "POST",
                 url: url_,
@@ -2346,8 +2473,8 @@ $(function () {
                     if (obj.studentdata.length > 0) {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
-                            //str_html = str_html + "<td style='padding-left:40px;'><a href='" + site_url_ + "/exam/fetchResult/" + data_ + '/' + obj.studentdata[i].regid +"' target='_blank'><i class='fa fa-print fa-2x'></i></a></td>";
-                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
+                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
+                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg printfront' href='"+url_design+ obj.studentdata[i].regid+"' target='_blank'><i class='fa fa-print'></i></a></td>";                            
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
@@ -2367,12 +2494,13 @@ $(function () {
                     }
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
-
-                    //var printAllLink = "<font size='1'>Print All</font> <a href='" + site_url_ + "/exam/fetchResult/" + data_ + "' target='_blank'><i class='fa fa-print fa-2x' style='color:green'></i></a>";
-                    var printAllLink = "<font size='1'>Print All</font> <a type='button' id='0' class='btn btn-success btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
+                    
+                    var printAllLink = "<font size='1'>Print MARKS</font> <a type='button' id='0' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
+                    var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
+                    $('#printFront').html(printFrontLink);
                     document.getElementById('divInfo').style.display = 'block';
-                    $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted. <br>Click <strong>View Result</strong>  to check Result");
+                    $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted.");
                 }
             });
         } else {
@@ -2380,6 +2508,28 @@ $(function () {
         }
     }
 
+    /*$(document).on("click", ".printfront", function () {
+        var stuid = $(this).attr('id');
+        classsessid = $('#cmbClassforResult').val();
+        url_ = site_url_ + "/exam/frontPrint/" + classsessid + "/" +stuid;       
+        $.ajax({
+            type: 'GET',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    getRemarks();
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });*/
+    
     $(document).on("click", ".open-Dialog", function () {
         var stuId = $(this).attr('id');
         $(".modal-body #stuHiddenID").val(stuId);
@@ -2475,7 +2625,230 @@ $(function () {
             }
         });
     });
+    
+    $('body').on('click', '#btnCalculateResult', function () {
+        classsessid = $('#cmbClassforResult').val();        
+        data_ = $('#frmSubmitRemarks').serializeArray();
+        url_ = site_url_ + "/exam/calculateResult/" + classsessid;
 
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);                
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);                    
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });
+//---------------------DISCIPLINE---------------------------------------------
+function fillDiscipline_item() {
+        url_ = site_url_ + "/exam/getAllDisciplineItems";
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.Discipline.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Discipline.length; i++) {
+                        str_html = str_html + "<tr class='gradeX'>";
+                        str_html = str_html + "<td>" + obj.Discipline[i].disciplineitem + "</td>";
+                        str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtdisciplinePriority' id='txt-" + obj.Discipline[i].disciplineID + "' value='" + obj.Discipline[i].priority + "'></td>";
+                        str_html = str_html + '<td class="taskOptions">';
+                        str_html = str_html + "<a href='#' class='tip deleteDiscipline' id='" + obj.Discipline[i].disciplineID + '~' + obj.Discipline[i].disciplineitem + "'><i class='icon-remove'></i></a>";
+                        str_html = str_html + '</td>';
+                        str_html = str_html + "</tr>";
+                    }
+                    $('#exitHeading').html('Discipline items already present </span>');
+                    $('#tabDiscipline').html(str_html);
+                } else {
+                    $('#exitHeading').html('No Discipline items present </span>');
+                    $('#tabDiscipline').html('<td colspan="3"><span style="color:red;">No Discipline item present  </span></td>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+
+    $('.submitDiscipline').click(function () {
+        if ($('#txtDisciplineItem').val() === '') {
+            callDanger("Please Enter Discipline Name !!");
+            $('#txtDisciplineItem').focus();
+        } else {
+            data_ = $('#frmDiscipline').serializeArray();
+            url_ = site_url_ + "/exam/submitDisciplineItem";
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillDiscipline_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '.deleteDiscipline', function () {
+        var str = this.id;
+        var arr_str = str.split('~');
+        var disciplineID = arr_str[0];
+        var disciplineItem = arr_str[1];
+        url_ = site_url_ + "/exam/delete_discipline/" + disciplineID;
+        if (confirm('Are you sure you want to delete ' + disciplineItem)) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillDiscipline_item();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });        
+    
+    function filldiscipline_forclass() {
+        url_ = site_url_ + "/exam/getAllDisciplineItems";
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.Discipline.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.Discipline.length; i++) {
+                        str_html = str_html + "<input type='checkbox' name='chkDiscipline[]' class='span2' value='" + obj.Discipline[i].disciplineID + "' id='" + obj.Discipline[i].disciplineID + "'> <b> " + obj.Discipline[i].disciplineitem + "</b><br>";
+                    }
+                    $('#filldiscipline').html(str_html);
+                } else {
+                    $('#filldiscipline').html('No Discipline items present </span>');
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+
+    function fillClasses_fordiscipline() {
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<input type='radio' name='classdiscipline' class='span2' id='" + obj.class_in_session[i].CLSSESSID + "' value='" + obj.class_in_session[i].CLASSID + "'> <b>Class " + obj.class_in_session[i].CLASSID + "</b><br>";
+                }
+                $('#filldisciplineclass').html(str_html);
+            }
+        });
+    }
+
+    function fillAssociatedDisciplineItem() {
+        var str = $('input[type=radio][name=classdiscipline]:checked').attr('id');
+        var className = $('#' + str).val();
+        if ($('#' + str).is(":checked")) {
+            url_ = site_url_ + "/exam/get_class_discipline_in_session/" + str;
+            $.ajax({
+                type: "POST",
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    // alert(obj.scholasticinclass.length);
+                    var str_html = '';
+                    if (obj.disciplineinclass.length > 0) {
+                        for (i = 0; i < obj.disciplineinclass.length; i++) {
+                            str_html = str_html + "<tr class='gradeX'>";
+                            str_html = str_html + "<td><i class='icon-info-sign'></i>  <b>" + obj.disciplineinclass[i].disciplineitem + "</b></td>";
+                            str_html = str_html + '<td class="taskOptions">';
+                            str_html = str_html + "<a href='#' class='tip deleteAssociatedDiscipline' id='" + obj.disciplineinclass[i].ADDDISCIPLINECLASSID + "'><i class='icon-remove'></i></a>";
+                            str_html = str_html + '</td>';
+                            str_html = str_html + "</tr>";
+                        }
+                        $('#fillAssociatedDiscipline').html(str_html);
+                        $('#exitHeading1').html('Discipline Item Associated with Class ' + className);
+                    } else {
+                        $('#exitHeading1').html('No Discipline Item Associated with Class ' + className);
+                        $('#fillAssociatedDiscipline').html("<td colspan='3'><font color='red'>NO Discipline Item Associated with Class " + className + "</font></td>");
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    }
+
+    $('#filldisciplineclass').on('change', '[type=radio]', function (e) {      
+        fillAssociatedDisciplineItem();
+    });
+    
+    $('body').on('click', '.Add_discipline_class', function () {
+        var classsid = $('input[type=radio][name=classdiscipline]:checked').attr('id');
+        data_ = $('#frmdisciplineAddClass').serializeArray();
+        url_ = site_url_ + "/exam/AddDisciplinetoClass/" + classsid;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    fillAssociatedDisciplineItem();
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+    
+    $('body').on('click', '.deleteAssociatedDiscipline', function () {
+        var assoID = this.id;        
+        url_ = site_url_ + "/exam/delAssociated_discipline_class/" + assoID;
+        if (confirm('Are you sure you want to delete this Discipline Item from Class')) {
+            $.ajax({
+                type: 'POST',
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                    } else {
+                        callSuccess(obj.msg_);
+                        fillAssociatedDisciplineItem();                        
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+//---------------------END-DISCIPLINE-----------------------------------------
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
