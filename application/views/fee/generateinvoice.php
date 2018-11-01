@@ -4,16 +4,19 @@
         <h5>Invoice(s)</h5>
         <h5 style="float: right" id="total_students"></h5>
     </div>
-    <div class="widget-content nopadding" id="class_invoices_here">
+    <div class="widget-content nopadding" id="class_invoices_here" style="overflow: auto">
     </div>
 </div>
-<div id="myModal" class="modal hide">
+<div id="myModal" class="modal hide" style="overflow: hidden">
               <div class="modal-header">
                 <button data-dismiss="modal" class="close" type="button">×</button>
                 <h3>Send Fee SMS to Parents</h3>
               </div>
               <div class="modal-body">
                 <?php echo form_open('#', array('name' => 'frmFeeSMS', 'id' => 'frmFeeSMS', 'role' => 'form')); ?>
+                    <button type="submit" class="btn btn-primary sendsmsForFee" value="Submit" name="sms_yes" id="sms_yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
+                    <button type="submit" class="btn btn-danger sendsmsForFee" value="No" name="sms_no" id="sms_no"><i class="fa fa-close"></i> Don't Send SMS </button>
+                    <hr>
                     <div class="control-group">
                         <div class="controls">
                             <label>Mobile Nos.</label>
@@ -26,7 +29,7 @@
                                 'name' => 'mobilenumbers',
                                 'id' => 'mobilenumbers',
                                 'value' => '',
-                                'style' => 'height: 100px',
+                                'style' => 'height: 60px',
                             );
                             echo form_textarea($data);
                             ?>
@@ -58,8 +61,6 @@
                             ?>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary sendsmsForFee" value="Submit" name="sms_yes" id="sms_yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
-                    <button type="submit" class="btn btn-danger sendsmsForFee" value="No" name="sms_no" id="sms_no"><i class="fa fa-close"></i> Don't Send SMS </button>
                 <?php echo form_close(); ?>
               </div>
             </div>

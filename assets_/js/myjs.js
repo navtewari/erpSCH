@@ -2743,6 +2743,7 @@ $(function(){
 	    	
 	    	return false;
 	    });
+		$('.sendsmsForFee2').click(function(){$('.sendsmsForFee').click();});
 			// -------------------------------
 	// ----------
 	// Common Functions
