@@ -61,8 +61,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
@@ -74,8 +74,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
@@ -86,8 +86,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                    
@@ -381,8 +381,8 @@
                                                     <td width='33%' valign="top">
                                                         <?php
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
@@ -392,8 +392,8 @@
                                                     <td width='33%' valign="top">
                                                         <?php
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
@@ -402,8 +402,8 @@
                                                     <td valign="top">
                                                         <?php
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                       // $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                                                                    

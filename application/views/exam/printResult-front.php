@@ -75,8 +75,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
                                                         <h5>Admission No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span style="border-bottom: 2px dotted #000;"><?php echo $reg_id ?></span></h5>
                                                         <h5>Student's Name&nbsp;&nbsp;&nbsp;: <span style="border-bottom: 2px dotted #000"><?php echo $name_ ?></span></h5>
@@ -101,7 +101,7 @@
                                 <!-- Scholastic Area -->                                                           
                                 <tr>
                                     <td colspan="2">
-                                        <h4><?php echo $name_ ?> Performance:</h4>
+                                        <h4><?php echo $name_ ?>'s Performance:</h4>
                                         <div id="curve_chart<?php echo $reg_id; ?>" style="height:300px;"></div>
                                     </td>
                                 </tr>
@@ -169,7 +169,12 @@
             <?php } else { ?>
                 <!-------------------------------PRINT ALL---------------------------------------------->
                 <div class="container">
-                    
+                    <div class="row hide_pagination">
+                        <div class="col-sm-12" align="center">
+                            <p> <?php echo $links; ?></p>
+                            <p>Result rendered in <strong>{elapsed_time}</strong> seconds</p>
+                        </div>                           
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
@@ -228,7 +233,7 @@
                                     <!-- Scholastic Area -->                                                           
                                     <tr>
                                         <td colspan="2">
-                                            <h4><?php echo $name_ ?> Performance :</h4>
+                                            <h4><?php echo $name_ ?>'s Performance :</h4>
                                             <div id="curve_chart<?php echo $stuData->regid; ?>" style="height:300px;"></div>
                                         </td>
                                     </tr>
@@ -316,16 +321,19 @@
                         google.charts.setOnLoadCallback(drawChart);
 
                         regid_ = <?PHP echo '"' . $reg_id . '"'; ?>;
+                        pageLimit_ = <?PHP echo '"' . $per_page . '"'; ?>;
+                        start_ = <?PHP echo '"' . $startLimit . '"'; ?>;
                         classSessid_ = <?PHP echo '"' . $classSessID . '"'; ?>;
 
-                        url_ = site_url_ + "/exam/frontPrint/" + classSessid_ + "/" + regid_ + "/1";
-
+                        url_ = site_url_ + "/exam/frontPrintGraph/" + classSessid_ + "/" + regid_ + "/1/" + pageLimit_ + "/" + start_;
+                        //alert(url_);
                         function drawChart() {
                             $.ajax({
                                 type: 'POST',
                                 url: url_,
                                 success: function (data1) {
                                     var obj = JSON.parse(data1);
+                                    //alert(obj.student_per_data.length);
                                     if (obj.student_per_data.length > 0) {
                                         for (i = 0; i < obj.student_per_data.length; i++) {
                                             var reg_id = obj.student_per_data[i].regid;

@@ -418,8 +418,48 @@ class Exam extends CI_Controller {
 
             $this->pagination->initialize($config);
             $page = ($this->uri->segment(8)) ? $this->uri->segment(8) : 0;
+            $data['startLimit'] = $page;
+            $data['per_page'] = $config["per_page"];
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
             $data["links"] = $this->pagination->create_links();
+        } else {
+            $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
+        }
+        $data['exam_term'] = $this->mem->mget_examterm_in_session();
+        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
+        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
+
+        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+        $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
+        $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['sch_name'] = $this->session->userdata('sch_name');
+        $data['sch_remark'] = $this->session->userdata('remark');
+        $data['sch_logo'] = $this->session->userdata('logo');
+        $data['sch_addr'] = $this->session->userdata('sch_addr');
+        $data['sch_contact'] = $this->session->userdata('sch_contact');
+        $data['sch_email'] = $this->session->userdata('sch_email');
+        $data['sch_distt'] = $this->session->userdata('sch_distt');
+        $data['sch_state'] = $this->session->userdata('sch_state');
+        $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['website'] = $this->session->userdata('website');
+
+        $data['reg_id'] = $regID;
+        if ($print_ == 0) {
+            $this->load->view('exam/printResult-front', $data);
+        } elseif ($print_ == 1) {
+            echo json_encode($data);
+        }
+    }
+    
+    function frontPrintGraph($classSessID , $regID, $print_, $pagelimit, $start) {
+        $this->check_login();        
+        $classID = $this->mem->mcheckClassID($classSessID);        
+        $data['classID'] = $classID;
+        $data['classSessID'] = $classSessID;
+        $data['session'] = array($this->session->userdata('_current_year___'));
+        
+        if ($regID == 0) {
+            $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID,$pagelimit,$start);            
         } else {
             $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
         }
