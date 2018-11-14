@@ -1886,7 +1886,7 @@ $(function () {
             var subID = $(this).attr('id');
             var arr_str = subID.split('-');
             var subjectID = arr_str[1];
-            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;
+            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;            
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -1899,7 +1899,7 @@ $(function () {
                         fillClassSubjectinTable();
                     }
                 }, error: function (xhr, status, error) {
-                    callSuccess(xhr.responseText);
+                    callDanger(xhr.responseText);
                 }
             });
         } else if ($(this).attr('class') === "span9 txtschoPriority") {

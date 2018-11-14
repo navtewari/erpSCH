@@ -9,6 +9,9 @@
             <style type="text/css" media="print">
                 body{ margin-top: 0px }
                 .hide_button{ display: none }
+                .hide_pagination{
+                    display:none;
+                }
             </style>
             <style>
                 td{font-size: 13px;font-weight: 600;}
@@ -23,10 +26,20 @@
                     font-size:16px;
                     margin-bottom: 20px;
                 }
+                ul li{
+                    display:inline-block;
+                    padding-right: 20px;
+                    background: #f2f2f2;
+                    padding:10px;
+                }
+
+                ul li.active {                    
+                    background-color:#dddbdb;                    
+                }
             </style>
         </head>
         <body>
-            <?php if (count($student_per_data) == 1) { ?>
+            <?php if (count($student_per_data) == 1 && $reg_id != 0) { ?>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
@@ -38,12 +51,12 @@
                             <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
                                 <tr align="center">
                                     <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
-                                <td>
-                                    <h1><?php echo $sch_name; ?></h1>
-                                    <h4><?php echo $sch_remark; ?></h4>                                    
-                                    <h4><?php echo $sch_addr .', Disitt. '. $sch_distt. ', '. $sch_state. ', ' . $sch_country; ?></h4>                                    
-                                    <h5>Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
-                                </td>
+                                    <td>
+                                        <h1><?php echo $sch_name; ?></h1>
+                                        <h4><?php echo $sch_remark; ?></h4>                                    
+                                        <h4><?php echo $sch_addr . ', Disitt. ' . $sch_distt . ', ' . $sch_state . ', ' . $sch_country; ?></h4>                                    
+                                        <h5>Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
+                                    </td>
                                 </tr>
                                 <tr align="center">
                                     <td colspan="2">
@@ -88,7 +101,7 @@
                                 <!-- Scholastic Area -->                                                           
                                 <tr>
                                     <td colspan="2">
-                                        <h4><?php echo $name_?> Performance:</h4>
+                                        <h4><?php echo $name_ ?> Performance:</h4>
                                         <div id="curve_chart<?php echo $reg_id; ?>" style="height:300px;"></div>
                                     </td>
                                 </tr>
@@ -156,6 +169,7 @@
             <?php } else { ?>
                 <!-------------------------------PRINT ALL---------------------------------------------->
                 <div class="container">
+                    
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
@@ -214,7 +228,7 @@
                                     <!-- Scholastic Area -->                                                           
                                     <tr>
                                         <td colspan="2">
-                                            <h4><?php echo $name_?> Performance :</h4>
+                                            <h4><?php echo $name_ ?> Performance :</h4>
                                             <div id="curve_chart<?php echo $stuData->regid; ?>" style="height:300px;"></div>
                                         </td>
                                     </tr>
@@ -300,10 +314,10 @@
                         base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
                         google.charts.load('current', {'packages': ['corechart']});
                         google.charts.setOnLoadCallback(drawChart);
-                        
-                        regid_ = <?PHP echo '"' . $reg_id . '"'; ?>;                        
+
+                        regid_ = <?PHP echo '"' . $reg_id . '"'; ?>;
                         classSessid_ = <?PHP echo '"' . $classSessID . '"'; ?>;
-                        
+
                         url_ = site_url_ + "/exam/frontPrint/" + classSessid_ + "/" + regid_ + "/1";
 
                         function drawChart() {
@@ -312,17 +326,17 @@
                                 url: url_,
                                 success: function (data1) {
                                     var obj = JSON.parse(data1);
-                                    if (obj.student_per_data.length > 0) {                                        
+                                    if (obj.student_per_data.length > 0) {
                                         for (i = 0; i < obj.student_per_data.length; i++) {
                                             var reg_id = obj.student_per_data[i].regid;
                                             //alert(reg_id);
-                                            
+
                                             var data = new google.visualization.DataTable();
 
                                             data.addColumn('string', 'SUBJECT');
                                             data.addColumn('number', 'TERM 1');
                                             data.addColumn('number', 'TERM 2');
-                                            
+
                                             data.addRows(obj.subject_class.length);
 
                                             for (j = 0; j < obj.subject_class.length; j++) {

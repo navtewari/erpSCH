@@ -13,6 +13,9 @@
             <style type="text/css" media="print">
                 body{ margin-top: 0px }
                 .hide_button{ display: none }
+                .hide_pagination{
+                    display:none;
+                }
             </style>
             <style>
                 td{font-size: 13px;font-weight: 600;}
@@ -20,11 +23,21 @@
                     border: #000000 solid 1px;
 
                     width:95%;
-                }                               
+                }  
+                ul li{
+                    display:inline-block;
+                    padding-right: 20px;
+                    background: #f2f2f2;
+                    padding:10px;
+                }
+
+                ul li.active {                    
+                    background-color:#dddbdb;                    
+                }
             </style>
         </head>
         <body>
-            <?php if (count($student_per_data) == 1) { ?>
+            <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
@@ -323,6 +336,12 @@
     <?php } else { ?>
                 <!-------------------------------PRINT ALL---------------------------------------------->
                 <div class="container">
+                    <div class="row hide_pagination">
+                        <div class="col-sm-12" align="center">
+                            <p> <?php echo $links; ?></p>
+                            <p>Result rendered in <strong>{elapsed_time}</strong> seconds</p>
+                        </div>                           
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
