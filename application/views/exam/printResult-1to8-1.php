@@ -150,7 +150,7 @@
                                                             ?>
                                                             <?php } ?>
                                                         <td align="center">
-                                                            <?php
+                                                            <?php $yes=0;
                                                             foreach ($overall_result as $over_result) {
                                                                 $subjectID = explode(",", $over_result->subjectID);
                                                                 if ($term == 1) {
@@ -160,7 +160,12 @@
                                                                 }
                                                                 for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                     if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                        echo $subjectTotal[$loop];
+                                                                        if($subjectTotal[$loop] != 0){
+                                                                            echo $subjectTotal[$loop];
+                                                                        }else{
+                                                                            echo '';
+                                                                            $yes=1;
+                                                                        }
                                                                         $totalNumber_subject = $subjectTotal[$loop];
                                                                     }
                                                                 }
@@ -175,9 +180,13 @@
                                                         <td align="center">
                                                             <?php foreach ($class_grade as $cgrade) { ?>
                                                                 <?php
-                                                                if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
-                                                                    echo $cgrade->grade;
-                                                                } else {
+                                                                if($yes==0){
+                                                                    if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
+                                                                        echo $cgrade->grade;
+                                                                    } else {
+                                                                        echo '';
+                                                                    }
+                                                                }else{
                                                                     echo '';
                                                                 }
                                                                 ?>
@@ -452,7 +461,7 @@
                                                                 ?>
                                                                 <?php } ?>
                                                             <td align="center">
-                                                                <?php
+                                                                <?php $yes=0;
                                                                 foreach ($overall_result as $over_result) {
                                                                     if ($stuData->regid == $over_result->regid) {
                                                                         $subjectID = explode(",", $over_result->subjectID);
@@ -463,7 +472,12 @@
                                                                         }
                                                                         for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                             if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                                echo $subjectTotal[$loop];
+                                                                                if($subjectTotal[$loop] !=0){
+                                                                                    echo $subjectTotal[$loop];
+                                                                                }else{
+                                                                                    echo '';
+                                                                                    $yes=1;
+                                                                                }
                                                                                 $totalNumber_subject = $subjectTotal[$loop];
                                                                             }
                                                                         }
@@ -479,9 +493,13 @@
                                                             <td align="center">
                                                                 <?php foreach ($class_grade as $cgrade) { ?>
                                                                     <?php
-                                                                    if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
-                                                                        echo $cgrade->grade;
-                                                                    } else {
+                                                                    if($yes==0){
+                                                                        if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
+                                                                            echo $cgrade->grade;
+                                                                        } else {
+                                                                            echo '';
+                                                                        }
+                                                                    }else{
                                                                         echo '';
                                                                     }
                                                                     ?>

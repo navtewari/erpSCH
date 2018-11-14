@@ -172,7 +172,7 @@
                                                             ?>
                                                         <?php } ?>
                                                         <td align="center">
-                                                            <?php
+                                                            <?php $yes=0;
                                                             foreach ($overall_result as $over_result) {
                                                                 $subjectID = explode(",", $over_result->subjectID);
                                                                 if ($term == 1) {
@@ -182,7 +182,12 @@
                                                                 }
                                                                 for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                     if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                        echo $subjectTotal[$loop];
+                                                                        if($subjectTotal[$loop] !=0){
+                                                                            echo $subjectTotal[$loop];
+                                                                        }else{
+                                                                            echo '';
+                                                                            $yes=1;
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -201,7 +206,11 @@
                                                             $subjectAvg = explode(",", $over_result->averageResult);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectAvg[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectAvg[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -215,7 +224,11 @@
                                                             $subjectGrade = explode(",", $over_result->subjectGrade);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectGrade[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectGrade[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -228,7 +241,11 @@
                                                             $subjectRank = explode(",", $over_result->subjectRank);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectRank[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectRank[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -256,7 +273,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[1];
+                                                    if($yes==0){
+                                                        echo $overallResult[1];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -266,7 +287,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[2];
+                                                    if($yes==0){
+                                                        echo $overallResult[2];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -276,7 +301,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[3];
+                                                    if($yes==0){
+                                                        echo $overallResult[3];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -286,7 +315,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[4];
+                                                    if($yes==0){
+                                                        echo $overallResult[4];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -562,7 +595,7 @@
                                                                 ?>
                                                             <?php } ?>
                                                             <td align="center">
-                                                                <?php
+                                                                <?php $yes=0;
                                                                 foreach ($overall_result as $over_result) {
                                                                     if ($stuData->regid == $over_result->regid) {
                                                                         $subjectID = explode(",", $over_result->subjectID);
@@ -573,7 +606,12 @@
                                                                         }
                                                                         for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                             if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                                echo $subjectTotal[$loop];
+                                                                                if ($subjectTotal[$loop] !=0){
+                                                                                    echo $subjectTotal[$loop];
+                                                                                }else{
+                                                                                    echo '';
+                                                                                    $yes=1;
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -594,7 +632,11 @@
                                                                     $subjectAvg = explode(",", $over_result->averageResult);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectAvg[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectAvg[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -610,7 +652,11 @@
                                                                     $subjectGrade = explode(",", $over_result->subjectGrade);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectGrade[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectGrade[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -625,7 +671,11 @@
                                                                     $subjectRank = explode(",", $over_result->subjectRank);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectRank[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectRank[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -655,7 +705,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[1];
+                                                            if($yes==0){
+                                                                echo $overallResult[1];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -667,7 +721,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[2];
+                                                            if($yes==0){
+                                                                echo $overallResult[2];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -679,7 +737,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[3];
+                                                            if($yes==0){
+                                                                echo $overallResult[3];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -691,7 +753,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[4];
+                                                            if($yes==0){
+                                                                echo $overallResult[4];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
