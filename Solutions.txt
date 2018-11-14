@@ -10,3 +10,12 @@ Problem - If need to change the value of auto-increment value in the existing da
 Solution-
 select @i := 0;
 update bar set c = (select @i := @i + 1);
+
+
+
+
+For Attendance:
+In the below query we need to provide the total student of the specific class and also the specified class.
+1. SELECT ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE CLSSESSID = 26 and STATUS = 1 GROUP BY DATE_
+2. SELECT CLSSESSID, ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE  STATUS = 1 GROUP BY CLSSESSID, DATE_
+3. 

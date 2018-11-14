@@ -13,12 +13,12 @@ class DashboardReports extends CI_Controller {
     }
 
     function total_students(){
-    	$this->check_login();
+        $this->check_login();
 
         $data['inner_page'] = 'regStudents';
         $data['active'] = 1;
 
-    	$data['page_'] = 'dashboard_reports';
+        $data['page_'] = 'dashboard_reports';
         $data['title_'] = "Total Classes";
         $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown_admission_form($this->session->userdata('_current_year___'));
 
@@ -34,12 +34,12 @@ class DashboardReports extends CI_Controller {
     }
 
     function total_classes(){
-    	$this->check_login();
+        $this->check_login();
 
         $data['inner_page'] = 'totalClasses';
         $data['active'] = 1;
 
-    	$data['page_'] = 'dashboard_reports';
+        $data['page_'] = 'dashboard_reports';
         $data['title_'] = "Total Classes in ".$this -> session -> userdata('_current_year___');
         $data['total_classes'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
         $data['total_students'] = $this->mam->getStudents_in_class_in_session($this->session->userdata('_current_year___'));
@@ -77,9 +77,9 @@ class DashboardReports extends CI_Controller {
     }
 
     function get_students(){
-    	$clssessid = $this->input->post('classessid');
-    	$data['class_students'] = $this->dr->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
-    	echo json_encode($data);
+        $clssessid = $this->input->post('classessid');
+        $data['class_students'] = $this->dr->getstudents_in_class($this->session->userdata('_current_year___'), $clssessid);
+        echo json_encode($data);
     }
 
     function get_invoices(){
@@ -211,7 +211,12 @@ class DashboardReports extends CI_Controller {
     function sendReminder(){
         $username = $this->session->userdata('sms_userid');
         $password = $this->session->userdata('sms_pwd');
-        $number = $this->input->post("mobilenumbers");
+        
+        $numb = $this->input->post("mobilenumbers");
+        $nums_ = explode(",", $numb);
+        $nums_ = array_map('trim', $nums_);
+        $number = implode(',', $nums_);
+        
         $sender = $this->session->userdata('sms_senderid');
         $msg1=$this->input->post("FeeReminderMsg");
         $class_ = $this->input->post('class_reminder');
@@ -230,6 +235,7 @@ class DashboardReports extends CI_Controller {
 
             // Store the sent sms to the respective database
                 $nums = explode(",", $number);
+                $nums = array_map('trim', $nums);
                 $no_of_sms = count($nums);
                 $status = 'sent';
                 $this->dr->submit_sms($class_, $msg1, $no_of_sms, $number, $sender, $status);

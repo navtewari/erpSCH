@@ -23,7 +23,7 @@
                         <tr>
                             <th style="text-align: left">Class</th>
                         </tr>
-                    </thead>
+           
                     <tbody id="student_data_here" style="font-size: 12px">
                         <?php $i = 1; ?>
                         <?php foreach ($total_classes as $class_) { ?>
@@ -85,6 +85,9 @@
               </div>
               <div class="modal-body">
                 <?php echo form_open('#', array('name' => 'frmFeeReminder', 'id' => 'frmFeeReminder', 'role' => 'form')); ?>
+                    <button type="submit" class="btn btn-primary sendreminder" value="Submit" name="sms_yes" id="sms_yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
+                    <button type="submit" class="btn btn-danger sendreminder" value="No" name="sms_no" id="sms_no"><i class="fa fa-close"></i> Don't Send SMS </button>
+                    <hr>
                     <div class="control-group">
                         <div class="controls">
                             <label>Mobile Nos.</label>
@@ -119,8 +122,6 @@
                             ?>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary sendreminder" value="Submit" name="sms_yes" id="sms_yes"><i class="fa fa-send"></i> &nbsp;Send SMS </button>
-                    <button type="submit" class="btn btn-danger sendreminder" value="No" name="sms_no" id="sms_no"><i class="fa fa-close"></i> Don't Send SMS </button>
                 <?php echo form_close(); ?>
               </div>
             </div>
