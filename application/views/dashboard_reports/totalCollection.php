@@ -18,6 +18,9 @@
     }
 </style>
 <div class="row-fluid">
+    <?php $this->load->view('dashboard_reports/header');?>
+</div>
+<div class="row-fluid">
     <div class="span6">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>

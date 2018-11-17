@@ -10,6 +10,7 @@ class DashboardReports extends CI_Controller {
         $this->load->model('my_model', 'mm');
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('my_dashboard_reports_model', 'dr');
+        $this->load->model('My_fee_model', 'fm');
     }
 
     function total_students(){
@@ -171,7 +172,9 @@ class DashboardReports extends CI_Controller {
 
         $data['page_'] = 'dashboard_reports';
         $data['title_'] = "Total Fee Collection";
-        
+        $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+        $data['fetch_month'] = $this->my_library->getMonths();
+
         $data['total_collection'] = $this->dr->get_total_collection();
         
 
@@ -184,6 +187,17 @@ class DashboardReports extends CI_Controller {
         $this->load->view('templates/menu', $data);
         $this->load->view('dashboard', $data);
         $this->load->view('templates/footer');   
+    }
+    function get_total_collection_classwise_durationwise(){ // called by Ajax
+        $class__ = $this->input->post('cmbClassForInvoice');
+        $yr_from = $this->input->post('cmbYearFromForInvoice');
+        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
+        $yr_to = $this->input->post('cmbYearToForInvoice');
+        $mnth_to = $this->input->post('cmbMonthToForInvoice');
+
+        $data['total_collection'] = $this->dr->get_total_collection_classwise_durationwise($class__,$yr_from, $mnth_from, $yr_to, $mnth_to);
+
+        echo json_encode($data);
     }
     function get_total_dues_in_a_session(){
         $this->check_login();
