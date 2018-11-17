@@ -423,6 +423,8 @@ class Exam extends CI_Controller {
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
             $data["links"] = $this->pagination->create_links();
         } else {
+            $data['startLimit'] = 1;
+            $data['per_page']=1;
             $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
         }
         $data['exam_term'] = $this->mem->mget_examterm_in_session();
