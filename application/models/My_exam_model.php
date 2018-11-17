@@ -1132,6 +1132,24 @@ class My_exam_model extends CI_Model {
 
         return $query->result();
     }
+        
+    
+    function mfetchStuDatainClassLimitwise($classSessID,$limit, $start) {
+        $year__ = $this->session->userdata('_current_year___');
+
+        $this->db->select('a.*, c.CLASSID, b.clssessid, b.ID_');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->where('b.clssessid', $classSessID);
+        $this->db->where('c.SESSID', $year__);
+        $this->db->order_by('a.regid', 'asc');
+        $this->db->limit($limit, $start);
+        
+        $query = $this->db->get();
+
+        return $query->result();
+    }
 
     function mcalculateResult($classSessID) {
         $regID = 0;

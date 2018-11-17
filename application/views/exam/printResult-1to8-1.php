@@ -13,6 +13,9 @@
             <style type="text/css" media="print">
                 body{ margin-top: 0px }
                 .hide_button{ display: none }
+                .hide_pagination{
+                    display:none;
+                }
             </style>
             <style>
                 td{font-size: 13px;font-weight: 600;}
@@ -20,11 +23,21 @@
                     border: #000000 solid 1px;
 
                     width:95%;
-                }                               
+                }  
+                ul li{
+                    display:inline-block;
+                    padding-right: 20px;
+                    background: #f2f2f2;
+                    padding:10px;
+                }
+
+                ul li.active {                    
+                    background-color:#dddbdb;                    
+                }
             </style>
         </head>
         <body>
-            <?php if (count($student_per_data) == 1) { ?>
+            <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
@@ -53,8 +66,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Student's Name: <b><?php echo $name_ ?></b><br>
@@ -137,7 +150,7 @@
                                                             ?>
                                                             <?php } ?>
                                                         <td align="center">
-                                                            <?php
+                                                            <?php $yes=0;
                                                             foreach ($overall_result as $over_result) {
                                                                 $subjectID = explode(",", $over_result->subjectID);
                                                                 if ($term == 1) {
@@ -147,7 +160,12 @@
                                                                 }
                                                                 for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                     if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                        echo $subjectTotal[$loop];
+                                                                        if($subjectTotal[$loop] != 0){
+                                                                            echo $subjectTotal[$loop];
+                                                                        }else{
+                                                                            echo '';
+                                                                            $yes=1;
+                                                                        }
                                                                         $totalNumber_subject = $subjectTotal[$loop];
                                                                     }
                                                                 }
@@ -162,9 +180,13 @@
                                                         <td align="center">
                                                             <?php foreach ($class_grade as $cgrade) { ?>
                                                                 <?php
-                                                                if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
-                                                                    echo $cgrade->grade;
-                                                                } else {
+                                                                if($yes==0){
+                                                                    if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
+                                                                        echo $cgrade->grade;
+                                                                    } else {
+                                                                        echo '';
+                                                                    }
+                                                                }else{
                                                                     echo '';
                                                                 }
                                                                 ?>
@@ -323,6 +345,12 @@
     <?php } else { ?>
                 <!-------------------------------PRINT ALL---------------------------------------------->
                 <div class="container">
+                    <div class="row hide_pagination">
+                        <div class="col-sm-12" align="center">
+                            <p> <?php echo $links; ?></p>
+                            <p>Result rendered in <strong>{elapsed_time}</strong> seconds</p>
+                        </div>                           
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
@@ -350,8 +378,8 @@
                                                     <td width='50%'>
                                                         <?php
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Student's Name: <b><?php echo $name_ ?></b><br>
@@ -433,7 +461,7 @@
                                                                 ?>
                                                                 <?php } ?>
                                                             <td align="center">
-                                                                <?php
+                                                                <?php $yes=0;
                                                                 foreach ($overall_result as $over_result) {
                                                                     if ($stuData->regid == $over_result->regid) {
                                                                         $subjectID = explode(",", $over_result->subjectID);
@@ -444,7 +472,12 @@
                                                                         }
                                                                         for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                             if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                                echo $subjectTotal[$loop];
+                                                                                if($subjectTotal[$loop] !=0){
+                                                                                    echo $subjectTotal[$loop];
+                                                                                }else{
+                                                                                    echo '';
+                                                                                    $yes=1;
+                                                                                }
                                                                                 $totalNumber_subject = $subjectTotal[$loop];
                                                                             }
                                                                         }
@@ -460,9 +493,13 @@
                                                             <td align="center">
                                                                 <?php foreach ($class_grade as $cgrade) { ?>
                                                                     <?php
-                                                                    if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
-                                                                        echo $cgrade->grade;
-                                                                    } else {
+                                                                    if($yes==0){
+                                                                        if ($totalNumber_subject >= $cgrade->minMarks && $totalNumber_subject <= $cgrade->maxMarks) {
+                                                                            echo $cgrade->grade;
+                                                                        } else {
+                                                                            echo '';
+                                                                        }
+                                                                    }else{
                                                                         echo '';
                                                                     }
                                                                     ?>

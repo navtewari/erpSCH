@@ -13,17 +13,30 @@
             <style type="text/css" media="print">
                 body{ margin-top: 0px }
                 .hide_button{ display: none }
+                .hide_pagination{
+                    display:none;
+                }
             </style>
             <style>
                 td{font-size: 13px;font-weight: 600;}
                 .table_{
                     border: #000000 solid 1px;
                     width:95%;
+                }                  
+                ul li{
+                    display:inline-block;
+                    padding-right: 20px;
+                    background: #f2f2f2;
+                    padding:10px;
+                }
+
+                ul li.active {                    
+                    background-color:#dddbdb;                    
                 }
             </style>
         </head>
         <body>
-            <?php if (count($student_per_data) == 1) { ?>
+            <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
@@ -49,8 +62,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
@@ -62,8 +75,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
@@ -74,8 +87,8 @@
                                                     <?php
                                                     foreach ($student_per_data as $stuData) {
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
                                                         Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                    
@@ -159,7 +172,7 @@
                                                             ?>
                                                         <?php } ?>
                                                         <td align="center">
-                                                            <?php
+                                                            <?php $yes=0;
                                                             foreach ($overall_result as $over_result) {
                                                                 $subjectID = explode(",", $over_result->subjectID);
                                                                 if ($term == 1) {
@@ -169,7 +182,12 @@
                                                                 }
                                                                 for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                     if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                        echo $subjectTotal[$loop];
+                                                                        if($subjectTotal[$loop] !=0){
+                                                                            echo $subjectTotal[$loop];
+                                                                        }else{
+                                                                            echo '';
+                                                                            $yes=1;
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -188,7 +206,11 @@
                                                             $subjectAvg = explode(",", $over_result->averageResult);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectAvg[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectAvg[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -202,7 +224,11 @@
                                                             $subjectGrade = explode(",", $over_result->subjectGrade);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectGrade[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectGrade[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -215,7 +241,11 @@
                                                             $subjectRank = explode(",", $over_result->subjectRank);
                                                             for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                 if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                    echo $subjectRank[$loop];
+                                                                    if($yes==0){
+                                                                        echo $subjectRank[$loop];
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -243,7 +273,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[1];
+                                                    if($yes==0){
+                                                        echo $overallResult[1];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -253,7 +287,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[2];
+                                                    if($yes==0){
+                                                        echo $overallResult[2];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -263,7 +301,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[3];
+                                                    if($yes==0){
+                                                        echo $overallResult[3];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -273,7 +315,11 @@
                                                 <?php
                                                 foreach ($overall_result as $over_result) {
                                                     $overallResult = explode(",", $over_result->overallResult);
-                                                    echo $overallResult[4];
+                                                    if($yes==0){
+                                                        echo $overallResult[4];
+                                                    }else{
+                                                        echo '';
+                                                    }
                                                 }
                                                 ?>
                                             </td>
@@ -411,6 +457,12 @@
             <?php } else { ?>
                 <!-------------------------------------------------------------------------------ALL---->
                 <div class="container">
+                    <div class="row hide_pagination">
+                        <div class="col-sm-12" align="center">
+                            <p> <?php echo $links; ?></p>
+                            <p>Result rendered in <strong>{elapsed_time}</strong> seconds</p>
+                        </div>                           
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
@@ -436,8 +488,8 @@
                                             <td width='33%' valign="top">
                                                 <?php                                                
                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                     ?>
 
                                                     Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
@@ -447,8 +499,8 @@
                                             <td width='33%' valign="top">
                                                 <?php                                                
                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                     ?>
 
                                                     Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
@@ -457,8 +509,8 @@
                                             <td valign="top">
                                                 <?php                                                
                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                    $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                    $name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                     ?>
                                                                                                        
                                                     Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                                                                    
@@ -543,7 +595,7 @@
                                                                 ?>
                                                             <?php } ?>
                                                             <td align="center">
-                                                                <?php
+                                                                <?php $yes=0;
                                                                 foreach ($overall_result as $over_result) {
                                                                     if ($stuData->regid == $over_result->regid) {
                                                                         $subjectID = explode(",", $over_result->subjectID);
@@ -554,7 +606,12 @@
                                                                         }
                                                                         for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                             if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                                echo $subjectTotal[$loop];
+                                                                                if ($subjectTotal[$loop] !=0){
+                                                                                    echo $subjectTotal[$loop];
+                                                                                }else{
+                                                                                    echo '';
+                                                                                    $yes=1;
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -575,7 +632,11 @@
                                                                     $subjectAvg = explode(",", $over_result->averageResult);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectAvg[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectAvg[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -591,7 +652,11 @@
                                                                     $subjectGrade = explode(",", $over_result->subjectGrade);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectGrade[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectGrade[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -606,7 +671,11 @@
                                                                     $subjectRank = explode(",", $over_result->subjectRank);
                                                                     for ($loop = 1; $loop < count($subjectID); $loop++) {
                                                                         if ($subjectID[$loop] == $subjectClass->subjectID) {
-                                                                            echo $subjectRank[$loop];
+                                                                            if($yes==0){
+                                                                                echo $subjectRank[$loop];
+                                                                            }else{
+                                                                                echo '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -636,7 +705,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[1];
+                                                            if($yes==0){
+                                                                echo $overallResult[1];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -648,7 +721,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[2];
+                                                            if($yes==0){
+                                                                echo $overallResult[2];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -660,7 +737,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[3];
+                                                            if($yes==0){
+                                                                echo $overallResult[3];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -672,7 +753,11 @@
                                                     foreach ($overall_result as $over_result) {
                                                         if ($stuData->regid == $over_result->regid) {
                                                             $overallResult = explode(",", $over_result->overallResult);
-                                                            echo $overallResult[4];
+                                                            if($yes==0){
+                                                                echo $overallResult[4];
+                                                            }else{
+                                                                echo '';
+                                                            }
                                                         }
                                                     }
                                                     ?>
