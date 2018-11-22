@@ -3868,6 +3868,70 @@ $(function(){
     	
     	return false;
 	});
+
+	$('#cmdViewTotalFeeClasswise').click(function(){
+		var url_ = '';
+		var data = '';
+		var class__ = $('#frmTotalFeeCOllectedClasswiseDurationwise').val();
+		$('#show_message').css('display', 'none');
+		$('#show_message').html("");
+
+        $("#total_collection_classwise_durationwise").html("<h5 style='text-align: center'>Please wait...</h5>");
+            // Fetching form data
+            var datefrom = $('#txtDateFrom').val();
+            var dateto = $('#txtDateTo').val();
+            var total_amount_for_class = 0;
+            //-------------------
+
+			if(class__ != "x"){
+				data_ = $('#frmTotalFeeCOllectedClasswiseDurationwise').serialize();
+				url_ = site_url_ + "/dashboardReports/get_total_collection_classwise_durationwise";
+				$.ajax({
+					type: "GET",
+					url: url_,
+					data: data_,
+					success: function(data){
+						var obj = JSON.parse(data);
+						if(obj.total_collection[0].totalPaid != null){
+							$('#total_collection').html('Rs. '+'<span style="color: #0000ff">'+obj.total_collection[0].totalPaid+'</span>'+"/-");
+						} else {
+							$('#total_collection').html('');
+						}
+						$('#total_collection_classwise_durationwise').html('<div style="text-align: center; font-weight: bold">Wait its Printing..</div>');
+						var str = '';
+						str = str + '<table class="table table-bordered">';
+						str = str + '<thead>';
+						str = str + '<tr>';
+						str = str + '<th></th>';
+						str = str + '<th style="text-align: left">Receipt ID</th>';
+						str = str + '<th style="text-align: left">Paid Date</th>';
+						str = str + '<th>Class</th>';
+						str = str + '<th style="text-align: left">INVOICE</th>';
+						str = str + '<th style="text-align: right">COLLECTION (Rs.)</th>';
+						str = str + '<th style="text-align: center">MODE</th>';
+						str = str + '<th></th>';
+						str = str + '</tr>';
+						str = str + '</thead>';
+						for(i=0; i<obj.fee_collection.length;i++){
+							str = str + '<tr>';
+                                str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
+                                str = str + '<td>'+obj.fee_collection[i].RECPTID+'</td>';
+                                str = str + '<td>'+obj.fee_collection[i].DATE_+'</td>';
+                                str = str + '<td style="text-align: center">'+obj.fee_collection[i].CLASSID+'</td>';
+                                str = str + '<td style="text-align: center">'+obj.fee_collection[i].INVDETID+'</td>';
+                                str = str + '<td style="text-align: right">'+obj.fee_collection[i].PAID+'</td>';
+                                str = str + '<td style="text-align: center">'+obj.fee_collection[i].MODE+'</td>';
+                                str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
+                            str = str + '</tr>';
+						}
+						$('#total_collection_classwise_durationwise').html(str);
+					},
+					error: function(xhr, status, error){
+						console.log(xhr.responseText);
+					}
+				});
+			}
+	});
 	// -----------------
 	// Popup boxes
 		function callDanger(message){

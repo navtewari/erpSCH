@@ -19,15 +19,13 @@
 </style>
 <div class="row-fluid">
     <?php $this->load->view('dashboard_reports/header');?>
-</div>
-<div class="row-fluid">
-    <div class="span6">
+    <div class="span8">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5 id="receipts_for_class">Today's Collection</h5>
+                <h5 id="receipts_for_class">Total Collection &nbsp;<div id="total_collection" style="float: right;"></div></h5>
             </div>
-            <div class="widget-content nopadding" style="overflow-y: scroll; overflow-x: auto; height: auto; padding: 5px">
-                <table class="table table-bordered">
+            <div class="widget-content nopadding" id="total_collection_classwise_durationwise" style="overflow-y: scroll; overflow-x: auto; height: auto; padding: 5px">
+                <!--table class="table table-bordered">
                     <thead>
                         <tr>
                             <th></th>
@@ -40,19 +38,19 @@
                         </tr>
                     </thead>
                     <tbody id="todays_collection_here" style="font-size: 12px">
-                        <?php foreach ($total_collection as $item) { ?>
+                        <?php //foreach ($total_collection as $item) { ?>
                             <tr>
-                                <td><a href="<?php echo site_url('/fee/fee_print/'.$item->RECPTID);?>" class="view_invoice_1" target="_blank">VIEW</a></td>
-                                <td><?php echo $item->RECPTID; ?></td>
-                                <td style="text-align: center"><?php echo $item->CLASSID; ?></td>
-                                <td style="text-align: center"><?php echo $item->INVDETID; ?></td>
-                                <td style="text-align: right"><?php echo number_format(($item->PAID), 0,'.', ','); ?></td>
-                                <td style="text-align: center"><?php echo $item->MODE; ?></td>
-                                <td><a href="<?php echo site_url('/fee/fee_print/'.$item->RECPTID);?>" class="view_invoice_1" target="_blank">VIEW</a></td>
+                                <td><a href="<?php //echo site_url('/fee/fee_print/'.$item->RECPTID);?>" class="view_invoice_1" target="_blank">VIEW</a></td>
+                                <td><?php //echo $item->RECPTID; ?></td>
+                                <td style="text-align: center"><?php //echo $item->CLASSID; ?></td>
+                                <td style="text-align: center"><?php //echo $item->INVDETID; ?></td>
+                                <td style="text-align: right"><?php //echo number_format(($item->PAID), 0,'.', ','); ?></td>
+                                <td style="text-align: center"><?php //echo $item->MODE; ?></td>
+                                <td><a href="<?php //echo site_url('/fee/fee_print/'.$item->RECPTID);?>" class="view_invoice_1" target="_blank">VIEW</a></td>
                             </tr>
-                        <?php } ?>
+                        <?php //} ?>
                     </tbody>
-                </table>
+                </table -->
             </div>
         </div>
     </div>

@@ -175,7 +175,7 @@ class DashboardReports extends CI_Controller {
         $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
         $data['fetch_month'] = $this->my_library->getMonths();
 
-        $data['total_collection'] = $this->dr->get_total_collection();
+        //$data['total_collection'] = $this->dr->get_total_collection();
         
 
         $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
@@ -189,13 +189,15 @@ class DashboardReports extends CI_Controller {
         $this->load->view('templates/footer');   
     }
     function get_total_collection_classwise_durationwise(){ // called by Ajax
-        $class__ = $this->input->post('cmbClassForInvoice');
-        $yr_from = $this->input->post('cmbYearFromForInvoice');
-        $mnth_from = $this->input->post('cmbMonthFromForInvoice');
-        $yr_to = $this->input->post('cmbYearToForInvoice');
-        $mnth_to = $this->input->post('cmbMonthToForInvoice');
+        $x = explode('/',$this->input->get('txtDateFrom'));
+        $datefrom = $x[2]."-".$x[1]."-".$x[0];
+        $y = explode('/', $this->input->get('txtDateTo'));
+        $dateto = $y[2]."-".$y[1]."-".$y[0];
 
-        $data['total_collection'] = $this->dr->get_total_collection_classwise_durationwise($class__,$yr_from, $mnth_from, $yr_to, $mnth_to);
+        $class__ = $this->input->get('cmbClassForTotalCollection');
+
+        $data['fee_collection'] = $this->dr->get_fee_collection_classwise_durationwise($class__,$datefrom, $dateto);
+        $data['total_collection'] = $this->dr->get_total_collection_classwise_durationwise($class__,$datefrom, $dateto);
 
         echo json_encode($data);
     }

@@ -200,7 +200,7 @@ class My_dashboard_reports_model extends CI_Model {
         }
         return $value;
     }
-    function get_total_collection_classwise_durationwise($class__,$yr_from, $mnth_from, $yr_to, $mnth_to){
+    function get_fee_collection_classwise_durationwise($class__, $datefrom, $dateto){
 
         if($class__ != 'x'){
             $this->db->where('a.CLSSESSID', $class__);
@@ -209,9 +209,10 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->where('z.STATUS_', 1);
         $this -> db -> order_by('ABS(y.CLASS)', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
-        //$this->db->where('DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") = DATE_FORMAT(DATE(CURDATE()), "%d-%m-%Y")');
+        $this -> db -> order_by('DATE(c.DATE_)', 'asc');
+        $this->db->where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
         $this->db->where('c.PAID<>', 0);
-        $this->db->select('a.SESSID, x.CLASSID, c.*');
+        $this->db->select('a.SESSID, x.CLASSID, c.RECPTID, c.PAID, c.INVDETID, c.MODE, DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") AS DATE_, c.regid');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
@@ -219,7 +220,29 @@ class My_dashboard_reports_model extends CI_Model {
         $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
         $this->db->join('master_8_stud_academics z', 'c.regid=z.regid');
         $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
 
+    function get_total_collection_classwise_durationwise($class__, $datefrom, $dateto){
+        if($class__ != 'x'){
+            $this->db->where('a.CLSSESSID', $class__);
+        }
+        
+        $this->db->where('z.STATUS_', 1);
+        $this -> db -> order_by('ABS(y.CLASS)', 'asc');
+        $this -> db -> order_by('y.SECTION', 'asc');
+        $this->db->where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
+        $this->db->where('c.PAID<>', 0);
+        $this->db->select('SUM(c.PAID) AS totalPaid');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
+        $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $this->db->join('master_8_stud_academics z', 'c.regid=z.regid');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->result();
     }
     function get_total_collection(){
