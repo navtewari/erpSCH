@@ -1069,16 +1069,15 @@ class My_fee_model extends CI_Model {
         $mnth_to = $this->input->post('cmbMonthToForInvoice');
 
         $d['fetch_invoice_for_receipt'] = $this->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to);
-        //print_r($d['fetch_invoice_for_receipt'])."<br>";
-        //echo count($d['fetch_invoice_for_receipt']);
+
         $ret_data = array();
         if(count($d['fetch_invoice_for_receipt']) != 1 || (count($d['fetch_invoice_for_receipt']) == 1 && !isset($d['fetch_invoice_for_receipt']['NA']))){
             for($loop1=0;$loop1<count($d['fetch_invoice_for_receipt']); $loop1++){
                 $d_['flexi_heads'] = $this->fetch_flexi_heads_to_students($class__, $d['fetch_invoice_for_receipt'][$loop1]->REGID);
                 
-                /*echo*/ $d['invdetid'] = $d['fetch_invoice_for_receipt'][$loop1]->INVDETID;
-                /*echo*/ $d['regid'] = $d['fetch_invoice_for_receipt'][$loop1]->REGID;
-                /*echo*/ $d['flexiheads'] = $d_['flexi_heads']['flexi_heads'];
+                $d['invdetid'] = $d['fetch_invoice_for_receipt'][$loop1]->INVDETID;
+                $d['regid'] = $d['fetch_invoice_for_receipt'][$loop1]->REGID;
+                $d['flexiheads'] = $d_['flexi_heads']['flexi_heads'];
                 $d['fetch_receipt_data'] = $this->get_student_receipt($d['invdetid'], $class__);
                 if($this->chkDiscountStatus($d['invdetid']) == false){
                     $d['sibling_discount'] = $this->get_specific_sibling_for_fee_discount($d['regid']);
@@ -1093,8 +1092,8 @@ class My_fee_model extends CI_Model {
 
                     $d['fetch_category_discount_data'] = $this->get_student_discount($d['fetch_invoice_for_receipt'][$loop1]->CATEGORY);
                     
-                    /*echo*/ "-<br>-";
-                    /*print_r*/ $d['discount_overall'] = $this->evaluate_discount($d);
+                    $d['discount_overall'] = $this->evaluate_discount($d);
+                    
                 } else {
                     $d['other_discount_data'] = array('res_' => 'NULL');
                     $d['fetch_discount_data'] = array('res_'=>NULL);

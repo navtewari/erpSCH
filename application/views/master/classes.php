@@ -47,6 +47,7 @@
                                             <?php
                                             $data = array(
                                                 'class' => 'required form-control m-bot8',
+                                                'style' => 'width: 90%',
                                                 'name' => 'cmbClassSection',
                                                 'id' => 'cmbClassSection',
                                                 'required' => 'required'
@@ -144,6 +145,7 @@
                                             <?php
                                             $data = array(
                                                 'class' => 'required form-control m-bot8',
+                                                'style' => 'width: 90%',
                                                 'name' => 'cmbEditSection',
                                                 'id' => 'cmbEditSection',
                                                 'required' => 'required'

@@ -16,12 +16,13 @@
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group">
                     <label class="control-label">Select Class</label>
-                        <div class="">
+                        <div class="controls">
                             <?php
                                 $data = array(
                                     'name' => 'cmbClassesForStudents',
                                     'id' => 'cmbClassesForStudents',
-                                    'required' => 'required'
+                                    'required' => 'required',
+                                    'class' => 'span12'
                                 );
                                 $options = array();
                                 $options['x'] = 'Select Class';
@@ -29,6 +30,7 @@
                             <?php echo form_dropdown($data, $options, ''); ?>
                         </div>
                 </div>
+                
                 <div class="control-group">
                     <label class="control-label">Select Attendance Date <span style="font-size: 9px">(dd/mm/yyyy)</span></label>
                     <div class="controls">
@@ -58,7 +60,8 @@
                                 $data = array(
                                     'name' => 'attendanceHour',
                                     'id' => 'attendanceHour',
-                                    'required' => 'required'
+                                    'required' => 'required',
+                                    'class' => 'span12'
                                 );
                                 $options = array();
                                 $options['x'] = 'HR';
@@ -73,12 +76,13 @@
                                 $data = array(
                                     'name' => 'attendanceMin',
                                     'id' => 'attendanceMin',
-                                    'required' => 'required'
+                                    'required' => 'required',
+                                    'class' => 'span12'
                                 );
                                 $options = array();
                                 $options['x'] = 'MIN';
                                 for($i=0; $i<=60; $i++){
-                                	$options[$i] = $i;
+                                    $options[$i] = $i;
                                 }
                             ?>
                             <?php echo form_dropdown($data, $options, date('i')); ?>
@@ -88,7 +92,8 @@
                                 $data = array(
                                     'name' => 'attendanceAMPM',
                                     'id' => 'attendanceAMPM',
-                                    'required' => 'required'
+                                    'required' => 'required',
+                                    'class' => 'span12'
                                 );
                                 $options = array();
                                 $options['x'] = 'AM/PM';
@@ -103,42 +108,42 @@
             </div>
         </div>
     </div>
-	<div class="controls span6">
-		<div class="control-group">
-			<div class="widget-box">
-				<div class="widget-title student_class_info">
-					<div>
-						
-					</div>
-					<h5 id="caption_for_class"></h5>
-					<div style="clear: both"></div>
-				</div>
-				<div class="widget-content nopadding" style="overflow: hidden">
-					<table class="table table-bordered table-striped with-check">
-						<thead>
-							<tr>
-								<th style="text-align: left; min-width: 10%; width: 100px">
+    <div class="controls span6">
+        <div class="control-group">
+            <div class="widget-box">
+                <div class="widget-title student_class_info">
+                    <div>
+                        
+                    </div>
+                    <h5 id="caption_for_class"></h5>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="widget-content nopadding" style="overflow: hidden">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; min-width: 10%; width: 100px">
                                     <div style="float: left"><input type="checkbox" id="atten_check" /></div>
                                     <div id="selectall_label" style="float: left; background: #ffffff; padding: 0px 5px; border-radius: 7px">Select All</div>
                                 </th>
-								<th style="text-align: left; min-width: 10%">Reg. No.</th>
-								<th style="text-align: left; min-width: 80%">Student Name</th>
-							</tr>
-						</thead>
-						<tbody id="students_here">
+                                <th style="text-align: left; min-width: 10%">Reg. No.</th>
+                                <th style="text-align: left; min-width: 80%">Student Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students_here">
 
-						</tbody>
-					</table>
+                        </tbody>
+                    </table>
                     <input type="hidden" value="new" name="status_of_editting" id="status_of_editting">
-				</div>
-			</div>
-		</div>
-		<div class="control-group">
-		<div class="controls">
-			<input type="submit" value="Submit Attendance" class="btn btn-success" name="cmbAddClassSubmit" id="cmbAddClassSubmit">
-		</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+        <div class="controls">
+            <input type="submit" value="Submit Attendance" class="btn btn-success" name="cmbAddClassSubmit" id="cmbAddClassSubmit">
+        </div>
+        </div>
+    </div>
     <?php echo form_close();?>
 </div>
             <div id="myModal" class="modal hide">
