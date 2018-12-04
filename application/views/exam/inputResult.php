@@ -146,7 +146,7 @@
                     <div class="span7">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                                <h5 id="exitHeading">Scholastic items already present</h5>
+                                <h5 id="exitHeading">Student Marks</h5>
                             </div>
                             <div class="widget-content nopadding" style="height:auto; overflow: scroll">
                                 <table class="table table-bordered">

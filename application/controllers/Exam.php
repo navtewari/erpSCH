@@ -311,7 +311,9 @@ class Exam extends CI_Controller {
             $this->load->view('exam/printResult-1to8', $data);
         } else if ($reportlayout == 2 && $sidelayout == 2) {
             $this->load->view('exam/printResult-9', $data);
-        } else {
+        } else if ($reportlayout == 3 && $sidelayout == 2) {
+            $this->load->view('exam/printResult-lkg', $data);
+        }else {
             die();
         }
     }
@@ -379,7 +381,10 @@ class Exam extends CI_Controller {
 
     function frontPrint($classSessID = 0, $regID = 0, $classID = 0, $pagi = 0, $print_ = 0) {
         $this->check_login();
-        if ($pagi == 0) {
+        if ($pagi == 0) {            
+            $classSessID = $this->input->post('classSessHiddenID');
+            $regID = $this->input->post('stuHiddenID');
+            $reportlayout = $this->input->post('reportLayout');
             $classID = $this->mem->mcheckClassID($classSessID);
         }
         $data['classID'] = $classID;
@@ -447,7 +452,13 @@ class Exam extends CI_Controller {
 
         $data['reg_id'] = $regID;
         if ($print_ == 0) {
-            $this->load->view('exam/printResult-front', $data);
+            if($reportlayout==1){
+                $this->load->view('exam/printResult-front', $data);
+            }else if($reportlayout==2){
+                $this->load->view('exam/printResult-front-lkg', $data);
+            }else{
+                echo json_encode($data);
+            }
         } elseif ($print_ == 1) {
             echo json_encode($data);
         }

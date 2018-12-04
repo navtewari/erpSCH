@@ -2223,7 +2223,7 @@ $(function () {
                 var subject = $('#cmbSubjectMarks').find(":selected").text();
                 var assid = $('#cmbAssessmentItem').val();
                 var assName = $('#cmbAssessmentItem').find(":selected").text();
-                $('#exitHeading').html('Term - <span style="color:blue;margin-right:40px;">' + examTerm + '</span> <span style="color:blue;margin-right:40px;">' + className + '</span> Subject - <span style="color:blue">' + subject + ' (' + assName + ') ' + '</span>');
+                $('#exitHeading').html('Term - <span style="color:blue;margin-right:10px;">' + examTerm + '</span> <span style="color:blue;margin-right:10px;">' + className + '</span> Subject - <span style="color:blue">' + subject + ' (' + assName + ') ' + '</span>');
                 url_ = site_url_ + "/exam/getstudentsforclass/" + classID + "/1/" + assid;
                 data_ = $('#frmInputResult').serialize();
                 $('#tabStudentsMarks').html('<td colspan="3">Checking for availability. Please wait...</td>');
@@ -2474,7 +2474,8 @@ $(function () {
                         for (i = 0; i < obj.studentdata.length; i++) {
                             str_html = str_html + "<tr class='gradeX'>";
                             str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
-                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg printfront' href='"+url_design+ obj.studentdata[i].regid+"' target='_blank'><i class='fa fa-print'></i></a></td>";                            
+                            //str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg printfront' href='"+url_design+ obj.studentdata[i].regid+"' target='_blank'><i class='fa fa-print'></i></a></td>";                            
+                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a></td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
@@ -2495,9 +2496,10 @@ $(function () {
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
                     
-                    var printAllLink = "<font size='1'>Print MARKS</font> <a type='button' id='0' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
+                    var printAllLink = "<font size='1'>Print MARKS</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
-                    var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
+                    //var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
+                    var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a>";
                     $('#printFront').html(printFrontLink);
                     document.getElementById('divInfo').style.display = 'block';
                     $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted.");
