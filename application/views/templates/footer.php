@@ -16,7 +16,7 @@
 <!--script src="<?php echo base_url('assets_/js/jquery.toggle.buttons.js'); ?>"></script--> 
 <script src="<?php echo base_url('assets_/js/masked.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.uniform.js'); ?>"></script> 
-<script src="<?php echo base_url('assets_/js/select2.min.js');?>?version=<?php echo JS_VERSION_NAVEEN; ?>"></script> 
+<script src="<?php echo base_url('assets_/js/select2.min.js');?>?version=<?php echo JS_VERSION_NAVEEN; ?>"></script>
 <script src="<?php echo base_url('assets_/js/matrix.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/wysihtml5-0.3.0.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.peity.min.js'); ?>"></script> 

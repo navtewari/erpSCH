@@ -16,7 +16,7 @@
                     'class' => 'span11 selectMe',
                     'name' => 'cmbClassSection',
                     'id' => 'undo_redo',
-                    'style' => 'height:300px; margin-left:7px; width: 100%',
+                    'style' => 'height:300px; margin-left:7px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
@@ -43,10 +43,10 @@
                 </div>
                 <?php
                 $data = array(
-                    'class' => 'span11 selectMe  m-bot8',
+                    'class' => 'span11 selectMe m-bot8',
                     'name' => 'to[]',
                     'id' => 'undo_redo_to',
-                    'style' => 'height:300px; margin-left:9px; width: 100%',
+                    'style' => 'height:300px; margin-left:9px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
@@ -65,7 +65,7 @@
                     'name' => 'used[]',
                     'id' => 'undo_redo1',
                     'multiple' => 'multiple',
-                    'style' => 'height:300px; margin-left:7px; width: 100%',
+                    'style' => 'height:300px; margin-left:7px;',
                     'disabled' => 'disabled'
                 );
                 $options = array();

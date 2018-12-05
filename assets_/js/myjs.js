@@ -1,4 +1,5 @@
 $(function(){
+
 	$(document).ajaxStart(function(){
 	    $('#loading_process').css('opacity', '1');
 		$('#loading_process').css('display', 'inline-block');
