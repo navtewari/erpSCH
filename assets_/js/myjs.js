@@ -2795,7 +2795,7 @@ $(function(){
 		}
 	// ----------------
 	// Promote Students
-		$('#promote_student_optAdmission_').click(function(){
+		$('#promote_student_optAdmission_').click(function(){                    
 	        $("#undo_redo").empty();
 	        $('#promotionFor').val($('#promote_student_optAdmission_').val());
 	        url_ = site_url_ + '/promote/getClassForCurrentSessionAdmission';

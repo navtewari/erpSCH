@@ -1,8 +1,3 @@
-<style>
-    .selectMe{       
-        display:block !important;
-    }
-</style>
 <?php echo form_open('#', array('id' => 'frmClassInSession', 'name' => 'frmClassInSession')); ?>
 <div class="row-fluid">
     <div class="span12">
@@ -13,10 +8,11 @@
                 </div>                
                 <?php
                 $data = array(
-                    'class' => 'span11 selectMe',
+                    'class' => 'span11',
                     'name' => 'cmbClassSection',
                     'id' => 'undo_redo',
-                    'style' => 'height:300px; margin-left:7px;',
+                    'multiple' => 'multiple'
+                    'style' => 'height:300px; margin:9px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
@@ -46,7 +42,7 @@
                     'class' => 'span11 selectMe m-bot8',
                     'name' => 'to[]',
                     'id' => 'undo_redo_to',
-                    'style' => 'height:300px; margin-left:9px;',
+                    'style' => 'height:300px; margin:9px;',
                     'multiple' => 'multiple'
                 );
                 $options = array();
@@ -65,11 +61,11 @@
                     'name' => 'used[]',
                     'id' => 'undo_redo1',
                     'multiple' => 'multiple',
-                    'style' => 'height:300px; margin-left:7px;',
+                    'style' => 'height:300px; margin:9px;',
                     'disabled' => 'disabled'
                 );
                 $options = array();
-                
+
                 echo form_dropdown($data, $options, '');
                 ?>
             </div>
@@ -87,4 +83,4 @@
         </div> 
     </div>            
 </div>
-<?php echo form_close();?>
+<?php echo form_close(); ?>
