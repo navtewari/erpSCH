@@ -16,9 +16,22 @@
 <!--script src="<?php echo base_url('assets_/js/jquery.toggle.buttons.js'); ?>"></script--> 
 <script src="<?php echo base_url('assets_/js/masked.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.uniform.js'); ?>"></script> 
-<?php if($callSelect2>0){?>?>
+<?php
+$callSelect2 = 0;
+if (strpos($_SERVER['REQUEST_URI'], 'classes') == false) {
+    $callSelect2++;
+}
+if (strpos($_SERVER['REQUEST_URI'], 'promotestudent') == false) {
+    $callSelect2++;
+}
+if ($callSelect2 == 2) {
+    ?>
     <script src="<?php echo base_url('assets_/js/select2.min.js'); ?>?version=<?php echo JS_VERSION_NAVEEN; ?>"></script> 
-<?php } ?>   
+    <?php
+} else {
+    $callSelect2 = 0;
+}
+?>   
 <script src="<?php echo base_url('assets_/js/matrix.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/wysihtml5-0.3.0.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/jquery.peity.min.js'); ?>"></script> 

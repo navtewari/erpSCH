@@ -5,14 +5,14 @@
         <script>
             site_url_ = <?PHP echo '"' . site_url() . '"'; ?>;
             base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
-            _img_folder_ = <?php echo '"'. $this->session->userdata('db2') . '"';?>;
-            <?php if ($this->session->userdata('_current_year___')) { ?>
+            _img_folder_ = <?php echo '"' . $this->session->userdata('db2') . '"'; ?>;
+<?php if ($this->session->userdata('_current_year___')) { ?>
                 _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
                 _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
-            <?php } else { ?>
+<?php } else { ?>
                 _current_year___ = '1000';
                 _previous_year___ = '999';
-            <?php } ?>
+<?php } ?>
         </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,23 +27,27 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/jquery.gritter.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-style.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-media.css'); ?>" />        
-        <?php 
-            $callSelect2=0;
-            if (strpos($_SERVER['REQUEST_URI'], 'promotestudent') == false) {
-                $callSelect2++;                
-            }
-            if (strpos($_SERVER['REQUEST_URI'], 'promotestudent') == false) {
-                $callSelect2++;
-            }
-            if($callSelect2>0){?>
-                <link rel="stylesheet" href="<?php echo base_url('assets_/css/select2.css'); ?>?version=<?php echo JS_VERSION_NAVEEN;?>" />                      
-            <?php }
+        <?php
+        $callSelect2 = 0;
+        if (strpos($_SERVER['REQUEST_URI'], 'classes') == false) {
+            $callSelect2++;
+        }
+        if (strpos($_SERVER['REQUEST_URI'], 'promotestudent') == false) {
+            $callSelect2++;
+        }        
+        if ($callSelect2 == 2){            
+            ?>
+            <link rel="stylesheet" href="<?php echo base_url('assets_/css/select2.css'); ?>?version=<?php echo JS_VERSION_NAVEEN; ?>" />                      
+        <?php         
+        }else{
+                $callSelect2 = 0;
+        }
         ?>                                        
-        
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/datepicker.css');?>" />
+
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/datepicker.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/uniform.css'); ?>" />
         <link  rel="stylesheet" href="<?PHP echo base_url() . 'assets_/multiSelect/css/style.css'; ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>?version=<?php echo JS_VERSION_NITIN;?>" />
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/mycss.css'); ?>?version=<?php echo JS_VERSION_NITIN; ?>" />
         <style>
             .page-loader {
                 position: fixed;
@@ -52,7 +56,7 @@
                 width: 100%;
                 height: 100%;
                 z-index: 9999;
-                background: url(<?php echo base_url('assets_/img/page-loader.gif');?>) 50% 50% no-repeat rgb(249,249,249);
+                background: url(<?php echo base_url('assets_/img/page-loader.gif'); ?>) 50% 50% no-repeat rgb(249,249,249);
                 opacity: .8;
             }
         </style>
@@ -70,34 +74,34 @@
         <!--top-Header-menu-->
         <div id="user-nav" class="navbar navbar-inverse">
             <ul class="nav">
-                <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome <?php echo $this->session->userdata('_name_');?></span><b class="caret"></b></a>
+                <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome <?php echo $this->session->userdata('_name_'); ?></span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo site_url('c_pwd');?>"><i class="icon-check"></i> Change Password</a></li>
+                        <li><a href="<?php echo site_url('c_pwd'); ?>"><i class="icon-check"></i> Change Password</a></li>
                         <li class="divider"></li>
-                        <?php if($this->session->userdata('_status_') == 'adm'){ ?>
+                        <?php if ($this->session->userdata('_status_') == 'adm') { ?>
                             <li class=""><a title="" href="<?php echo site_url('web/dashboard/2/9/general'); ?>"><i class="icon icon-edit"></i> <span class="text">Change School Profile</span></a></li>                                           
                             <li class="divider"></li>
-                        <?php } ?>
+<?php } ?>
                         <li><a href="<?php echo site_url('exporting/backup'); ?>"><i class="icon-envelope-alt"></i> Take Backup</a></li>                                               
                     </ul>
                 </li>                                                              
                 <li class=""><a title="" style="color: #00ffff" href="<?php echo site_url('login/logout'); ?>"><i class="icon icon-key"></i> <span class="text">&nbsp;Log-out?</span></a></li>
                 <li class=""><a title="" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text"> &nbsp;Session <?php echo $this->session->userdata('_current_year___'); ?></span></a></li>
             </ul>
-            <?php if($this->session->userdata('bckup')){?>
-                <div style="margin-left: auto; margin-right: auto;border: #A0A0A0 dotted 1px; display: inline-block; position: absolute; top: 45px; background: #F7E563; color:#625600; padding: 0px 5px; border-radius: 5px; width: 80%"><?php echo $this->session->userdata('bckup');?><a href="#" onclick="$(this).parent().remove();" style="float: right"><span class="label label-important">X</span></a>
+            <?php if ($this->session->userdata('bckup')) { ?>
+                <div style="margin-left: auto; margin-right: auto;border: #A0A0A0 dotted 1px; display: inline-block; position: absolute; top: 45px; background: #F7E563; color:#625600; padding: 0px 5px; border-radius: 5px; width: 80%"><?php echo $this->session->userdata('bckup'); ?><a href="#" onclick="$(this).parent().remove();" style="float: right"><span class="label label-important">X</span></a>
                 </div>
-            <?php $this->session->unset_userdata('bckup'); } ?>
+    <?php $this->session->unset_userdata('bckup');
+} ?>
         </ul>
-        </div>
-        <!--close-top-Header-menu-->
+    </div>
+    <!--close-top-Header-menu-->
 
-        <!--start-top-serch-->
-        <div id="search">
-            <form name="frmStudentInfoSearch" id="frmStudentInfoSearch" method="post" action="<?php echo site_url('reports/getStudentInfo');?>">
-                <input type="text" placeholder="Search here..." name="txtSearchID" id="txtSearchID" required="required" />
-                <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
-            </form>
-        </div>
-        <!--close-top-serch-->
-        
+    <!--start-top-serch-->
+    <div id="search">
+        <form name="frmStudentInfoSearch" id="frmStudentInfoSearch" method="post" action="<?php echo site_url('reports/getStudentInfo'); ?>">
+            <input type="text" placeholder="Search here..." name="txtSearchID" id="txtSearchID" required="required" />
+            <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
+        </form>
+    </div>
+    <!--close-top-serch-->
