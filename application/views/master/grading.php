@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="span4">
+    <div class="span5">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>Grades</h5>
@@ -21,7 +21,8 @@
                             $data = array(
                                 'name' => 'cmbClassofGrading',
                                 'id' => 'cmbClassofGrading',
-                                'required' => 'required'
+                                'style' => 'width:95%;',
+                                'required' => 'required',
                             );
                             $options = array();
                             ?>
