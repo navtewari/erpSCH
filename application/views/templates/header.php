@@ -6,13 +6,13 @@
             site_url_ = <?PHP echo '"' . site_url() . '"'; ?>;
             base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
             _img_folder_ = <?php echo '"' . $this->session->userdata('db2') . '"'; ?>;
-<?php if ($this->session->userdata('_current_year___')) { ?>
-                _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
-                _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
-<?php } else { ?>
-                _current_year___ = '1000';
-                _previous_year___ = '999';
-<?php } ?>
+            <?php if ($this->session->userdata('_current_year___')) { ?>
+                            _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
+                            _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
+            <?php } else { ?>
+                            _current_year___ = '1000';
+                            _previous_year___ = '999';
+            <?php } ?>
         </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

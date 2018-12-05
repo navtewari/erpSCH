@@ -11,7 +11,7 @@
                     'class' => 'span11',
                     'name' => 'cmbClassSection',
                     'id' => 'undo_redo',
-                    'multiple' => 'multiple'
+                    'multiple' => 'multiple',
                     'style' => 'height:300px; margin:9px;',
                     'multiple' => 'multiple'
                 );
