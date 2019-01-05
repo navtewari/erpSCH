@@ -776,6 +776,8 @@ class My_Master_model extends CI_Model {
         $this->db->join('master_10_stud_contact d', 'a.regid=d.regid');
         $this->db->where('b.clssessid', $clssessid);
         $this->db->where('c.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        
         $query = $this->db->get();
 
         return $query->result();

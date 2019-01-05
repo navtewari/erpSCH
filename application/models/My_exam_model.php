@@ -676,6 +676,7 @@ class My_exam_model extends CI_Model {
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
         $this->db->where('b.clssessid', $classID);
         $this->db->where('c.SESSID', $year__);
+        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
         $query = $this->db->get();
 
         return $query->result();
@@ -697,6 +698,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_6_scholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
 
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
@@ -713,6 +715,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_7_coscholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
 
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
@@ -728,6 +731,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_12_discipline_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
 
             $this->db->where('d.termID', $termID);
             $this->db->where('d.CLSSESSID', $classid);
@@ -763,6 +767,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_9_result_remarks d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
 
             $this->db->where('d.CLSSESSID', $classID);
             $this->db->where('d.SESSID', $year__);
@@ -775,6 +780,7 @@ class My_exam_model extends CI_Model {
             $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
         }
 
@@ -977,7 +983,7 @@ class My_exam_model extends CI_Model {
     function mfetchStuPerData($regID) {
         $this->db->where('regid', $regID);
         $query = $this->db->get('master_7_stud_personal');
-
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
         return $query->result();
     }
 
@@ -1128,6 +1134,7 @@ class My_exam_model extends CI_Model {
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
         $this->db->where('b.clssessid', $classSessID);
         $this->db->where('c.SESSID', $year__);
+        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
         $query = $this->db->get();
 
         return $query->result();
@@ -1144,6 +1151,7 @@ class My_exam_model extends CI_Model {
         $this->db->where('b.clssessid', $classSessID);
         $this->db->where('c.SESSID', $year__);
         $this->db->order_by('a.regid', 'asc');
+        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
         $this->db->limit($limit, $start);
         
         $query = $this->db->get();

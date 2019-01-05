@@ -1,7 +1,8 @@
 <!--Footer-part-->
 
 <div class="row-fluid">
-    <div id="footer" class="span12"> <span style="color:#ffffff"><?php echo $this->session->userdata('sch_name'); ?>, <?php echo $this->session->userdata('sch_city'); ?><br> <?php echo $this->session->userdata('remark'); ?>.</span><br>
+    <div id="footer" class="span12"> <img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="80" style=" display: block;margin-left: auto;margin-right: auto;"/>
+        <span style="color:#ffffff"><?php echo $this->session->userdata('sch_name'); ?>, <?php echo $this->session->userdata('sch_city'); ?><br> <?php echo $this->session->userdata('remark'); ?>.</span><br>
         2017 &copy; Design &amp; Developed by <a href="http://teamfreelancers.com" target="_blank">Teamfreelancers.com</a></div>
 </div>
 
