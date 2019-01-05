@@ -1,6 +1,7 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"> Menu </a>              
-    <ul>               
+    <ul>         
+        <li><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="80" style=" display: block;margin-left: auto;margin-right: auto;"/></li>
         <?php foreach ($menu as $menu_item) {?>
             <?php 
                 $cls = '';
