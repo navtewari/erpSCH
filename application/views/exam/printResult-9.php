@@ -830,7 +830,7 @@
                                                                 <?php foreach ($exam_term as $exterm) { ?>
                                                                     <?php $printTD1 = false; ?>
                                                                     <?php foreach ($discipline_marks as $disciplineMarks) { ?>
-                                                                        <?php if ($stuData->regid == $coSchMarks->regid) { ?>
+                                                                        <?php if ($stuData->regid == $disciplineMarks->regid) { ?>
                                                                             <?php if ($disciplineMarks->termID == $exterm->termID) { ?>
                                                                                 <?php if ($disciplineMarks->disciplineID == $discipline->disciplineID) { ?>
                                                                                     <td align="center">

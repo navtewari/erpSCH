@@ -2496,10 +2496,10 @@ $(function () {
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
                     
-                    var printAllLink = "<font size='1'>Print MARKS</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
+                    var printAllLink = "<font size='1'>Print MARKSHEET BACK</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
                     //var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
-                    var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a>";
+                    var printFrontLink = "<font size='1'>Print MARKSHEET FRONT</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a>";
                     $('#printFront').html(printFrontLink);
                     document.getElementById('divInfo').style.display = 'block';
                     $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted.");

@@ -102,7 +102,7 @@
                 <?php echo form_open('exam/fetchResult', $attrib_); ?>
 
                 <table border='0' width="100%" cellpadding="10">
-                    <tr>
+                    <!--tr>
                         <td colspan="3" width="33%" style="background: #ffffcc" align="center">                                                            
                             <table border='0' width="100%" cellpadding="10">
                                 <tr>
@@ -117,8 +117,8 @@
                                 </tr>                                
                             </table>                                                        
                         </td>
-                    </tr>
-                    <tr style='height:20px;'><td colspan='3'></td></tr>
+                    </tr-->
+                    <tr style='height:20px;'><td colspan='3'><input type='hidden' value='2' name='sideLayout'/></td></tr>
                     <tr>
                         <td align='center' width="33%" style="background: #eff2f2">                                                        
                             <h4>CLASS<br><span style="color: #006dcc"> I - VIII</span></h4>
