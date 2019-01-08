@@ -492,7 +492,6 @@ class My_exam_model extends CI_Model {
     function mget_examterm_in_session() {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $query = $this->db->get('exam_5_term');
-
         return $query->result();
     }
 
@@ -983,7 +982,7 @@ class My_exam_model extends CI_Model {
     function mfetchStuPerData($regID) {
         $this->db->where('regid', $regID);
         $query = $this->db->get('master_7_stud_personal');
-        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        //$this->db->order_by('cast(regid AS SIGNED INT)', 'ASC');
         return $query->result();
     }
 
