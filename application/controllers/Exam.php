@@ -379,7 +379,7 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function frontPrint($classSessID = 0, $regID = 0, $classID = 0, $pagi = 0, $print_ = 0) {
+    function frontPrint($classSessID = 0, $regID = 0, $reportlayout=0, $classID = 0, $pagi = 0, $print_ = 0) {
         $this->check_login();
         if ($pagi == 0) {            
             $classSessID = $this->input->post('classSessHiddenID');
@@ -388,16 +388,16 @@ class Exam extends CI_Controller {
             $classID = $this->mem->mcheckClassID($classSessID);
         }
         $data['classID'] = $classID;
-        $data['classSessID'] = $classSessID;
+        $data['classSessID'] = $classSessID;        
         $data['session'] = array($this->session->userdata('_current_year___'));
         if ($regID == 0) {
             //$data['student_per_data'] = $this->mem->mfetchStuDatainClass($classSessID);
             $pagi = 1;
             $config = array();
-            $config["base_url"] = base_url() . "index.php/exam/frontPrint" . "/" . $classSessID . "/" . $regID . "/" . $classID . "/" . $pagi . "/".$print_ ;
+            $config["base_url"] = base_url() . "index.php/exam/frontPrint" . "/" . $classSessID . "/" . $regID . "/". $reportlayout . "/" . $classID . "/" . $pagi . "/".$print_ ;
             $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
             $config["per_page"] = 10;
-            $config["uri_segment"] = 8;
+            $config["uri_segment"] = 9;
             $choice = $config["total_rows"] / $config["per_page"];
 
             $config["num_links"] = round($choice);
@@ -422,7 +422,7 @@ class Exam extends CI_Controller {
 
 
             $this->pagination->initialize($config);
-            $page = ($this->uri->segment(8)) ? $this->uri->segment(8) : 0;
+            $page = ($this->uri->segment(9)) ? $this->uri->segment(9) : 0;
             $data['startLimit'] = $page;
             $data['per_page'] = $config["per_page"];
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
@@ -432,6 +432,7 @@ class Exam extends CI_Controller {
             $data['per_page']=1;
             $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
         }
+        
         $data['exam_term'] = $this->mem->mget_examterm_in_session();
         $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
         $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
@@ -451,7 +452,7 @@ class Exam extends CI_Controller {
         $data['website'] = $this->session->userdata('website');
 
         $data['reg_id'] = $regID;
-        if ($print_ == 0) {
+        if ($print_ == 0) {            
             if($reportlayout==1){
                 $this->load->view('exam/printResult-front', $data);
             }else if($reportlayout==2){
