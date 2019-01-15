@@ -27,9 +27,6 @@ $(function(){
 	$( window ).on( "load", function(){
 		
 		$(".page-loader").fadeOut("slow");
-		if($('#frmStudentToDrop').length != 0){
-			fillStudents_to_drop();
-		}
 		if($('#frmAdmission').length != 0){
 			$('input[type=radio]').css('opacity', '1');
 			fillStudents();
@@ -68,6 +65,18 @@ $(function(){
 		}
 		if($('#frmAddAttendance').length != 0){
 			fillClasses_for_attendance();
+		}
+
+		if($('#frmStudentToDrop').length != 0){
+			fillStudents_to_drop();
+		}
+
+		if($('#frmDayBook').length != 0){
+			fillSubheads();
+		}
+
+		if($('#frmTCCC').length != 0){
+			fillStudents_cc_tc();
 		}
 	});
 	// Common Function to reload the current Page via http
@@ -143,6 +152,27 @@ $(function(){
 					}
 					$('#s2id_cmbRegistrationID span').text("New | New Student");
 					$('#cmbRegistrationID').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+		function fillStudents_cc_tc(){
+			$('#s2id_cmbRegistrationID_for_tccc span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getstudents_for_dropdown";
+			$('#cmbRegistrationID_for_tccc').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value='x'>Select Student</option>";
+					for(i=0;i<obj.students_.length; i++){
+						str_html = str_html + "<option value='"+obj.students_[i].regid+"'>"+obj.students_[i].regid+" | "+obj.students_[i].FNAME+"</option>";
+					}
+					$('#s2id_cmbRegistrationID_for_tccc span').text("Select Sstudent");
+					$('#cmbRegistrationID_for_tccc').html(str_html);
 				}, error: function(xhr, status, error){
 					callDanger(xhr.responseText);
 				}
@@ -3982,5 +4012,144 @@ $(function(){
 			}
 		});
 	// ---------------
+
+	// Day Book
+		function fillCategory(){
+			var url_ = site_url_ + "/daybook/getCategory";
+			$('#daybook_category').html("<tr><td></td><td>Loading...</td></tr>");
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.dbcategory.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="optDBCategory" class="daybook_master_category" id="opt~'+obj.dbcategory[i].DBCATEGID+'" value="'+obj.dbcategory[i].DBCATEGID+'" />';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.dbcategory[i].DBCATEGORY;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#daybook_category').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
+
+		function fillSubheads(){
+			var url_ = site_url_ + "/daybook/getSubHeadsAll/";
+			$('#daybook_subhead').html("<tr><td></td><td>Loading...</td></tr>");
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					$('#daybook_subhead').html(data);
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.dbSHead.length;i++){
+						str_html = str_html + "<option value='"+obj.dbSHead[i].DBSUBHID+"'>"+obj.dbSHead[i].SUBHEAD+"</option>";
+					}
+					$('#txtDaybook_subhead').html(str_html);
+				},
+				error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}	
+			});
+		}
+
+		$('body').on('click','.daybook_master_category', function(){
+			var str = this.id;
+			var id = str.split('~');
+			var url_ = site_url_ + "/daybook/getHeads/"+id[1];
+			$('#daybook_head').html("<tr><td></td><td>Loading...</td></tr>");
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.dbHead.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="optHead" class="daybook_master_head" id="opt~'+obj.dbHead[i].DBHID+'" value="'+obj.dbHead[i].DBHID+'" />';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.dbHead[i].HEAD;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#daybook_head').html(str_html);
+				},
+				error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		});
+
+		$('body').on('click','.daybook_master_head', function(){
+			var str = this.id;
+			var id = str.split('~');
+			var url_ = site_url_ + "/daybook/getSubHeads/"+id[1];
+			$('#daybook_subhead').html("<tr><td></td><td>Loading...</td></tr>");
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					for(i=0; i<obj.dbSHead.length;i++){
+						str_html = str_html + '<tr>';
+						str_html = str_html + '<td>';
+						str_html = str_html + '<input type="radio" name="optSubHead" class="daybook_master_subhead" id="opt~'+obj.dbSHead[i].DBSUBHID+'" value="'+obj.dbSHead[i].DBSUBHID+'" />';
+						str_html = str_html + '</td>';
+						str_html = str_html + '<td>';
+						str_html = str_html + obj.dbSHead[i].SUBHEAD;
+						str_html = str_html + '</td>';
+						str_html = str_html + '</tr>';
+					}
+					$('#daybook_subhead').html(str_html);
+				},
+				error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}	
+			});
+		});
+	// --------
+
+	// TC or CC
+		$('#cmbRegistrationID_for_tccc').change(function(){
+			if($('#cmbRegistrationID_for_tccc').val() != 'x'){
+				$('#cmdTC').removeAttr('disabled');
+				$('#cmdTC').removeClass('btn-default');
+				$('#cmdTC').addClass('btn-primary');
+				$('#cmdTC').val('Show TC');
+
+				$('#cmdCC').removeAttr('disabled');
+				$('#cmdCC').removeClass('btn-default');
+				$('#cmdCC').addClass('btn-success');
+				$('#cmdCC').val('Show CC');
+			}else{
+				$('#cmdTC').attr('disabled','disabled');
+				$('#cmdTC').removeClass('btn-primary');
+				$('#cmdTC').addClass('btn-default');
+				$('#cmdTC').val('-');
+
+				$('#cmdCC').attr('disabled','disabled');
+				$('#cmdCC').removeClass('btn-success');
+				$('#cmdCC').addClass('btn-default');
+				$('#cmdCC').val('-');
+			}
+		});
+		$('#cmdTC').click(function(){
+			$('#frmTCCC').submit();
+		});
+		$('#cmdCC').click(function(){
+			$('#cmdTC').click();
+		});
+	// --------
 
 });

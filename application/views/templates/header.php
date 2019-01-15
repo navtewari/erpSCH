@@ -7,11 +7,11 @@
             base_url_ = <?PHP echo '"' . base_url() . '"'; ?>;
             _img_folder_ = <?php echo '"' . $this->session->userdata('db2') . '"'; ?>;
             <?php if ($this->session->userdata('_current_year___')) { ?>
-                            _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
-                            _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
+                _current_year___ = <?php echo '"' . $this->session->userdata('_current_year___') . '"'; ?>;
+                _previous_year___ = <?php echo '"' . $this->session->userdata('_previous_year___') . '"'; ?>;
             <?php } else { ?>
-                            _current_year___ = '1000';
-                            _previous_year___ = '999';
+                _current_year___ = '1000';
+                _previous_year___ = '999';
             <?php } ?>
         </script>
         <meta charset="UTF-8" />
@@ -88,6 +88,7 @@
                 </li>                                                              
                 <li class=""><a title="" style="color: #00ffff" href="<?php echo site_url('login/logout'); ?>"><i class="icon icon-key"></i> <span class="text">&nbsp;Log-out?</span></a></li>
                 <li class=""><a title="" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text"> &nbsp;Session <?php echo $this->session->userdata('_current_year___'); ?></span></a></li>
+                <li class=""><a title="Transfer Certificate/ Character Certificate" href="<?php echo site_url('web/dashboard/1/29/tccc');?>" style="color: #ffff00"><i class="icon icon-calendar"></i> <span class="text">TC/ CC</span></a></li></a>
             </ul>
             <?php if ($this->session->userdata('bckup')) { ?>
                 <div style="margin-left: auto; margin-right: auto;border: #A0A0A0 dotted 1px; display: inline-block; position: absolute; top: 45px; background: #F7E563; color:#625600; padding: 0px 5px; border-radius: 5px; width: 80%"><?php echo $this->session->userdata('bckup'); ?><a href="#" onclick="$(this).parent().remove();" style="float: right"><span class="label label-important">X</span></a>

@@ -198,8 +198,16 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Discipline';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break; 
+            case 28: 
+                $data['page_'] = 'daybook';
+                $data['title_'] = 'Daybook';
+                break; 
+            case 29: 
+                $data['page_'] = 'tcc';
+                $data['title_'] = 'Transfer Certificate/ Character Certificate';
+                break; 
             default:
-                $data['page_'] = 'erorrs';
+                $data['page_'] = 'errors';
         }
         return $data;
     }

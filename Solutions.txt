@@ -19,3 +19,61 @@ In the below query we need to provide the total student of the specific class an
 1. SELECT ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE CLSSESSID = 26 and STATUS = 1 GROUP BY DATE_
 2. SELECT CLSSESSID, ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE  STATUS = 1 GROUP BY CLSSESSID, DATE_
 3. 
+
+
+Fetching All FEE head 
+
+SELECT 
+	DISTINCT(
+		SUBSTRING_INDEX(
+			SUBSTRING_INDEX(`STATIC_HEADS_N_TIMES`, ",", 1)
+		, "@", 1)
+		) 
+	FROM `fee_6_invoice_detail` WHERE 1
+
+
+
+SELECT DISTINCT(SUBSTRING_INDEX(SUBSTRING_INDEX(`STATIC_HEADS_N_TIMES`, ",",  ), "@", 1)) fee FROM `fee_6_invoice_detail` WHERE 1
+
+
+
+select * 
+from dashboards
+join numbers
+  on char_length(email_recipients) 
+    - char_length(replace(email_recipients, ',', '')) 
+    >= n - 1
+
+
+select id, 
+  substring_index(
+    substring_index(email_recipients, ',', n), 
+    ',', 
+    -1
+  ) as email from `fee_6_invoice_detail` where char_length(`STATIC_HEADS_N_TIMES`)-char_length(replace(`STATIC_HEADS_N_TIMES`, ",",""))>=n-1
+
+SELECT STATIC_HEADS_N_TIMES, LENGTH(STATIC_HEADS_N_TIMES) - LENGTH(REPLACE(STATIC_HEADS_N_TIMES, ',', '')) as count_ FROM `fee_6_invoice_detail` WHERE 1
+
+
+DELIMITER $$
+CREATE FUNCTION wordcount(str TEXT)
+       RETURNS INT
+       DETERMINISTIC
+       SQL SECURITY INVOKER
+       NO SQL
+  BEGIN
+    DECLARE wordCnt, idx, maxIdx INT DEFAULT 0;
+    DECLARE currChar, prevChar BOOL DEFAULT 0;
+    SET maxIdx=char_length(str);
+    WHILE idx < maxIdx DO
+        SET currChar=SUBSTRING(str, idx, 1) RLIKE '[[:alnum:]]';
+        IF NOT prevChar AND currChar THEN
+            SET wordCnt=wordCnt+1;
+        END IF;
+        SET prevChar=currChar;
+        SET idx=idx+1;
+    END WHILE;
+    RETURN wordCnt;
+  END
+$$
+DELIMITER
