@@ -6,9 +6,10 @@
             <link rel="stylesheet" href="<?php echo base_url('assets_/css/bootstrap.min.css'); ?>" />                        
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
             <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-            <style type="text/css" media="print">
-                body{ margin-top: 0px }
-                .hide_button{ display: none }
+            <style type="text/css" media="print">               
+                body{ margin-left:1.5em;margin-right:1.5; height:100vh;}
+                .printWindow{margin-top: 1.5em;}
+                .hide_button{ display: none; }
                 .hide_pagination{
                     display:none;
                 }
@@ -41,7 +42,7 @@
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                         </div>
                     </div>                
-                    <div class="row">
+                    <div class="row printWindow">
                         <div class="col-sm-12">
                             <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">                            
                                 <tr align="center" style="border-top:#000000 solid 1px;">
@@ -205,39 +206,179 @@
                                                     <?php } ?>
                                                 </tr>
                                             <?php } ?>
+                                                
+                                            <tr height='40'>
+                                                <td width="16%" align="center">Grand Total</td>
+                                                <?php
+                                                $schCount = 0;
+                                                foreach ($sch_data_class as $scho_items) {
+                                                    $schCount++;
+                                                }
+                                                ?>
+
+                                                <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                    <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                        <?php $yes=0;$totalNumber_subject=0;
+                                                            $totalMarks = 0;
+                                                            foreach ($sch_data_class as $scho_items) {
+                                                                $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                            }
+                                                            foreach ($overall_result as $over_result) {
+                                                                if ($term == 1) {
+                                                                    $subjectTotal = explode(",", $over_result->term1Result);
+                                                                } else {
+                                                                    $subjectTotal = explode(",", $over_result->term2Result);
+                                                                }
+                                                                for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                        if($subjectTotal[$loop] !=0){                                                                            
+                                                                            $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                        }else{                                                                            
+                                                                            $yes=1;
+                                                                        }                                                                        
+                                                                }
+                                                                if($yes==0){
+                                                                    echo $totalNumber_subject . ' / ' . $totalMarks*($loop-1);
+                                                                }
+                                                            }
+                                                            if ($term == 1) {
+                                                                $term++;
+                                                            } else if ($term == 2) {
+                                                                $term--;
+                                                            }
+                                                            ?>
+                                                    </td>
+                                                <?php } ?>
+                                            </tr>
+                                            
+                                            <tr height='40'>
+                                                <td width="16%" align="center">Percentage</td>
+                                                <?php
+                                                $schCount = 0;
+                                                foreach ($sch_data_class as $scho_items) {
+                                                    $schCount++;
+                                                }
+                                                ?>
+
+                                                <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                    <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                        <?php $yes=0;$totalNumber_subject=0;
+                                                            $totalMarks = 0;
+                                                            foreach ($sch_data_class as $scho_items) {
+                                                                $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                            }
+                                                            foreach ($overall_result as $over_result) {
+                                                                if ($term == 1) {
+                                                                    $subjectTotal = explode(",", $over_result->term1Result);
+                                                                } else {
+                                                                    $subjectTotal = explode(",", $over_result->term2Result);
+                                                                }
+                                                                for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                        if($subjectTotal[$loop] !=0){                                                                            
+                                                                            $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                        }else{                                                                            
+                                                                            $yes=1;
+                                                                        }                                                                        
+                                                                }
+                                                                if($yes==0){
+                                                                    echo ($totalNumber_subject/($totalMarks*($loop-1)))*100 . '%';
+                                                                }
+                                                            }
+                                                            if ($term == 1) {
+                                                                $term++;
+                                                            } else if ($term == 2) {
+                                                                $term--;
+                                                            }
+                                                            ?>
+                                                    </td>
+                                                <?php } ?>
+                                            </tr>
+                                            
+                                            <tr height='40'>
+                                                <td width="16%" align="center">Overall Grade</td>
+                                                <?php
+                                                $schCount = 0;
+                                                foreach ($sch_data_class as $scho_items) {
+                                                    $schCount++;
+                                                }
+                                                ?>
+
+                                                <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                    <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                        <?php $yes=0;$totalNumber_subject=0;
+                                                            $totalMarks = 0;
+                                                            foreach ($sch_data_class as $scho_items) {
+                                                                $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                            }
+                                                            foreach ($overall_result as $over_result) {
+                                                                if ($term == 1) {
+                                                                    $subjectTotal = explode(",", $over_result->term1Result);
+                                                                } else {
+                                                                    $subjectTotal = explode(",", $over_result->term2Result);
+                                                                }
+                                                                for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                        if($subjectTotal[$loop] !=0){                                                                            
+                                                                            $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                        }else{                                                                            
+                                                                            $yes=1;
+                                                                        }                                                                        
+                                                                }
+                                                                if($yes==0){
+                                                                    $percentage=($totalNumber_subject/($totalMarks*($loop-1)))*100;                                                                    
+                                                                    foreach ($class_grade as $cgrade) {
+                                                                        if ($percentage >= $cgrade->minMarks && $percentage <= $cgrade->maxMarks) {
+                                                                            echo $cgrade->grade;
+                                                                        } else {
+                                                                            echo '';
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            if ($term == 1) {
+                                                                $term++;
+                                                            } else if ($term == 2) {
+                                                                $term--;
+                                                            }
+                                                            ?>
+                                                    </td>
+                                                <?php } ?>
+                                            </tr>
+                                            
+                                            <tr height='40'>
+                                                <td width="16%" align="center">Attendance</td>
+                                                <?php
+                                                $schCount = 0;
+                                                foreach ($sch_data_class as $scho_items) {
+                                                    $schCount++;
+                                                }
+                                                ?>
+
+                                                <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                    <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                        
+                                                    </td>
+                                                <?php } ?>
+                                            </tr>
+                                            
+                                            <tr height='40'>
+                                                <td width="16%" align="center">Overall Result</td>
+                                                <?php
+                                                $schCount = 0;
+                                                foreach ($sch_data_class as $scho_items) {
+                                                    $schCount++;
+                                                }
+                                                ?>
+
+                                                <?php foreach ($exam_term as $exterm) { 
+                                                    $schCount = $schCount*2;
+                                                 } $schCount = $schCount/2;?>
+                                                
+                                                <td width="43%" align="center" colspan="<?php echo ($schCount+4); ?>">
+                                                        
+                                                </td>
+                                            </tr>
                                         </table>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <table border="1" cellpadding="5" width="100%" style="font-weight: bold;">
-                                            <tr height='40'>
-                                                <td width="20%">Grand Total</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr height='40'>
-                                                <td>Percentage</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr height='40'>
-                                                <td>Overall Grade</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr height='40'>
-                                                <td>Attendance</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr height='40'>
-                                                <td>Overall Result</td>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                        </table>                                        
-                                    </td>
-                                </tr>
+                                </tr>                                                                
                                 <!-- Co-Scholastic Area -->
                                 <tr>
                                     <td colspan="2">
@@ -275,7 +416,7 @@
                                                 </tr>
                                             <?php } ?>
                                             <!-- Discipline Area -->
-                                            <tr height='40'><td colspan="4" style="height:20px;"></td></tr>
+                                            <tr height='20'><td colspan="4" style="height:20px;"></td></tr>
                                             <tr height='40'>
                                                 <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
                                                     <td width="43%" align="center" colspan="2">Discipline: <?php echo $exterm->termName; ?> <font style="font-size: 11px;">(on a 3-point (A-C) grading scale)</font></td>                                                
@@ -349,37 +490,7 @@
                                     </td> 
                                 </tr>
                             </table>
-                            <!--table border="0" width="95%" height="auto" cellpadding="10" align="center" style="border: #000000 solid 1px;">
-                                <tr>
-                                    <td colspan="2" align="center"><h4 align="center">Instructions</h4>Grading Scale for Scholastic Areas: Grades are awarded on a 8-point grading scale as follows</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" align="center">                                    
-                                        <table width="40%" border="1" cellpadding="2">
-                                            <tr>
-                                                <td align="center">Marks Range</td>
-                                                <td align="center">Grade</td>
-                                            </tr>
-                                            <?php foreach ($class_grade as $cgrade) { ?>
-                                                <tr>                                
-                                                    <td align="center">
-                                                        <?php echo $cgrade->minMarks; ?> - <?php echo $cgrade->maxMarks; ?>
-                                                    </td>
-                                                    <td align="center">
-                                                        <?php echo $cgrade->grade; ?>
-
-                                                        <?php
-                                                        if ($cgrade->description != '') {
-                                                            echo '(' . $cgrade->description . ')';
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>                                        
-                                        </table>                                    
-                                    </td>
-                                </tr>                            
-                            </table-->
+                            
                         </div>
                     </div>
                 </div>
@@ -398,62 +509,59 @@
                         </div>
                     </div>
                     <?php foreach ($student_per_data as $stuData) { ?>
-                        <div class="row" style="margin-top:70px;page-break-after: always;">
+                        <div class="row printWindow" style="page-break-after:always;">
                             <div class="col-sm-12">
                                 <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
-                                    <tr align="center">
-                                        <td>
-                                            <h4><b>Academic Year - (<?php echo $this->session->userdata('_current_year___'); ?>)</b></h4>
-                                        </td>
-                                        <td>
-                                            <h4><b>Progress Report of Class <?php echo $classID; ?></b></h4>
-                                        </td>
-                                    </tr>                                
+                                    <tr align="center" style="border-top:#000000 solid 1px;">
+                                    <td colspan="2">
+                                        <h3><b>ANNUAL PROGRESS REPORT</b></h3>
+                                    </td>                                 
+                                </tr>                                
                                     <!-- Student Information -->
                                     <tr style="border-top:#000000 solid 1px;">
                                         <td colspan="2">
                                             <table border="0" style="line-height:25px;" width="100%">
                                                 <tr>
-                                                    <td width='33%' valign="top">
-                                                        <?php
+                                                <td width='40%' valign="top">
+                                                    <?php                                                   
+                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        ?>
+                                                        REGISTRATION ID: <?php echo $stuData->regid;?>                                                                                                                                                                    
+                                                </td>        
+                                                <td width='50%' valign="top">
+                                                    <?php                                                    
+                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
+                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
+                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
+                                                        ?>                                    
+                                                    STUDENT'S NAME: <b><?php echo $name_ ?></b>
+                                                                                                          
+                                                </td>        
+                                                <td valign="top">
+                                                    <?php                                                   
                                                         $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
                                                         //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
-                                                        Student's Name: <b><?php echo $name_ ?></b>      <br/>                                              
-                                                        Date Of Birth: <b><?php echo $stuData->DOB_; ?></b>
-
-                                                    </td>        
-                                                    <td width='33%' valign="top">
-                                                        <?php
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-
-                                                        Mother's Name: <b><?php echo $stuData->MOTHER; ?></b><br/>                                                   
-                                                        Class: <b><?php echo $classID; ?></b>                                                
-                                                    </td>        
-                                                    <td valign="top">
-                                                        <?php
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                       // $name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-
-                                                        Father's Name: <b><?php echo $stuData->FATHER; ?></b>                                                                                                    
-                                                    </td>        
-                                                </tr>
+                                                        CLASS: <b><?php echo $classID; ?></b>                                                    
+                                                </td>        
+                                            </tr>
                                             </table>
                                         </td>
+                                    </tr>
+                                    
+                                    <tr style="border:1px #000000 solid;">
+                                        <td colspan="2" align="center">SCHOLASTIC AREAS</td>
                                     </tr>
                                     <!-- Scholastic Area -->
                                     <tr>
                                         <td colspan="2">
                                             <table border="1" cellpadding="5" width="100%">
-                                                <tr>
-                                                    <td width="16%">Scholastic Areas</td>
+                                                <tr height='50'>
+                                                    <td width="16%" rowspan="2" align="center">SUBJECT</td>
                                                     <?php
                                                     $schCount = 0;
                                                     foreach ($sch_data_class as $scho_items) {
@@ -466,8 +574,7 @@
                                                     <?php } ?>
                                                 </tr>
 
-                                                <tr>
-                                                    <td>Subject Name</td>
+                                                <tr>                                                
                                                     <?php foreach ($exam_term as $exterm) { ?> <!-- for each exam term -->
                                                         <?php
                                                         $totalMarks = 0;
@@ -487,7 +594,7 @@
                                                 </tr>
 
                                                 <?php foreach ($subject_class as $subjectClass) { ?>
-                                                    <tr>
+                                                    <tr height='40'>
                                                         <td><?php
                                                             echo $subjectClass->subName;
                                                             $term = 1;
@@ -564,6 +671,182 @@
                                                         <?php } ?>
                                                     </tr>
                                                 <?php } ?>
+                                                    
+                                                <tr height='40'>
+                                                    <td width="16%" align="center">Grand Total</td>
+                                                    <?php
+                                                    $schCount = 0;
+                                                    foreach ($sch_data_class as $scho_items) {
+                                                        $schCount++;
+                                                    }
+                                                    ?>
+
+                                                    <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                        <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                            <?php $yes=0;$totalNumber_subject=0;
+                                                                $totalMarks = 0;
+                                                                foreach ($sch_data_class as $scho_items) {
+                                                                    $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                                }
+                                                                foreach ($overall_result as $over_result) {
+                                                                    if ($stuData->regid == $over_result->regid) {
+                                                                        if ($term == 1) {
+                                                                            $subjectTotal = explode(",", $over_result->term1Result);
+                                                                        } else {
+                                                                            $subjectTotal = explode(",", $over_result->term2Result);
+                                                                        }
+                                                                        for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                                if($subjectTotal[$loop] !=0){                                                                            
+                                                                                    $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                                }else{                                                                            
+                                                                                    $yes=1;
+                                                                                }                                                                        
+                                                                        }
+                                                                        if($yes==0){
+                                                                            echo $totalNumber_subject . ' / ' . $totalMarks*($loop-1);
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($term == 1) {
+                                                                    $term++;
+                                                                } else if ($term == 2) {
+                                                                    $term--;
+                                                                }
+                                                                ?>
+                                                        </td>
+                                                    <?php } ?>
+                                                </tr>
+                                            
+                                                <tr height='40'>
+                                                    <td width="16%" align="center">Percentage</td>
+                                                    <?php
+                                                    $schCount = 0;
+                                                    foreach ($sch_data_class as $scho_items) {
+                                                        $schCount++;
+                                                    }
+                                                    ?>
+
+                                                    <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                        <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                            <?php $yes=0;$totalNumber_subject=0;
+                                                                $totalMarks = 0;
+                                                                foreach ($sch_data_class as $scho_items) {
+                                                                    $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                                }
+                                                                foreach ($overall_result as $over_result) {
+                                                                    if ($stuData->regid == $over_result->regid) {
+                                                                        if ($term == 1) {
+                                                                            $subjectTotal = explode(",", $over_result->term1Result);
+                                                                        } else {
+                                                                            $subjectTotal = explode(",", $over_result->term2Result);
+                                                                        }
+                                                                        for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                                if($subjectTotal[$loop] !=0){                                                                            
+                                                                                    $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                                }else{                                                                            
+                                                                                    $yes=1;
+                                                                                }                                                                        
+                                                                        }
+                                                                        if($yes==0){
+                                                                            echo ($totalNumber_subject/($totalMarks*($loop-1)))*100 . '%';
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($term == 1) {
+                                                                    $term++;
+                                                                } else if ($term == 2) {
+                                                                    $term--;
+                                                                }
+                                                                ?>
+                                                        </td>
+                                                    <?php } ?>
+                                                </tr>
+                                            
+                                                <tr height='40'>
+                                                    <td width="16%" align="center">Overall Grade</td>
+                                                    <?php
+                                                    $schCount = 0;
+                                                    foreach ($sch_data_class as $scho_items) {
+                                                        $schCount++;
+                                                    }
+                                                    ?>
+
+                                                    <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                        <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+                                                            <?php $yes=0;$totalNumber_subject=0;
+                                                                $totalMarks = 0;
+                                                                foreach ($sch_data_class as $scho_items) {
+                                                                    $totalMarks = $totalMarks + $scho_items->maxMarks;     
+                                                                }
+                                                                foreach ($overall_result as $over_result) {
+                                                                    if ($stuData->regid == $over_result->regid) {
+                                                                        if ($term == 1) {
+                                                                            $subjectTotal = explode(",", $over_result->term1Result);
+                                                                        } else {
+                                                                            $subjectTotal = explode(",", $over_result->term2Result);
+                                                                        }
+                                                                        for ($loop = 1; $loop < count($subjectTotal); $loop++) {                                                                    
+                                                                                if($subjectTotal[$loop] !=0){                                                                            
+                                                                                    $totalNumber_subject=$totalNumber_subject+$subjectTotal[$loop];
+                                                                                }else{                                                                            
+                                                                                    $yes=1;
+                                                                                }                                                                        
+                                                                        }
+                                                                        if($yes==0){
+                                                                            $percentage=($totalNumber_subject/($totalMarks*($loop-1)))*100;                                                                    
+                                                                            foreach ($class_grade as $cgrade) {
+                                                                                if ($percentage >= $cgrade->minMarks && $percentage <= $cgrade->maxMarks) {
+                                                                                    echo $cgrade->grade;
+                                                                                } else {
+                                                                                    echo '';
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($term == 1) {
+                                                                    $term++;
+                                                                } else if ($term == 2) {
+                                                                    $term--;
+                                                                }
+                                                                ?>
+                                                        </td>
+                                                    <?php } ?>
+                                                </tr>
+                                            
+                                                <tr height='40'>
+                                                    <td width="16%" align="center">Attendance</td>
+                                                    <?php
+                                                    $schCount = 0;
+                                                    foreach ($sch_data_class as $scho_items) {
+                                                        $schCount++;
+                                                    }
+                                                    ?>
+
+                                                    <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                        <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
+
+                                                        </td>
+                                                    <?php } ?>
+                                                </tr>
+
+                                                <tr height='40'>
+                                                    <td width="16%" align="center">Overall Result</td>
+                                                    <?php
+                                                    $schCount = 0;
+                                                    foreach ($sch_data_class as $scho_items) {
+                                                        $schCount++;
+                                                    }
+                                                    ?>
+
+                                                    <?php foreach ($exam_term as $exterm) { 
+                                                        $schCount = $schCount*2;
+                                                     } $schCount = $schCount/2;?>
+
+                                                    <td width="43%" align="center" colspan="<?php echo ($schCount+4); ?>">
+
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </td>
                                     </tr>
@@ -571,14 +854,14 @@
                                     <tr>
                                         <td colspan="2">
                                             <table border="1" cellpadding="5" width="100%">
-                                                <tr>
+                                                <tr height='40'>
                                                     <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
                                                         <td width="43%" align="center" colspan="2">Co-Scholastic Area: <?php echo $exterm->termName; ?> <font style="font-size: 11px;">(on a 3-point (A-C) grading scale)</font></td>
                                                     <?php } ?>
                                                 </tr>
-                                                <tr><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
+                                                <tr height='40'><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
                                                 <?php foreach ($cosch_data_class as $coSch) { ?>
-                                                    <tr>
+                                                    <tr height='40'>
                                                         <?php foreach ($exam_term as $exterm) { ?>
                                                             <?php $printTD1 = false; ?>
                                                             <td><?php echo $coSch->coitem; ?></td>
@@ -603,12 +886,48 @@
                                                         <?php } ?>
                                                     </tr>
                                                 <?php } ?>
+                                                    
+                                                    <!-- Discipline Area -->
+                                                <tr height='20'><td colspan="4" style="height:20px;"></td></tr>
+                                                <tr height='40'>
+                                                    <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                        <td width="43%" align="center" colspan="2">Discipline: <?php echo $exterm->termName; ?> <font style="font-size: 11px;">(on a 3-point (A-C) grading scale)</font></td>                                                
+                                                    <?php } ?>
+                                                </tr>
+                                                <tr height='40'><td></td><td align="center">Grade</td><td></td><td align="center">Grade</td></tr>
+                                                <?php foreach ($discipline_data_class as $disciplie) { ?>
+                                                    <tr height='40'>
+                                                        <?php foreach ($exam_term as $exterm) { ?>                                                    
+                                                            <td><?php echo $disciplie->disciplineitem; ?></td>
+                                                            <?php $printTD1 = false; ?>
+                                                            <?php foreach ($discipline_marks as $disciplineMarks) { ?>
+                                                            <?php if ($stuData->regid == $disciplineMarks->regid) { ?>
+                                                                <?php if ($disciplineMarks->termID == $exterm->termID) { ?>
+                                                                    <?php if ($disciplineMarks->disciplineID == $disciplie->disciplineID) { ?>
+                                                                        <td align="center">
+                                                                            <?php
+                                                                            echo $disciplineMarks->grade;
+                                                                            $printTD1 = true;
+                                                                            ?>
+                                                                        </td>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                            <?php } ?>
+                                                            <?php if ($printTD1 == false) { ?>
+                                                                <td></td>
+                                                                <?php
+                                                                $printTD1 = false;
+                                                            }
+                                                            ?>
+                                                        <?php } ?>                                                                                                                                               
+                                                    </tr>
+                                                <?php } ?>
                                             </table>
                                         </td>
                                     </tr>
-
                                     <tr height="50">
-                                        <td colspan="2">Teacher's Remarks
+                                        <td width='95%'>Teacher's Remarks
                                             <span style='border-bottom: #999999 dashed 1px; font-size: 17px;'>
                                                 <?php
                                                 foreach ($teacher_remarks as $remarks) {
@@ -619,6 +938,7 @@
                                                 ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             </span>
                                         </td>
+                                        <td>Date: <?php echo date('d/m/Y'); ?></td>
                                     </tr>
 
                                     <tr height="80">
@@ -626,9 +946,7 @@
                                             <span style='border-bottom: #999999 dashed 1px; font-size: 17px;'>
                                                 <?php
                                                 foreach ($teacher_remarks as $remarks) {
-                                                    if ($stuData->regid == $remarks->regid) {
-                                                        echo $remarks->promotedClass;
-                                                    }
+                                                    echo $remarks->promotedClass;
                                                 }
                                                 ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             </span>
@@ -638,46 +956,15 @@
                                     <tr height="80px;">
                                         <td colspan="2" valign="bottom">
                                             <table border='0' width="100%">
-                                                <tr>
-                                                    <td align="center">Date: <?php echo date('d/m/Y'); ?></td>
-                                                    <td align="center">Signature of Class Teacher</td>
-                                                    <td align="center">Signature of Principal</td>
+                                                <tr>                                                
+                                                    <td align="center">Class Teacher's Signature</td>
+                                                    <td align="center">Principal's Signature</td>
+                                                    <td align="center">Parent's Signature</td>
                                                 </tr>
                                             </table>
-                                        </td>
+                                        </td> 
                                     </tr>
-                                </table>
-                                <table border="0" width="95%" height="auto" cellpadding="10" align="center" style="border: #000000 solid 1px;">
-                                    <tr>
-                                        <td colspan="2" align="center"><h4 align="center">Instructions</h4>Grading Scale for Scholastic Areas: Grades are awarded on a 8-point grading scale as follows</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" align="center">
-                                            <table width="40%" border="1" cellpadding="2">
-                                                <tr>
-                                                    <td align="center">Marks Range</td>
-                                                    <td align="center">Grade</td>
-                                                </tr>
-                                                <?php foreach ($class_grade as $cgrade) { ?>
-                                                    <tr>
-                                                        <td align="center">
-                                                            <?php echo $cgrade->minMarks; ?> - <?php echo $cgrade->maxMarks; ?>
-                                                        </td>
-                                                        <td align="center">
-                                                            <?php echo $cgrade->grade; ?>
-                                                            <?php
-                                                            if ($cgrade->description != '') {
-                                                                echo '(' . $cgrade->description . ')';
-                                                            }
-                                                            ?>
-                                                        </td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </table>
-                                        </td>
-                                    </tr>
-
-                                </table>
+                                </table>                                
                             </div>
                         </div>
                     <?php } ?>

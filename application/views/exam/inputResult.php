@@ -6,9 +6,23 @@
                     <li class="active"><a data-toggle="tab" href="#newClassEntry">Input Students Marks</a></li>
                     <li><a data-toggle="tab" href="#sessionClass">Manage Exam Term</a></li>                    
                 </ul>
-            </div>
+            </div>                      
             <div class="widget-content tab-content">
-                <div class="tab-pane active" id="newClassEntry">
+                <div class="tab-pane active" id="newClassEntry">                   
+                    <div class="span12" id="dwnldCSV" style="background: #ff9999; padding:1em; display:none">
+                        <div class="control-group" style="float:right;">
+                            <form name="frmdownloadExcel" class="form-horizontal" method="post" action="<?php echo site_url() . '/exporting/toCsvExam'; ?>">
+                                <div class="control-group" style="background: #f2f2f2;padding-right:1em;">                                            
+                                    <label class="control-label">Download CSV for bulk upload</label>
+                                    <div class="controls">
+                                        <input type="hidden" id="txtClassSessID" name="txtClassSessID" required/>
+                                        <input type="hidden" id="txtClassName" name="txtClassName" required/>
+                                        <input type="submit" value="Download CSV" class="btn btn-success"/>                                        
+                                    </div>                                            
+                                </div>
+                            </form>
+                        </div>                           
+                    </div> 
                     <?php
                     $attrib_ = array(
                         'class' => 'form-horizontal',
@@ -85,7 +99,8 @@
                                                 $data = array(
                                                     'class' => 'required form-control m-bot8',
                                                     'name' => 'cmbSubjectMarks',
-                                                    'id' => 'cmbSubjectMarks'
+                                                    'id' => 'cmbSubjectMarks',
+                                                    'style' =>'width:98%;'
                                                 );
                                                 $options1 = array();
                                                 $options1[''] = 'SELECT SUBJECT';
@@ -116,39 +131,54 @@
                                         <div class="control-group">
                                             <label class="control-label">Date of Exam</label>
                                             <div class="controls"> 
-                                                <div  data-date="<?php echo date('d-m-Y');?>" class="input-append date datepicker">
-                                                <?php
-                                                $data = array(
-                                                    'type' => 'text',
-                                                    'class' => "required form-control span10",
-                                                    'data-date-format' => "dd-mm-yyyy",
-                                                    'autocomplete' => 'off',
-                                                    'name' => 'txtExamDate',
-                                                    'id' => 'txtExamDate',
-                                                    'required' => 'required',
-                                                    'style' =>'background:#D6F6FF;',
-                                                    'value' => date('d-m-Y')
-                                                );
-                                                echo form_input($data);
-                                                ?>
-                                                <span class="add-on"><i class="icon-th"></i></span> 
+                                                <div  data-date="<?php echo date('d-m-Y'); ?>" class="input-append date datepicker">
+                                                    <?php
+                                                    $data = array(
+                                                        'type' => 'text',
+                                                        'class' => "required form-control span10",
+                                                        'data-date-format' => "dd-mm-yyyy",
+                                                        'autocomplete' => 'off',
+                                                        'name' => 'txtExamDate',
+                                                        'id' => 'txtExamDate',
+                                                        'required' => 'required',
+                                                        'style' => 'background:#D6F6FF;',
+                                                        'value' => date('d-m-Y')
+                                                    );
+                                                    echo form_input($data);
+                                                    ?>
+                                                    <span class="add-on"><i class="icon-th"></i></span> 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-                            </div>            
+                                </div>                                  
+                            </div>  
                         </div>
-
-                    </div>
-
+                    </div>                    
                     <div class="span7">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                                 <h5 id="exitHeading">Student Marks</h5>
                             </div>
-                            <div class="widget-content nopadding" style="height:auto; overflow: scroll">
+                            
+                            <div class="control-group" id="uploadCsvFile" style="background: #f2f2f2;display:none">                                            
+                                <label class="control-label">UPLOAD FILE</label>
+                                <div class="controls">
+                                    <input type="file" name="userfile" id="userfile" required="required"><br>
+                                    <div id="__reg_err_msg" style="font-size:1em;"></div><br>
+                                    <input type="button" name="submitCSV" id="submitCSV" value="Upload CSV with marks" class="btn btn-success">
+                                    <input type="button" name="updateCSV" id="updateCSV" value="Upload CSV with marks" class="btn btn-primary">
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>                                   
+                                            <th style="text-align:center;background: #000;color:yellow;">OR FILL MARKS BELOW INDIVIDUALLY</th>                                            
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            
+                            <div class="widget-content nopadding" style="height:auto; overflow: scroll">  
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>                                   
@@ -173,7 +203,7 @@
                             <input type="button" value="Update Marks" class="btn btn-success updateMarks" style="width:300px;">                                                        
                         </div>
                     </div> 
-                    <?php echo form_close(); ?>
+                    <?php echo form_close(); ?>                                        
                 </div>
                 <div id="sessionClass" class="tab-pane">
                     <?php $this->load->view('exam/addExamTerm'); ?>

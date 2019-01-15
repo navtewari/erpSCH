@@ -63,7 +63,7 @@ $(function () {
             fillcoscholastic_forclass();
             fillClasses_forcoscholastic();
         }
-        
+
         if ($("#frmDiscipline").length != 0) {
             fillDiscipline_item();
         }
@@ -1532,7 +1532,7 @@ $(function () {
     $('#fillclass').on('change', '[type=radio]', function (e) {
         fillAssociatedScholasticItem();
     });
-    
+
     $('body').on('click', '.Add_scholastic_class', function () {
         var classsid = $('input[type=radio][name=classSch]:checked').attr('id');
         data_ = $('#frmScholasticAddClass').serializeArray();
@@ -1555,7 +1555,7 @@ $(function () {
         });
     });
     $('body').on('click', '.deleteAssociatedScholastic', function () {
-        var assoID = this.id;        
+        var assoID = this.id;
         url_ = site_url_ + "/exam/delAssociated_scholastic_class/" + assoID;
         if (confirm('Are you sure you want to delete this Scholastic Item from Class')) {
             $.ajax({
@@ -1567,7 +1567,7 @@ $(function () {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillAssociatedScholasticItem();                        
+                        fillAssociatedScholasticItem();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1767,9 +1767,9 @@ $(function () {
             }
         });
     });
-    
+
     $('body').on('click', '.deleteAssociatedcoScholastic', function () {
-        var assoID = this.id;        
+        var assoID = this.id;
         url_ = site_url_ + "/exam/delAssociated_coscholastic_class/" + assoID;
         if (confirm('Are you sure you want to delete this Co-Scholastic Item from Class')) {
             $.ajax({
@@ -1781,7 +1781,7 @@ $(function () {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillAssociatedcoScholasticItem();                        
+                        fillAssociatedcoScholasticItem();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1789,7 +1789,7 @@ $(function () {
             });
         }
     });
-    
+
     function fillClasses_forContact() {
         $('#s2id_stuClassID span').text("Loading...");
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -1886,7 +1886,7 @@ $(function () {
             var subID = $(this).attr('id');
             var arr_str = subID.split('-');
             var subjectID = arr_str[1];
-            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;            
+            url_ = site_url_ + "/master/setSubjectPriority/" + subjectID + "/" + priority;
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -1946,7 +1946,7 @@ $(function () {
                     callSuccess(xhr.responseText);
                 }
             });
-        }else if ($(this).attr('class') === "span9 txtdisciplinePriority") {
+        } else if ($(this).attr('class') === "span9 txtdisciplinePriority") {
             var priority = $(this).val();
             var disciplineItemID = $(this).attr('id');
             var arr_str = disciplineItemID.split('-');
@@ -2098,7 +2098,9 @@ $(function () {
     }
 
     $('#cmbClassofResult').change(function () {
-        $('#cmbAssessment > option').eq('0').attr('selected', 'selected')
+        $('#cmbAssessment > option').eq('0').attr('selected', 'selected');
+        $('#txtClassSessID').val($('#cmbClassofResult').val());
+        $('#txtClassName').val($("#cmbClassofResult").find(":selected").text());
         $('#s2id_cmbAssessment span').text("Choose Assessment Area");
         $('#cmbAssessmentItem').empty();
         $('#s2id_cmbAssessmentItem span').text("Select Above Assessment Area");
@@ -2135,7 +2137,7 @@ $(function () {
         var assArea = $('#cmbAssessment').val();
         if ($('#cmbClassofResult').val() != '') {
             if (assArea === '1') { //for Scholastic
-                data_ = $('#cmbClassofResult').val();                
+                data_ = $('#cmbClassofResult').val();
                 url_ = site_url_ + "/exam/get_scholastic_item_classwise/" + data_;
                 //alert(url_);                
                 $('#cmbAssessmentItem').html('Checking ...');
@@ -2179,7 +2181,7 @@ $(function () {
                         getStudents();
                     }
                 });
-            }else if (assArea === '3') {//for discipline                 
+            } else if (assArea === '3') {//for discipline                 
                 document.getElementById('subjectHidden').style.display = 'none';
                 data_ = $('#cmbClassofResult').val();
                 //alert(data_);
@@ -2253,12 +2255,18 @@ $(function () {
                             }
                             $('#tabStudentsMarks').html(str_html);
                             $('#trMarks').html('Marks');
+                            document.getElementById('dwnldCSV').style.display = 'block';
+                            document.getElementById('uploadCsvFile').style.display = 'block';
                             if (obj.res_ !== '') {
                                 document.getElementById('divSubmitResultMarks').style.display = 'none';
                                 document.getElementById('divUpdateResultMarks').style.display = 'block';
+                                document.getElementById('submitCSV').style.display = 'none';
+                                document.getElementById('updateCSV').style.display = 'block';
                             } else {
                                 document.getElementById('divSubmitResultMarks').style.display = 'block';
                                 document.getElementById('divUpdateResultMarks').style.display = 'none';
+                                document.getElementById('submitCSV').style.display = 'block';
+                                document.getElementById('updateCSV').style.display = 'none';
                             }
                         } else {
                             $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
@@ -2303,6 +2311,8 @@ $(function () {
                             }
                             $('#tabStudentsMarks').html(str_html);
                             $('#trMarks').html('Grade');
+                            document.getElementById('dwnldCSV').style.display = 'block';
+                            document.getElementById('uploadCsvFile').style.display = 'block';
                             if (obj.res_ !== '') {
                                 document.getElementById('divSubmitResultMarks').style.display = 'none';
                                 document.getElementById('divUpdateResultMarks').style.display = 'block';
@@ -2316,7 +2326,7 @@ $(function () {
                     }
                 });
             }
-        }else if ($('#cmbAssessment').val() === '3') {
+        } else if ($('#cmbAssessment').val() === '3') {
             if ($('#cmbExamTerm').val() !== '' && $('#cmbClassofResult').val() !== '' && $('#cmbAssessmentItem').val() !== '') {
                 var examTerm = $('#cmbExamTerm').find(":selected").text();
                 var classID = $("#cmbClassofResult").val();
@@ -2331,7 +2341,7 @@ $(function () {
                     url: url_,
                     data: data_,
                     success: function (data) {
-                        var obj = JSON.parse(data);                        
+                        var obj = JSON.parse(data);
                         var str_html = '';
                         if (obj.res_ !== '') {
                             str_html = str_html + ('<tr><td colspan="4" bgcolor="red" style="color:#fff">' + obj.res_ + '</td></tr>');
@@ -2352,6 +2362,8 @@ $(function () {
                             }
                             $('#tabStudentsMarks').html(str_html);
                             $('#trMarks').html('Grade');
+                            document.getElementById('dwnldCSV').style.display = 'block';
+                            document.getElementById('uploadCsvFile').style.display = 'block';
                             if (obj.res_ !== '') {
                                 document.getElementById('divSubmitResultMarks').style.display = 'none';
                                 document.getElementById('divUpdateResultMarks').style.display = 'block';
@@ -2460,9 +2472,9 @@ $(function () {
         if ($('#cmbClassforResult').val() != '') {
             data_ = $('#cmbClassforResult').val();
             classID_ = $("#cmbClassforResult").find(":selected").text();
-            url_design = site_url_ + "/exam/frontPrint/" + data_ +"/";            
+            url_design = site_url_ + "/exam/frontPrint/" + data_ + "/";
             url_ = site_url_ + "/exam/get_student_for_result/" + data_;
-            
+
             $.ajax({
                 type: "POST",
                 url: url_,
@@ -2495,7 +2507,7 @@ $(function () {
                     }
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
-                    
+
                     var printAllLink = "<font size='1'>Print MARKSHEET BACK</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
                     //var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
@@ -2511,27 +2523,27 @@ $(function () {
     }
 
     /*$(document).on("click", ".printfront", function () {
-        var stuid = $(this).attr('id');
-        classsessid = $('#cmbClassforResult').val();
-        url_ = site_url_ + "/exam/frontPrint/" + classsessid + "/" +stuid;       
-        $.ajax({
-            type: 'GET',
-            url: url_,
-            data: data_,
-            success: function (data) {
-                var obj = JSON.parse(data);
-                if (obj.res_ === false) {
-                    callDanger(obj.msg_);
-                } else {
-                    callSuccess(obj.msg_);
-                    getRemarks();
-                }
-            }, error: function (xhr, status, error) {
-                callDanger(xhr.responseText);
-            }
-        });
-    });*/
-    
+     var stuid = $(this).attr('id');
+     classsessid = $('#cmbClassforResult').val();
+     url_ = site_url_ + "/exam/frontPrint/" + classsessid + "/" +stuid;       
+     $.ajax({
+     type: 'GET',
+     url: url_,
+     data: data_,
+     success: function (data) {
+     var obj = JSON.parse(data);
+     if (obj.res_ === false) {
+     callDanger(obj.msg_);
+     } else {
+     callSuccess(obj.msg_);
+     getRemarks();
+     }
+     }, error: function (xhr, status, error) {
+     callDanger(xhr.responseText);
+     }
+     });
+     });*/
+
     $(document).on("click", ".open-Dialog", function () {
         var stuId = $(this).attr('id');
         $(".modal-body #stuHiddenID").val(stuId);
@@ -2627,9 +2639,9 @@ $(function () {
             }
         });
     });
-    
+
     $('body').on('click', '#btnCalculateResult', function () {
-        classsessid = $('#cmbClassforResult').val();        
+        classsessid = $('#cmbClassforResult').val();
         data_ = $('#frmSubmitRemarks').serializeArray();
         url_ = site_url_ + "/exam/calculateResult/" + classsessid;
 
@@ -2638,11 +2650,11 @@ $(function () {
             url: url_,
             data: data_,
             success: function (data) {
-                var obj = JSON.parse(data);                
+                var obj = JSON.parse(data);
                 if (obj.res_ === false) {
                     callDanger(obj.msg_);
                 } else {
-                    callSuccess(obj.msg_);                    
+                    callSuccess(obj.msg_);
                 }
             }, error: function (xhr, status, error) {
                 callDanger(xhr.responseText);
@@ -2650,7 +2662,7 @@ $(function () {
         });
     });
 //---------------------DISCIPLINE---------------------------------------------
-function fillDiscipline_item() {
+    function fillDiscipline_item() {
         url_ = site_url_ + "/exam/getAllDisciplineItems";
         $.ajax({
             type: "POST",
@@ -2705,7 +2717,7 @@ function fillDiscipline_item() {
             });
         }
     });
-    
+
     $('body').on('click', '.deleteDiscipline', function () {
         var str = this.id;
         var arr_str = str.split('~');
@@ -2729,8 +2741,8 @@ function fillDiscipline_item() {
                 }
             });
         }
-    });        
-    
+    });
+
     function filldiscipline_forclass() {
         url_ = site_url_ + "/exam/getAllDisciplineItems";
         $.ajax({
@@ -2803,10 +2815,10 @@ function fillDiscipline_item() {
         }
     }
 
-    $('#filldisciplineclass').on('change', '[type=radio]', function (e) {      
+    $('#filldisciplineclass').on('change', '[type=radio]', function (e) {
         fillAssociatedDisciplineItem();
     });
-    
+
     $('body').on('click', '.Add_discipline_class', function () {
         var classsid = $('input[type=radio][name=classdiscipline]:checked').attr('id');
         data_ = $('#frmdisciplineAddClass').serializeArray();
@@ -2828,9 +2840,9 @@ function fillDiscipline_item() {
             }
         });
     });
-    
+
     $('body').on('click', '.deleteAssociatedDiscipline', function () {
-        var assoID = this.id;        
+        var assoID = this.id;
         url_ = site_url_ + "/exam/delAssociated_discipline_class/" + assoID;
         if (confirm('Are you sure you want to delete this Discipline Item from Class')) {
             $.ajax({
@@ -2842,7 +2854,7 @@ function fillDiscipline_item() {
                         callDanger(obj.msg_);
                     } else {
                         callSuccess(obj.msg_);
-                        fillAssociatedDisciplineItem();                        
+                        fillAssociatedDisciplineItem();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -2850,7 +2862,85 @@ function fillDiscipline_item() {
             });
         }
     });
+
 //---------------------END-DISCIPLINE-----------------------------------------
+    //------CSV UPLOAD----------------------------------------------------------
+    $('#userfile').change(function () {        
+        var ext = $('#userfile').val().split('.').pop().toLowerCase();
+        if (($.inArray(ext, ['csv']) === -1)) {
+            $('#__reg_err_msg').css('color', '#ff0000');
+            $('#__reg_err_msg').html('<b>&nbsp;&nbsp; <i class="fa fa-info-circle" aria-hidden="true"></i> File must be in(<b>csv</b>) format only.</b>');
+            $("#userfile").val(null);
+        } else {
+            $('#__reg_err_msg').css('color', '#00cc66');
+            $('#__reg_err_msg').html('&nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i> Selected file is fine...');
+        }
+    });
+
+    $('body').on('click', '#submitCSV', function (e) {
+        if ( document.getElementById("userfile").files.length == 0) {
+            callDanger('Please Select a CSV file to upload');
+        } else {
+            e.preventDefault();
+            data_ = new FormData($('#frmInputResult')[0]);
+            url_ = site_url_ + "/exporting/importcsvExam";
+            $.ajax({
+                type: 'POST',
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                        $("#userfile").val(null);
+                    } else {
+                        callSuccess(obj.msg_);
+                        $("#userfile").val(null);
+                        getStudents();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    $('body').on('click', '#updateCSV', function (e) {
+        if ( document.getElementById("userfile").files.length == 0) {
+            callDanger('Please Select a CSV file to upload');
+        } else {
+            e.preventDefault();
+            data_ = new FormData($('#frmInputResult')[0]);
+            url_ = site_url_ + "/exporting/importcsvUpdateExam";
+            $.ajax({
+                type: 'POST',
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                url: url_,
+                data: data_,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    //alert(obj);
+                    if (obj.res_ === false) {
+                        callDanger(obj.msg_);
+                        $("#userfile").val(null);
+                    } else {
+                        callSuccess(obj.msg_);
+                        $("#userfile").val(null);
+                        getStudents();
+                    }
+                }, error: function (xhr, status, error) {
+                    callSuccess(xhr.responseText);
+                }
+            });
+        }
+    });
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
     // Popup boxes
