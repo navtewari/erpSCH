@@ -13,7 +13,15 @@ class TC extends CI_Controller {
     function issue_tc(){
     	$data['tc_data']= $this->mtcm->getTC_Data();
     	$data['school_profile'] = $this->mm->get_profile();
-    	$this->load->view('tcc/issuetc',$data);
+    	if(count($data['tc_data'])!=0){
+    		if($this->input->post('txtCC_or_TC') == 'TC'){
+    			$this->load->view('tcc/issuetc',$data);
+    		}else {
+    			$this->load->view('tcc/issuecc',$data);
+    		}
+    	} else {
+    		redirect('web/dashboard');
+    	}
     }
 
     function check_login(){

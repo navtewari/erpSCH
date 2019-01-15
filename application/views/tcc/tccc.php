@@ -28,6 +28,15 @@
                             $options['x'] = 'Select Student';
                         ?>
                         <?php echo form_dropdown($data, $options, ''); ?>
+                        <?php
+                            $data = array(
+                                'type' => 'hidden',
+                                'name' => 'txtCC_or_TC',
+                                'id' => 'txtCC_or_TC',
+                                'required' => 'required'
+                            );
+                            echo form_input($data);
+                        ?>
                     </div>
                 </div>
                 <div class="control-group">&nbsp;&nbsp;</div>

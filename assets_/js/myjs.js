@@ -4145,10 +4145,12 @@ $(function(){
 			}
 		});
 		$('#cmdTC').click(function(){
+			$('#txtCC_or_TC').val('TC');
 			$('#frmTCCC').submit();
 		});
 		$('#cmdCC').click(function(){
-			$('#cmdTC').click();
+			$('#txtCC_or_TC').val('CC');
+			$('#frmTCCC').submit();
 		});
 	// --------
 
