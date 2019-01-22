@@ -2216,6 +2216,7 @@ $(function () {
             document.getElementById('subjectHidden').style.display = 'none';
         }
     });
+    
     function getStudents() {
         if ($('#cmbAssessment').val() === '1') {
             if ($('#cmbExamTerm').val() !== '' && $('#cmbClassofResult').val() !== '' && $('#cmbAssessmentItem').val() !== '' && $('#cmbSubjectMarks').val() !== '') {
@@ -2316,9 +2317,13 @@ $(function () {
                             if (obj.res_ !== '') {
                                 document.getElementById('divSubmitResultMarks').style.display = 'none';
                                 document.getElementById('divUpdateResultMarks').style.display = 'block';
+                                document.getElementById('submitCSV').style.display = 'none';
+                                document.getElementById('updateCSV').style.display = 'block';
                             } else {
                                 document.getElementById('divSubmitResultMarks').style.display = 'block';
                                 document.getElementById('divUpdateResultMarks').style.display = 'none';
+                                document.getElementById('submitCSV').style.display = 'block';
+                                document.getElementById('updateCSV').style.display = 'none';
                             }
                         } else {
                             $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
@@ -2367,9 +2372,13 @@ $(function () {
                             if (obj.res_ !== '') {
                                 document.getElementById('divSubmitResultMarks').style.display = 'none';
                                 document.getElementById('divUpdateResultMarks').style.display = 'block';
+                                document.getElementById('submitCSV').style.display = 'none';
+                                document.getElementById('updateCSV').style.display = 'block';
                             } else {
                                 document.getElementById('divSubmitResultMarks').style.display = 'block';
                                 document.getElementById('divUpdateResultMarks').style.display = 'none';
+                                document.getElementById('submitCSV').style.display = 'block';
+                                document.getElementById('updateCSV').style.display = 'none';
                             }
                         } else {
                             $('#tabStudentsMarks').html('<td colspan="4">No Student Present in this class for This Session</td>');
