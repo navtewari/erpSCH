@@ -17,8 +17,8 @@ class Attendance extends CI_Controller {
 
         $data['last_reg_'] = $this -> mm -> last_registration();
 
-        $data['menu_'] = $this -> mnum -> get_menu();
-        $data['submenu_'] = $this -> mnum -> get_submenu();
+        $data['menu_'] = $this -> mm -> getmenu();
+        $data['submenu_'] = $this -> mm -> getsubmenu();
 
         $data['classesincurrentsession'] = $this->mam->getClasses($this->session->userdata('_current_year___'));
 
@@ -55,8 +55,8 @@ class Attendance extends CI_Controller {
 
         $data['last_reg_'] = $this -> mm -> last_registration();
 
-        $data['menu_'] = $this -> mnum -> get_menu();
-        $data['submenu_'] = $this -> mnum -> get_submenu();
+        $data['menu_'] = $this -> mm -> getmenu();
+        $data['submenu_'] = $this -> mm -> getsubmenu();
 
         $data['classesincurrentsession'] = $this->mam->getClasses($this->session->userdata('_current_year___'));
 
@@ -73,8 +73,8 @@ class Attendance extends CI_Controller {
 
         $data['last_reg_'] = $this -> mm -> last_registration();
 
-        $data['menu_'] = $this -> mnum -> get_menu();
-        $data['submenu_'] = $this -> mnum -> get_submenu();
+        $data['menu_'] = $this -> mm -> getmenu();
+        $data['submenu_'] = $this -> mm -> getsubmenu();
 
         $data['classesincurrentsession'] = $this->mam->getClasses($this->session->userdata('_current_year___'));
 
