@@ -238,7 +238,6 @@ class Exam extends CI_Controller {
         $data['regID_'] = $regID;
         $data['classID'] = $classID;
         $data['session'] = array($this->session->userdata('_current_year___'));
-        
         if ($regID == 0) {
             $pagi = 1;
             $config = array();
@@ -268,16 +267,11 @@ class Exam extends CI_Controller {
             $config['num_tag_open'] = '<li>';
             $config['num_tag_close'] = '</li>';
 
+
             $this->pagination->initialize($config);
             $page = ($this->uri->segment(9)) ? $this->uri->segment(9) : 0;
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
             $data["links"] = $this->pagination->create_links();
-            
-            $data['subject_marks'] = $this->mem->mfetchSubMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
-            $data['coSch_marks'] = $this->mem->mcoSchMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
-            $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
-            $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
-            $data['overall_result'] = $this->mem->get_overall_result_in_classLimit($classSessID, $config["per_page"], $page);
         } else {
             $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
         }
@@ -287,16 +281,14 @@ class Exam extends CI_Controller {
         $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
-        
-        if($regID != 0){
-            $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));            
-            $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
-        }
 
+        $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));
         $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+        $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
+
         //$data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
         $data['sch_name'] = $this->session->userdata('sch_name');
         $data['sch_remark'] = $this->session->userdata('remark');

@@ -1058,6 +1058,107 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
+    function mfetchSubMarksLimit($classSessID, $year_, $limit, $start) { 
+        //---------counting scholastic Data------------------------
+         $this->db->select('a.item, a.maxMarks, b.*');
+        $this->db->from('exam_2_add_scholastic_to_class b');
+        $this->db->join('exam_1_scholastic_items a', 'a.itemID = b.itemID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classSessID);
+        $this->db->order_by('a.priority', 'Asc');
+        $count_scho = $this->db->count_all_results();
+        
+        
+        //---------counting subject Data------------------------
+        $classID = $this->mcheckClassID($classSessID);
+        $this->db->where('classID', $classID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('priority', 'Asc');
+        $this->db->from('master_12_subject');        
+        $count_sub = $this->db->count_all_results();
+       
+        //------------------------------------------------------
+        $totlLimit=$count_scho*$count_sub;        
+        //------------------------------------------------------
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        $this->db->limit($limit * $totlLimit, $start*$totlLimit);
+        $query = $this->db->get('exam_6_scholastic_result');
+       
+        //echo $this->db->last_query()."<br />";
+        //exit(0);
+        return $query->result();
+    }
+    
+    function mcoSchMarksLimit($classSessID, $year_, $limit, $start) {        
+        //---------counting Coscholastic Data------------------------
+        $this->db->select('a.coitem, b.*');
+        $this->db->from('exam_4_add_coscholastic_to_class b');
+        $this->db->join('exam_3_coscholastic_items a', 'a.coitemID = b.coitemID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classSessID);
+        //$query=$this->db->get();
+        $count_cosho = $this->db->count_all_results();
+        //echo $this->db->last_query();
+        
+        //echo $count_cosho;
+        //exit(0);
+       
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        $this->db->limit($limit*$count_cosho, $start*$count_cosho);
+        $query = $this->db->get('exam_7_coscholastic_result');
+
+        return $query->result();
+    }
+    
+    function mdisciplineMarksLimit($classSessID, $year_, $limit, $start) {        
+        //---------counting Discipline Data------------------------
+        $this->db->select('a.disciplineitem, b.*');
+        $this->db->from('exam_11_add_discipline_to_class b');
+        $this->db->join('exam_10_discipline_items a', 'a.disciplineID = b.disciplineID', 'left');
+        $this->db->where('b.SESSID', $year_);
+        $this->db->where('b.CLSSESSID', $classSessID);
+        //$query=$this->db->get();
+        $count_dis = $this->db->count_all_results();
+        //echo $this->db->last_query();
+        
+        //echo $count_cosho;
+        //exit(0);      
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        $this->db->limit($limit*$count_dis, $start*$count_dis);
+        $query = $this->db->get('exam_12_discipline_result');
+        
+        return $query->result();
+    }
+    
+    function checkregIDRemarkLimit($classSessID, $session, $limit, $start) {
+        $this->db->where('CLSSESSID', $classSessID);        
+        //$this->db->where('regid', $regID);
+        $this->db->where('SESSID', $session);
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('exam_9_result_remarks');
+       
+        return $query->result();
+    }
+    
+    function get_overall_result_in_classLimit($classSessID, $limit, $start) {
+        $year__ = $this->session->userdata('_current_year___');                
+        
+        $this->db->where('CLSSESSID', $classSessID);        
+        $this->db->where('SESSID', $year__);
+        $this->db->order_by('cast(REGID AS SIGNED INT)', 'ASC');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('exam_13_calculated_result');
+        
+        return $query->result();
+    }
+    
     function mcoSchMarks($regID, $classSessID, $year_) {
         if ($regID != 0) {
             $this->db->where('regid', $regID);
@@ -1148,8 +1249,7 @@ class My_exam_model extends CI_Model {
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
         $this->db->where('b.clssessid', $classSessID);
-        $this->db->where('c.SESSID', $year__);
-        $this->db->order_by('a.regid', 'asc');
+        $this->db->where('c.SESSID', $year__);        
         $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
         $this->db->limit($limit, $start);
         
