@@ -40,9 +40,20 @@
                 ul li.active {                    
                     background-color:#dddbdb;                    
                 }
+                .page-loader {
+                    position: fixed;
+                    left: 0px;
+                    top: 0px;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 9999;
+                    background: url(http://localhost/erpSCH/assets_/img/page-loader.gif) 50% 50% no-repeat rgb(249,249,249);
+                    opacity: .8;
+                }
             </style>            
         </head>
         <body>  
+            <div class="page-loader"></div>
             <div id="loading_process" style="font-weight: bold; font-family: verdana; display: inline-block; opacity: 0; left:auto; right: auto; position: fixed; min-width: 100px; width: auto; height: auto; border-radius: 5px; padding: 5px; background: #F0F0F0; border: #808080 dotted 1px; color: 000000; margin-top: 2%; z-index: 99999"></div>
 
             <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>

@@ -53,9 +53,20 @@
                 ul li.active {
                     background-color:#dddbdb;
                 }
+                .page-loader {
+                    position: fixed;
+                    left: 0px;
+                    top: 0px;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 9999;
+                    background: url(http://localhost/erpSCH/assets_/img/page-loader.gif) 50% 50% no-repeat rgb(249,249,249);
+                    opacity: .8;
+                }
             </style>
         </head>
         <body>
+            <div class="page-loader"></div>
             <?php if (count($student_per_data) == 1 && $reg_id != 0) { ?>
                 <div class="container">
                     <div class="row">
@@ -338,6 +349,10 @@
                 <!----------------------------------------------------------------------------->
             <?php } ?>
         </body>
+         <script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script> 
+        <script src="<?php echo base_url('assets_/js/jquery.ui.custom.js'); ?>"></script> 
+        <script src="<?php echo base_url('assets_/js/bootstrap.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets_/js/myjs.js'); ?>?version=<?php echo JS_VERSION_NITIN; ?>"></script>          
     </html>
     <?php
 } else {
