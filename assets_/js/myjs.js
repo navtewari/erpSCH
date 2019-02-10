@@ -78,6 +78,9 @@ $(function(){
 		if($('#frmTCCC').length != 0){
 			fillStudents_cc_tc();
 		}
+		if($('#frmAddSessionWiseDetail').length != 0){
+			fillClasses_for_sessionWiseDetail();	
+		}
 	});
 	// Common Function to reload the current Page via http
 	function reloadme(){
@@ -86,6 +89,27 @@ $(function(){
 	// ---------------------------------------------------
 
 	// Function definitions need to call when needed
+		function fillClasses_for_sessionWiseDetail(){
+			$('#s2id_cmbClassesForSessionWiseDetail span').text("Loading...");
+			url_ = site_url_ + "/reg_adm/getClasses_in_session";
+			$('#cmbClassesForSessionWiseDetail').empty();
+			$.ajax({
+				type: "POST",
+				url: url_,
+				success:  function(data){
+					var obj = JSON.parse(data);
+					var str_html = '';
+					str_html = str_html + "<option value=''>Choose Class</option>";
+					for(i=0;i<obj.class_in_session.length; i++){
+						str_html = str_html + "<option value='"+obj.class_in_session[i].CLSSESSID+"'>Class "+obj.class_in_session[i].CLASSID+"</option>";
+					}
+					$('#s2id_cmbClassesForSessionWiseDetail span').text("Choose Class");
+					$('#cmbClassesForSessionWiseDetail').html(str_html);
+				}, error: function(xhr, status, error){
+					callDanger(xhr.responseText);
+				}
+			});
+		}
 		function fillClasses_for_attendance(){
 			$('#s2id_cmbClassesForStudents span').text("Loading...");
 			url_ = site_url_ + "/reg_adm/getClasses_in_session";
@@ -4153,5 +4177,33 @@ $(function(){
 			$('#frmTCCC').submit();
 		});
 	// --------
+
+	// Sessionwise Detail e.g weight, height, left vision, right vision etc.
+		$('#cmbClassesForSessionWiseDetail').change(function () {
+        var clssessid = $('#cmbClassesForSessionWiseDetail').val();
+        var className = $("#cmbClassesForSessionWiseDetail option:selected").text();
+        url_ = site_url_ + "/master/get_student_sessionwise_detail/" + clssessid;
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.Student.length; i++) {
+                    str_html = str_html + "<tr class='gradeX'>";
+                    str_html = str_html + "<td>" + obj.Student[i].regid + "</td>";
+                    str_html = str_html + "<td>" + obj.Student[i].FNAME + "</td>";
+                    str_html = str_html + "<td><input type='text' name='txtWeight' class='textB' id='txt_" + obj.Student[i].regid + "_txtWeight' value='" + obj.Student[i].MOBILE_S + "'></td>";
+                    str_html = str_html + '<td class="taskOptions">';
+                    str_html = str_html + "<a href='#' class='btn editStudentContact' id='" + obj.Student[i].regid + "'><i class='fa fa-arrow-circle-right fa-lg'></i></a>";
+                    str_html = str_html + '</td>';
+                    str_html = str_html + "</tr>";
+                }
+                $('#tabStudents').html(str_html);
+                $('#classHead').html('Student in <span style="color:blue">' + className + '</span>');
+            }
+        });
+    });
+	// ---------------------------------------------------------------------
 
 });

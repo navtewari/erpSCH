@@ -783,6 +783,24 @@ class My_Master_model extends CI_Model {
         return $query->result();
     }
 
+    function mget_student_sessionwise_detail($clssessid){
+        $this->db->select('a.regid, a.FNAME, a.FATHER, c.CLASSID, b.clssessid, b.ID_, d.SESSWISE_DET_ID, d.regid, d.WEIGHT, d.HEIGHT, d.VISION_LEFT, d.VISION_RIGHT');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->join('master_7_stud_sessionwise_detail d', 'a.regid=d.regid');
+        $this->db->where('b.clssessid', $clssessid);
+        $this->db->where('c.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        $query = $this->db->get();
+        
+        if($query->num_rows()!=0){
+
+        }
+        
+        return $query->result();   
+    }
+
     function msubmitStudentContact($stuID, $ContactNo) {
         $data = array(
             'MOBILE_S' => $ContactNo,

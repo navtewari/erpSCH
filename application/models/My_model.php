@@ -71,7 +71,7 @@ class My_model extends CI_Model {
     }
 
     function getsessions() {
-        $this->db->order_by('SESSSTART', 'desc');
+        $this->db->order_by('SESSID', 'desc');
         $query = $this->db->get('master_6_session');
 
         return $query->result();

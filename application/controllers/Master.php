@@ -185,6 +185,11 @@ class Master extends CI_Controller {
         echo json_encode($data);
     }
     
+    function get_student_sessionwise_detail($clssessid){
+        $data['Student'] = $this->mmm->mget_student_sessionwise_detail($clssessid);
+        echo json_encode($data);
+    }
+    
     function submitStudentContact($stuID, $ContactNo) {
         $data = $this->mmm->msubmitStudentContact($stuID, $ContactNo);
         echo json_encode($data);
