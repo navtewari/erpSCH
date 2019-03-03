@@ -103,17 +103,15 @@ class My_fee_model extends CI_Model {
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
         $this->db->order_by('INVID', 'desc');
         $query = $this->db->get('fee_6_invoice');
-        
+        //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $R = $query->row();
             $this->db->select('a.*, p.CATEGORY, c.REGID, c.INVDETID, c.STATIC_HEADS_1_TIME, c.STATIC_SPLIT_AMT_1_TIME, c.STATIC_HEADS_N_TIMES, c.STATIC_SPLIT_AMT_N_TIME, c.FLEXIBLE_HEADS_1_TIME, c.FLEXI_SPLIT_AMT_1_TIME, c.FLEXIBLE_HEADS_N_TIMES, c.FLEXI_SPLIT_AMT_N_TIMES, c.ACTUAL_AMOUNT, c.REGID, c.ACTUAL_DUE_AMOUNT, c.PREV_DUE_AMOUNT, c.DUE_AMOUNT, c.STATUS');
             $this->db->from('fee_6_invoice a');
-            $this->db->from('fee_6_invoice_detail c');
-            $this->db->from('fee_7_receipts e');
-            $this->db->from('master_8_stud_academics d');
-            $this->db->from('master_7_stud_personal p');
-            $this->db->where('a.INVID = c.INVID');
-            $this->db->where('d.regid = p.regid');
+            $this->db->join('fee_6_invoice_detail c','a.INVID = c.INVID');
+            //$this->db->join('fee_7_receipts e');
+            $this->db->join('master_8_stud_academics d', 'c.REGID=d.regid');
+            $this->db->join('master_7_stud_personal p','d.regid = p.regid');
             $this->db->where('a.CLSSESSID', $class__);
             $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
             $this->db->where('a.YEAR_FROM',$R->YEAR_FROM);
@@ -125,6 +123,7 @@ class My_fee_model extends CI_Model {
             $this->db->group_by('c.INVDETID');
             $this->db->order_by('cast(c.REGID AS SIGNED INT)', 'ASC');
             $query = $this->db->get();
+            //echo $this->db->last_query();
             $data = $query->result();
         } else {
             $data = array("NA"=>'No Data Found');
@@ -132,7 +131,6 @@ class My_fee_model extends CI_Model {
         // check transaction status
         $this->error->_db_error();
         // ------------------------
-  
         return $data;
     }
 
@@ -914,6 +912,7 @@ class My_fee_model extends CI_Model {
     function get_specific_other_discount_for_fee_discount($regid_){
         $this->db->where('regid', $regid_);
         $query = $this->db->get('register_discount');
+        //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $data = array('res_'=>true, 'data_'=>$query->row());
         } else {
@@ -924,6 +923,7 @@ class My_fee_model extends CI_Model {
     function get_student_discount($item_){
         $this->db->where('ITEM_', $item_);
         $query = $this->db->get('master_16_discount');
+        //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $data = array('res_'=>true, 'data_'=>$query->row());
         } else {
@@ -939,11 +939,12 @@ class My_fee_model extends CI_Model {
     function chkDiscountStatus($invdetid_){
         $this->db->where('a.INVDETID', $invdetid_);
         $this->db->where('a.DISCOUNT', 1);
-        $this->db->where('a.DISCOUNT_CATEGORY <>', '0');
+        $this->db->where('a.DISCOUNT_CATEGORY <>', 'x');
         $this->db->from('fee_7_receipts a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
         $this->db->where('b.STATUS_', 1);
         $query = $this->db->get();
+        //echo $this->db->last_query();
         if($query->num_rows()!=0){
             $bool_ = true;
         } else {
@@ -1015,7 +1016,7 @@ class My_fee_model extends CI_Model {
         if($data['fetch_category_discount_data']['res_'] == true){
             $dd['categ_discount_amnt'] = $data['fetch_category_discount_data']['data_']->AMOUNT;
             if($data['fetch_category_discount_data']['data_']->STATUS_ == 'Percentage'){
-                $dd['total_categ_discount_amount'] = parseInt(parseInt($dd['amount_to_apply_discount'])*(parseInt($dd['categ_discount_amnt'])/100));
+                $dd['total_categ_discount_amount'] = intVal(intVal($dd['amount_to_apply_discount'])*(intVal($dd['categ_discount_amnt'])/100));
             } else {
                 $dd['total_categ_discount_amount'] = ($dd['categ_discount_amnt']*$dd['nom_']);
             }
@@ -1025,7 +1026,7 @@ class My_fee_model extends CI_Model {
                 }
             } else {
                 if($data['fetch_category_discount_data']['data_']->ITEM_ != 'GENERAL'){
-                    $dd['discount_category'] = $data['fetch_category_discount_data']['data_']['ITEM_'];
+                    $dd['discount_category'] = $data['fetch_category_discount_data']['data_']->ITEM_;
                 }
             }
         } else {
