@@ -14,10 +14,11 @@ class TC extends CI_Controller {
     	$data['tc_data']= $this->mtcm->getTC_Data();
     	$data['school_profile'] = $this->mm->get_profile();
     	if(count($data['tc_data'])!=0){
+            $fldr = $this->session->userdata('db2');
     		if($this->input->post('txtCC_or_TC') == 'TC'){
-    			$this->load->view('tcc/issuetc',$data);
+    			$this->load->view('tcc/'.$fldr.'/issuetc',$data);
     		}else {
-    			$this->load->view('tcc/issuecc',$data);
+    			$this->load->view('tcc/'.$fldr.'/issuecc',$data);
     		}
     	} else {
     		redirect('web/dashboard');

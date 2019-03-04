@@ -23,6 +23,6 @@ class My_tc_model extends CI_Model {
     	return $query->row();
     }
     function generateTC(){
-    	// Feed the for printing TC 1st time/ 2nd time or n time in master_7_stud_personal_tc_status
+    	// Feed [number] for printing TC 1st time/ 2nd time or n time in master_7_stud_personal_tc_status
     }
 }
