@@ -185,8 +185,8 @@
                     </tr>
                 </table>               
 
-                <input type='hidden' id='stuHiddenID' name='stuHiddenID' value='0'/>
-                <input type='hidden' id='classSessHiddenID' name='classSessHiddenID' value='0' />                                                  
+                <input type='hidden' id='stuHiddenID' name='stuHiddenID'/>
+                <input type='hidden' id='classSessHiddenID' name='classSessHiddenID'/>                                                  
 
                 <div class="form-actions" align="right">                        
                     <input type="submit" value="Check Result" class="btn btn-success btncheckResult">                                            

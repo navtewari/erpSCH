@@ -244,7 +244,7 @@ class Exam extends CI_Controller {
             $config = array();
             $config["base_url"] = base_url() . "index.php/exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi;
             $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
-            $config["per_page"] = 10;
+            $config["per_page"] = 5;
             $config["uri_segment"] = 9;
             $choice = $config["total_rows"] / $config["per_page"];
 
@@ -403,7 +403,7 @@ class Exam extends CI_Controller {
             $config = array();
             $config["base_url"] = base_url() . "index.php/exam/frontPrint" . "/" . $classSessID . "/" . $regID . "/". $reportlayout . "/" . $classID . "/" . $pagi . "/".$print_ ;
             $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
-            $config["per_page"] = 10;
+            $config["per_page"] = 5;
             $config["uri_segment"] = 9;
             $choice = $config["total_rows"] / $config["per_page"];
 
