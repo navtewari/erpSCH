@@ -313,72 +313,19 @@ class Exam extends CI_Controller {
         if ($reportlayout == 1 && $sidelayout == 1) {
             $this->load->view('exam/printResult-1to8-1', $data);
         } else if ($reportlayout == 2 && $sidelayout == 1) {
-            $this->load->view('exam/printResult-9-1', $data);
+            $this->load->view('exam/printResult-9-1', $data);                  
         } else if ($reportlayout == 1 && $sidelayout == 2) {
             $this->load->view('exam/printResult-1to8', $data);
         } else if ($reportlayout == 2 && $sidelayout == 2) {
             $this->load->view('exam/printResult-9', $data);
         } else if ($reportlayout == 3 && $sidelayout == 2) {
             $this->load->view('exam/printResult-lkg', $data);
+        } else if ($reportlayout == 4 && $sidelayout == 2) {
+            $this->load->view('exam/printResult-11', $data);  
         }else {
             die();
         }
-    }
-
-    function fetchResult1() {
-        $classSessID = $this->input->post('classSessHiddenID');
-        $regID = $this->input->post('stuHiddenID');
-        $reportlayout = $this->input->post('reportLayout');
-        $sidelayout = $this->input->post('sideLayout');
-
-        $this->check_login();
-        $classID = $this->mem->mcheckClassID($classSessID);
-        $data['classID'] = $classID;
-        $data['session'] = array($this->session->userdata('_current_year___'));
-        if ($regID == 0) {
-            $data['student_per_data'] = $this->mem->mfetchStuDatainClass($classSessID);
-        } else {
-            $data['student_per_data'] = $this->mem->mfetchStuPerData($regID);
-        }
-        $data['exam_term'] = $this->mem->mget_examterm_in_session();
-        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
-        $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
-
-        $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-        $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-        $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-        $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));
-        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
-        $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
-
-        //$data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
-        $data['sch_name'] = $this->session->userdata('sch_name');
-        $data['sch_remark'] = $this->session->userdata('remark');
-        $data['sch_logo'] = $this->session->userdata('logo');
-        $data['sch_addr'] = $this->session->userdata('sch_addr');
-        $data['sch_contact'] = $this->session->userdata('sch_contact');
-        $data['sch_email'] = $this->session->userdata('sch_email');
-        $data['sch_distt'] = $this->session->userdata('sch_distt');
-        $data['sch_state'] = $this->session->userdata('sch_state');
-        $data['sch_country'] = $this->session->userdata('sch_country');
-        $data['website'] = $this->session->userdata('website');
-        $data['reg_id'] = $regID;
-
-        if ($reportlayout == 1 && $sidelayout == 1) {
-            $this->load->view('exam/printResult-1to8-1', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 1) {
-            $this->load->view('exam/printResult-9-1', $data);
-        } else if ($reportlayout == 1 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-1to8', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-9', $data);
-        } else {
-            die();
-        }
-    }
+    }    
 
     function calculateResult($classSessID) {
         $this->check_login();

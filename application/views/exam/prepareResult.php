@@ -118,7 +118,7 @@
                             </table>                                                        
                         </td>
                     </tr-->
-                    <tr style='height:20px;'><td colspan='3'><input type='hidden' value='2' name='sideLayout'/></td></tr>
+                    <tr style='height:20px;'><td colspan='4'><input type='hidden' value='2' name='sideLayout'/></td></tr>
                     <tr>
                         <td align='center' width="33%" style="background: #eff2f2">                                                        
                             <h4>CLASS<br><span style="color: #006dcc"> I - VIII</span></h4>
@@ -126,11 +126,16 @@
                         </td>
 
                         <td align='center' width="33%" style="background: #f0e6ef">                              
-                            <h4>CLASS<br> IX - XII</h4>
+                            <h4>CLASS<br> IX - X</h4>
                             <input type='radio' value='2' name='reportLayout' class='form-control' required/>                           
                         </td>
+                        
+                        <td align='center' width="33%" style="background: #eff2f2">                              
+                            <h4>CLASS<br> XI - XII</h4>
+                            <input type='radio' value='4' name='reportLayout' class='form-control' required/>                           
+                        </td>
 
-                        <td align='center' width="34%" style="background: #eff2f2">                              
+                        <td align='center' width="34%" style="background: #f0e6ef">                              
                             <h4>CLASS<br> Nursery - UKG</h4>
                             <input type='radio' value='3' name='reportLayout' class='form-control' required/>                           
                         </td>
