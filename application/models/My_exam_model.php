@@ -1057,6 +1057,18 @@ class My_exam_model extends CI_Model {
 
         return $query->result();
     }
+    
+    function mfetchSubMarkswholeClass($regID, $classSessID, $year_) {
+        if ($regID != 0) {
+            $this->db->where('regid', $regID);
+        }
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year_);
+        $this->db->order_by('regid', 'Asc');
+        $query = $this->db->get('exam_6_scholastic_result');
+
+        return $query->result();
+    }
 
     function mfetchSubMarksLimit($classSessID, $year_, $limit, $start) { 
         //---------counting scholastic Data------------------------
@@ -1076,9 +1088,10 @@ class My_exam_model extends CI_Model {
         $this->db->order_by('priority', 'Asc');
         $this->db->from('master_12_subject');        
         $count_sub = $this->db->count_all_results();
-       
+        echo $count_sub;
+        exit(0);
         //------------------------------------------------------
-        $totlLimit=$count_scho*$count_sub;        
+        $totlLimit=$count_scho*$count_sub;
         //------------------------------------------------------
         $this->db->where('CLSSESSID', $classSessID);
         $this->db->where('SESSID', $year_);

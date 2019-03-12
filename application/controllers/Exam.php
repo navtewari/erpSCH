@@ -273,7 +273,11 @@ class Exam extends CI_Controller {
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
             $data["links"] = $this->pagination->create_links();
             
-            $data['subject_marks'] = $this->mem->mfetchSubMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
+            if ($reportlayout != 4){
+                $data['subject_marks'] = $this->mem->mfetchSubMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
+            }else{
+                $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___'));            
+            }
             $data['coSch_marks'] = $this->mem->mcoSchMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
             $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
             $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            

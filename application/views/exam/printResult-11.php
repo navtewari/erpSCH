@@ -61,13 +61,13 @@
                     </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-sm-12">
-                            <table border="0" height="auto" cellpadding="10" class="table_" align="center">
+                            <table border="0" height="auto" cellpadding="5" class="table_" align="center">
                                 <tr align="center">                                    
                                     <td>
                                         <h2><?php echo $sch_name; ?></h2>
-                                        <h4><?php echo $sch_remark; ?></h4>                                    
-                                        <h4><?php echo $sch_addr . ', Disitt. ' . $sch_distt . ', ' . $sch_state . ', ' . $sch_country; ?></h4>                                    
-                                        <h5>Ph. No. -<?php echo $sch_contact; ?>, Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
+                                        <h5><?php echo $sch_remark; ?></h5>                                    
+                                        <h5><?php echo $sch_addr . ', Haldwani, (' . $sch_distt . '), 263139'; ?></h5> 
+                                        <h5>Ph. No. -<?php echo $sch_contact; ?>, Website- <?php echo $website; ?></h5>
                                     </td>
                                     <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
                                 </tr>
@@ -271,7 +271,7 @@
 
                                 <tr>
                                     <td colspan="2" align="right">Final Result:
-                                        <span style='border-bottom: #999999 dotted 1px; font-size: 17px;'>
+                                        <span style='border-bottom: #999999 dotted 1px; font-size: 13px;'>
                                             <?php
                                             foreach ($teacher_remarks as $remarks) {
                                                 echo $remarks->teacherRemark;
@@ -309,17 +309,17 @@
                     <?php foreach ($student_per_data as $stuData) { ?>
                         <div class="row" style="margin-top:10px;page-break-after: always;">
                             <div class="col-sm-12">
-                                <table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center">
+                                <table border="0" width="100%" height="auto" cellpadding="5" class="table_" align="center">
                                     <tr align="center">                                    
                                     <td>
                                         <h2><?php echo $sch_name; ?></h2>
-                                        <h4><?php echo $sch_remark; ?></h4>                                    
-                                        <h4><?php echo $sch_addr . ', Disitt. ' . $sch_distt . ', ' . $sch_state . ', ' . $sch_country; ?></h4>                                    
-                                        <h5>Ph. No. -<?php echo $sch_contact; ?>, Email-<?php echo $sch_email; ?> , Website- <?php echo $website; ?></h5>
+                                        <h5><?php echo $sch_remark; ?></h5>                                    
+                                        <h5><?php echo $sch_addr . ', Haldwani, (' . $sch_distt . '), 263139'; ?></h5>                                    
+                                        <h5>Ph. No. -<?php echo $sch_contact; ?>, Website- <?php echo $website; ?></h5>
                                     </td>
                                     <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
                                 </tr>
-                                <tr align="center" style="line-height:25px;">
+                                <tr align="center" style="line-height:20px;">
                                     <td colspan="2">
                                         <h4><b>Academic Session - (<?php echo $this->session->userdata('_current_year___'); ?>)</b></h4>
                                         <h4><b>REPORT CARD OF CLASS <?php echo $classID; ?></b></h4>
@@ -413,30 +413,32 @@
                                                             echo $subjectClass->subName;
                                                             $term = 1;
                                                             ?></td>
-                                                        <?php foreach ($exam_term as $exterm) { ?>                                                    
-                                                            <?php foreach ($sch_data_class as $scho_items) { ?>
-                                                                <?php $printData = false; ?>
-                                                                <?php foreach ($subject_marks as $sub_marks) { ?>
-                                                                    <?php if ($stuData->regid == $sub_marks->regid) { ?>
-                                                                        <?php if ($subjectClass->subjectID == $sub_marks->subjectID) { ?>
-                                                                            <?php if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) { ?>
+                                                            <?php foreach ($exam_term as $exterm) { ?>
+                                                        
+                                                                <?php foreach ($sch_data_class as $scho_items) { ?>
+                                                                    <?php $printData = false; ?>
+                                                                    <?php foreach ($subject_marks as $sub_marks) { ?>
+                                                                        <?php if ($stuData->regid == $sub_marks->regid) { ?>
+                                                                            <?php if ($subjectClass->subjectID == $sub_marks->subjectID) { ?>
+                                                                                <?php if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) { ?>
                                                                                 <td align="center">
                                                                                     <?php
                                                                                     echo $sub_marks->marks;
                                                                                     $printData = true;
                                                                                     ?>
                                                                                 </td>
+                                                                                <?php } ?>
                                                                             <?php } ?>
                                                                         <?php } ?>
                                                                     <?php } ?>
+                                                                    <?php if ($printData == false) { ?>
+                                                                        <td></td>
+                                                                        <?php
+                                                                        $printData = false;
+                                                                        }
+                                                                    ?>
                                                                 <?php } ?>
-                                                                <?php if ($printData == false) { ?>
-                                                                    <td></td>
-                                                                    <?php
-                                                                    $printData = false;
-                                                                }
-                                                                ?>
-                                                            <?php } ?>
+
                                                             <td align="center">
                                                             <?php $yes=0; 
                                                             foreach ($overall_result as $over_result) {
@@ -520,7 +522,7 @@
                                    
                                     <tr height="50">
                                         <td colspan="2" align="right">Final Result:
-                                        <span style='border-bottom: #999999 dashed 1px; font-size: 17px;'>
+                                        <span style='border-bottom: #999999 dashed 1px; font-size: 13px;'>
                                                 <?php
                                                 foreach ($teacher_remarks as $remarks) {
                                                     if ($stuData->regid == $remarks->regid) {
