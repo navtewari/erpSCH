@@ -15,15 +15,15 @@
                 .hide_button{ display: none }
                 .hide_pagination{
                     display:none;
-                }
+                }              
                 
             </style>
             <style>
+            	
                 td{font-size: 13px;font-weight: 600;}
-                .table_{
-                    border: #000000 solid 3px;
-                    border-radius:50px;
-                    width:100%;
+                .table_{                	
+                    border: #000000 solid 3px;             
+                    width:100%;                    
                 }      
                 .under{
                     border-bottom: 1px #999999 dotted;                   
@@ -48,20 +48,24 @@
                     background: url(http://localhost/erpSCH/assets_/img/page-loader.gif) 50% 50% no-repeat rgb(249,249,249);
                     opacity: .8;
                 }
+                h5{
+                	margin-top: 2px;
+                	margin-bottom: 2px;
+                }
             </style>
         </head>
         <body>
             <div class="page-loader"></div>
             <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
-                <div class="container">
+                <div class="container-fluid" style="padding-right: 10px !important;padding-left: 40px;">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-sm-12">
-                            <table border="0" height="auto" cellpadding="5" class="table_" align="center">
+                    <div class="row">
+                        <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                            <table border="0" height="100%" cellpadding="5" class="table_" align="center">
                                 <tr align="center">                                    
                                     <td>
                                         <h2><?php echo $sch_name; ?></h2>
@@ -294,7 +298,7 @@
                 </div>
             <?php } else { ?>
                 <!-------------------------------------------------------------------------------ALL---->
-                <div class="container">
+                <div class="container-fluid" style="padding-right: 15px !important;padding-left: 50px;">
                     <div class="row hide_pagination">
                         <div class="col-sm-12" align="center">
                             <p> <?php echo $links; ?></p>
@@ -307,9 +311,9 @@
                         </div>
                     </div>
                     <?php foreach ($student_per_data as $stuData) { ?>
-                        <div class="row" style="margin-top:10px;page-break-after: always;">
-                            <div class="col-sm-12">
-                                <table border="0" width="100%" height="auto" cellpadding="5" class="table_" align="center">
+                        <div class="row page" style="page-break-after: always;">
+                            <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                                <table border="0" height="100%" cellpadding="5" class="table_" align="center">
                                     <tr align="center">                                    
                                     <td>
                                         <h2><?php echo $sch_name; ?></h2>
@@ -317,7 +321,7 @@
                                         <h5><?php echo $sch_addr . ', Haldwani, (' . $sch_distt . '), 263139'; ?></h5>                                    
                                         <h5>Ph. No. -<?php echo $sch_contact; ?>, Website- <?php echo $website; ?></h5>
                                     </td>
-                                    <td width="150" valign="top"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
+                                    <td width="150" valign="top" align="center"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="150"/></td>
                                 </tr>
                                 <tr align="center" style="line-height:20px;">
                                     <td colspan="2">
@@ -408,7 +412,7 @@
                                             <?php $subjectCount=0; $subTotal1=0;$subTotal2=0;
                                                 foreach ($subject_class as $subjectClass) {
                                                     ?>
-                                                    <tr>
+                                                    <tr align="center">
                                                         <td><?php
                                                             echo $subjectClass->subName;
                                                             $term = 1;

@@ -28,6 +28,7 @@ class My_gen_login_model extends CI_Model{
 			$this->db->where('CID', $row->CID);
 			$this->db->where('STATUS', 1);
 			$query = $this->db->get('bulksms');
+
 			if($query->num_rows() != 0){
 				$r = $query->row();
 				$this->session->set_userdata('sms_loginto', $r->LOGINTO);
@@ -40,11 +41,22 @@ class My_gen_login_model extends CI_Model{
 				$this->session->set_userdata('sms_userid', 'NA');
 				$this->session->set_userdata('sms_pwd', 'NA');
 			}
+//----------------------------RESULT----------------------------			
+			$this->db->where('CID', $row->CID);
+			$this->db->where('STATUS', 1);
+			$query1 = $this->db->get('result');
+			if($query1->num_rows() != 0){
+				$r = $query1->row();
+				$this->session->set_userdata('res_prefix', $r->PREFIX);				
+			} else {
+				$this->session->set_userdata('res_prefix', 'NA');				
+			}
+//----------------------------RESULT----------------------------	
+
 			$bool_ = array('res_'=>true, 'db'=>$row->DB_);
 		} else {
 			$bool_ = array('res_'=>false, 'db'=>'default');
 		}
-
 		return $bool_;
 	}
 }

@@ -314,18 +314,20 @@ class Exam extends CI_Controller {
         $data['website'] = $this->session->userdata('website');
         $data['reg_id'] = $regID;
 
+        $res_prefix= $this->session->userdata('res_prefix');        
+        
         if ($reportlayout == 1 && $sidelayout == 1) {
-            $this->load->view('exam/printResult-1to8-1', $data);
+            $this->load->view('exam/'.$res_prefix.'printResult-1to8-1', $data);
         } else if ($reportlayout == 2 && $sidelayout == 1) {
-            $this->load->view('exam/printResult-9-1', $data);                  
+            $this->load->view('exam/'.$res_prefix.'printResult-9-1', $data);                  
         } else if ($reportlayout == 1 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-1to8', $data);
+            $this->load->view('exam/'.$res_prefix.'printResult-1to8', $data);
         } else if ($reportlayout == 2 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-9', $data);
+            $this->load->view('exam/'.$res_prefix.'printResult-9', $data);
         } else if ($reportlayout == 3 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-lkg', $data);
+            $this->load->view('exam/'.$res_prefix.'printResult-lkg', $data);
         } else if ($reportlayout == 4 && $sidelayout == 2) {
-            $this->load->view('exam/printResult-11', $data);  
+            $this->load->view('exam/'.$res_prefix.'printResult-11', $data);  
         }else {
             die();
         }

@@ -1088,8 +1088,8 @@ class My_exam_model extends CI_Model {
         $this->db->order_by('priority', 'Asc');
         $this->db->from('master_12_subject');        
         $count_sub = $this->db->count_all_results();
-        echo $count_sub;
-        exit(0);
+        //echo $count_sub;
+        //exit(0);
         //------------------------------------------------------
         $totlLimit=$count_scho*$count_sub;
         //------------------------------------------------------
