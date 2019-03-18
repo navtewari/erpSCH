@@ -227,6 +227,7 @@ class Exam extends CI_Controller {
     }
 
     function fetchResult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0, $pagi = 0) {
+        ini_set('max_execution_time', 300);
         if ($pagi == 0) {
             $classSessID = $this->input->post('classSessHiddenID');
             $regID = $this->input->post('stuHiddenID');
@@ -273,12 +274,14 @@ class Exam extends CI_Controller {
             $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
             $data["links"] = $this->pagination->create_links();
             
-            if ($reportlayout != 4){
+            /*if ($reportlayout != 4){
                 $data['subject_marks'] = $this->mem->mfetchSubMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
             }else{
                 $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___'));            
-            }
-            $data['coSch_marks'] = $this->mem->mcoSchMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
+            }*/
+            $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___')); 
+            //$data['coSch_marks'] = $this->mem->mcoSchMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
+            $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
             $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
             $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
             $data['overall_result'] = $this->mem->get_overall_result_in_classLimit($classSessID, $config["per_page"], $page);
@@ -309,8 +312,9 @@ class Exam extends CI_Controller {
         $data['sch_contact'] = $this->session->userdata('sch_contact');
         $data['sch_email'] = $this->session->userdata('sch_email');
         $data['sch_distt'] = $this->session->userdata('sch_distt');
-        $data['sch_state'] = $this->session->userdata('sch_state');
+        $data['sch_state'] = $this->session->userdata('sch_state');        
         $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['sch_aff'] = $this->session->userdata('affiliation');
         $data['website'] = $this->session->userdata('website');
         $data['reg_id'] = $regID;
 
@@ -335,7 +339,7 @@ class Exam extends CI_Controller {
 
     function calculateResult($classSessID) {
         $this->check_login();
-        $data = $this->mem->mcalculateResult($classSessID);
+        $data = $this->mem->mcalculateResult($classSessID);       
         echo json_encode($data);
     }
 
@@ -409,6 +413,7 @@ class Exam extends CI_Controller {
         $data['sch_distt'] = $this->session->userdata('sch_distt');
         $data['sch_state'] = $this->session->userdata('sch_state');
         $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['sch_aff'] = $this->session->userdata('affiliation');
         $data['website'] = $this->session->userdata('website');
 
         $data['reg_id'] = $regID;
@@ -453,6 +458,7 @@ class Exam extends CI_Controller {
         $data['sch_distt'] = $this->session->userdata('sch_distt');
         $data['sch_state'] = $this->session->userdata('sch_state');
         $data['sch_country'] = $this->session->userdata('sch_country');
+        $data['sch_aff'] = $this->session->userdata('affiliation');
         $data['website'] = $this->session->userdata('website');
 
         $data['reg_id'] = $regID;

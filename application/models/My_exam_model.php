@@ -1272,6 +1272,7 @@ class My_exam_model extends CI_Model {
     }
 
     function mcalculateResult($classSessID) {
+        ini_set('max_execution_time', 300);
         $regID = 0;
         $year__ = $this->session->userdata('_current_year___');
         $classID = $this->mcheckClassID($classSessID);
@@ -1325,15 +1326,18 @@ class My_exam_model extends CI_Model {
             $Grade = explode(",", $subjectAverage);
             $subjectGrade = '';
             $class_grade = $this->get_grade_in_class($classSessID);
-
+            //echo(count($Grade)) . ',';
             for ($loop = 1; $loop < count($Grade); $loop++) {
-                foreach ($class_grade as $cgrade) {
-                    if ($Grade[$loop] >= $cgrade->minMarks && $Grade[$loop] <= $cgrade->maxMarks) {
+                //echo $Grade[$loop] . '=';
+                foreach ($class_grade as $cgrade) {                    
+                    if ((int)$Grade[$loop] >= (int)$cgrade->minMarks && (int)$Grade[$loop] <= (int)$cgrade->maxMarks) {
                         $subjectGrade = $subjectGrade . ',' . $cgrade->grade;
+                        //echo $cgrade->grade . ',';
                     }
                 }
             }
-
+            //echo '<br/>';
+            //die();
             //---------------------------Updating/Inserting in Database
             $this->db->where('regid', $stuData->regid);
             $this->db->where('CLSSESSID', $classSessID);
@@ -1427,7 +1431,7 @@ class My_exam_model extends CI_Model {
             $overall = $overall . ',' . $percentage;
 
             foreach ($class_grade as $cgrade) {
-                if ($percentage >= $cgrade->minMarks && $percentage <= $cgrade->maxMarks) {
+                if ((int)$percentage >= (int)$cgrade->minMarks && (int)$percentage <= (int)$cgrade->maxMarks) {
                     $overall = $overall . ',' . $cgrade->grade;
                 }
             }
