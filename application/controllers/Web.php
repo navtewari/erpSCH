@@ -62,6 +62,7 @@ class Web extends CI_Controller {
                 $data['siblings'] = '';
                 $data['category'] = '';
                 $data['discount'] = '';
+                $data['others'] = '';
                 break;
             case 4:
                 $data['page_'] = 'master';
@@ -107,6 +108,7 @@ class Web extends CI_Controller {
                 $data['siblings'] = '';
                 $data['category'] = '';
                 $data['discount'] = '';
+                $data['others'] = '';
                 break;
             case 11:
                 $data['page_'] = 'master';
@@ -223,8 +225,8 @@ class Web extends CI_Controller {
     }
 
     function set_live_session(){
-        $thisyr = date('Y');
-        $nextyr = date('y')+1;
+        $thisyr = date('Y'); // Capital Y gives four digits
+        $nextyr = date('y')+1; // small y gives two digits
         $live_ = $thisyr . "-" . $nextyr;
         $this->session->set_userdata('live__' , $live_);
     }

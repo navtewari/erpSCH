@@ -580,6 +580,7 @@ $(function(){
 								}
 							}
 							$('#txtStudentAdhaarCardNo').val(obj.personal_academics.ADHAARCARD_STUDENT);
+							$('#txtAdmNumber').val(obj.personal_academics.ADM_NO);
 							// Filling Parents Detail
 							$('#txtFatherName').val(obj.personal_academics.FATHER);
 							$('#txtFatherMobile').val(obj.personal_academics.F_MOBILE);
