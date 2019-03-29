@@ -246,11 +246,52 @@ class My_admission_model extends CI_Model {
                     'STATUS' => 1  
                 );
 
+                $dataOthers_personal_details=array(
+                    'SCHOOL_NO'=>$this->input->post('txtSchoolNo'),
+                    'BOOK_NO'=>$this->input->post('txtBookNo'),
+                    'SNO' =>$this->input->post('txtSNo'),
+                    'APPLICATION_NO'=>$this->input->post('txtApplicationNo'),
+                    'regid'=>$regid_,
+                    'RENEWED_UPTO'=>$this->input->post('txtRenewedUpto'),
+                    'SCHOOL_STATUS'=>$this->input->post('cmbSchoolStatus'),
+                    'REGNO_OF_CANDIDATE'=>$this->input->post('txtRgNo'),
+                    'NATIONALITY'=>$this->input->post('txtNationality'),
+                    'DOB_IN_WORDS'=>'NA',
+                    'STUDENT_FAILED'=>$this->input->post('optIsFailed'),
+                    'SUBJECT_OFFERED'=>$this->input->post('txtSubjectOffered'),
+                    'ANY_CONSESSION'=>$this->input->post('optAnyConcession'),
+                    'NCC_SCOUT_GUIDE'=>$this->input->post('optNccScoutGuide'),
+                    'DATE_'=>date('Y-m-d H:i:s'),
+                    'USERNAME_'=>$this->session->userdata('_user___'),
+                    'STATUS'=>1
+                );
+
+                $dataOthers_tc_status= array(
+                    'ORIGINAL'=>1,
+                    'DUES_PAID'=>$this->input->post('optDuesPaid'),
+                    'DATE_OF_CUTTING_NAME'=>$this->input->post('txtDateOfCuttingName'),
+                    'REASON_OF_LEAVING_SCHOOL'=>$this->input->post('txtReasonForLeavingSchool'),
+                    'NO_OF_MEETING_UPTODATE'=>$this->input->post('txtMeetingsUptoDate'),
+                    'SCHOOL_DAYS_ATTENDED'=>$this->input->post('txtSchoolDaysAttended'),
+                    'GENERAL_CONDUCT_OF_STUDENT'=>$this->input->post('cmbGeneralConduct'),
+                    'LAST_STUDIED_CLASS'=>$this->input->post('cmbLastStudiedClass'),
+                    'SCHOOL_OR_BOARD'=>$this->input->post('txtSchoolOrBoard'),
+                    'PROMOTED'=>$this->input->post('optIsPromoted'),
+                    'REMARKS_IF_ANY'=>$this->input->post('txtRemarks'),
+                    'DATE_OF_ISSUE'=>$this->input->post('txtTcIssueDate'),
+                    'regid'=>$regid_,
+                    'USERNAME'=>$this->session->userdata('_user___'),
+                    'DATE_'=>date('Y-m-d H:i:s'),
+                    'STATUS'=>1
+                );
+
                 $query = $this->db->insert('master_8_stud_academics', $dataAcademics);
                 $query = $this->db->insert('master_7_stud_personal', $dataPersonal);
                 $query = $this->db->insert('master_9_stud_address', $dataCorresAdd);
                 $query = $this->db->insert('master_9_stud_address', $dataPerAdd);
                 $query = $this->db->insert('master_10_stud_contact', $dataStuContact);
+                $query = $this->db->insert('master_7_stud_personal_detail', $dataOthers_personal_details);
+                $query = $this->db->insert('master_7_stud_personal_tc_status', $dataOthers_tc_status);
 
                 if($siblings!=''){
                     $query = $this->db->insert('register_sibling', $dataSibling);
@@ -365,6 +406,45 @@ class My_admission_model extends CI_Model {
                 'STATUS' => 1  
             );
 
+            $dataOthers_personal_details=array(
+                'SCHOOL_NO'=>$this->input->post('txtSchoolNo'),
+                'BOOK_NO'=>$this->input->post('txtBookNo'),
+                'SNO' =>$this->input->post('txtSNo'),
+                'APPLICATION_NO'=>$this->input->post('txtApplicationNo'),
+                'regid'=>$regid_,
+                'RENEWED_UPTO'=>$this->input->post('txtRenewedUpto'),
+                'SCHOOL_STATUS'=>$this->input->post('cmbSchoolStatus'),
+                'REGNO_OF_CANDIDATE'=>$this->input->post('txtRgNo'),
+                'NATIONALITY'=>$this->input->post('txtNationality'),
+                'DOB_IN_WORDS'=>'NA',
+                'STUDENT_FAILED'=>$this->input->post('optIsFailed'),
+                'SUBJECT_OFFERED'=>$this->input->post('txtSubjectOffered'),
+                'ANY_CONSESSION'=>$this->input->post('optAnyConcession'),
+                'NCC_SCOUT_GUIDE'=>$this->input->post('optNccScoutGuide'),
+                'DATE_'=>date('Y-m-d H:i:s'),
+                'USERNAME_'=>$this->session->userdata('_user___'),
+                'STATUS'=>1
+            );
+
+            $dataOthers_tc_status= array(
+                'ORIGINAL'=>1,
+                'DUES_PAID'=>$this->input->post('optDuesPaid'),
+                'DATE_OF_CUTTING_NAME'=>$this->input->post('txtDateOfCuttingName'),
+                'REASON_OF_LEAVING_SCHOOL'=>$this->input->post('txtReasonForLeavingSchool'),
+                'NO_OF_MEETING_UPTODATE'=>$this->input->post('txtMeetingsUptoDate'),
+                'SCHOOL_DAYS_ATTENDED'=>$this->input->post('txtSchoolDaysAttended'),
+                'GENERAL_CONDUCT_OF_STUDENT'=>$this->input->post('cmbGeneralConduct'),
+                'LAST_STUDIED_CLASS'=>$this->input->post('cmbLastStudiedClass'),
+                'SCHOOL_OR_BOARD'=>$this->input->post('txtSchoolOrBoard'),
+                'PROMOTED'=>$this->input->post('optIsPromoted'),
+                'REMARKS_IF_ANY'=>$this->input->post('txtRemarks'),
+                'DATE_OF_ISSUE'=>$this->input->post('txtTcIssueDate'),
+                'regid'=>$regid_,
+                'USERNAME'=>$this->session->userdata('_user___'),
+                'DATE_'=>date('Y-m-d H:i:s'),
+                'STATUS'=>1
+            );
+
             $this->db->where('regid', $regid_);
             $query = $this->db->update('master_8_stud_academics', $dataAcademics);
 
@@ -409,6 +489,23 @@ class My_admission_model extends CI_Model {
                     $this->db->where('regid', $regid_);
                     $this->db->delete('register_sibling');
                 }
+            }
+            
+
+            $this->db->where('regid', $regid_);
+            if($this->db->get('master_7_stud_personal_detail')->num_rows()!=0){
+                $this->db->where('regid', $regid_);
+                $query = $this->db->update('master_7_stud_personal_detail', $dataOthers_personal_details);
+            } else {
+                $query = $this->db->insert('master_7_stud_personal_detail', $dataOthers_personal_details);
+            }
+
+            $this->db->where('regid', $regid_);
+            if($this->db->get('master_7_stud_personal_tc_status')->num_rows()!=0){
+                $this->db->where('regid', $regid_);
+                $query = $this->db->update('master_7_stud_personal_tc_status', $dataOthers_tc_status);
+            } else {
+                $query = $this->db->insert('master_7_stud_personal_tc_status', $dataOthers_tc_status);
             }
             // -----------------
 
@@ -601,6 +698,16 @@ class My_admission_model extends CI_Model {
         $query = $this->db->get();
 
         return $query->row();   
+    }
+    function get_personal_detail_6($regid_){
+        $this -> db -> where('regid', $regid_);
+        $query = $this -> db -> get('master_7_stud_personal_detail');
+        return $query->row();
+    }
+    function get_tc_status_7($regid_){
+        $this -> db -> where('regid', $regid_);
+        $query = $this -> db -> get('master_7_stud_personal_tc_status');
+        return $query->row();
     }
     function get_category(){
         $this->db->where('CATEGORY', 'CATEG');

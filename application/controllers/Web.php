@@ -54,6 +54,7 @@ class Web extends CI_Controller {
                 $data['admitted_students'] = $this->mam->get_admitted_students($this->session->userdata('_current_year___'));
                 $data['category_'] = $this->mam->get_category();
                 $data['discounts_'] = $this->mdm->get_discount_except_category_n_siblings();
+                $data['class_in_session'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';
                 $data['Personal'] = ' active';
