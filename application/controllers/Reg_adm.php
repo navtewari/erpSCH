@@ -69,6 +69,8 @@ class Reg_adm extends CI_Controller {
         $data['contact'] = $this->mam->get_admission_detail_3($regid);
         $data['siblings'] = $this->mam->get_siblings_4($regid);
         $data['discounts'] = $this->mam->get_discount_5($regid);
+        $data['personal_detail'] = $this->mam->get_personal_detail_6($regid);
+        $data['tc_status'] = $this->mam->get_tc_status_7($regid);
         echo json_encode($data);
     }
 }

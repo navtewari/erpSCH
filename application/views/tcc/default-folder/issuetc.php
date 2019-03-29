@@ -103,7 +103,7 @@
 	    							<table border="0" width="100%" height="auto" cellpadding="10" class="table_" align="center" style="background: #ffffff" class="content">
 	    								<tr>
 	    									<td>
-	    										विद्यालय सं0/ School No. <u><?php echo $tc_data->SCHOOL_NO;?></u><span class="gap_"></span>पुस्तक नं/ Book No. <u><?php echo $tc_data->BOOK_NO;?></u><span class="gap_"></span>क्रम सं/ S.N. <u><?php echo $tc_data->SNO;?></u><span class="gap_"></span>प्रवेश सं/ Admission No. <u><?php echo $tc_data->ADMISSION_NO;?></u><span class="gap_"></span>
+	    										विद्यालय सं0/ School No. <u><?php echo $tc_data->SCHOOL_NO;?></u><span class="gap_"></span>पुस्तक नं/ Book No. <u><?php echo $tc_data->BOOK_NO;?></u><span class="gap_"></span>क्रम सं/ S.N. <u><?php echo $tc_data->SNO;?></u><span class="gap_"></span>प्रवेश सं/ Admission No. <u><?php echo $tc_data->ADM_NO;?></u><span class="gap_"></span>
 	    										<br>
 	    										Application No. <u><?php echo $tc_data->APPLICATION_NO;?></u><span class="gap_"></span>Renewed upto <u><?php echo $tc_data->RENEWED_UPTO;?></u><span class="gap_"></span>Status of School <u><?php echo $tc_data->SCHOOL_STATUS;?></u>
 	    										<br>

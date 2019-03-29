@@ -54,6 +54,7 @@ class Web extends CI_Controller {
                 $data['admitted_students'] = $this->mam->get_admitted_students($this->session->userdata('_current_year___'));
                 $data['category_'] = $this->mam->get_category();
                 $data['discounts_'] = $this->mdm->get_discount_except_category_n_siblings();
+                $data['class_in_session'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Registration';
                 $data['Personal'] = ' active';
@@ -62,6 +63,7 @@ class Web extends CI_Controller {
                 $data['siblings'] = '';
                 $data['category'] = '';
                 $data['discount'] = '';
+                $data['others'] = '';
                 break;
             case 4:
                 $data['page_'] = 'master';
@@ -107,6 +109,7 @@ class Web extends CI_Controller {
                 $data['siblings'] = '';
                 $data['category'] = '';
                 $data['discount'] = '';
+                $data['others'] = '';
                 break;
             case 11:
                 $data['page_'] = 'master';
@@ -223,8 +226,8 @@ class Web extends CI_Controller {
     }
 
     function set_live_session(){
-        $thisyr = date('Y');
-        $nextyr = date('y')+1;
+        $thisyr = date('Y'); // Capital Y gives four digits
+        $nextyr = date('y')+1; // small y gives two digits
         $live_ = $thisyr . "-" . $nextyr;
         $this->session->set_userdata('live__' , $live_);
     }

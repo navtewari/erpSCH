@@ -540,6 +540,7 @@ $(function(){
 			if($('#cmbRegistrationID').val() == 'new'){
 				reset_admission_form();
 			} else {
+				reset_other_tc_form();
 				var regid_ = $('#cmbRegistrationID').val();
 				url_ = site_url_ + "/reg_adm/get_admision_detail/"+regid_;
 				$.ajax({
@@ -553,7 +554,7 @@ $(function(){
 							if(obj.curr_sess_admission == 'current'){
 								$('#cmbClassofAdmission').removeAttr('disabled', 'disabled');
 								$('#s2id_cmbClassofAdmission').removeClass('disabledbutton');
-								$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
+								//$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID);
 								$('#cmbClassofAdmission').val(obj.personal_academics.CLASS_OF_ADMISSION);
 							} else {
 								$('#s2id_cmbClassofAdmission span').text("Class "+obj.personal_academics.CLASSID+" (Admitted in "+obj.personal_academics.SESSID+")");
@@ -580,6 +581,7 @@ $(function(){
 								}
 							}
 							$('#txtStudentAdhaarCardNo').val(obj.personal_academics.ADHAARCARD_STUDENT);
+							$('#txtAdmNumber').val(obj.personal_academics.ADM_NO);
 							// Filling Parents Detail
 							$('#txtFatherName').val(obj.personal_academics.FATHER);
 							$('#txtFatherMobile').val(obj.personal_academics.F_MOBILE);
@@ -643,6 +645,85 @@ $(function(){
 						if(jQuery.isEmptyObject(obj.personal_academics) == false){
 							$('#cmbCategory').val(obj.personal_academics.CATEGORY);
 							$('#s2id_cmbCategory span').text(obj.personal_academics.CATEGORY);
+						}
+						if(jQuery.isEmptyObject(obj.personal_detail) == false){
+							$('#txtSchoolNo').val(obj.personal_detail.SCHOOL_NO);
+							$('#txtBookNo').val(obj.personal_detail.BOOK_NO);
+							$('#txtSNo').val(obj.personal_detail.SNO);
+							$('#txtApplicationNo').val(obj.personal_detail.APPLICATION_NO);
+							$('#txtRenewedUpto').val(obj.personal_detail.RENEWED_UPTO);
+
+							$('#cmbSchoolStatus').val(obj.personal_detail.SCHOOL_STATUS);
+							$('#s2id_cmbSchoolStatus span').text(obj.personal_detail.SCHOOL_STATUS);
+
+							$('#txtRgNo').val(obj.personal_detail.REGNO_OF_CANDIDATE);
+							$('#txtNationality').val(obj.personal_detail.NATIONALITY);
+							$('#txtNationality').val(obj.personal_detail.NATIONALITY);
+							$('#txtSubjectOffered').val(obj.personal_detail.SUBJECT_OFFERED);
+
+							if(obj.personal_detail.STUDENT_FAILED == 'YES'){
+								$('#optFailedYes').prop('checked', true);
+								$('#uniform-optFailedYes').addClass('focus');
+							} else if (obj.personal_detail.STUDENT_FAILED == 'NO') {
+								$('#optFailedNo').prop('checked', true);
+								$('#uniform-optFailedNo').addClass('focus');
+							}
+
+							if(obj.personal_detail.ANY_CONCESSION == 'YES'){
+								$('#optConcessionYes').prop('checked', true);
+								$('#uniform-optConcessionYes').addClass('focus');
+							} else if (obj.personal_detail.ANY_CONCESSION == 'NO') {
+								$('#optConcessionNo').prop('checked', true);
+								$('#uniform-optConcessionNo').addClass('focus');
+							}
+
+							if(obj.personal_detail.NCC_SCOUT_GUIDE == 'NCC'){
+								$('#optNCC').prop('checked', true);
+								$('#uniform-optNCC').addClass('focus');
+							} else if (obj.personal_detail.NCC_SCOUT_GUIDE == 'SCOUT') {
+								$('#optSCOUT').prop('checked', true);
+								$('#uniform-optSCOUT').addClass('focus');
+							} else if (obj.personal_detail.NCC_SCOUT_GUIDE == 'GUIDE') {
+								$('#optGUIDE').prop('checked', true);
+								$('#uniform-optGUIDE').addClass('focus');
+							} else {
+								$('#optNA').prop('checked', true);
+								$('#uniform-optNA').addClass('focus');
+							}
+						}
+						if(jQuery.isEmptyObject(obj.tc_status) == false){
+							
+							if(obj.tc_status.DUES_PAID == 'YES'){
+								$('#optDuesPaidYes').prop('checked', true);
+								$('#uniform-optDuesPaidYes').addClass('focus');
+							} else if (obj.tc_status.DUES_PAID == 'NO') {
+								$('#optDuesPaidNo').prop('checked', true);
+								$('#uniform-optDuesPaidNo').addClass('focus');
+							}
+
+							$('#txtDateOfCuttingName').val(obj.tc_status.DATE_OF_CUTTING_NAME);
+							$('#txtReasonForLeavingSchool').val(obj.tc_status.REASON_OF_LEAVING_SCHOOL);
+							$('#txtMeetingsUptoDate').val(obj.tc_status.NO_OF_MEETING_UPTODATE);
+							$('#txtSchoolDaysAttended').val(obj.tc_status.SCHOOL_DAYS_ATTENDED);
+							
+							$('#cmbGeneralConduct').val(obj.tc_status.GENERAL_CONDUCT_OF_STUDENT);
+							$('#s2id_cmbGeneralConduct span').text(obj.tc_status.GENERAL_CONDUCT_OF_STUDENT);
+
+							$('#cmbLastStudiedClass').val(obj.tc_status.LAST_STUDIED_CLASS);
+							$('#select2-cmbLastStudiedClass-container span').html(obj.tc_status.LAST_STUDIED_CLASS);
+							
+							$('#txtSchoolOrBoard').val(obj.tc_status.SCHOOL_OR_BOARD);
+
+							if(obj.tc_status.PROMOTED == 'YES'){
+								$('#optPromotedYes').prop('checked', true);
+								$('#uniform-optPromotedYes').addClass('focus');
+							} else if (obj.tc_status.PROMOTED == 'NO') {
+								$('#optPromotedNo').prop('checked', true);
+								$('#uniform-optPromotedNo').addClass('focus');
+							}
+
+							$('#txtRemarks').val(obj.tc_status.REMARKS_IF_ANY);
+							$('#txtTcIssueDate').val(obj.tc_status.DATE_OF_ISSUE);
 						}
 					}, error: function(xhr, status, error){
 						callDanger(xhr.responseText);
@@ -941,6 +1022,44 @@ $(function(){
 			$('#update_master_Discount').val('Add');
 			$('#update_master_Discount').removeClass('btn-primary');
 			$('#update_master_Discount').addClass('btn-success');
+		}
+		function reset_other_tc_form(){
+			$('#txtSchoolNo').val('');
+			$('#txtBookNo').val('');
+			$('#txtSNo').val('');
+			$('#txtApplicationNo').val('');
+			$('#txtRenewedUpto').val('');
+
+			$('#cmbSchoolStatus').val('');
+			$('#s2id_cmbSchoolStatus span').text('');
+
+			$('#txtRgNo').val('');
+			$('#txtNationality').val('');
+			$('#txtNationality').val('');
+			$('#txtSubjectOffered').val('');
+			
+			$('#optFailedNo').prop('checked', true);
+			$('#optConcessionNo').prop('checked', true);
+			$('#optNA').prop('checked', true);
+
+
+			$('#optDuesPaidNo').prop('checked', true);
+			
+			$('#txtDateOfCuttingName').val('');
+			$('#txtReasonForLeavingSchool').val('');
+			$('#txtMeetingsUptoDate').val('');
+			$('#txtSchoolDaysAttended').val('');
+			
+			$('#cmbGeneralConduct').val('');
+
+			$('#cmbLastStudiedClass').val('');
+			
+			$('#txtSchoolOrBoard').val('');
+			
+			$('#optPromotedYes').prop('checked', true);
+
+			$('#txtRemarks').val('');
+			$('#txtTcIssueDate').val('');
 		}
 	// ----------------------------------------
 	// Master Fee -----------------------------

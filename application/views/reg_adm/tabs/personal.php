@@ -15,6 +15,23 @@
             echo form_input($data);
             ?>
         </div>
+        <div class="controls span4">
+        </div>
+        <div class="controls span4">
+            <label class="control-label">Admission Number</label>
+            <?php
+            $data = array(
+                'type' => 'text',
+                'class' => "span12",
+                'autocomplete' => 'off',
+                'required' => 'required',
+                'name' => 'txtAdmNumber',
+                'id' => 'txtAdmNumber',
+                'style' => 'font-weight:bold; color:#0000ff'
+            );
+            echo form_input($data);
+            ?>
+        </div>
     </div>
     <div style="clear: both; height: 8px"></div>
     <div class="control-group">
