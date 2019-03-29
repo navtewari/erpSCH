@@ -226,7 +226,7 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function fetchResult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0, $pagi = 0) {
+    function fetchResult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0,$pagi = 0) {
         ini_set('max_execution_time', 300);
         if ($pagi == 0) {
             $classSessID = $this->input->post('classSessHiddenID');
@@ -236,6 +236,7 @@ class Exam extends CI_Controller {
         }
         $this->check_login();
         $classID = $this->mem->mcheckClassID($classSessID);
+        
         $data['regID_'] = $regID;
         $data['classID'] = $classID;
         $data['session'] = array($this->session->userdata('_current_year___'));

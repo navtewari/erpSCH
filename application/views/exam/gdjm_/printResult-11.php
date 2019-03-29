@@ -1,20 +1,4 @@
 <?php if (count($subject_marks) != 0) { ?>
-<?php 
-function numberToRomanRepresentation($number) {
-    $map = array('X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-    $returnValue = '';
-    while ($number > 0) {
-        foreach ($map as $roman => $int) {
-            if($number >= $int) {
-                $number -= $int;
-                $returnValue .= $roman;
-                break;
-            }
-        }
-    }
-    return $returnValue;
-}
-?>
     <html>
         <head>
             <title> Result of Class <?php echo $classID; ?> </title>
@@ -43,7 +27,6 @@ function numberToRomanRepresentation($number) {
                 .under{
                     border-bottom: 1px #999999 dotted;                   
                 }
-
                 ul li{
                     display:inline-block;
                     padding-right: 20px;
@@ -54,7 +37,6 @@ function numberToRomanRepresentation($number) {
                 ul li.active {                    
                     background-color:#dddbdb;                    
                 }
-
                 .page-loader {
                     position: fixed;
                     left: 0px;
@@ -65,26 +47,17 @@ function numberToRomanRepresentation($number) {
                     background: url(http://localhost/erpSCH/assets_/img/page-loader.gif) 50% 50% no-repeat rgb(249,249,249);
                     opacity: .8;
                 }
-
-                h1{margin:0;padding:0;margin-top:5px;}
-
                 h2{
                 	margin-top: 2px;
                 	margin-bottom: 2px;
                 }
-
                 h3{
-                    font-size:1.7em;
-                  	margin:0px;
-                    padding:0px;
-                    line-height:20px!important;
+                        font-size:1.5em;
+                  	margin-top:2px;
+                	margin-bottom: 2px;  
                 }
-                .marginLarge{
-                    margin-top: 5px;
-                }
-
                 h4,h5{
-                    font-size:1.5em;
+                        font-size:1.3em;
                 	margin-top: 2px;
                 	margin-bottom: 2px;
                 }
@@ -93,7 +66,7 @@ function numberToRomanRepresentation($number) {
         <body>
             <div class="page-loader"></div>
             <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
-                <div class="container-fluid" style="padding-right: 15px !important;padding-left: 35px;">
+                <div class="container-fluid" style="padding-right: 10px !important;padding-left: 40px;">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
@@ -101,25 +74,25 @@ function numberToRomanRepresentation($number) {
                     </div>
                     <div class="row">
                         <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
-                            <table border="0" height="100%" cellpadding="0" class="table_" align="center">
-                                <tr align="center" height="140">                                    
-                                    <td valign="top">
+                            <table border="0" height="100%" cellpadding="1" class="table_" align="center">
+                                <tr align="center">                                    
+                                    <td>
                                         <h1><?php echo $sch_name; ?></h1>
-                                        <h3 class="marginLarge"><?php echo $sch_remark; ?></h3>
-                                        <h4 class="marginLarge"><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
-                                        <h4 class="marginLarge"><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
+                                        <h3><?php echo $sch_remark; ?></h3>
+                                        <h4><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
+                                        <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                     </td>
-                                    <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
+                                    <td width="150" valign="top" style="padding-right:1em;padding-top:1em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
                                 </tr>
-                                <tr align="center" height="40px">
+                                <tr align="center">
                                     <td colspan="2">
-                                        <h3><b>Academic Session <?php echo $this->session->userdata('_current_year___'); ?></b></h3><br/>
-                                        <h3 style="margin-bottom: 10px;"><b>REPORT CARD FOR CLASS <?php echo numberToRomanRepresentation($classID);?></b></h3>
+                                        <h3 style="line-height: 20px!important;"><b>Academic Session <?php echo $this->session->userdata('_current_year___'); ?></b></h3>
+                                        <h4><b>REPORT CARD FOR CLASS XI</b></h4>
                                     </td>
                                 </tr>
                                 <tr style="border-top:#000000 solid 1px;">
-                                    <td colspan="2" valign="middle">
-                                        <table border="0" width="100%">
+                                    <td colspan="2">
+                                        <table border="0" style="line-height:30px;" width="100%">
                                             <tr>
                                                 <td width='33%' valign="top" style="font-size:.85em;">
                                                     <?php
@@ -129,8 +102,8 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
-                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  <br/>  
-                                                        Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?> <?php echo substr($classID,2,1); ?></b>
+                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  
+                                                        Class/ Section: <b class='under'><?php echo substr($classID,0,2); ?></b>
                                                     <?php } ?>
                                                 </td>        
                                                 <td width='33%' valign="top" style="font-size:.85em;">
@@ -140,7 +113,7 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
-                                                        Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>   <br/>  
+                                                        Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>   
                                                         Admission No.: <b class='under'>
                                                             <?php echo $stuData->ADM_NO; ?></b>
                                                     <?php } ?>
@@ -152,7 +125,7 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
-                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b><br/><br/>  
+                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b><br/>
                                                         Date Of Birth: <b class='under'><?php echo $stuData->DOB_; ?></b>
                                                     <?php } ?>
                                                 </td>        
@@ -162,8 +135,8 @@ function numberToRomanRepresentation($number) {
                                 </tr>
                                 <!-- Scholastic Area -->
                                 <tr>
-                                    <td colspan="2" valign="top">
-                                        <table border="1" cellpadding="2" width="100%" height="100%">
+                                    <td colspan="2">
+                                        <table border="1" cellpadding="3" width="100%">
                                              <tr align="center">
                                                 <td width="2%" rowspan="3">Sr. No.</td>
                                                 <td width="16%" rowspan="3">Subjects</td>
@@ -306,7 +279,7 @@ function numberToRomanRepresentation($number) {
                                                     }
                                                     ?> 
                                                     <td></td>
-                                                    <td height="30px;">Remarks</td>
+                                                    <td height="40px;">Remarks</td>
                                                     <td colspan="<?php echo $schCount+1;?>"></td>                                                    
                                                     <td colspan="<?php echo $schCount+1;?>"></td>                                                    
                                                 </tr>
@@ -314,23 +287,23 @@ function numberToRomanRepresentation($number) {
                                     </td>
                                 </tr>                                                                
                                 <!-- Co-Scholastic Area -->                                
+
+                                
                                 <tr>
-                                    <td colspan="2" valign="top">
-                                        <table width="100%" height="100%" cellpadding="0" border="0" cellspacing="0">
+                                    <td colspan="2" style="vertical-align:top;padding-top: 0!important;margin-top: 0!important;">
+                                        <table width="100%" cellpadding="0" border="0">
                                             <tr>
-                                                <td style="vertical-align:top;padding-top:5px;" align="left">&nbsp;&nbsp;Signature: </td>
-                                                <td style="vertical-align:top;padding-top:5px;padding-left: 5px;" align="left" width="9%">
-                                                    Class Teacher- <br/><br/>
+                                                <td style="vertical-align:top;" align="right" width="16%">
+                                                    Signature: &nbsp;&nbsp;&nbsp;&nbsp;Class Teacher- <br/><br/>
                                                     Principal- <br/><br/>
                                                     Parents- 
                                                 </td>
-                                                <td style="vertical-align: top;padding-top: 5px;" align="left">
+                                                <td style="vertical-align: top;" align="left">
                                                     .....................................................<br/><br/>
                                                     .....................................................<br/><br/>
                                                     .....................................................
                                                 </td>
-                                                <td width="37%"></td>
-                                                <td style="vertical-align: top;text-align:left;padding-top: 5px;">
+                                                <td style="vertical-align: top;text-align:right;">
                                                     Final Result :
                                                     <span style='border-bottom: #000 dotted 1px; font-size: 13px;'>
                                                         <?php
@@ -339,15 +312,10 @@ function numberToRomanRepresentation($number) {
                                                         }
                                                         ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>
                                                     </span>              
-                                                    Signature of Class Teacher- .............................................<br/><br/>
-                                                    Signature of Principal with Seal- ......................................<br/><br/><br/><br/>
+                                                    Signature of Class Teacher- ..............................................<br/><br/>
+                                                    Signature of Principal with Seal- ..............................................<br/><br/><br/><br/>
                                                 </td>
                                             </tr>
-                                            <tr height="50px">
-                                                <td colspan="5" valign="top" style="font-size:18px;">
-                                                    &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
-                                                </td>
-                                            </tr>  
                                         </table>
                                     </td>
                                 </tr>                                
@@ -357,7 +325,7 @@ function numberToRomanRepresentation($number) {
                 </div>
             <?php } else { ?>
                 <!-------------------------------------------------------------------------------ALL---->
-                <div class="container-fluid" style="padding-right: 15px !important;padding-left: 35px;">
+                <div class="container-fluid" style="padding-right: 10px !important;padding-left: 40px;">
                     <div class="row hide_pagination">
                         <div class="col-sm-12" align="center">
                             <p> <?php echo $links; ?></p>
@@ -372,26 +340,26 @@ function numberToRomanRepresentation($number) {
                     <?php foreach ($student_per_data as $stuData) { ?>
                         <div class="row page" style="page-break-after: always;">
                             <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
-                                <table border="0" height="100%" cellpadding="0" class="table_" align="center">
-                                    <tr align="center" height="140">                                
+                                <table border="0" height="100%" cellpadding="5" class="table_" align="center">
+                                    <tr align="center">                                    
                                         <td>
                                             <h1><?php echo $sch_name; ?></h1>
-                                            <h3 class="marginLarge"><?php echo $sch_remark; ?></h3>
-                                            <h4 class="marginLarge"><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
-                                            <h4 class="marginLarge"><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
+                                            <h3><?php echo $sch_remark; ?></h3>
+                                            <h4><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
+                                            <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                         </td>
-                                        <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
+                                        <td width="150" valign="top" style="padding-right:1em;padding-top:1em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
                                     </tr>
-                                    <tr align="center" height="40px">
-                                    <td colspan="2">
-                                        <h3><b>Academic Session <?php echo $this->session->userdata('_current_year___'); ?></b></h3><br/>
-                                        <h3 style="margin-bottom: 10px;"><b>REPORT CARD FOR CLASS <?php echo numberToRomanRepresentation($classID);?></b></h3>
-                                    </td>
-                                </tr>                            
+                                    <tr align="center">
+                                        <td colspan="2">
+                                            <h3 style="line-height: 20px!important;"><b>Academic Session <?php echo $this->session->userdata('_current_year___'); ?></b></h3>
+                                            <h4><b>REPORT CARD FOR CLASS XI</b></h4>
+                                        </td>
+                                    </tr>                             
                                 <!-- Student Information -->
                                 <tr style="border-top:#000000 solid 1px;">
-                                    <td colspan="2" valign="middle">
-                                        <table border="0" width="100%">
+                                    <td colspan="2">
+                                        <table border="0" style="line-height:30px;" width="100%">
                                             <tr>
                                                 <td width='33%' valign="top" style="font-size:.85em;">
                                                     <?php                                                    
@@ -400,8 +368,8 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
 
-                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/><br/>  
-                                                        Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?> <?php echo 'C'//substr($classID,2,1); ?></b>
+                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  
+                                                        Class/ Section: <b class='under'><?php echo substr($classID,0,2); ?></b>
                                                                                                    
                                                 </td>        
                                                 <td width='33%' valign="top" style="font-size:.85em;">
@@ -410,8 +378,9 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>
-                                                    Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/><br/>
-                                                    Admission No.: <b class='under'><?php echo $stuData->ADM_NO; ?></b>                                
+                                                    Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>
+                                                    Admission No.: <b class='under'><?php echo $stuData->ADM_NO; ?></b>                                                        
+                                                  
                                                 </td>        
                                                 <td valign="top" style="font-size:.85em;">
                                                     <?php
@@ -420,7 +389,7 @@ function numberToRomanRepresentation($number) {
                                                         //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
                                                         //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
                                                         ?>  
-                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b> <br><br/>
+                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b> <br>
                                                         Date Of Birth: <b class='under'><?php echo $stuData->DOB_; ?></b> <br/>                                                    
                                                 </td>        
                                             </tr>
@@ -429,8 +398,8 @@ function numberToRomanRepresentation($number) {
                                 </tr>
                                     <!-- Scholastic Area -->
                                     <tr>
-                                        <td colspan="2" valign="top">
-                                            <table border="1" cellpadding="2" width="100%" height="100%">
+                                        <td colspan="2">
+                                            <table border="1" cellpadding="3" width="100%">
                                                 <tr align="center">
 	                                                <td width="2%" rowspan="3">Sr. No.</td>
 	                                                <td width="16%" rowspan="3">Subjects</td>
@@ -564,9 +533,9 @@ function numberToRomanRepresentation($number) {
                                                     ?> 
                                                     <td></td>
                                                     <td>Term Result</td>
-                                                    <td colspan="<?php echo $schCount;?>"><?php echo '500'//$subjectCount*100;?></td>
+                                                    <td colspan="<?php echo $schCount;?>"><?php echo $subjectCount*100;?></td>
                                                     <td><?php echo $subTotal1;?></td>
-                                                    <td colspan="<?php echo $schCount;?>"><?php echo '500'//$subjectCount*100;?></td>
+                                                    <td colspan="<?php echo $schCount;?>"><?php echo $subjectCount*100;?></td>
                                                     <td><?php echo $subTotal2;?></td>
                                                 </tr>
                                                 
@@ -586,24 +555,22 @@ function numberToRomanRepresentation($number) {
                                         </td>
                                     </tr>                                   
                                    <tr>
-                                    <td colspan="2" valign="top">
-                                        <table width="100%" height="100%" cellpadding="0" border="0" cellspacing="0">
+                                    <td colspan="2" style="vertical-align:top;padding-top: 0!important;margin-top: 0!important;">
+                                        <table width="100%" cellpadding="0" border="0">
                                             <tr>
-                                                <td style="vertical-align:top;padding-top:5px;" align="left">&nbsp;&nbsp;Signature: </td>
-                                                <td style="vertical-align:top;padding-top:5px;padding-left: 5px;" align="left" width="9%">
-                                                    Class Teacher- <br/><br/>
+                                                <td style="vertical-align:top" align="right" width="16%">
+                                                    Signature: &nbsp;&nbsp;&nbsp;&nbsp;Class Teacher- <br/><br/>
                                                     Principal- <br/><br/>
                                                     Parents- 
                                                 </td>
-                                                <td style="vertical-align: top;padding-top: 5px;" align="left">
+                                                <td style="vertical-align: top;" align="left">
                                                     .....................................................<br/><br/>
                                                     .....................................................<br/><br/>
                                                     .....................................................
                                                 </td>
-                                                <td width="37%"></td>
-                                                <td style="vertical-align: top;text-align:left;padding-top: 5px;">
+                                                <td style="vertical-align: top; text-align:right">
                                                     Final Result :
-                                                     <span style='border-bottom: #000 dotted 1px; font-size: 13px;'>
+                                                    <span style='border-bottom: #000 dotted 1px; font-size: 13px;'>
                                                         <?php
 		                                                foreach ($teacher_remarks as $remarks) {
 		                                                    if ($stuData->regid == $remarks->regid) {
@@ -612,15 +579,10 @@ function numberToRomanRepresentation($number) {
 		                                                }
 		                                                ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>
                                                     </span>              
-                                                    Signature of Class Teacher- .............................................<br/><br/>
-                                                    Signature of Principal with Seal- ......................................<br/><br/><br/><br/>
+                                                    Signature of Class Teacher- ..............................................<br/><br/>
+                                                    Signature of Principal with Seal- ..............................................<br/><br/><br/><br/>
                                                 </td>
                                             </tr>
-                                            <tr height="30px">
-                                                <td colspan="5" valign="top" style="font-size:15px;">
-                                                    &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
-                                                </td>
-                                            </tr>  
                                         </table>
                                     </td>
                                 </tr>                                   

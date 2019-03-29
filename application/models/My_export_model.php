@@ -62,7 +62,7 @@ class My_export_model extends CI_Model {
         $this->db->select("NULL as Marks", false);
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
-        $this->db->join('master_10_stud_contact e', 'b.regid=e.regid');
+        //$this->db->join('master_10_stud_contact e', 'b.regid=e.regid');
         $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
         $this->db->join('class_2_in_session d', 'c.CLSSESSID=d.CLSSESSID');
         $this->db->order_by('cast(a.regid AS SIGNED INT)', 'ASC');

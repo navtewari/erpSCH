@@ -1261,6 +1261,8 @@ class My_exam_model extends CI_Model {
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        //$this->db->join('master_8_stud_academics d', 'a.regid=d.regid');
+        //$this->db->where('d.STATUS_', '1');
         $this->db->where('b.clssessid', $classSessID);
         $this->db->where('c.SESSID', $year__);        
         $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');

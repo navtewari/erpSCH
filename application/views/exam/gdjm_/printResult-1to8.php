@@ -66,6 +66,7 @@
                     opacity: .8;
                 }
                 h3{
+                    font-size:1.4em;
                     margin:0;
                 }
                 h4,h5{
@@ -100,7 +101,7 @@
                                                     <h3><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h3> 
                                                     <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                                 </td>
-                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
+                                                <td width="150" valign="top" style="padding-right:1.2em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
                                             </tr>
                                             <tr align="center" height="100px;">
                                                 <td colspan="2">
@@ -112,7 +113,7 @@
                                                 <td colspan="2">
                                                     <table border="0" style="line-height:40px;" width="100%">
                                                         <tr>
-                                                            <td width='33%' valign="top" style="font-size:1em;">
+                                                            <td width='33%' valign="top" style="font-size:1.2em;">
                                                                 <?php
                                                                 foreach ($student_per_data as $stuData) {
                                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
@@ -140,12 +141,12 @@
                                             </tr>
                                             <!-- Scholastic Area -->
                                             <tr style="border-top:#000000 solid 1px;">
-                                                <td colspan="2" align="center" valign="bottom" style="font-size:18px;">SCHOLASTIC AREAS</td>
+                                                <td colspan="2" align="center" valign="bottom" style="font-size:21px;">SCHOLASTIC AREAS</td>
                                             </tr>
                                             <!-- Scholastic Area -->
                                             <tr>
                                                 <td colspan="2">
-                                                    <table border="1" cellpadding="2" width="100%">                                            
+                                                    <table border="1" cellpadding="6" width="100%">
                                                         <tr height='45'>
                                                             <td width="19%" rowspan="2" align="center">SUBJECT</td>
                                                             <?php
@@ -303,35 +304,7 @@
 
 
 
-                                                        <tr height='35'>
-                                                            <td width="16%" align="center">Attendance</td>
-                                                            <?php
-                                                            $schCount = 0;
-                                                            foreach ($sch_data_class as $scho_items) {
-                                                                $schCount++;
-                                                            }
-                                                            ?>
-
-                                                            <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
-                                                                <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
-                                                                <?php
-                                                                   
-                                                                    foreach ($overall_result as $over_result) {
-                                                                        if ($term == 1) {
-                                                                            echo $over_result->ATT_TERM1;
-                                                                        } else {
-                                                                            echo $over_result->ATT_TERM2;
-                                                                        }                                                                        
-                                                                    }
-                                                                    if ($term == 1) {
-                                                                        $term++;
-                                                                    } else if ($term == 2) {
-                                                                        $term--;
-                                                                    }
-                                                                    ?>
-                                                                </td>
-                                                            <?php } ?>
-                                                        </tr>
+                                                        
 
                                                     </table>
                                                 </td>
@@ -407,7 +380,7 @@
                                                         </tr>
                                                         <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
+                                                                &nbsp;&nbsp;Note: School Re-opens on 01-04-2019.
                                                             </td>
                                                         </tr>  
                                                     </table>
@@ -462,7 +435,7 @@
                                                     <td colspan="2">
                                                         <table border="0" style="line-height:40px;" width="100%">
                                                             <tr>
-                                                                <td width='33%' valign="top" style="font-size:1em;">
+                                                                <td width='33%' valign="top" style="font-size:1.2em;">
                                                                     <?php
                                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
                                                                     //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
@@ -474,7 +447,7 @@
 
 
                                                                 </td>        
-                                                                <td width='33%' valign="top" style="font-size:1em;">
+                                                                <td width='33%' valign="top" style="font-size:1.2em;">
                                                                     <?php
                                                                     $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
                                                                     //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
@@ -490,12 +463,12 @@
                                                 </tr>
                                                 <!-- Scholastic Area -->
                                                 <tr style="border-top:1px #000000 solid;">
-                                                    <td colspan="2" align="center" valign="bottom" style="font-size:18px;">SCHOLASTIC AREAS</td>
+                                                    <td colspan="2" align="center" valign="bottom" style="font-size:21px;">SCHOLASTIC AREAS</td>
                                                 </tr>
                                                 <!-- Scholastic Area -->
                                                 <tr>
                                                     <td colspan="2">
-                                                        <table border="1" cellpadding="3" width="100%">
+                                                        <table border="1" cellpadding="6" width="100%">
                                                             <tr height='45'>
                                                                 <td width="16%" rowspan="2" align="center">SUBJECT</td>
                                                                 <?php
@@ -654,41 +627,7 @@
                                                                         ?>
                                                                     </td>
                                                                 <?php } ?>
-                                                            </tr>
-
-
-
-                                                            <tr height='35'>
-                                                                <td width="16%" align="center">Attendance</td>
-                                                                <?php
-                                                                $schCount = 0;
-                                                                foreach ($sch_data_class as $scho_items) {
-                                                                    $schCount++;
-                                                                }
-                                                                ?>
-
-                                                                <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
-                                                                    <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
-                                                                    <?php
-                                                                        
-                                                                        foreach ($overall_result as $over_result) {
-                                                                            if ($stuData->regid == $over_result->regid) {
-                                                                                if ($term == 1) {
-                                                                                    echo $over_result->ATT_TERM1;
-                                                                                } else {
-                                                                                    echo $over_result->ATT_TERM2;
-                                                                                }                                                                                
-                                                                            }
-                                                                        }
-                                                                        if ($term == 1) {
-                                                                            $term++;
-                                                                        } else if ($term == 2) {
-                                                                            $term--;
-                                                                        }
-                                                                        ?>
-                                                                    </td>
-                                                                <?php } ?>
-                                                            </tr>
+                                                            </tr>                                                           
 
                                                         </table>
                                                     </td>
@@ -768,7 +707,7 @@
                                                             </tr>
                                                             <tr height="50px">
                                                                 <td colspan="5" valign="top" style="font-size:18px;">
-                                                                    &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
+                                                                    &nbsp;&nbsp;Note: School Re-opens on 01-04-2019.
                                                                 </td>
                                                             </tr> 
                                                         </table>
@@ -777,7 +716,7 @@
                                             </table>
                                         </td>
                                     </tr>
-                                </table>                                			
+                                </table>                                            
                             </div>
                         </div>
                     <?php } ?>
