@@ -3974,6 +3974,59 @@ $(function(){
 			});
 			
 		});
+
+
+		$('body').on('click', '.classwise_paid_dues_discount', function(){
+			$('#chkReminderALL').prop('checked', false);
+			$('#uniform-chkReminderALL span').removeClass('checked');
+			$('#selectall_reminder').html('Select All');
+			var str = this.id;
+			var arr_ = str.split('~');
+			var data_ = "clssessid="+arr_[1];
+			var show_class = arr_[3];
+			var url_ = site_url_+'/dashboardReports/get_total_paid_dues_discount_via_ajax';
+			$('#class_reminder').val(show_class);
+			$('#dues_for_class').html("Total Due(s) in <span style='background: #ffff00; color: #900000; font-weight: bold; padding: 0px 4px; border-radius: 3px'>Class "+show_class+"</span> in "+_current_year___);
+			$("#student_dues_data_here").html("<tr><td colspan='7'><h5 style='text-align: center'>Please wait...</h5></td></tr>");
+			$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'></span>");
+			$.ajax({
+				type: "POST",
+				url: url_,
+				data: data_,
+				success: function(data){
+					var obj = JSON.parse(data);
+					var str = '';
+					var total_dues = obj.total_dues.length;
+					$('#dues_from_class').html("Amount Due (Rs.)<br>"+"<span style='color: #0000ff'>Rs. "+obj.total_class_dues+"/-</span>")
+					if(total_dues > 0){
+						for(i=0; i< total_dues; i++){
+							var css_class = ' class="view_invoice_1"';
+							str = str + '<tr class="gradeX">';
+                            str = str + '<td style="text-align: center">';
+                            str = str + obj.total_dues[i].regid;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left">';
+                            str = str + obj.total_dues[i].FNAME;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left;">';
+                            str = str + obj.total_dues[i].DISCOUNT_AMOUNT;
+                            str = str + '</td>';
+                            str = str + '<td style="text-align: left;">';
+                            str = str + obj.total_dues[i].TOTAL_PAID;
+                            str = str + '</td>';
+                            str = str + '<td>';
+                            str = str + obj.total_dues[i].DUES;
+                            str = str + '</td>';
+                            str = str + '</tr>';
+						}
+					} else {
+						str = "<td colspan='8' style='color: #ff0000; text-align: center; font-weight: bold; padding:10px'>Hurra!! No Dues Left...</td>";
+					}
+					$('#student_dues_data_here').html(str);
+				}
+			});
+			
+		});
 	$('#chkReminderALL').click(function(){
 		if($('.chkReminder').length != 0){
 			if($('#chkReminderALL').prop('checked') == true){

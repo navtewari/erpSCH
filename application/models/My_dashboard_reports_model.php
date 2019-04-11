@@ -419,6 +419,34 @@ class My_dashboard_reports_model extends CI_Model {
         return $query->result();
     }
 
+    function get_total_paid_dues_discount($clssessid='x'){
+        //if($year_ != 'x'){
+            //$this->db->where('a.SESSID', $year_);
+        //}
+        if($clssessid != 'x'){
+            $this->db->where('a.CLSSESSID', $clssessid);   
+        }
+        $this->db->where('d.STATUS_', 1); // This means student not left the school yet 
+        $this->db->where('b.STATUS', 1); // means latest invoice   
+        //$this->db->where('b.DUE_AMOUNT>', 0);
+        $this->db->select('c.FNAME, i.regid as regid, SUM(b.ACTUAL_DUE_AMOUNT) AS ACTUAL_DUE_AMOUNT, SUM(i.PAID) as TOTAL_PAID, SUM(i.DISCOUNT_AMOUNT) AS DISCOUNT_AMOUNT, SUM(b.ACTUAL_DUE_AMOUNT)-SUM(i.PAID) AS DUES');
+        //$this->db->from('class_1_classes y');
+        //$this->db->join('class_2_in_session x', 'y.CLASSID=x.CLASSID');
+        //$this->db->join('fee_6_invoice a', 'x.CLSSESSID=a.CLSSESSID');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('fee_7_receipts i', 'b.INVDETID=i.INVDETID');
+        $this->db->join('master_7_stud_personal c', 'c.regid=b.REGID');
+        $this->db->join('master_8_stud_academics d', 'd.regid=c.regid');
+        //$this->db->order_by('ABS(a.YEAR_FROM)', 'desc');
+        //$this->db->order_by('ABS(a.MONTH_FROM)', 'desc');
+        //$this->db->order_by('c.FNAME');
+        $this->db->group_by('b.regid');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
     function getClasses_in_session_having_dues($session){
         $year__ = $session;
         $this->db->select('a.CLASSID, b.CLSSESSID, SUM(d.DUE_AMOUNT) AS DUES');

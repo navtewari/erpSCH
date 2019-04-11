@@ -78,6 +78,15 @@
 						</a> 
 					</li>
 				</ul>
+				<div style="clear: both"></div>
+				<ul class="quick-actions">
+					<li class="bg_ls"> 
+						<a href="<?php echo site_url('DashboardReports/get_total_dues_in_a_session_print');?>"> 
+							<i class="icon-book"></i> 
+							Dues List Class-wises
+						</a> 
+					</li>
+				</ul>
 			</div>
 		</div>
 		<div style="clear: both"></div>

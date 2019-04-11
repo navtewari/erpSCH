@@ -142,6 +142,14 @@ class DashboardReports extends CI_Controller {
         $data['total_dues'] = $this->dr->get_total_dues_in_a_session($this->session->userdata('_current_year___'), $clssessid);
         echo json_encode($data);
     }
+
+    function get_total_paid_dues_discount_via_ajax(){
+        $clssessid = $this->input->post('clssessid');
+        $data['fetch_month'] = $this->my_library->getMonths();
+        $data['total_class_dues'] = $this->dr->total_dues_in_a_session($clssessid);
+        $data['total_dues'] = $this->dr->get_total_paid_dues_discount($clssessid);
+        echo json_encode($data);
+    }
     function get_todays_collection(){
         $this->check_login();
 
@@ -209,6 +217,29 @@ class DashboardReports extends CI_Controller {
 
         $data['page_'] = 'dashboard_reports';
         $data['title_'] = "Total Dues";
+        
+        $data['total_classes'] = $this->dr->getClasses_in_session_having_dues($this->session->userdata('_current_year___'));
+        
+
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
+        $data['sub_menu'] = $this->mm->getsubmenu();
+
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/menu', $data);
+        $this->load->view('dashboard', $data);
+        $this->load->view('templates/footer');
+    }
+
+    function get_total_dues_in_a_session_print(){
+        $this->check_login();
+
+        $data['inner_page'] = 'dues_print';
+        $data['active'] = 1;
+
+        $data['page_'] = 'dashboard_reports';
+        $data['title_'] = "CLass-wise Dues";
         
         $data['total_classes'] = $this->dr->getClasses_in_session_having_dues($this->session->userdata('_current_year___'));
         

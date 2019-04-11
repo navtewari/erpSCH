@@ -101,6 +101,7 @@ class Web extends CI_Controller {
             case 10:
                 $data['student_in_current_session'] = $this->mam->getstudents_for_dropdown($this->session->userdata('_current_year___'));
                 $data['category_'] = $this->mam->get_category();
+                $data['class_in_session'] = $this->mam->getClasses_in_session($this->session->userdata('_current_year___'));
                 $data['page_'] = 'reg_adm';
                 $data['title_'] = 'Admission';
                 $data['Personal'] = ' active';

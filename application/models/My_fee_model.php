@@ -746,13 +746,14 @@ class My_fee_model extends CI_Model {
         return $data;
     }
 
-    function fetch_due_amount_in_invoice($regid){
+    /*
+    function fetch_due_amount_in_invoice($regid){ // This function fetches the due amount from previous session also
         $this->db->where('a.REGID', $regid);
         $this->db->select('a.INVDETID');
         $this->db->from('fee_6_invoice_detail a');
         $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
         $this->db->where('b.STATUS_', 1);
-        $this->db->order_by('INVID', 'desc');
+        $this->db->order_by('a.INVID', 'desc');
         $query = $this->db->get();
         //echo $this->db->last_query();
         if($query->num_rows()!=0){
@@ -772,6 +773,38 @@ class My_fee_model extends CI_Model {
         }
         return $bool_;
     }
+    */
+
+
+    function fetch_due_amount_in_invoice($regid){ // This function fetches the due amount only from current session
+        $this->db->where('a.REGID', $regid);
+        $this->db->select('a.INVDETID');
+        $this->db->from('fee_6_invoice_detail a');
+        $this->db->join('fee_6_invoice x', 'a.INVID=x.INVID');
+        $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
+        $this->db->where('b.STATUS_', 1);
+        $this->db->where('x.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->order_by('a.INVID', 'desc');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        if($query->num_rows()!=0){
+            $row = $query->row();
+            $invdetid = $row->INVDETID;
+            $this->db->select('a.DUE_AMOUNT');
+            $this->db->where('a.INVDETID', $invdetid);
+            $this->db->from('fee_6_invoice_detail a');
+            $this->db->join('master_8_stud_academics b', 'a.REGID=b.regid');
+            $this->db->where('b.STATUS_', 1);
+            $query = $this->db->get();
+            //echo $this->db->last_query();
+            $r = $query->row();
+            $bool_ = $r->DUE_AMOUNT;
+        } else {
+            $bool_ = 0;
+        }
+        return $bool_;
+    }
+
     function undo_invoice($invdetid_, $regid_, $clssessid){
         $this->db->select('regid');
         $this->db->where('INVDETID', $invdetid_);
