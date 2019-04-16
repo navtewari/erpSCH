@@ -1357,6 +1357,56 @@ class My_fee_model extends CI_Model {
         }
         return $id_;
     }
+
+    function getInvoices_in_session($session, $clssessid=''){
+        $this->db->distinct('a.INVID');
+        $this->db->select('a.*, c.regid, c.FNAME, c.MNAME, c.LNAME');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_7_stud_personal c', 'b.REGID=c.regid');
+        $this->db->join('master_8_stud_academics d', 'c.regid=d.regid');
+        $this->db->where('d.STATUS_', 1);
+        $this->db->where('a.SESSID', $session);
+        if($clssessid != '') { $this->db->where('a.CLSSESSID', $clssessid); }
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
+    function getMasterDiscounts(){
+        $this->db->order_by('CATEGORY');
+        $this->db->select('DID, ITEM_, CATEGORY');
+        $query = $this->db->get('master_16_discount');
+        return $query->result();
+    }
+
+    function getDiscountedStudents($session, $clssessid){
+        $discounts = $this->input->post('chkDiscounts');
+        $str = '';
+        for($i=0; $i<count($discounts); $i++){
+            
+            if($str == ''){
+                //$str = 'a.DISCOUNT in '.'"'.explode("~",$discounts[$i])[1].'"'
+                $str = "(FIND_IN_SET('".explode("~",$discounts[$i])[1]."', a.DISCOUNT)";
+            } else {
+                $str = $str . "OR FIND_IN_SET('".explode("~",$discounts[$i])[1]."', a.DISCOUNT)";
+            }
+            
+        }
+        $str = $str . ")";
+        $this->db->distinct('a.regid');
+        $this->db->where($str);
+        $this->db->from('register_discount a');
+        $this->db->join('master_7_stud_personal b', 'a.regid=b.regid');
+        $this->db->join('master_8_stud_academics c', 'b.regid=c.regid');
+        $this->db->join('class_3_class_wise_students d', 'c.regid=d.regid');
+        $this->db->where('c.STATUS_', 1);
+        //$this->db->where('d.SESSID', $session);
+        $this->db->where('d.CLSSESSID', $clssessid);
+        $query = $this->db->get();
+        //echo $this->db->last_query(); die();
+        return $query->result();
+    }
     // ---------------------------
 
     function getMonths($no){

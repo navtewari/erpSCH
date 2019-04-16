@@ -215,10 +215,21 @@ class Web extends CI_Controller {
                 $data['title_'] = 'Manage Session wise Detail';
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break; 
+            case 31:
+                $data['page_'] = 'fee';
+                $data['title_'] = 'View Discounted Students';
+                //$data['current_invoices']= $this -> fm -> getInvoices_in_session($this -> session -> userdata('_current_year___'));
+                $data['discounts'] = $this -> fm -> getMasterDiscounts();
+                $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
+                break;
             default:
                 $data['page_'] = 'errors';
         }
         return $data;
+    }
+
+    function getInvoices($session, $clssessid){
+
     }
     function check_login() {
         if (!$this->session->userdata('_user___')) {

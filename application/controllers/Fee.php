@@ -302,6 +302,16 @@ class Fee extends CI_Controller {
     function get_all_fee_heads(){
         // yet to code
     }
+
+    function getInvoices($class__){
+        $data['current_invoices_for_a_class'] = $this -> fm -> getInvoices_in_session($this->session->userdata('_current_year___'), $class__);
+        echo json_encode($data);
+    }
+
+    function getDiscountedStudents($class__){
+        $data['discounted_students'] = $this -> fm -> getDiscountedStudents($this->session->userdata('_current_year___'), $class__);
+        echo json_encode($data);
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

@@ -2919,6 +2919,57 @@ $(function(){
 	    });
 		$('.sendsmsForFee2').click(function(){$('.sendsmsForFee').click();});
 			// -------------------------------
+
+		$('#cmbClassesForDiscountedStudents').change(function(){
+			var class_ = $(this).find('option:selected').text().toUpperCase();
+
+			var url_ = site_url_ + "/fee/getDiscountedStudents/"+$(this).val();
+			if($('#cmbClassesForDiscountedStudents').val() != 'x' && $('input[name="chkDiscounts[]"]:checked').length > 0){
+				var data_ = $('#frmDiscountedStudents').serialize();
+				$('#discounted_students_here').html('<tr><td colspan=2>Wait its loading...</td></tr>');
+				$.ajax({
+					type: 'POST',
+					url: url_,
+					data: data_,
+					success: function(data){
+						var color_array= ['#900000', '#009000', '#000090', '#909000', '#'];
+						var color_count = 0;
+						var obj = JSON.parse(data);
+						var str = '';
+						var dis_arr = [];
+						$('#caption_for_class_for_discounted_students').html('Selected Class - ' + '<span style="background: #ffff00; color: #ff0000; padding: 4px; border-radius: 5px">' + class_ + '</span>');
+						
+						
+						for(loop1=0; loop1<obj.discounted_students.length; loop1++){
+							discount = obj.discounted_students[loop1].DISCOUNT;
+							dis_arr = discount.split(',');
+							if(dis_arr.length > 1){
+								color_ = " style='color: "+color_array[color_count]+"; text-decoration: underline'";
+								color_count = color_count + 1;
+							} else {
+								color_ = '';
+							}
+							for(k=0; k<dis_arr.length; k++){
+								str = str + "<tr"+color_+">"
+								str = str + "<td>" + obj.discounted_students[loop1].regid + "</td>";
+								str = str + "<td>" + obj.discounted_students[loop1].FNAME + "</td>";
+								str = str + "<td>" + dis_arr[k]  + "</td>";
+								str = str + "</tr>";
+							}
+						}
+						
+						$('#discounted_students_here').html(str);
+					}
+				});
+			} else {
+				$('#caption_for_class_for_discounted_students').html('Selected Class - ' + '<span style="background: #ffff00; color: #ff0000; padding: 4px; border-radius: 5px">NA</span>');
+			}
+		});
+
+		$('#cmbShowDiscountedStudents').click(function(){
+			$('#cmbClassesForDiscountedStudents').change();
+			return false;
+		});
 	// ----------
 	// Common Functions
 		function get_months(num){
