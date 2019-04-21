@@ -2919,11 +2919,23 @@ $(function(){
 	    });
 		$('.sendsmsForFee2').click(function(){$('.sendsmsForFee').click();});
 			// -------------------------------
-
+		$('.chkDiscountsForDiscountedStudents').click(function(){notifySelectedDiscounts();});
+		function notifySelectedDiscounts(){
+			var d_str = [];
+			$('.chkDiscountsForDiscountedStudents:checked').each(function(){
+				var x = $(this).val();
+				var arr = x.split("~");
+				var blocked_data = "<div class='selectedDiscountCSS'>"+arr[1]+"</div>" 
+				d_str.push(blocked_data);
+			});
+			$('#discount_selected').html(d_str.join(' '));
+		}
 		$('#cmbClassesForDiscountedStudents').change(function(){
 			var class_ = $(this).find('option:selected').text().toUpperCase();
 
 			var url_ = site_url_ + "/fee/getDiscountedStudents/"+$(this).val();
+			var d_str = [];
+
 			if($('#cmbClassesForDiscountedStudents').val() != 'x' && $('input[name="chkDiscounts[]"]:checked').length > 0){
 				var data_ = $('#frmDiscountedStudents').serialize();
 				$('#discounted_students_here').html('<tr><td colspan=2>Wait its loading...</td></tr>');
@@ -2932,20 +2944,25 @@ $(function(){
 					url: url_,
 					data: data_,
 					success: function(data){
-						var color_array= ['#900000', '#009000', '#000090', '#909000', '#'];
+						//var d_str = [];
+						var allVals = [];
+						//var d_str = $('input[name="chkDiscounts"]:checked').serialize();
+						var color_array= ['#900000', '#009000', '#000090', '#909000', '#009090', '#900090'];
+						var lenofColors = color_array.length;
 						var color_count = 0;
 						var obj = JSON.parse(data);
 						var str = '';
 						var dis_arr = [];
 						$('#caption_for_class_for_discounted_students').html('Selected Class - ' + '<span style="background: #ffff00; color: #ff0000; padding: 4px; border-radius: 5px">' + class_ + '</span>');
-						
-						
+						$('#caption_for_total_discounted_students').html('<div style="float:right; font-size: 11px">'+obj.discounted_students.length+' Students availing discount(s).</div>')
+						notifySelectedDiscounts();
 						for(loop1=0; loop1<obj.discounted_students.length; loop1++){
 							discount = obj.discounted_students[loop1].DISCOUNT;
 							dis_arr = discount.split(',');
 							if(dis_arr.length > 1){
 								color_ = " style='color: "+color_array[color_count]+"; text-decoration: underline'";
 								color_count = color_count + 1;
+									if(color_count>lenofColors){ color_count = 0; }
 							} else {
 								color_ = '';
 							}
