@@ -1407,6 +1407,27 @@ class My_fee_model extends CI_Model {
         //echo $this->db->last_query(); die();
         return $query->result();
     }
+
+    function getFlexiHeads_1_time(){
+        $this->db->distinct('b.flexiHeads');
+        $this->db->select('b.flexiHeads');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('_z_view_flexiheads_1_time_ b', 'a.INVID=b.INVID');
+        $this->db->where('a.SESSID', $this->session->userdata('_current_year___'));
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
+    function getFlexiHeads_1_time_classwise($clssessid){
+        $this->db->distinct('b.FLEXIBLE_HEADS_1_TIME');
+        $this->db->select('b.FLEXIBLE_HEADS_1_TIME');
+        $this->db->from('fee_6_invoice a');
+        $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this->db->join('master_7_stud_personal c', 'c.regidb.REGID');
+        $this->db->join('master_8_stud_academics d', 'c.regid=d.regid');
+        $this->db->join('class_3_class_wise_students e', 'e.regid=d.regid');
+    }
     // ---------------------------
 
     function getMonths($no){

@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="span4">
+    <div class="span5">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>Student(s) in class</h5>
@@ -36,9 +36,12 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th style="text-align: left">Class</th>
-                            <th>Total Student(s)</th>
-                            <th>Download</th>
+                            <th style="text-align: left; width: auto">Class</th>
+                            <th style="width: 100px">Total Student(s)</th>
+                            <th style="width: 80px">Download</th>
+                            <?php if($this->session->userdata('_status_') == 'adm' && ($this->session->userdata('_user___') == 'nitin' || $this->session->userdata('_user___') == 'gopal' || $this->session->userdata('_user___') == 'naveen')){?>
+                            <th style="width: 80px">For ID Card</th>
+                        <?php } ?>
                         </tr>
                     </thead>
                     <tbody id="student_data_here" style="font-size: 12px">
@@ -64,6 +67,15 @@
                                     </a>
                                     </center>
                                 </td>
+                                <?php if($this->session->userdata('_status_') == 'adm' && ($this->session->userdata('_user___') == 'nitin' || $this->session->userdata('_user___') == 'gopal' || $this->session->userdata('_user___') == 'naveen')){?>
+                                <td>
+                                    <center>
+                                    <a href="<?php echo site_url('exporting/toCsv2/'.$stduents->CLSSESSID.'/'.$stduents->CLASSID);?>">
+                                        <div style="padding: 0px 3px; background: #FFC300; color: #ffffff; font-weight: bold; width: 50px; border-radius: 5px"><li class="icon-download-alt">.csv</li></div>
+                                    </a>
+                                    </center>
+                                </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
                         <?php } ?>

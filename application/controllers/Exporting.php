@@ -12,7 +12,9 @@ class Exporting extends CI_Controller {
     function toCsv($clssessid, $cls) {
         $this->mem->toCsv($clssessid, $cls);
     }
-
+    function toCsv2($clssessid, $cls){
+        $this->mem->toCsv2($clssessid, $cls);
+    }
     function toCsvExam() {
         $clssessid = $this->input->post('txtClassSessID');
         $cls = $this->input->post('txtClassName');

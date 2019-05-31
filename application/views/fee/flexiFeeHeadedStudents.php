@@ -1,12 +1,12 @@
 <style type="text/css">
-    .selectedDiscountCSS{float: left; margin:3px; padding: 3px; background: #FFF0BF; border:#900000 dotted 1px; border-radius: 5px; font-size: 10px;}
+    .selectedFlexiHeadCSS{float: left; margin:3px; padding: 3px; background: #FFF0BF; border:#900000 dotted 1px; border-radius: 5px; font-size: 10px;}
 </style>
 <div class="row-fluid">
     <?php
         $attrib_ = array(
             'class' => 'form-vertical',
-            'name' => 'frmDiscountedStudents',
-            'id' => 'frmDiscountedStudents',
+            'name' => 'frmFlexiHeadedStudents',
+            'id' => 'frmFlexiHeadedStudents',
         );
         echo form_open('#', $attrib_); 
     ?>
@@ -22,8 +22,8 @@
                         <div class="controls">
                             <?php
                                 $data = array(
-                                    'name' => 'cmbClassesForDiscountedStudents',
-                                    'id' => 'cmbClassesForDiscountedStudents',
+                                    'name' => 'cmbClassesForFlexiHeadedStudents',
+                                    'id' => 'cmbClassesForFlexiHeadedStudents',
                                     'required' => 'required',
                                     'class' => 'span12'
                                 );
@@ -39,19 +39,19 @@
             </div>
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group">
-                    <label class="control-label">Select Discounts</label>
+                    <label class="control-label">Select Heads</label>
                         <div class="controls" style="overflow-y: scroll; max-height: 250px;">
                             <?php
                                 $options = array();
                                 $options['x'] = 'Select Class';
-                                foreach ($discounts as $item) {
+                                foreach ($felxiHeads_1 as $item) {
                                     $options = array(
-                                        'name' => 'chkDiscounts[]',
-                                        'id' => 'chkDiscounts_'.$item->ITEM_,
-                                        'value'=> $item->CATEGORY."~".$item->ITEM_,
-                                        'class'=> 'chkDiscountsForDiscountedStudents'
+                                        'name' => 'chkFlexiHeadsNTimes[]',
+                                        'id' => 'chkFlexiHeadsNTimes_'.$item->flexiHeads,
+                                        'value'=> $item->flexiHeads,
+                                        'class'=> 'chkFlexiHeadedStudents'
                                     );
-                                    echo form_checkbox($options) . $item->ITEM_. "<br>";
+                                    echo form_checkbox($options) . $item->flexiHeads. "<br>";
                                 }
                             ?>
                             <?php //echo form_dropdown($data, $options, ''); ?>
@@ -61,7 +61,7 @@
             <div class="widget-content" style="overflow: hidden">
             <div class="control-group">
 		        <div class="controls">
-		            <input type="submit" value="Show" class="btn btn-success" name="cmbShowDiscountedStudents" id="cmbShowDiscountedStudents">
+		            <input type="submit" value="Show" class="btn btn-success" name="cmbShowFlexiHeadedStudents" id="cmbShowFlexiHeadedStudents">
 		        </div>
 	        </div>
 	    </div>
@@ -76,8 +76,8 @@
                 <div style="clear: both"></div>
                 <div class="widget-title student_class_info">
                     <div>
-                        <h5 id="caption_for_class_for_discounted_students" style="float: left"></h5>
-                        <h5 id="caption_for_total_discounted_students" style="float: right;"></h5>
+                        <h5 id="caption_for_class_for_FlexiHeaded_students" style="float: left"></h5>
+                        <h5 id="caption_for_total_FlexiHeaded_students" style="float: right;"></h5>
                     </div>
                     <div style="clear: both"></div>
                 </div>
@@ -87,10 +87,10 @@
                             <tr>
                                 <th style="text-align: left; min-width: 10%">Reg. No.</th>
                                 <th style="text-align: left; min-width: 80%">Student Name</th>
-                                <th style="text-align: left; min-width: 80%">Discount applied</th>
+                                <th style="text-align: left; min-width: 80%">Optional Fee applied</th>
                             </tr>
                         </thead>
-                        <tbody id="discounted_students_here">
+                        <tbody id="FlexiHeaded_students_here">
 
                         </tbody>
                     </table>
@@ -99,7 +99,7 @@
         </div>
         <div class="control-group">
         <div class="controls">
-            <input type="submit" value="Print Students" class="btn btn-success" name="cmbPrintDiscountedStudents" id="cmbPrintDiscountedStudents">
+            <input type="submit" value="Print Students" class="btn btn-success" name="cmbPrintFlexiHeadedStudents" id="cmbPrintFlexiHeadedStudents">
         </div>
         </div>
     </div>

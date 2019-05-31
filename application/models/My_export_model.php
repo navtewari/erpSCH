@@ -33,6 +33,29 @@ class My_export_model extends CI_Model {
         force_download($filename, $data);
     }
 
+    function toCsv2($classessid, $cls){
+        $this->load->dbutil();
+        $this->db->order_by('a.FNAME', 'asc');
+        $this->db->select('e.CLASSID, a.PHOTO_ AS PHOTO, a.FNAME, a.MNAME, a.LNAME, CONCAT("[",a.DOB_,"]") AS DOB, a.GENDER, a.FATHER, a.MOTHER, b.MOBILE_S AS MOBILE, c.STREET_1, c.CITY_ AS CITY, c.PIN_ AS PIN, c.DISTT_ AS DISTT, c.STATE_ AS STATE, c.COUNTRY_ AS COUNTRY, a.regid');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_10_stud_contact b', 'a.regid=b.regid');
+        $this->db->join('master_9_stud_address c', 'a.regid=c.regid');
+        $this->db->join('class_3_class_wise_students d', 'a.regid=d.regid');
+        $this->db->join('class_2_in_session e', 'd.CLSSESSID=e.CLSSESSID');
+        $this->db->join('master_8_stud_academics k', 'a.regid=k.regid');
+        $this->db->where('b.CONTACT_STATUS', "CORRESPONDANCE");
+        $this->db->where('c.ADDRESS_STATUS', "PERMANENT");
+        $this->db->where('k.STATUS_', 1);
+        //$this->db->where('d.SESSID', $session);
+        $this->db->where('e.CLSSESSID', $classessid);
+        $query = $this->db->get();
+        //echo $this->db->last_query(); die();
+        $delimiter = ",";
+        $newline = "\r\n";
+        $filename = "ID_CARD_FOR_Class_" . $cls . "_" . $this->session->userdata('school_name') . ".csv";
+        $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
+        force_download($filename, $data);
+    }
     function tcCsv_for_tc($classessid, $cls){
         $this->load->dbutil();
         $this->db->where('b.STATUS_', 1);

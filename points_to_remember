@@ -1,0 +1,2 @@
+When generating invoice
+	Storing static fee heads are segregated by comma(,) and every static head is associated by @ followed 1 or 0 in which 1 denotes discount applicable on this static head and 0 denotes discount is not applicable on this static fee head.
