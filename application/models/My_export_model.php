@@ -36,7 +36,7 @@ class My_export_model extends CI_Model {
     function toCsv2($classessid, $cls){
         $this->load->dbutil();
         $this->db->order_by('a.FNAME', 'asc');
-        $this->db->select('e.CLASSID, a.PHOTO_ AS PHOTO, a.FNAME, a.MNAME, a.LNAME, CONCAT("[",a.DOB_,"]") AS DOB, a.GENDER, a.FATHER, a.MOTHER, b.MOBILE_S AS MOBILE, c.STREET_1, c.CITY_ AS CITY, c.PIN_ AS PIN, c.DISTT_ AS DISTT, c.STATE_ AS STATE, c.COUNTRY_ AS COUNTRY, a.regid');
+        $this->db->select('e.CLASSID, a.PHOTO_ AS PHOTO, UPPER(a.FNAME) AS FNAME, UPPER(a.MNAME) AS MNAME, UPPER(a.LNAME) AS LNAME, CONCAT("[ ",a.DOB_," ]") AS DOB, UPPER(a.GENDER) AS GENDER, UPPER(a.FATHER) AS FATHER, UPPER(a.MOTHER) AS MOTHER, b.MOBILE_S AS MOBILE, UPPER(c.STREET_1) AS STREET, UPPER(c.CITY_) AS CITY, UPPER(c.PIN_) AS PIN, UPPER(c.DISTT_) AS DISTT, UPPER(c.STATE_) AS STATE, UPPER(c.COUNTRY_) AS COUNTRY, a.regid');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_10_stud_contact b', 'a.regid=b.regid');
         $this->db->join('master_9_stud_address c', 'a.regid=c.regid');
@@ -52,7 +52,7 @@ class My_export_model extends CI_Model {
         //echo $this->db->last_query(); die();
         $delimiter = ",";
         $newline = "\r\n";
-        $filename = "ID_CARD_FOR_Class_" . $cls . "_" . $this->session->userdata('school_name') . ".csv";
+        $filename = "ID_CARD_" . $cls . "_" . $this->session->userdata('school_name') . ".csv";
         $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
         force_download($filename, $data);
     }

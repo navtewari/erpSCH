@@ -513,11 +513,16 @@ class My_master_fee_model extends CI_Model {
     }
 
     function get_students_in_class($clssessid){
+        $this->db->order_by('a.FNAME');
+        $this->db->order_by('a.MNAME');
+        $this->db->order_by('a.LNAME');
         $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
         $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+        $this->db->join('master_8_stud_academics d', 'a.regid=d.regid');
         $this->db->where('b.clssessid', $clssessid);
+        $this->db->where('d.STATUS_', 1);
         $query = $this->db->get();
         return $query->result();
     }

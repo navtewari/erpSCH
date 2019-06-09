@@ -11,7 +11,6 @@ class DashboardReports extends CI_Controller {
         $this->load->model('my_admission_model', 'mam');
         $this->load->model('my_dashboard_reports_model', 'dr');
         $this->load->model('My_fee_model', 'fm');
-        $this->load->model('My_ID_Card', 'mic');
     }
 
     function total_students(){

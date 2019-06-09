@@ -192,10 +192,14 @@ class Promote_model extends CI_Model {
     function getStudentFromAdmission($year__){
         $class_session_id = $this->input->post('ClassSessid_'); // catching ClassSessid_ from ajax serialize array
         
+        $this->db->order_by('a.FNAME');
+        $this->db->order_by('a.MNAME');
+        $this->db->order_by('a.LNAME');
         $this->db->select('a.STUD_ID, a.FNAME, a.MNAME, a.LNAME, a.regid');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('master_8_stud_academics b', 'a.regid = b.regid AND b.CLASS_OF_ADMISSION ='.$class_session_id );
         $this->db->where('a.SESSID', $year__);
+        $this->db->where('b.STATUS_', 1);
         // 0 means modification possible and also means this student is not yet associated with some class and 1 means already associated with some class
         $this->db->where('b.STATUS_OF_ADMISSION', 0); 
         // ---------------------------------------------------------
@@ -214,9 +218,14 @@ class Promote_model extends CI_Model {
         //------------------------------------------
 
         //Below code means if for this class students are present then please switch students by different module 'Switch Students'
+        $this->db->order_by('a.FNAME');
+        $this->db->order_by('a.MNAME');
+        $this->db->order_by('a.LNAME');
         $this->db->select('a.STUD_ID, a.FNAME, a.MNAME, a.LNAME, a.regid');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid = b.regid AND b.CLSSESSID ='.$class_session_id);
+        $this->db->join('master_8_stud_academics c', 'a.regid = c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->where('a.SESSID', $year__);
         $query = $this->db->get();
         //------------------------------------------------------------------------------------------------------------------------
@@ -224,9 +233,14 @@ class Promote_model extends CI_Model {
         if($query->num_rows() != 0){
             $result_ = Array();
         } else {
+            $this->db->order_by('a.FNAME');
+            $this->db->order_by('a.MNAME');
+            $this->db->order_by('a.LNAME');
             $this->db->select('a.STUD_ID, a.FNAME, a.MNAME, a.LNAME, a.regid');
             $this->db->from('master_7_stud_personal a');
             $this->db->join('class_3_class_wise_students b', 'a.regid = b.regid AND b.CLSSESSID ='.$class_session_id);
+            $this->db->join('master_8_stud_academics c', 'a.regid = c.regid');
+            $this->db->where('c.STATUS_', 1);
             $this->db->where('b.SESSID', $prevYear);
             $query = $this->db->get();
             
@@ -335,9 +349,14 @@ class Promote_model extends CI_Model {
     function getStudentsofcurrentSession($year__){
         $clssessid = $this->input->post('ClassSessid_');
 
+        $this->db->order_by('b.FNAME');
+        $this->db->order_by('b.MNAME');
+        $this->db->order_by('b.LNAME');
         $this->db->select('b.FNAME, b.MNAME, b.LNAME, a.CLSSESSID, a.SESSID, a.regid');
         $this->db->from('class_3_class_wise_students a');
         $this->db->join('master_7_stud_personal b', 'b.regid = a.regid');
+        $this->db->join('master_8_stud_academics c', 'b.regid=c.regid');
+        $this->db->where('c.STATUS_', 1);
         $this->db->where('a.CLSSESSID', $clssessid);
         $this->db->where('a.SESSID', $year__);
         $query = $this->db->get();
