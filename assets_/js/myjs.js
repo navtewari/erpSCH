@@ -4420,30 +4420,107 @@ $(function(){
 
 	// Sessionwise Detail e.g weight, height, left vision, right vision etc.
 		$('#cmbClassesForSessionWiseDetail').change(function () {
-        var clssessid = $('#cmbClassesForSessionWiseDetail').val();
-        var className = $("#cmbClassesForSessionWiseDetail option:selected").text();
-        url_ = site_url_ + "/master/get_student_sessionwise_detail/" + clssessid;
-        $.ajax({
-            type: "POST",
-            url: url_,
-            success: function (data) {
-                var obj = JSON.parse(data);
-                var str_html = '';
-                for (i = 0; i < obj.Student.length; i++) {
-                    str_html = str_html + "<tr class='gradeX'>";
-                    str_html = str_html + "<td>" + obj.Student[i].regid + "</td>";
-                    str_html = str_html + "<td>" + obj.Student[i].FNAME + "</td>";
-                    str_html = str_html + "<td><input type='text' name='txtWeight' class='textB' id='txt_" + obj.Student[i].regid + "_txtWeight' value='" + obj.Student[i].MOBILE_S + "'></td>";
-                    str_html = str_html + '<td class="taskOptions">';
-                    str_html = str_html + "<a href='#' class='btn editStudentContact' id='" + obj.Student[i].regid + "'><i class='fa fa-arrow-circle-right fa-lg'></i></a>";
-                    str_html = str_html + '</td>';
-                    str_html = str_html + "</tr>";
-                }
-                $('#tabStudents').html(str_html);
-                $('#classHead').html('Student in <span style="color:blue">' + className + '</span>');
-            }
-        });
-    });
+	        var clssessid = $('#cmbClassesForSessionWiseDetail').val();
+	        var className = $("#cmbClassesForSessionWiseDetail option:selected").text();
+	        url_ = site_url_ + "/master/get_student_sessionwise_detail/" + clssessid;
+	        $.ajax({
+	            type: "POST",
+	            url: url_,
+	            success: function (data) {
+	                var obj = JSON.parse(data);
+	                var str_html = '';
+	                for (i = 0; i < obj.Student.length; i++) {
+	                    str_html = str_html + "<tr class='gradeX'>";
+	                    str_html = str_html + "<td>" + obj.Student[i].regid + "</td>";
+	                    str_html = str_html + "<td>" + obj.Student[i].FNAME + "</td>";
+	                    str_html = str_html + "<td><input type='text' name='txtWeight' class='textB' id='txt_" + obj.Student[i].regid + "_txtWeight' value='" + obj.Student[i].MOBILE_S + "'></td>";
+	                    str_html = str_html + '<td class="taskOptions">';
+	                    str_html = str_html + "<a href='#' class='btn editStudentContact' id='" + obj.Student[i].regid + "'><i class='fa fa-arrow-circle-right fa-lg'></i></a>";
+	                    str_html = str_html + '</td>';
+	                    str_html = str_html + "</tr>";
+	                }
+	                $('#tabStudents').html(str_html);
+	                $('#classHead').html('Student in <span style="color:blue">' + className + '</span>');
+	            }
+	        });
+	    });
+	// ---------------------------------------------------------------------
+
+	// ----------Flexible Head Reports--------------------------------------
+		$.fn.digits = function(){ 
+		    return this.each(function(){ 
+		        $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+		    })
+		}
+		$('#cmbShowFlexiHeadedStudents').click(function(){
+			var url_ = site_url_ + "/fee/getTotalAmount_FlexiHeads_1_N_time";
+			var data_ = $('#frmFlexiHeadedStudents').serialize();
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				data: data_,
+				success: function (data){
+					$('#FlexiHeaded_students_here_1_time').html(data);
+					var obj = JSON.parse(data);
+					var len = obj.feeHeads.oneTime.length;
+					var len1= obj.feeHeads.nTime.length;
+					var str = '';
+					var st = '';
+					var amount;
+					var totalAmount = 0;
+					var totalEntries = 0;
+					for(i=0; i<len;i++){
+						st=i;
+						amount = parseFloat(obj.feeHeads.oneTime[st].Amount);
+						totalAmount = totalAmount + parseInt(obj.feeHeads.oneTime[st].Amount)
+						totalEntries = totalEntries + parseInt(obj.feeHeads.oneTime[st].TotalStudents)
+						str = str + "<tr>";
+						str = str + "<td style='text-align: left'>"+obj.feeHeads.oneTime[st].heads+"</td>";
+						str = str + "<td style='text-align: center'>"+obj.feeHeads.oneTime[st].TotalStudents+"</td>";
+						str = str + "<td style='text-align: right' class='currency_'>"+amount+"</td>";
+						str = str + "</tr>";
+					}
+					str = str + "<tr>";
+					str = str + "<td style='text-align: right; font-weight: bold'>Total</td>";
+					str = str + "<td style='text-align: center; font-weight: bold'>"+totalEntries+"</td>";
+					str = str + "<td style='text-align: right; font-weight: bold' class='currency_'>"+totalAmount+"</td>";
+					str = str + "</tr>";	
+					$('#FlexiHeaded_students_here_1_time').html(str);
+					$('.currency_').digits();
+					totalEntries = 0;
+					totalAmount = 0;
+					str = '';
+					for(j=0; j<len1;j++){
+						st = j;
+						amount = parseFloat(obj.feeHeads.nTime[st].Amount);
+						totalAmount = totalAmount + parseInt(obj.feeHeads.nTime[st].Amount)
+						totalEntries = totalEntries + parseInt(obj.feeHeads.nTime[st].TotalStudents)
+						str = str + "<tr>";
+						str = str + "<td style='text-align: left'>"+obj.feeHeads.nTime[st].heads+"</td>";
+						str = str + "<td style='text-align: center'>"+obj.feeHeads.nTime[st].TotalStudents+"</td>";
+						str = str + "<td style='text-align: right' class='currency_'>"+amount+"</td>";
+						str = str + "</tr>";
+					}
+					str = str + "<tr>";
+					str = str + "<td style='text-align: right; font-weight: bold'>Total</td>";
+					str = str + "<td style='text-align: center; font-weight: bold'>"+totalEntries+"</td>";
+					str = str + "<td style='text-align: right; font-weight: bold' class='currency_'>"+totalAmount+"</td>";
+					str = str + "</tr>";
+					$('#FlexiHeaded_students_here_N_time').html(str);	
+					$('.currency_').digits();
+
+					if($('#cmbClassesForFlexiHeadedStudents').val() == 'all'){
+						$('#felxiHeads_1_time_heading').html('Student Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
+						$('#felxiHeads_N_time_heading').html('Student Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
+					} else {
+						$('#felxiHeads_1_time_heading').html('Student Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
+						$('#felxiHeads_N_time_heading').html('Student Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
+					}
+				}
+			});
+		return false;
+		});
+		$('#selectnumber option:selected').text()
 	// ---------------------------------------------------------------------
 
 });

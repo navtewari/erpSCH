@@ -2,11 +2,13 @@ Solutions:
 -----------
 
 Problem - If need to change the date-format in existing data.
+-------------------------------------------------------------------------------
 Solution-
 update class_4_class_wise_attendance set DATE_ = CONCAT(SUBSTRING_INDEX(DATE_, "/", -1), "-", SUBSTRING_INDEX(SUBSTRING_INDEX(DATE_, "/", 2), '/', -1), "-", SUBSTRING_INDEX(DATE_, "/", 1)) where 1
 
 
 Problem - If need to change the value of auto-increment value in the existing data.
+-----------------------------------------------------------------------------------------------------------
 Solution-
 select @i := 0;
 update bar set c = (select @i := @i + 1);
@@ -16,64 +18,45 @@ update bar set c = (select @i := @i + 1);
 
 For Attendance:
 In the below query we need to provide the total student of the specific class and also the specified class.
+---------------------------------------------------------------------------------------------------------------------------------------
 1. SELECT ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE CLSSESSID = 26 and STATUS = 1 GROUP BY DATE_
 2. SELECT CLSSESSID, ((count(STATUS)/41)*100) as Present_percentage, DATE_ FROM `class_4_class_wise_attendance` WHERE  STATUS = 1 GROUP BY CLSSESSID, DATE_
 3. 
 
 
-Fetching All FEE head 
-
-SELECT 
-	DISTINCT(
-		SUBSTRING_INDEX(
-			SUBSTRING_INDEX(`STATIC_HEADS_N_TIMES`, ",", 1)
-		, "@", 1)
-		) 
-	FROM `fee_6_invoice_detail` WHERE 1
-
-
-
-SELECT DISTINCT(SUBSTRING_INDEX(SUBSTRING_INDEX(`STATIC_HEADS_N_TIMES`, ",",  ), "@", 1)) fee FROM `fee_6_invoice_detail` WHERE 1
-
-
-
-select * 
-from dashboards
-join numbers
-  on char_length(email_recipients) 
-    - char_length(replace(email_recipients, ',', '')) 
-    >= n - 1
-
-
-select id, 
+Problem - Fetching All comma separated DISTINCT FEE heads (Below is the query for static fee heads) of specific session
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+select DISTINCT
   substring_index(
-    substring_index(email_recipients, ',', n), 
+    substring_index(b.STATIC_HEADS_N_TIMES,',', c.N_), 
     ',', 
     -1
-  ) as email from `fee_6_invoice_detail` where char_length(`STATIC_HEADS_N_TIMES`)-char_length(replace(`STATIC_HEADS_N_TIMES`, ",",""))>=n-1
+  ) as heads 
+from fee_6_invoice_detail b
+join numbers c
+  on char_length(b.STATIC_HEADS_N_TIMES) 
+    - char_length(replace(b.STATIC_HEADS_N_TIMES, ',', '')) 
+    >= c.N_ - 1
+join fee_6_invoice a
+ ON a.INVID = b.INVID
+WHERE SESSID = '2018-19'
 
-SELECT STATIC_HEADS_N_TIMES, LENGTH(STATIC_HEADS_N_TIMES) - LENGTH(REPLACE(STATIC_HEADS_N_TIMES, ',', '')) as count_ FROM `fee_6_invoice_detail` WHERE 1
 
 
-DELIMITER $$
-CREATE FUNCTION wordcount(str TEXT)
-       RETURNS INT
-       DETERMINISTIC
-       SQL SECURITY INVOKER
-       NO SQL
-  BEGIN
-    DECLARE wordCnt, idx, maxIdx INT DEFAULT 0;
-    DECLARE currChar, prevChar BOOL DEFAULT 0;
-    SET maxIdx=char_length(str);
-    WHILE idx < maxIdx DO
-        SET currChar=SUBSTRING(str, idx, 1) RLIKE '[[:alnum:]]';
-        IF NOT prevChar AND currChar THEN
-            SET wordCnt=wordCnt+1;
-        END IF;
-        SET prevChar=currChar;
-        SET idx=idx+1;
-    END WHILE;
-    RETURN wordCnt;
-  END
-$$
-DELIMITER
+
+Problem- Fetching the sum of amount of the specific head in the specific session and of specific class and can be between dates (if needed)
+---------------------------------------------------------------------------------------------------------
+select 
+`FLEXIBLE_HEADS_1_TIME`, 
+substring_index(substring_index(b.`FLEXIBLE_HEADS_1_TIME`, ",", find_in_set('BUSSTOP_-155_ONET', b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as heads, 
+substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set('BUSSTOP_-155_ONET', b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as Amount, find_in_set('BUSSTOP_-155_ONET', b.`FLEXIBLE_HEADS_1_TIME`) 
+FROM 
+	fee_6_invoice_detail b join fee_6_invoice a 
+on 
+	a.INVID=b.INVID 
+where 
+	find_in_set('BUSSTOP_-155_ONET', b.`FLEXIBLE_HEADS_1_TIME`) 
+and 
+	a.CLSSESSID = 25 
+and 
+	a.SESSID = '2018-19'

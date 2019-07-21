@@ -15,24 +15,25 @@ class My_attendance_model extends CI_Model {
 
     function getClasses($year__){
         $this->db->order_by('ABS(x.CLASS)', 'asc');
-    	$this->db->select('x.CLASS, a.CLASSID, a.CLSSESSID');
-    	$this->db->distinct();
+        $this->db->select('x.CLASS, a.CLASSID, a.CLSSESSID');
+        $this->db->distinct();
         $this -> db -> where('c.STATUS_', 1);
         $this->db->from('class_1_classes x');
-    	$this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
-    	$this->db->join('class_3_class_wise_students b', 'a.CLSSESSID = b.CLSSESSID');
+        $this->db->join('class_2_in_session a', 'x.CLASSID=a.CLASSID');
+        $this->db->join('class_3_class_wise_students b', 'a.CLSSESSID = b.CLSSESSID');
         $this -> db -> join('master_8_stud_academics c', 'b.regid=c.regid');
-    	$this->db->where('a.SESSID', $year__);
-    	$query = $this->db->get();
+        $this->db->where('a.SESSID', $year__);
+        $query = $this->db->get();
 
         // check transaction status
         $this->error->_db_error();
         // ------------------------
   
-    	return $query->result();
+        return $query->result();
     }
 
     function get_students_in_class($clssessid, $year__){
+        $this -> db -> order_by('a.FNAME');
         $this -> db -> select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_');
         $this -> db -> from('master_7_stud_personal a');
         $this -> db -> join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -84,7 +85,8 @@ class My_attendance_model extends CI_Model {
         $dt_ = explode("/",$this->input->post('date_'));
         $date__ = $dt_[2]."-".$dt_[1]."-".$dt_[0];
         $time_ = $this->input->post('time_');
-
+        
+        $this -> db -> order_by('c.FNAME');
         $this -> db -> distinct();
         $this -> db -> select('a.ATTID, a.regid, c.FNAME, a.STATUS');
         $this -> db -> where('a.CLSSESSID',$clssessid);
@@ -197,6 +199,7 @@ class My_attendance_model extends CI_Model {
 
     function getstudentsforclass($year__){
         $clssessid = $this->input->post('cmbClassesForStudents');
+        $this -> db -> order_by('a.FNAME');
         $this -> db -> select('a.regid, a.FNAME, a.MNAME, a.LNAME');
         $this -> db -> from('master_7_stud_personal a');
         $this -> db -> join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -210,6 +213,7 @@ class My_attendance_model extends CI_Model {
     }
     function getstudentsforclass_for_view($year__){
         $clssessid = $this->input->post('cmbClassesForStudents_view');
+        $this -> db -> order_by('a.FNAME');
         $this->db->select('a.regid, a.FNAME, a.MNAME, a.LNAME');
         $this->db->from('master_7_stud_personal a');
         $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');

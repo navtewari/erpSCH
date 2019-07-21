@@ -223,10 +223,9 @@ class Web extends CI_Controller {
                 break;
             case 32:
                 $data['page_'] = 'fee';
-                $data['title_'] = 'View Students opted Optional Fee';
-                //$data['current_invoices']= $this -> fm -> getInvoices_in_session($this -> session -> userdata('_current_year___'));
-                $data['felxiHeads_1'] = $this -> fm -> getFlexiHeads_1_time();
-                //$data['felxiHeads_n'] = $this -> fm -> getFlexiHeads_n_times();
+                $data['title_'] = 'Fee against Optional Heads';
+                $data['felxiHeads_1'] = $this -> fm -> getFlexiHeads_1_time($this -> session -> userdata('_current_year___'));
+                $data['felxiHeads_n'] = $this -> fm -> getFlexiHeads_n_time($this -> session -> userdata('_current_year___'));
                 $data['class_in_session'] = $this -> fm -> get_class_in_session($this -> session -> userdata('_current_year___'));
                 break;
             default:

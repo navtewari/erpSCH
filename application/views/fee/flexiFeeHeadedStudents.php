@@ -10,9 +10,8 @@
         );
         echo form_open('#', $attrib_); 
     ?>
-    <div class="span4">
+    <div class="span6">
         <div class="widget-box">
-            <div  style="border: #ff0000 solid 0px; width: 50px; height:50px; float: right; right: 0px; z-index: 2222; position: absolute;" id="student_photo_here"></div>
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5><?php echo $title_;?></h5>
             </div>
@@ -29,6 +28,7 @@
                                 );
                                 $options = array();
                                 $options['x'] = 'Select Class';
+                                $options['all'] = 'ALL' ;
                                 foreach ($class_in_session as $item) {
                                 	$options[$item->CLSSESSID] = $item->CLASSID;
                                 }
@@ -38,20 +38,43 @@
                 </div>
             </div>
             <div class="widget-content" style="overflow: hidden">
-                <div class="control-group">
-                    <label class="control-label">Select Heads</label>
-                        <div class="controls" style="overflow-y: scroll; max-height: 250px;">
+                <div class="control-group span6">
+                    <label class="control-label" style="color: #0000ff">Select <b>1-Time</b> Heads</label>
+                        <div class="controls" style="overflow-y: auto; height: 150px;">
                             <?php
                                 $options = array();
                                 $options['x'] = 'Select Class';
                                 foreach ($felxiHeads_1 as $item) {
-                                    $options = array(
-                                        'name' => 'chkFlexiHeadsNTimes[]',
-                                        'id' => 'chkFlexiHeadsNTimes_'.$item->flexiHeads,
-                                        'value'=> $item->flexiHeads,
-                                        'class'=> 'chkFlexiHeadedStudents'
-                                    );
-                                    echo form_checkbox($options) . $item->flexiHeads. "<br>";
+                                    if(trim($item->HEADS)!=''){
+                                        $options = array(
+                                            'name' => 'chkFlexiHeads1Times[]',
+                                            'id' => 'chkFlexiHeads1Times_'.$item->HEADS,
+                                            'value'=> $item->HEADS,
+                                            'class'=> 'chkFlexiHeaded1time'
+                                        );
+                                    echo form_checkbox($options) . $item->HEADS. "<br>";
+                                    }
+                                }
+                            ?>
+                            <?php //echo form_dropdown($data, $options, ''); ?>
+                        </div>
+                </div>
+                <div class="control-group span6">
+                    <label class="control-label" style="color: #0000ff">Select <b>N-Time</b> Heads</label>
+                        <div class="controls" style="overflow-y: auto; height: 150px;">
+                            <?php
+                                $options = array();
+                                $options['x'] = 'Select Class';
+                                foreach ($felxiHeads_n as $item) {
+                                    if(trim($item->HEADS)!=''){
+                                        $options = array(
+                                            'name' => 'chkFlexiHeadsNTimes[]',
+                                            'id' => 'chkFlexiHeadsNTimes_'.$item->HEADS,
+                                            'value'=> $item->HEADS,
+                                            'class'=> 'chkFlexiHeadedNtime'
+                                        );
+                                    echo form_checkbox($options) . $item->HEADS. "<br>";
+                                    }
                                 }
                             ?>
                             <?php //echo form_dropdown($data, $options, ''); ?>
@@ -67,30 +90,49 @@
 	    </div>
         </div>
     </div>
-    <div class="controls span6">
+    <div class="controls span5">
         <div class="control-group">
             <div class="widget-box">
+                <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                    <h5 id="felxiHeads_1_time_heading">Student Opted Fee to Collect (<b>1</b> Time)</h5>
+                </div>
                 <div class="widget-content nopadding">
                     <div id="discount_selected" style="padding: 1px 1px;"></div>
-                </div>
-                <div style="clear: both"></div>
-                <div class="widget-title student_class_info">
-                    <div>
-                        <h5 id="caption_for_class_for_FlexiHeaded_students" style="float: left"></h5>
-                        <h5 id="caption_for_total_FlexiHeaded_students" style="float: right;"></h5>
-                    </div>
-                    <div style="clear: both"></div>
                 </div>
                 <div class="widget-content nopadding" style="overflow: hidden">
                     <table class="table table-bordered table-striped with-check">
                         <thead>
                             <tr>
-                                <th style="text-align: left; min-width: 10%">Reg. No.</th>
-                                <th style="text-align: left; min-width: 80%">Student Name</th>
-                                <th style="text-align: left; min-width: 80%">Optional Fee applied</th>
+                                <th style="text-align: left; width: 40%">Optional Fee applied</th>
+                                <th style="text-align: center; width: 40%">Number of Entries</th>
+                                <th style="text-align: right; width: 20%">Amount (Rs.)</th>
                             </tr>
                         </thead>
-                        <tbody id="FlexiHeaded_students_here">
+                        <tbody id="FlexiHeaded_students_here_1_time">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                    <h5 id="felxiHeads_N_time_heading">Student Opted Fee to Collect (<b><i>N</i></b> Time)</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <div id="discount_selected" style="padding: 1px 1px;"></div>
+                </div>
+                <div class="widget-content nopadding" style="overflow: hidden">
+                    <table class="table table-bordered table-striped with-check">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; width: 40%">Optional Fee applied</th>
+                                <th style="text-align: center; width: 40%">Number of Entries</th>
+                                <th style="text-align: right; width: 20%">Amount (Rs.)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="FlexiHeaded_students_here_N_time">
 
                         </tbody>
                     </table>

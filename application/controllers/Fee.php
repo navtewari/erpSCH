@@ -303,6 +303,10 @@ class Fee extends CI_Controller {
         // yet to code
     }
 
+    function getTotalAmount_FlexiHeads_1_N_time(){
+        $data['feeHeads'] = $this->fm->getTotalAmount_FlexiHeads_1_N_time($this->session->userdata('_current_year___'));
+        echo json_encode($data);
+    }
     function getInvoices($class__){
         $data['current_invoices_for_a_class'] = $this -> fm -> getInvoices_in_session($this->session->userdata('_current_year___'), $class__);
         echo json_encode($data);
