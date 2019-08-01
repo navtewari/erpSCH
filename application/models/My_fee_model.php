@@ -1439,22 +1439,23 @@ class My_fee_model extends CI_Model {
         $class_ = $this->input->post('cmbClassesForFlexiHeadedStudents');
         $heads = $this->input->post('chkFlexiHeads1Times');
         $heads_n = $this->input->post('chkFlexiHeadsNTimes');
-        /*
-        $yr_from = $this->input->post('');
-        $mnth_from = $this->input->post('');
-        $yr_to = $this->input->post('');
-        $mnth_to = $this->input->post('');
-        //$this->db->where("DATE_FORMAT(CONCAT(YEAR_FROM,'-',MONTH_FROM,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")));
-        //$this->db->where("DATE_FORMAT(CONCAT(YEAR_TO,'-',MONTH_TO,'-',1), '%Y-%m-%d')=", date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")));
-        */
+
+        $yr_from = $this->input->post('cmbYr_from');
+        $mnth_from = $this->input->post('cmbMnth_from');
+        $yr_to = $this->input->post('cmbYr_to');
+        $mnth_to = $this->input->post('cmbMnth_to');
         $data['oneTime'] = array();
         $data['nTime'] = array();
+
+        $yr_mont_condition = 'AND DATE_FORMAT(CONCAT(a.YEAR_FROM,"-",a.MONTH_FROM,"-",1), "%Y-%m-%d")>="'.date('Y-m-d', strtotime($yr_from."-".$mnth_from."-1")).'" AND DATE_FORMAT(CONCAT(a.YEAR_TO,"-",a.MONTH_TO,"-",1), "%Y-%m-%d")<="'.date('Y-m-d', strtotime($yr_to."-".$mnth_to."-1")).'"';
+        //$yr_mont_condition= "";
         for($i = 0; $i<count($heads);$i++){ // As the heads selected we need to calculate the amount and return to the page headwise and the total
             if($class_ == 'all'){
-                $sql= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`) and a.SESSID = "'.$session.'" GROUP BY heads';
+                $sql= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`) AND a.SESSID = "'.$session.'" '. $yr_mont_condition . ' GROUP BY heads';
             } else {
-                $sql= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`) and a.CLSSESSID = '.$class_.' and a.SESSID = "'.$session.'" GROUP BY heads';
+                $sql= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_1_TIME`, ",", find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads[$i].'", b.`FLEXIBLE_HEADS_1_TIME`) AND a.CLSSESSID = '.$class_.' AND a.SESSID = "'.$session.'"  '. $yr_mont_condition . ' GROUP BY heads';
             }
+            //echo $sql."<br>";
             $query = $this->db->query($sql);
             if($query->num_rows()!=0){
                 $r = $query->row();
@@ -1464,17 +1465,18 @@ class My_fee_model extends CI_Model {
 
         for($i = 0; $i<count($heads_n);$i++){ // As the heads selected we need to calculate the amount and return to the page headwise and the total
             if($class_ == 'all'){
-                $sql1= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)  and a.SESSID = "'.$session.'" GROUP BY heads';
+                $sql1= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)*a.NOM) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)  and a.SESSID = "'.$session.'" '. $yr_mont_condition . ' GROUP BY heads';
             } else {
-                $sql1= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`) and a.CLSSESSID = '.$class_.' and a.SESSID = "'.$session.'" GROUP BY heads';
+                $sql1= 'SELECT COUNT(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)) as TotalStudents, substring_index(substring_index(b.`FLEXIBLE_HEADS_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1) as heads, SUM(substring_index(substring_index(b.`FLEXI_SPLIT_AMT_N_TIMES`, ",", find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`)) , ",", -1)*a.NOM) as Amount FROM fee_6_invoice_detail b join fee_6_invoice a on a.INVID=b.INVID Where find_in_set("'.$heads_n[$i].'", b.`FLEXIBLE_HEADS_N_TIMES`) and a.CLSSESSID = '.$class_.' and a.SESSID = "'.$session.'" '. $yr_mont_condition . ' GROUP BY heads';
             }
+            //echo $sql1;
             $query1 = $this->db->query($sql1);
             if($query1->num_rows()!=0){
                 $r1 = $query1->row();
                 $data['nTime'][$i] = $r1;
             }
         }
-
+        
         return $data;
     }
 

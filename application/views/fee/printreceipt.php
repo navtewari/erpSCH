@@ -1,5 +1,5 @@
 <?php
-if (count($receipt) != 0) {
+if (isset($receipt) != 0) {
     $fee_ = new My_library();
     $inwords = new Numbertowords();
 
