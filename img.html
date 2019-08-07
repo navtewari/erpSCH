@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>Print JPG</title>
+		<script type="text/javascript" src="assets_/js/jquery.min.js"></script>
+		<script type="text/javascript" src="my.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var canvas = $("mycanvas");
+				var img    = canvas.toDataURL("image/jpg");
+				document.write('<img src="'+img+'"/>');
+			})
+		</script>
+	</head>
+	<body>
+		<center>
+			<span onclick="x();">Click</span>
+			<p id="mycanvas" style="background: #808080; color: #ffffff; font-size: 30px">
+				Welcome to Party !s
+			</p>
+		</center>
+	</body>
+</html>

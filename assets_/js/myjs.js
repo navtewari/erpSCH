@@ -4455,12 +4455,13 @@ $(function(){
 		$('#cmbShowFlexiHeadedStudents').click(function(){
 			var url_ = site_url_ + "/fee/getTotalAmount_FlexiHeads_1_N_time";
 			var data_ = $('#frmFlexiHeadedStudents').serialize();
+			//$('#FlexiHeaded_students_here_N_time').html(data_);
 			$.ajax({
 				type: 'POST',
 				url: url_,
 				data: data_,
 				success: function (data){
-					$('#FlexiHeaded_students_here_1_time').html(data);
+					$('#FlexiHeaded_students_here_N_time').html(data);
 					var obj = JSON.parse(data);
 					var len = obj.feeHeads.oneTime.length;
 					var len1= obj.feeHeads.nTime.length;
@@ -4506,15 +4507,15 @@ $(function(){
 					str = str + "<td style='text-align: center; font-weight: bold'>"+totalEntries+"</td>";
 					str = str + "<td style='text-align: right; font-weight: bold' class='currency_'>"+totalAmount+"</td>";
 					str = str + "</tr>";
-					$('#FlexiHeaded_students_here_N_time').html(str);	
+					//$('#FlexiHeaded_students_here_N_time').html(str);	
 					$('.currency_').digits();
 
 					if($('#cmbClassesForFlexiHeadedStudents').val() == 'all'){
-						$('#felxiHeads_1_time_heading').html('Student Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
-						$('#felxiHeads_N_time_heading').html('Student Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
+						$('#felxiHeads_1_time_heading').html('Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
+						$('#felxiHeads_N_time_heading').html('Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> classes');
 					} else {
-						$('#felxiHeads_1_time_heading').html('Student Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
-						$('#felxiHeads_N_time_heading').html('Student Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
+						$('#felxiHeads_1_time_heading').html('Opted Fee to Collect (<b>1</b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
+						$('#felxiHeads_N_time_heading').html('Opted Fee to Collect (<b><i>N</i></b> Time) for <b style="color: #0000ff">'+$('#cmbClassesForFlexiHeadedStudents option:selected').text()+'</b> class');
 					}
 				}
 			});

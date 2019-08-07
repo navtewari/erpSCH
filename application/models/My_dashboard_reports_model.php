@@ -162,6 +162,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
         $this->db->join('master_7_stud_personal d', 'c.regid=d.REGID');
         $this->db->join('master_8_stud_academics e', 'e.regid=d.regid');
+        $this->db->where('e.STATUS_', 1);
         $query = $this->db->get();
         if($query->num_rows()!=0){
             $result = $query->row();

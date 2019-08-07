@@ -1,5 +1,6 @@
 <style type="text/css">
     .selectedFlexiHeadCSS{float: left; margin:3px; padding: 3px; background: #FFF0BF; border:#900000 dotted 1px; border-radius: 5px; font-size: 10px;}
+    .fade{ opacity: 1; }
 </style>
 <div class="row-fluid">
     <?php
@@ -36,6 +37,82 @@
                             <?php echo form_dropdown($data, $options, ''); ?>
                         </div>
                 </div>
+            </div>
+            <div class="widget-content" style="overflow: hidden">
+                <div class="control-group span3 fade">
+                    <label class="control-label">Year From<?php echo explode("-", $this->session->userdata('_current_year___'))[0];?></label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbYr_from',
+                                    'id' => 'cmbYr_from',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                for($i=explode("-", $this->session->userdata('_current_year___'))[0]; $i<=(date('Y')+1);$i++){
+                                    $options[$i] = $i;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, explode("-", $this->session->userdata('_current_year___'))[0]); ?>
+                        </div>
+                </div>
+                <div class="control-group span3 fade">
+                    <label class="control-label">Month From</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbMnth_from',
+                                    'id' => 'cmbMnth_from',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                foreach($fetch_month as $key => $value){
+                                    $options[$key] = $value;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, (4)); ?>
+                        </div>
+                </div>
+                <div class="control-group span3 fade">
+                    <label class="control-label">Year To</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbYr_to',
+                                    'id' => 'cmbYr_to',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                for($i=explode("-", $this->session->userdata('_current_year___'))[0]; $i<=(date('Y')+1);$i++){
+                                    $options[$i] = $i;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, date('Y')); ?>
+                        </div>
+                </div>
+                <div class="control-group span3 fade">
+                    <label class="control-label">Month To</label>
+                        <div class="controls">
+                            <?php
+                                $data = array(
+                                    'name' => 'cmbMnth_to',
+                                    'id' => 'cmbMnth_to',
+                                    'required' => 'required',
+                                    'class' => 'span12'
+                                );
+                                $options = array();
+                                foreach($fetch_month as $key => $value){
+                                    $options[$key] = $value;
+                                }
+                            ?>
+                            <?php echo form_dropdown($data, $options, date('m')); ?>
+                            
+                        </div>
+                </div>
+                <div class="control-group"></div>
             </div>
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group span6">
@@ -94,7 +171,7 @@
         <div class="control-group">
             <div class="widget-box">
                 <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                    <h5 id="felxiHeads_1_time_heading">Student Opted Fee to Collect (<b>1</b> Time)</h5>
+                    <h5 id="felxiHeads_1_time_heading">Opted Fee to Collect (<b>1</b> Time)</h5>
                 </div>
                 <div class="widget-content nopadding">
                     <div id="discount_selected" style="padding: 1px 1px;"></div>
@@ -118,7 +195,7 @@
         <div class="control-group">
             <div class="widget-box">
                 <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                    <h5 id="felxiHeads_N_time_heading">Student Opted Fee to Collect (<b><i>N</i></b> Time)</h5>
+                    <h5 id="felxiHeads_N_time_heading">Opted Fee to Collect (<b><i>N</i></b> Time)</h5>
                 </div>
                 <div class="widget-content nopadding">
                     <div id="discount_selected" style="padding: 1px 1px;"></div>
