@@ -10,7 +10,7 @@
                     'name' => 'frmTotalFeeCOllectedClasswiseDurationwise',
                     'id' => 'frmTotalFeeCOllectedClasswiseDurationwise',
                 );
-                echo form_open('#', $attrib_); 
+                echo form_open('exporting/export_fee_total_class_collection', $attrib_); 
             ?>
             <div class="widget-content" style="overflow: hidden">
                 <div class="control-group span12">
@@ -44,7 +44,7 @@
                                 'autocomplete' => 'off',
                                 'name' => 'txtDateFrom',
                                 'id' => 'txtDateFrom',
-                                'value' => date('d/m/Y')
+                                'value' => date('1/4/'.explode('-', $this->session->userdata('_current_year___'))[0])
                             );
                             echo form_input($data);
                             ?>
@@ -67,11 +67,22 @@
                         );
                         echo form_input($data);
                         ?>
+                        <?php
+                        $data = array(
+                            'type' => 'hidden',
+                            'class' => "span12",
+                            'autocomplete' => 'off',
+                            'name' => 'cls',
+                            'id' => 'cls',
+                        );
+                        echo form_input($data);
+                        ?>
                         <span class="add-on"><i class="icon-th"></i></span> 
                     </div>
                 </div>
                 <div class="control-group span12">
                     <input type="button" value="View" class="btn btn-primary" id="cmdViewTotalFeeClasswise">
+                    <input type="image" src="<?php echo base_url('assets_/img/excel.png');?>" style="width: 48px; float: right">
                 </div>
         </div>
     </div>

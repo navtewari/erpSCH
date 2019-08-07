@@ -4164,12 +4164,32 @@ $(function(){
     	return false;
 	});
 
+	$('#exportTotalClassCollection').click(function(){
+		var class__ = $('#frmTotalFeeCOllectedClasswiseDurationwise').val();
+		var cls__ = $("#cmbClassForTotalCollection option:selected").text();
+		if(class__ != "x"){
+			var url_ = site_url_ + "/exporting/export_fee_total_class_collection";
+			var data_ = 'txtDateFrom='+$('#txtDateFrom').val()+'&txtDateTo='+$('#txtDateTo').val()+'&cmbClassForTotalCollection='+$('#cmbClassForTotalCollection').val()+'&cls='+cls__;
+			$.ajax({
+				type: 'POST',
+				url: url_,
+				data: data_,
+				success: function(data){
+
+				}
+			});
+		}
+	});
+	$('#cmbClassForTotalCollection').change(function(){
+		$('#cls').val($("#cmbClassForTotalCollection option:selected").text());
+	});
 	$('#cmdViewTotalFeeClasswise').click(function(){
 		var url_ = '';
 		var data = '';
 		var class__ = $('#frmTotalFeeCOllectedClasswiseDurationwise').val();
 		$('#show_message').css('display', 'none');
 		$('#show_message').html("");
+		$("#total_collection_classwise_durationwise").html("<h5 style='text-align: center'>Please wait...</h5>");
 
         $("#total_collection_classwise_durationwise").html("<h5 style='text-align: center'>Please wait...</h5>");
             // Fetching form data
@@ -4198,25 +4218,28 @@ $(function(){
 						str = str + '<thead>';
 						str = str + '<tr>';
 						str = str + '<th></th>';
-						str = str + '<th style="text-align: left">Receipt ID</th>';
+						str = str + '<th style="text-align: center">CLASS</th>';
+						str = str + '<th style="text-align: left">Name</th>';
 						str = str + '<th style="text-align: left">Paid Date</th>';
-						str = str + '<th>Class</th>';
-						str = str + '<th style="text-align: left">INVOICE</th>';
-						str = str + '<th style="text-align: right">COLLECTION (Rs.)</th>';
-						str = str + '<th style="text-align: center">MODE</th>';
+						str = str + '<th style="text-align: center">DISCOUNT</th>';
+						str = str + '<th style="width: auto; text-align: right">COLLECTION (Rs.)</th>';
 						str = str + '<th></th>';
 						str = str + '</tr>';
 						str = str + '</thead>';
 						for(i=0; i<obj.fee_collection.length;i++){
 							str = str + '<tr>';
                                 str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
-                                str = str + '<td>'+obj.fee_collection[i].RECPTID+'</td>';
-                                str = str + '<td>'+obj.fee_collection[i].DATE_+'</td>';
                                 str = str + '<td style="text-align: center">'+obj.fee_collection[i].CLASSID+'</td>';
-                                str = str + '<td style="text-align: center">'+obj.fee_collection[i].INVDETID+'</td>';
+                                str = str + '<td>'+obj.fee_collection[i].FNAME+'</td>';
+                                str = str + '<td>'+obj.fee_collection[i].DATE_+'</td>';
+                                if(obj.fee_collection[i].DISCOUNT_AMOUNT!=0){
+                                	discount = obj.fee_collection[i].DISCOUNT_AMOUNT;
+                                } else {
+                                	discount = '';
+                                }
+                                str = str + '<td style="text-align: center">'+discount+'</td>';
                                 str = str + '<td style="text-align: right">'+obj.fee_collection[i].PAID+'</td>';
-                                str = str + '<td style="text-align: center">'+obj.fee_collection[i].MODE+'</td>';
-                                str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
+                               	str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
                             str = str + '</tr>';
 						}
 						$('#total_collection_classwise_durationwise').html(str);

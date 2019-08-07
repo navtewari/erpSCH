@@ -208,18 +208,20 @@ class My_dashboard_reports_model extends CI_Model {
         }
         
         $this->db->where('z.STATUS_', 1);
-        $this -> db -> order_by('ABS(y.CLASS)', 'asc');
+        $this -> db -> order_by('y.CLASS', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
+        $this -> db -> order_by('zz.FNAME', 'asc');
         $this -> db -> order_by('DATE(c.DATE_)', 'asc');
         $this->db->where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
         $this->db->where('c.PAID<>', 0);
-        $this->db->select('a.SESSID, x.CLASSID, c.RECPTID, c.PAID, c.INVDETID, c.MODE, DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") AS DATE_, c.regid');
+        $this->db->select('zz.FNAME, c.DISCOUNT_AMOUNT, a.SESSID, x.CLASSID, c.RECPTID, c.PAID, c.INVDETID, c.MODE, DATE_FORMAT(DATE(c.DATE_), "%d-%m-%Y") AS DATE_, c.regid');
         $this->db->from('fee_6_invoice a');
         $this->db->join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this->db->join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
         $this->db->join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
         $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
         $this->db->join('master_8_stud_academics z', 'c.regid=z.regid');
+        $this -> db -> join('master_7_stud_personal zz', 'z.regid=zz.regid');
         $query = $this->db->get();
         //echo $this->db->last_query();
         return $query->result();
@@ -454,7 +456,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this -> db -> where ('b.SESSID', $year__);
         $this -> db -> where('e.STATUS_', 1);
         $this -> db -> where('d.STATUS', 1);
-        $this->db->where('d.DUE_AMOUNT>', 0);
+        $this -> db -> where('d.DUE_AMOUNT>', 0);
         $this -> db -> order_by('ABS(a.CLASSID)');
         $this -> db -> order_by('a.SECTION');
         $this -> db -> group_by('b.CLSSESSID');
