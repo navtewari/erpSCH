@@ -313,7 +313,7 @@ class My_export_model extends CI_Model {
         }
     }
 
-    function fee_total_class_collection($cls, $class__, $datefrom, $dateto){
+    function fee_total_class_collection_no_discount($cls, $class__, $datefrom, $dateto){
         $this->load->dbutil();
         $year__ = $this->session->userdata('_current_year___');
 
@@ -322,13 +322,13 @@ class My_export_model extends CI_Model {
         }
         
         $this -> db -> where('z.STATUS_', 1);
+        $this -> db -> where('c.PAID<>', 0);
         $this -> db -> order_by('y.CLASS', 'asc');
         $this -> db -> order_by('y.SECTION', 'asc');
         $this -> db -> order_by('zz.FNAME', 'asc');
         $this -> db -> order_by('DATE(c.DATE_)', 'asc');
         $this -> db -> where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
-        //$this->db->where('c.PAID<>', 0);
-        $this -> db -> select('y.CLASS, c.regid, zz.FNAME as NAME, b.ACTUAL_DUE_AMOUNT AS INVOICE, c.DISCOUNT_AMOUNT AS DISOUNT, c.PAID as PAID, b.DUE_AMOUNT as DUES LEFT, CONCAT(" [",DATE_FORMAT(DATE(c.DATE_), "%d-%M-%Y"),"]") AS DATE_');
+        $this -> db -> select('y.CLASS, c.regid, zz.FNAME as NAME, c.PAID as PAID, CONCAT(" [",DATE_FORMAT(DATE(c.DATE_), "%d-%M-%Y"),"]") AS DATE_');
         $this -> db -> from('fee_6_invoice a');
         $this -> db -> join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
         $this -> db -> join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
@@ -342,11 +342,76 @@ class My_export_model extends CI_Model {
 
         $delimiter = ",";
         $newline = "\r\n";
-        $filename = $cls .".csv";
+        $filename = $cls ."_total_collection_without_discount.csv";
         $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
         force_download($filename, $data);
     }
 
+    function fee_total_class_collection_with_discount($cls, $class__, $datefrom, $dateto){
+        $this->load->dbutil();
+        $year__ = $this->session->userdata('_current_year___');
+
+        if($class__ != 'x'){
+            $this -> db -> where('a.CLSSESSID', $class__);
+        }
+        
+        $this -> db -> where('z.STATUS_', 1);
+        $this -> db -> order_by('y.CLASS', 'asc');
+        $this -> db -> order_by('y.SECTION', 'asc');
+        $this -> db -> order_by('zz.FNAME', 'asc');
+        $this -> db -> order_by('DATE(c.DATE_)', 'asc');
+        $this -> db -> where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
+        $this -> db -> select('y.CLASS, c.regid, zz.FNAME as NAME, c.DISCOUNT_AMOUNT AS DISOUNT, c.PAID as PAID, CONCAT(" [",DATE_FORMAT(DATE(c.DATE_), "%d-%M-%Y"),"]") AS DATE_');
+        $this -> db -> from('fee_6_invoice a');
+        $this -> db -> join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this -> db -> join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this -> db -> join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
+        $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $this -> db -> join('master_8_stud_academics z', 'c.regid=z.regid');
+        $this -> db -> join('master_7_stud_personal zz', 'z.regid=zz.regid');
+        $query = $this->db->get();
+        //echo $this->db->last_query(); die();
+        //return $query->result();
+
+        $delimiter = ",";
+        $newline = "\r\n";
+        $filename = $cls ."_total_collection_with_discount.csv";
+        $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
+        force_download($filename, $data);
+    }
+
+    function fee_total_class_collection_consolidate($cls_, $class__, $datefrom, $dateto){
+        $this->load->dbutil();
+        $year__ = $this->session->userdata('_current_year___');
+
+        if($class__ != 'x'){
+            $this -> db -> where('a.CLSSESSID', $class__);
+        }
+        $this -> db -> group_by('c.regid');
+        $this -> db -> where('z.STATUS_', 1);
+        $this -> db -> order_by('y.CLASS', 'asc');
+        $this -> db -> order_by('y.SECTION', 'asc');
+        $this -> db -> order_by('zz.FNAME', 'asc');
+        $this -> db -> order_by('DATE(c.DATE_)', 'asc');
+        $this -> db -> where("DATE(c.DATE_) BETWEEN DATE('".$datefrom."') AND DATE('".$dateto."')");
+        $this -> db -> select('y.CLASS, c.regid, zz.FNAME as NAME, sum(c.PAID) as TOTAL_PAID');
+        $this -> db -> from('fee_6_invoice a');
+        $this -> db -> join('fee_6_invoice_detail b', 'a.INVID=b.INVID');
+        $this -> db -> join('fee_7_receipts c', 'b.INVDETID=c.INVDETID');
+        $this -> db -> join('class_2_in_session x', 'x.CLSSESSID=a.CLSSESSID');
+        $this -> db -> join('class_1_classes y', 'x.CLASSID=y.CLASSID');
+        $this -> db -> join('master_8_stud_academics z', 'c.regid=z.regid');
+        $this -> db -> join('master_7_stud_personal zz', 'z.regid=zz.regid');
+        $query = $this->db->get();
+        //echo $this->db->last_query(); die();
+        //return $query->result();
+
+        $delimiter = ",";
+        $newline = "\r\n";
+        $filename = $cls ."_total_collection_consolidate.csv";
+        $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
+        force_download($filename, $data);
+    }
 
     function fee_dues_upto($cls, $class__, $datefrom, $dateto){
         $this->load->dbutil();

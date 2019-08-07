@@ -4221,7 +4221,6 @@ $(function(){
 						str = str + '<th style="text-align: center">CLASS</th>';
 						str = str + '<th style="text-align: left">Name</th>';
 						str = str + '<th style="text-align: left">Paid Date</th>';
-						str = str + '<th style="text-align: center">DISCOUNT</th>';
 						str = str + '<th style="width: auto; text-align: right">COLLECTION (Rs.)</th>';
 						str = str + '<th></th>';
 						str = str + '</tr>';
@@ -4237,7 +4236,6 @@ $(function(){
                                 } else {
                                 	discount = '';
                                 }
-                                str = str + '<td style="text-align: center">'+discount+'</td>';
                                 str = str + '<td style="text-align: right">'+obj.fee_collection[i].PAID+'</td>';
                                	str = str + '<td><a href="'+site_url_+'/fee/fee_print/'+obj.fee_collection[i].RECPTID+'" class="view_invoice_1" target="_blank">VIEW</a></td>';
                             str = str + '</tr>';
@@ -4546,5 +4544,22 @@ $(function(){
 		});
 		$('#selectnumber option:selected').text()
 	// ---------------------------------------------------------------------
+
+	// Excel Reports for Dashboard Fee
+		$('.excelicon').click(function(){
+			var id = this.id;
+			if(id == 'totalCollection1'){
+				$('#frmTotalFeeCOllectedClasswiseDurationwise').attr('action', site_url_+'/exporting/export_fee_total_class_collection_no_discount');
+				return true;
+			} else if(id == 'totalCollection2'){
+				$('#frmTotalFeeCOllectedClasswiseDurationwise').attr('action', site_url_+'/exporting/export_fee_total_class_collection_with_discount');
+				return true;
+			} else if(id == 'totalCollection3'){
+				$('#frmTotalFeeCOllectedClasswiseDurationwise').attr('action', site_url_+'/exporting/export_fee_total_class_collection_consolidate');
+				return true;
+			}
+		return false;
+		});
+	// -------------------------------
 
 });

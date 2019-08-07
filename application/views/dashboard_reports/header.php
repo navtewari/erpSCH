@@ -1,4 +1,7 @@
 <div class="span4">
+    <style type="text/css">
+    .excelicon {width: 48px !important; float: left !important; padding:0px !important}
+</style>
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-briefcase"></i> </span>
                 <h5>Total Collection</h5>
@@ -82,8 +85,21 @@
                 </div>
                 <div class="control-group span12">
                     <input type="button" value="View" class="btn btn-primary" id="cmdViewTotalFeeClasswise">
-                    <input type="image" src="<?php echo base_url('assets_/img/excel.png');?>" style="width: 48px; float: right">
                 </div>
-        </div>
+                <?php if($this->session->userdata('_status_') == 'adm') {?>
+                <div class="control-group span12">
+                    <input type="image" src="<?php echo base_url('assets_/img/excel.png');?>" class="excelicon" id="totalCollection1">
+                    <div style="padding: 15px 0px;"> Download without discount</div>
+                </div>
+                <div class="control-group span12">
+                    <input type="image" src="<?php echo base_url('assets_/img/excel.png');?>" class="excelicon" id="totalCollection2">
+                    <div style="padding: 15px 0px;"> Download with discount</div>
+                </div>
+                <div class="control-group span12">
+                    <input type="image" src="<?php echo base_url('assets_/img/excel.png');?>" class="excelicon" id="totalCollection3">
+                    <div style="padding: 15px 0px;"> Download Consolidate</div>
+                </div>
+                <?php } ?>
+            </div>
     </div>
 </div>
