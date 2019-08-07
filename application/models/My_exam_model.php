@@ -682,14 +682,62 @@ class My_exam_model extends CI_Model {
     }
 
     function mget_students_in_class_with_marks($classID) {
+        
         $termID = $this->input->post('cmbExamTerm');
         $classid = $this->input->post('cmbClassofResult');
         $optScholastic = $this->input->post('cmbAssessment');
         $AssItem = $this->input->post('cmbAssessmentItem');
         $subjectid = $this->input->post('cmbSubjectMarks');
         $year__ = $this->session->userdata('_current_year___');
+        $username = $this->session->userdata('_user___');
 
         if ($optScholastic == '1') {
+            //----------------------------checking recent added students in main table-------------------------------          
+
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID,b.regid as x, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            
+            $this->db->join('exam_6_scholastic_result d', 'd.regid=a.regid', 'left');
+            $this->db->where('d.regid is NULL');
+                       
+            $query = $this->db->get();
+            //echo $this->db->last_query();
+            //return $query->result();
+            //die();           
+           if ($query->num_rows() != 0) {
+                foreach ($query->result() as $row) {
+                    $this->db->where('itemID', $AssItem);
+                    $query2 = $this->db->get('exam_1_scholastic_items');
+
+                    if ($query2->num_rows() != 0) {
+                        foreach ($query2->result() as $row2) {
+                            $maxMarks = $row2->maxMarks;
+                        }
+                    }
+                    
+                    $regid = $row->x;
+                    $data = array(
+                        'regid' => $regid,
+                        'CLSSESSID' => $classid,
+                        'ROLLNO' => 0,
+                        'SESSID' => $year__,
+                        'subjectID' => $subjectid,
+                        'itemID' => $AssItem,     
+                        'maxMarks' =>$maxMarks,
+                        'termID' => $termID,
+                        'USERNAME_' => $username,
+                    );
+
+                    $query1 = $this->db->insert('exam_6_scholastic_result', $data);
+                }
+            }
+                        
+            //-----------------------------------------------------------------------------
             $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
             $this->db->from('master_7_stud_personal a');
             $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -707,6 +755,44 @@ class My_exam_model extends CI_Model {
 
             $query = $this->db->get();
         } else if ($optScholastic == '2') {
+            //----------------------------checking recent added students in main table-------------------------------
+            
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID,b.regid as x, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            
+            $this->db->join('exam_7_coscholastic_result d', 'd.regid=a.regid', 'left');
+            $this->db->where('d.regid is NULL');
+                       
+            $query = $this->db->get();
+            //echo $this->db->last_query();
+            //echo $query->num_rows();
+            //return $query->result();
+            // die(); 
+            
+            if ($query->num_rows() != 0) {
+                foreach ($query->result() as $row) {                                        
+                    $regid = $row->x;
+                    $data = array(
+                        'regid' => $regid,
+                        'CLSSESSID' => $classid,
+                        'ROLLNO' => 0,
+                        'SESSID' => $year__,
+                        'coitemID' => $AssItem,
+                        'termID' => $termID,
+                        'USERNAME_' => $username,
+                    );
+
+                    $query1 = $this->db->insert('exam_7_coscholastic_result', $data);
+                }
+            }
+                        
+            //-----------------------------------------------------------------------------
+            
             $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
             $this->db->from('master_7_stud_personal a');
             $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -723,6 +809,44 @@ class My_exam_model extends CI_Model {
 
             $query = $this->db->get();
         } else if ($optScholastic == '3') {
+            
+            //----------------------------checking recent added students in main table-------------------------------
+            
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID,b.regid as x, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            
+            $this->db->join('exam_12_discipline_result d', 'd.regid=a.regid', 'left');
+            $this->db->where('d.regid is NULL');
+                       
+            $query = $this->db->get();
+            //echo $this->db->last_query();
+            //echo $query->num_rows();
+            //return $query->result();
+            // die(); 
+            
+            if ($query->num_rows() != 0) {
+                foreach ($query->result() as $row) {                                        
+                    $regid = $row->x;
+                    $data = array(
+                        'regid' => $regid,
+                        'CLSSESSID' => $classid,
+                        'ROLLNO' => 0,
+                        'SESSID' => $year__,
+                        'disciplineID' => $AssItem,
+                        'termID' => $termID,
+                        'USERNAME_' => $username,
+                    );
+
+                    $query1 = $this->db->insert('exam_12_discipline_result', $data);
+                }
+            }
+                        
+            //-----------------------------------------------------------------------------
             $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
             $this->db->from('master_7_stud_personal a');
             $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
@@ -756,8 +880,44 @@ class My_exam_model extends CI_Model {
         $this->db->where('CLSSESSID', $classID);
         $query2 = $this->db->get('exam_9_result_remarks');
         $year__ = $this->session->userdata('_current_year___');
+        $username = $this->session->userdata('_user___');
 
         if ($query2->num_rows() != 0) {
+            //----------------------------checking recent added students in main table-------------------------------
+            
+            $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID,b.regid as x, b.clssessid, b.ID_, d.*');
+            $this->db->from('master_7_stud_personal a');
+            $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');
+            $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
+            $this->db->where('b.clssessid', $classID);
+            $this->db->where('c.SESSID', $year__);
+            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            
+            $this->db->join('exam_9_result_remarks d', 'd.regid=a.regid', 'left');
+            $this->db->where('d.regid is NULL');
+                       
+            $query = $this->db->get();
+            //echo $this->db->last_query();
+            //echo $query->num_rows();
+            //return $query->result();
+            // die(); 
+            
+            if ($query->num_rows() != 0) {
+                foreach ($query->result() as $row) {                                        
+                    $regid = $row->x;
+                    $data = array(
+                        'regid' => $regid,
+                        'CLSSESSID' => $classID,
+                        'ROLLNO' => 0,
+                        'SESSID' => $year__,                                                
+                        'USERNAME_' => $username,
+                    );
+
+                    $query1 = $this->db->insert('exam_9_result_remarks', $data);
+                }
+            }
+                        
+            //-----------------------------------------------------------------------------
             $this->db->select('a.regid, a.FNAME, a.MNAME,a.LNAME, c.CLASSID, b.clssessid, b.ID_, d.*');
             $this->db->from('master_7_stud_personal a');
             $this->db->join('class_3_class_wise_students b', 'a.regid=b.regid');

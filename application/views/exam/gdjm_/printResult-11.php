@@ -397,6 +397,7 @@
                                     </td>
                                 </tr>
                                     <!-- Scholastic Area -->
+                                    
                                     <tr>
                                         <td colspan="2">
                                             <table border="1" cellpadding="3" width="100%">
@@ -462,13 +463,13 @@
                                                                                 <?php } ?>
                                                                             <?php } ?>
                                                                         <?php } ?>
-                                                                    <?php } ?>
+                                                                    <?php } ?>                                                                                
                                                                     <?php if ($printData == false) { ?>
                                                                         <td>-</td>
                                                                         <?php
                                                                         $printData = false;
                                                                         }
-                                                                    ?>
+                                                                    ?>                                                                       
                                                                 <?php } ?>
 
                                                             <td align="center">
@@ -497,7 +498,7 @@
                                                                             }
                                                                         }
                                                                     }
-                                                                 }
+                                                                 }                                                                 
                                                             }
                                                             if ($term == 1) {
                                                                 $term++;
@@ -505,11 +506,14 @@
                                                                 $term--;
                                                             }
                                                             ?>
-                                                        </td>
-                                                        <?php } ?>                                                                                      
+                                                        </td>     
+                                                       
+                                                        <?php } ?>   
                                                     </tr>
+                                                     
                                                 <?php } ?>
                                                     <tr align="center">
+                                                        
                                                     <?php
                                                     $schCount = 0;
                                                     foreach ($sch_data_class as $scho_items) {
@@ -522,8 +526,7 @@
                                                     <td>Marks Obtained / Total Marks</td>
                                                     <td colspan="<?php echo $schCount;?>">Grand Total</td>
                                                     <td>Marks Obtained / Total Marks</td>
-                                                </tr>
-                                                
+                                                </tr>                                                
                                                 <tr align="center">
                                                     <?php
                                                     $schCount = 0;

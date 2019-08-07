@@ -197,6 +197,7 @@ class Exam extends CI_Controller {
         } else {
             $data['studentdata'] = $this->mem->mget_students_in_class($classID);
         }
+        //print_r($data);
         echo json_encode($data);
     }
 
@@ -226,7 +227,7 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function fetchResult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0,$pagi = 0) {
+    function fetchResult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0,$pagi = 0) {              
         ini_set('max_execution_time', 300);
         if ($pagi == 0) {
             $classSessID = $this->input->post('classSessHiddenID');
@@ -239,12 +240,12 @@ class Exam extends CI_Controller {
         
         $data['regID_'] = $regID;
         $data['classID'] = $classID;
-        $data['session'] = array($this->session->userdata('_current_year___'));
+        $data['session'] = array($this->session->userdata('_current_year___'));        
         
         if ($regID == 0) {
             $pagi = 1;
             $config = array();
-            $config["base_url"] = base_url() . "index.php/exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi;
+            $config["base_url"] = site_url("exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi);            
             $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
             $config["per_page"] = 5;
             $config["uri_segment"] = 9;
@@ -294,7 +295,7 @@ class Exam extends CI_Controller {
         $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
         $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));
+        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));        
         
         if($regID != 0){
             $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
@@ -302,8 +303,8 @@ class Exam extends CI_Controller {
             $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
             $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));            
             $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
-        }
-
+        }        
+        
         $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
         //$data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
         $data['sch_name'] = $this->session->userdata('sch_name');
@@ -320,22 +321,22 @@ class Exam extends CI_Controller {
         $data['reg_id'] = $regID;
 
         $res_prefix= $this->session->userdata('res_prefix');        
-        
-        if ($reportlayout == 1 && $sidelayout == 1) {
+                    
+        if ($reportlayout == 1 && $sidelayout == 1) {            
             $this->load->view('exam/'.$res_prefix.'/printResult-1to8-1', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 1) {
+        } else if ($reportlayout == 2 && $sidelayout == 1) {            
             $this->load->view('exam/'.$res_prefix.'/printResult-9-1', $data);                  
-        } else if ($reportlayout == 1 && $sidelayout == 2) {
+        } else if ($reportlayout == 1 && $sidelayout == 2) {            
             $this->load->view('exam/'.$res_prefix.'/printResult-1to8', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 2) {
+        } else if ($reportlayout == 2 && $sidelayout == 2) {             
             $this->load->view('exam/'.$res_prefix.'/printResult-9', $data);
-        } else if ($reportlayout == 3 && $sidelayout == 2) {
+        } else if ($reportlayout == 3 && $sidelayout == 2) {            
             $this->load->view('exam/'.$res_prefix.'/printResult-lkg', $data);
-        } else if ($reportlayout == 4 && $sidelayout == 2) {
+        } else if ($reportlayout == 4 && $sidelayout == 2) {            
             $this->load->view('exam/'.$res_prefix.'/printResult-11', $data);  
         }else {
             die();
-        }
+        }        
     }    
 
     function calculateResult($classSessID) {
