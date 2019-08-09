@@ -75,4 +75,37 @@ class Exporting extends CI_Controller {
         $writer->save('php://output');
     }
 
+    function export_fee_total_class_collection_no_discount(){
+        $x = explode('/',$this->input->post('txtDateFrom'));
+        $datefrom = $x[2]."-".$x[1]."-".$x[0];
+        $y = explode('/', $this->input->post('txtDateTo'));
+        $dateto = $y[2]."-".$y[1]."-".$y[0];
+        $class__ = $this->input->post('cmbClassForTotalCollection');
+        $cls_ = $this->input->post('cls');
+
+        $this->mem->fee_total_class_collection_no_discount($cls_, $class__, $datefrom, $dateto);
+    }
+
+    function export_fee_total_class_collection_with_discount(){
+        $x = explode('/',$this->input->post('txtDateFrom'));
+        $datefrom = $x[2]."-".$x[1]."-".$x[0];
+        $y = explode('/', $this->input->post('txtDateTo'));
+        $dateto = $y[2]."-".$y[1]."-".$y[0];
+        $class__ = $this->input->post('cmbClassForTotalCollection');
+        $cls_ = $this->input->post('cls');
+
+        $this->mem->fee_total_class_collection_with_discount($cls_, $class__, $datefrom, $dateto);
+    }
+
+    function export_fee_total_class_collection_consolidate(){
+        $x = explode('/',$this->input->post('txtDateFrom'));
+        $datefrom = $x[2]."-".$x[1]."-".$x[0];
+        $y = explode('/', $this->input->post('txtDateTo'));
+        $dateto = $y[2]."-".$y[1]."-".$y[0];
+        $class__ = $this->input->post('cmbClassForTotalCollection');
+        $cls_ = $this->input->post('cls');
+
+        $this->mem->fee_total_class_collection_consolidate($cls_, $class__, $datefrom, $dateto);   
+    }
+
 }
