@@ -1231,7 +1231,7 @@ class My_exam_model extends CI_Model {
 
     function mfetchSubMarksLimit($classSessID, $year_, $limit, $start) { 
         //---------counting scholastic Data------------------------
-         $this->db->select('a.item, a.maxMarks, b.*');
+        $this->db->select('a.item, a.maxMarks, b.*');
         $this->db->from('exam_2_add_scholastic_to_class b');
         $this->db->join('exam_1_scholastic_items a', 'a.itemID = b.itemID', 'left');
         $this->db->where('b.SESSID', $year_);
@@ -1433,6 +1433,252 @@ class My_exam_model extends CI_Model {
     }
 
     function mcalculateResult($classSessID) {
+        ini_set('max_execution_time', 300);
+        $regID = 0;
+        $year__ = $this->session->userdata('_current_year___');
+        $classID = $this->mcheckClassID($classSessID);
+
+        $subject_class = $this->mfetchSubClassWise($classID, $year__);
+        $student_per_data = $this->mfetchStuDatainClass($classSessID); //studentData
+        $subject_marks = $this->mfetchSubMarks($regID, $classSessID, $year__); //Subject Marks                        
+        $exam_term = $this->mget_examterm_in_session(); // Term
+        $sch_data_class = $this->mfetchScholasticClassWise($classSessID, $year__); //SchData
+
+        foreach ($student_per_data as $stuData) {
+            $term1 = '';
+            $term2 = '';
+            $term = 0;
+            $term1subjectNumber='';
+            $term2subjectNumber='';
+            foreach ($exam_term as $exterm) {
+                $term++;
+                $subject = '';
+                $subjectName = '';
+                $schName='';
+                $schoNameFlag=0;                
+                foreach ($subject_class as $subjectClass) {
+                    $subject = $subject . ',' . $subjectClass->subjectID;
+                    $subjectName = $subjectName . ',' . $subjectClass->subName;                       
+                    $totalNumber_subject = 0;
+                    
+                    foreach ($sch_data_class as $scho_items) {
+                        if($schoNameFlag==0){
+                                $schName = $schName . ',' . $scho_items ->item;                                  
+                        }
+                        foreach ($subject_marks as $sub_marks) {
+                            if ($stuData->regid == $sub_marks->regid) {
+                                if ($subjectClass->subjectID == $sub_marks->subjectID) {                                    
+                                    if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) {
+                                        $totalNumber_subject = $totalNumber_subject + $sub_marks->marks;                                        
+                                        
+                                        if($term == 1){
+                                            $term1subjectNumber=$term1subjectNumber . ',' . $sub_marks->marks;
+                                        }else if ($term == 2) {
+                                            $term2subjectNumber=$term2subjectNumber . ',' . $sub_marks->marks;
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $schoNameFlag=1; //blocking repeating scholastic name 
+                    
+                    if ($term == 1) {
+                        $term1 = $term1 . ',' . $totalNumber_subject;
+                        $term1subjectNumber=$term1subjectNumber. '@';
+                       
+                    } else if ($term == 2) {
+                        $term2 = $term2 . ',' . $totalNumber_subject;
+                        $term2subjectNumber=$term2subjectNumber. '@';
+                    }
+                }
+            }
+
+            //----------------------Calculating Average Subject Marks
+            $term1Average = explode(",", $term1);
+            $term2Average = explode(",", $term2);
+            $subjectAverage = '';
+            for ($loop = 1; $loop < count($term1Average); $loop++) {
+                $average1 = $term1Average[$loop] / 2;
+                $average2 = $term2Average[$loop] / 2;
+                $subjectAverage = $subjectAverage . ',' . ($average1 + $average2);
+            }
+
+            //-----------------------Calculating Grade each subject            
+            $Grade = explode(",", $subjectAverage);
+            $subjectGrade = '';
+            $class_grade = $this->get_grade_in_class($classSessID);
+            //echo(count($Grade)) . ',';
+            for ($loop = 1; $loop < count($Grade); $loop++) {
+                //echo $Grade[$loop] . '=';
+                foreach ($class_grade as $cgrade) {                    
+                    if ((int)$Grade[$loop] >= (int)$cgrade->minMarks && (int)$Grade[$loop] <= (int)$cgrade->maxMarks) {
+                        $subjectGrade = $subjectGrade . ',' . $cgrade->grade;
+                        //echo $cgrade->grade . ',';
+                    }
+                }
+            }
+            //echo '<br/>';
+            //die();
+            //---------------------------Updating/Inserting in Database
+            $this->db->where('regid', $stuData->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->get('exam_13_calculated_result');
+
+            if ($query->num_rows($query) != 0) {
+                $data = array(
+                    'subjectID' => $subject,
+                    'personalInfo'=>$stuData->FNAME . ','. $stuData->MOTHER. ','. $stuData->FATHER. ','. $stuData->ADM_NO. ','. $stuData->DOB_,
+                    'subjectName'=>$subjectName,
+                    'scholasticName'=>$schName,
+                    'Term1SubjectWise' => $term1subjectNumber,
+                    'term1Result' => $term1,
+                    'Term2SubjectWise' => $term2subjectNumber,
+                    'term2Result' => $term2,
+                    'averageResult' => $subjectAverage,
+                    'subjectGrade' => $subjectGrade,
+                    'subjectRank' => '',
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                );
+                $this->db->where('regid', $stuData->regid);
+                $this->db->where('CLSSESSID', $classSessID);
+                $this->db->where('SESSID', $year__);
+                $query = $this->db->update('exam_13_calculated_result', $data);
+            } else {
+                $data = array(
+                    'regid' => $stuData->regid,
+                    'personalInfo'=>$stuData->FNAME . ','. $stuData->MOTHER. ','. $stuData->FATHER. ','. $stuData->ADM_NO. ','. $stuData->DOB_,
+                    'CLSSESSID' => $classSessID,
+                    'ROLLNO' => 0,
+                    'subjectID' => $subject,
+                    'subjectName'=>$subjectName,
+                    'scholasticName'=>$schName,
+                    'Term1SubjectWise' => $term1subjectNumber,
+                    'term1Result' => $term1,
+                    'Term2SubjectWise' => $term2subjectNumber,
+                    'term2Result' => $term2,
+                    'averageResult' => $subjectAverage,
+                    'subjectGrade' => $subjectGrade,
+                    'SESSID' => $year__,
+                    'USERNAME_' => $this->session->userdata('_user___'),
+                );
+
+                $query = $this->db->insert('exam_13_calculated_result', $data);
+            }
+        }
+
+        //-----------------Calculating Rank-------------------------
+        $noOfsubject = explode(",", $subject);
+        $countSubject = count($noOfsubject);
+
+        for ($loop = 2; $loop <= $countSubject; $loop++) {
+
+            $sql = "SELECT regid,subjectRank, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(averageResult,',', '" . $loop . "'), ',',-1) AS DECIMAL( 4, 1 ) ) AS avgResult FROM  exam_13_calculated_result WHERE  CLSSESSID =  '" . $classSessID . "' AND  SESSID=  '" . $year__ . "' ORDER BY avgResult DESC ";
+            $query = $this->db->query($sql);
+
+            $avg = -1;
+            $rank = 1;
+            foreach ($query->result() as $row) {
+                if ($avg != -1) {
+                    if ($avg == $row->avgResult) {
+                        $rank = $rank;
+                    } else {
+                        $rank++;
+                    }
+                }
+
+                $subRank = $row->subjectRank;
+                $subRank = $subRank . ',' . $rank;
+
+                $data = array(
+                    'subjectRank' => $subRank,
+                );
+
+                $this->db->where('regid', $row->regid);
+                $this->db->where('CLSSESSID', $classSessID);
+                $this->db->where('SESSID', $year__);
+                $query = $this->db->update('exam_13_calculated_result', $data);
+
+                $avg = $row->avgResult;
+            }
+        }
+        //-----------------End Rank Calculation---------------------
+        //-----------------Update Overall Result--------------------
+
+        $this->db->select('regid, averageResult');
+        $this->db->where('CLSSESSID', $classSessID);
+        $this->db->where('SESSID', $year__);
+        $query1 = $this->db->get('exam_13_calculated_result');
+
+        foreach ($query1->result() as $row) {
+            $overall = '';
+            $total = 0;
+            $avgResult = explode(",", $row->averageResult);
+            for ($loop = 1; $loop < count($avgResult); $loop++) {
+                $total = $total + (float) $avgResult[$loop];
+            }
+            $overall = $overall . ',' . $total;
+            $percentage = $total / ($countSubject - 1);
+            $overall = $overall . ',' . $percentage;
+
+            foreach ($class_grade as $cgrade) {
+                if ((int)$percentage >= (int)$cgrade->minMarks && (int)$percentage <= (int)$cgrade->maxMarks) {
+                    $overall = $overall . ',' . $cgrade->grade;
+                }
+            }
+
+            $data = array(
+                'overallResult' => $overall,
+            );
+            $this->db->where('regid', $row->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->update('exam_13_calculated_result', $data);
+        }
+
+        //-----------------End Overall Result-----------------------
+        //-----------------Overall Rank-----------------------------
+        $sql = "SELECT regid,overallResult, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(overallResult,',',2), ',',-1) AS DECIMAL( 4, 1 ) ) AS result FROM  exam_13_calculated_result WHERE  CLSSESSID =  '" . $classSessID . "' AND  SESSID=  '" . $year__ . "' ORDER BY result DESC ";
+        $query = $this->db->query($sql);
+
+        $avg = -1;
+        $rank = 1;
+        foreach ($query->result() as $row) {
+            if ($avg != -1) {
+                if ($avg == $row->result) {
+                    $rank = $rank;
+                } else {
+                    $rank++;
+                }
+            }
+
+            $overallRank = $row->overallResult;
+            $overallRank = $overallRank . ',' . $rank;
+
+            $data = array(
+                'overallResult' => $overallRank,
+            );
+
+            $this->db->where('regid', $row->regid);
+            $this->db->where('CLSSESSID', $classSessID);
+            $this->db->where('SESSID', $year__);
+            $query = $this->db->update('exam_13_calculated_result', $data);
+
+            $avg = $row->result;
+        }
+        //-----------------End Overall Rank-------------------------
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Result Updated/Calculated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'Error! Please try after sometime');
+        }
+
+        return $bool_;
+    }
+    
+    function mcalculateResultOld($classSessID) { //previous method to calculate result
         ini_set('max_execution_time', 300);
         $regID = 0;
         $year__ = $this->session->userdata('_current_year___');
