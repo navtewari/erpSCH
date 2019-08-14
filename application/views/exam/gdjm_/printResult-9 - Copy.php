@@ -1,4 +1,4 @@
-<?php if (count($subject_marks) != 0) { ?>hello
+<?php if (count($subject_marks) != 0) { ?>
     <html>
         <head>
             <title> Result of Class <?php echo $classID; ?> </title>
