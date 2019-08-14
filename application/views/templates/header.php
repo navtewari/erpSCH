@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/fullcalendar.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/jquery.easy-pie-chart.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/jquery.gritter.css'); ?>" />
-        <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-style.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-style.css'); ?>?ver=1.2" />
         <link rel="stylesheet" href="<?php echo base_url('assets_/css/matrix-media.css'); ?>" />        
         <?php
         $callSelect2 = 0;
@@ -69,7 +69,6 @@
         <!--Header-part-->
         <div id="header">
             <h1><a href="#">School <span style="color: #cccccc">ERP</span></a></h1>
-            
         </div>
         <!--close-Header-part--> 
         <!--top-Header-menu-->
