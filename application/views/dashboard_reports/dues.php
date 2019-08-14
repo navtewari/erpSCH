@@ -115,7 +115,7 @@
                                 'class' => 'required span5',
                                 'name' => 'FeeReminderMsg',
                                 'id' => 'FeeReminderMsg',
-                                'value' => 'D/P, Kindly deposit your wards fee. IF PAID PLEASE IGNORE. Regards GDJM Public School, Chorgaliya',
+                                'value' => 'D/P, Kindly deposit your wards fee. IF PAID PLEASE IGNORE. Regards '.$this->session->userdata('school_name'),
                                 'style' => 'height: 100px',
                             );
                             echo form_textarea($data);
