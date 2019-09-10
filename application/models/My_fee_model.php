@@ -656,7 +656,7 @@ class My_fee_model extends CI_Model {
         $n_static_heads_amount_ = '';
         $_static_discount_applicable_amount_n_time = 0;
         $n_static_total_amount = 0;
-        if(count($data['static_heads_to_class']) != 0){
+        if($data['static_heads_to_class'] != null){
             foreach ($data['static_heads_to_class'] as $static_item) {
                 if($static_item->DURATION == '1'){
                     if($_static_heads__ != ''){
@@ -711,7 +711,7 @@ class My_fee_model extends CI_Model {
         $n_flexi_heads__ = '';
         $n_flexi_heads_amount_ = '';
         $n_flexi_total_amount = 0;
-        if(count($data['flexi_heads_to_students']) != 0){
+        if($data['flexi_heads_to_students'] != null){
             foreach ($data['flexi_heads_to_students'] as $flexi_item) {
                 if($flexi_item->DURATION == '1'){
                     if($_flexi_heads__ != ''){
@@ -1117,7 +1117,7 @@ class My_fee_model extends CI_Model {
                     $d['sibling_discount'] = $this->get_specific_sibling_for_fee_discount($d['regid']);
                     $d['other_discount_data'] = $this->get_specific_other_discount_for_fee_discount($d['regid']);
 
-                    if(count($d['other_discount_data'])!=0){
+                    if($d['other_discount_data']['res_'] == true){
                         $d['fetch_other_discount_data'] = $this->get_other_discount('OTHER');
                     } else {
                         $d['fetch_other_discount_data'] = array('res_'=>NULL);

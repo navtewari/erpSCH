@@ -16,7 +16,7 @@ class Reports extends CI_Controller {
     	$data['academic'] = $this->mrm->getAcademicDetail($stdid);
 
 
-    	if(count($data['academic']) != 0){
+    	if($data['academic'] != null){
     		$data['bool_'] = 1;
 
 	    	$data['personal'] = $this->mrm->getPersonalDetail($stdid);

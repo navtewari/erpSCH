@@ -143,7 +143,7 @@ class Fee extends CI_Controller {
             $data['sibling_discount'] = $this->fm->get_specific_sibling_for_fee_discount($regid_);
             $data['other_discount_data'] = $this->fm->get_specific_other_discount_for_fee_discount($regid_);
 
-            if(count($data['other_discount_data'])!=0){
+            if($data['other_discount_data']['res_'] == true){
                 $data['fetch_other_discount_data'] = $this->fm->get_other_discount('OTHER');
             } else {
                 $data['fetch_other_discount_data'] = array('res_'=>NULL);

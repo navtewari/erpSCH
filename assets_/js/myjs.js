@@ -3248,6 +3248,7 @@ $(function(){
 							if(obj.res_ == true){
 								callSuccess(obj.msg_);
 								reset_createUserForm();
+								fillexistingUsers();
 							} else {
 								callDanger(obj.msg_);
 							}
@@ -4482,7 +4483,7 @@ $(function(){
 				url: url_,
 				data: data_,
 				success: function (data){
-					$('#FlexiHeaded_students_here_N_time').html(data);
+					//$('#FlexiHeaded_students_here_N_time').html(data);
 					var obj = JSON.parse(data);
 					var len = obj.feeHeads.oneTime.length;
 					var len1= obj.feeHeads.nTime.length;
@@ -4528,7 +4529,7 @@ $(function(){
 					str = str + "<td style='text-align: center; font-weight: bold'>"+totalEntries+"</td>";
 					str = str + "<td style='text-align: right; font-weight: bold' class='currency_'>"+totalAmount+"</td>";
 					str = str + "</tr>";
-					//$('#FlexiHeaded_students_here_N_time').html(str);	
+					$('#FlexiHeaded_students_here_N_time').html(str);	
 					$('.currency_').digits();
 
 					if($('#cmbClassesForFlexiHeadedStudents').val() == 'all'){
@@ -4543,6 +4544,11 @@ $(function(){
 		return false;
 		});
 		$('#selectnumber option:selected').text()
+
+		$('#cmbPrintFlexiHeadedStudents').click(function(){
+			window.print();
+			return false;
+		})
 	// ---------------------------------------------------------------------
 
 	// Excel Reports for Dashboard Fee
@@ -4560,6 +4566,6 @@ $(function(){
 			}
 		return false;
 		});
-	// -------------------------------
+	// --------------------------------
 
 });

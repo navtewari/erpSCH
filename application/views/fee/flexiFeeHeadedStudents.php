@@ -1,6 +1,21 @@
 <style type="text/css">
     .selectedFlexiHeadCSS{float: left; margin:3px; padding: 3px; background: #FFF0BF; border:#900000 dotted 1px; border-radius: 5px; font-size: 10px;}
     .fade{ opacity: 1; }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #section-to-print, #section-to-print * {
+        visibility: visible;
+      }
+      #section-to-print {
+        color: #000000 !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
 </style>
 <div class="row-fluid">
     <?php
@@ -167,7 +182,7 @@
 	    </div>
         </div>
     </div>
-    <div class="controls span5">
+    <div class="controls span5" id="section-to-print">
         <div class="control-group">
             <div class="widget-box">
                 <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>

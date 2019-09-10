@@ -33,6 +33,7 @@
 		<div style="clear: both"></div>
 	</div>
 </div>
+<?php if($this->session->userdata('_status_') == 'adm' || $this->session->userdata('_status_') == 'ppfee'){ ?>
 <div class="widget-box">
 	<div class="widget-title"> <span class="icon"><i class="icon-money"></i></span>
 		<h5>Fee Detail in <span class="dashboard-session-color">session <?php echo $this->session->userdata('_current_year___');?></span></h5>
@@ -78,17 +79,9 @@
 						</a> 
 					</li>
 				</ul>
-				<div style="clear: both"></div>
-				<ul class="quick-actions">
-					<li class="bg_ls"> 
-						<a href="<?php echo site_url('DashboardReports/get_total_dues_in_a_session_print');?>"> 
-							<i class="icon-book"></i> 
-							Dues List Class-wises
-						</a> 
-					</li>
-				</ul>
 			</div>
 		</div>
 		<div style="clear: both"></div>
 	</div>
 </div>
+<?php }?>
