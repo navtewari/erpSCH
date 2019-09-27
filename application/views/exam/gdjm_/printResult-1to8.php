@@ -125,7 +125,7 @@
                                                             </td>        
                                                             <td width='33%' valign="top" style="font-size:1.2em;">
                                                                 Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID); ?></b>
-                                                                <br/>Father's Name: <b class='under'><?php echo $personalDetail[2]; ?></b>                                                                                                        
+                                                                <br/>Father's Name: <b class='under'><?php echo $personalDetail[2]; ?></b>
                                                             </td>        
                                                         </tr>
                                                     </table>
@@ -184,7 +184,8 @@
                                                                     ?>
                                                                 </td>
 
-                                                                <?php foreach ($exam_term as $exterm) { ?>    
+                                                                <?php foreach ($exam_term as $exterm) {
+                                                                 ?>    
 
                                                                     <?php
                                                                     foreach ($overall_result as $over_result) {
@@ -195,11 +196,17 @@
                                                                             $Term2TotalMarks = explode("@", $over_result->Term2SubjectWise);
                                                                             $subjectMarks = explode(",", $Term2TotalMarks[$subjectLoop]);
                                                                         }
-                                                                        for ($loop = 1; $loop < count($subjectMarks); $loop++) {
-                                                                            echo "<td align=center>" . $subjectMarks[$loop] . "</td>";
+                                                                        if(count($subjectMarks)!=1){
+                                                                            for ($loop = 1; $loop < count($subjectMarks); $loop++) {                                                                            
+                                                                                    echo "<td align=center>" . $subjectMarks[$loop] . "</td>";
+                                                                            }
+                                                                        }else{
+                                                                            for ($loop = 1; $loop <  $schCount; $loop++) { 
+                                                                                 echo "<td align=center> </td>";   
+                                                                            }
                                                                         }
                                                                     }
-                                                                    ?>                                                                                                                                                                                                   
+                                                                    ?>                                                                                       
                                                                     <td align="center">
                                                                         <?php
                                                                         $yes = 0;
@@ -246,8 +253,8 @@
                                                                     </td>
                                                             <?php } ?>
                                                             </tr>
-            <?php $subjectLoop++;
-        } ?>
+                                                        <?php $subjectLoop++;
+                                                        } ?>
 
                                                         <tr height='35'>
                                                             <td width="16%" align="center">Grand Total</td>
@@ -399,7 +406,7 @@
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                         </div>
                     </div>
-        <?php foreach ($overall_result as $over_result) { ?>
+                <?php foreach ($overall_result as $over_result) { ?>
                         <div class="row page" style="page-break-after: always;">
                             <div class="col-sm-12" style="align-items:center; justify-content:center;">
                                 <table border="0" width="100%" height="100%" cellpadding="1" class="table_" align="center">
@@ -428,7 +435,10 @@
                                                         <table border="0" style="line-height:40px;" width="100%">
                                                             <tr>
                                                                 <td width='33%' valign="top" style="font-size:1.2em;">  
-            <?php $personalDetail = explode(",", $over_result->personalInfo); ?>
+                                                                    <?php 
+                                                                    $stuREGID = $over_result->regid; //student registrationID
+                                                                    $personalDetail = explode(",", $over_result->personalInfo); ?>
+
                                                                     Student's Name: <b class='under'><?php echo $personalDetail[0] ?></b><br/>  
                                                                     Mother's Name: <b class='under'><?php echo $personalDetail[1] ?></b>
 
@@ -555,8 +565,7 @@
                                                                         </td>
                                                                 <?php } ?>
                                                                 </tr>
-                <?php $subjectLoop++;
-            } ?>
+                                                        <?php $subjectLoop++; } ?>
 
                                                             <tr height='35'>
                                                                 <td width="16%" align="center">Grand Total</td>
@@ -602,7 +611,7 @@
                                                                         }
                                                                         ?>
                                                                     </td>
-            <?php } ?>
+                                                            <?php } ?>
                                                             </tr>                                                           
 
                                                         </table>
@@ -613,7 +622,7 @@
                                                     <td colspan="2">
                                                         <table border="1" cellpadding="3" width="100%">
                                                             <tr height='35'>
-            <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
+                                                            <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
                                                                     <td width="43%" align="center" colspan="2">Co-Scholastic Area: <?php echo $exterm->termName; ?> <font style="font-size: 11px;">(on a 3-point (A-C) grading scale)</font></td>
                                                             <?php } ?>
                                                             </tr>
@@ -624,7 +633,7 @@
                                                                         <?php $printTD1 = false; ?>
                                                                         <td><?php echo $coSch->coitem; ?></td>
                                                                         <?php foreach ($coSch_marks as $coSchMarks) { ?>
-                                                                                <?php if ($over_result->regid == $coSchMarks->regid) { ?>
+                                                                                <?php if ($stuREGID == $coSchMarks->regid) { ?>
                                                                                     <?php if ($coSchMarks->termID == $exterm->termID) { ?>
                                                                                         <?php if ($coSchMarks->coitemID == $coSch->coitemID) { ?>
                                                                                         <td align="center">
@@ -671,7 +680,7 @@
                                                                     <span style='border-bottom: #000 dotted 1px; font-size: 15px;'>
                                                                         <?php
                                                                         foreach ($teacher_remarks as $remarks) {
-                                                                            if ($over_result->regid == $remarks->regid) {
+                                                                            if ($stuREGID == $remarks->regid) {
                                                                                 echo $remarks->teacherRemark;
                                                                             }
                                                                         }

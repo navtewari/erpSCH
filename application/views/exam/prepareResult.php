@@ -59,12 +59,12 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr style="font-weight:bold;">                            
-                            <td style="width:50px;padding-left: 20px;" align="center" id="printAll">View Marks</td>
-                            <td style="width:50px;padding-left: 20px;" align="center" id="printFront">View Front</td>
+                            <td style="width:50px;padding-left: 20px;" align="center" id="printAll">Print MarkSheet</td>
+                            <!--td style="width:50px;padding-left: 20px;" align="center" id="printFront">View Front</td-->
                             <td>Reg. ID</td>
                             <td>Name</td>
-                            <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Teacher's Remarks </td>
-                            <td><input type="button" value="All" class="btn btn-success btnCopyPromoted"/> Promoted to Class </td>                            
+                            <td><input type="button" value="All" class="btn btn-success btnCopyRemarks"/> Final result </td> <!--Teacher's Remark in database -->
+                            <td><input type="button" value="All" class="btn btn-success btnCopyPromoted"/> Note </td>  <!--Promoted to Class in database -->                          
                         </tr>
                     </thead>
 

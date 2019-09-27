@@ -247,7 +247,7 @@ class Exam extends CI_Controller {
             $config = array();
             $config["base_url"] = site_url("exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi);            
             $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
-            $config["per_page"] = 50;
+            $config["per_page"] = 10;
             $config["uri_segment"] = 9;
             $choice = $config["total_rows"] / $config["per_page"];
 
