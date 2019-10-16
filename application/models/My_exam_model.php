@@ -678,7 +678,8 @@ class My_exam_model extends CI_Model {
         
         $this->db->where('b.clssessid', $classID);
         $this->db->where('c.SESSID', $year__);
-        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        $this->db->order_by('a.FNAME', 'ASC');
         $query = $this->db->get();
 
         return $query->result();
@@ -703,7 +704,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);            
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
                         
             $this->db->join('exam_6_scholastic_result d', 'd.regid=a.regid', 'left');
             $this->db->where('d.regid is NULL');                        
@@ -748,7 +750,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_6_scholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
             
             $this->db->join('master_8_stud_academics e', 'e.regid=b.regid');
             $this->db->where('e.STATUS_', '1');
@@ -769,7 +772,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
             
             $this->db->join('exam_7_coscholastic_result d', 'd.regid=a.regid', 'left');
             $this->db->where('d.regid is NULL');
@@ -806,7 +810,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_7_coscholastic_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
 
             $this->db->join('master_8_stud_academics e', 'e.regid=b.regid');
             $this->db->where('e.STATUS_', '1');
@@ -827,7 +832,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
             
             $this->db->join('exam_12_discipline_result d', 'd.regid=a.regid', 'left');
             $this->db->where('d.regid is NULL');
@@ -863,7 +869,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_12_discipline_result d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
 
             $this->db->join('master_8_stud_academics e', 'e.regid=b.regid');
             $this->db->where('e.STATUS_', '1');
@@ -903,7 +910,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('class_2_in_session c', 'b.CLSSESSID=c.CLSSESSID');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
             
             $this->db->join('exam_9_result_remarks d', 'd.regid=a.regid', 'left');
             $this->db->where('d.regid is NULL');
@@ -937,7 +945,8 @@ class My_exam_model extends CI_Model {
             $this->db->join('exam_9_result_remarks d', 'a.regid=d.regid');
             $this->db->where('b.clssessid', $classID);
             $this->db->where('c.SESSID', $year__);
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
 
             $this->db->join('master_8_stud_academics e', 'e.regid=b.regid');
             $this->db->where('e.STATUS_', '1');
@@ -957,8 +966,10 @@ class My_exam_model extends CI_Model {
             $this->db->join('master_8_stud_academics d', 'd.regid=b.regid');
             $this->db->where('d.STATUS_', '1');
             
-            $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+            $this->db->order_by('a.FNAME', 'ASC');
             $query = $this->db->get();
+
         }
 
         return $query->result();
@@ -1435,7 +1446,8 @@ class My_exam_model extends CI_Model {
         
         $this->db->where('b.clssessid', $classSessID);
         $this->db->where('c.SESSID', $year__);
-        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        $this->db->order_by('a.FNAME', 'ASC');
         $query = $this->db->get();
 
         return $query->result();
@@ -1455,7 +1467,10 @@ class My_exam_model extends CI_Model {
         
         $this->db->where('b.clssessid', $classSessID);
         $this->db->where('c.SESSID', $year__);        
-        $this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        
+        //$this->db->order_by('cast(a.REGID AS SIGNED INT)', 'ASC');
+        $this->db->order_by('a.FNAME', 'ASC');
+
         $this->db->limit($limit, $start);
         
         $query = $this->db->get();

@@ -323,7 +323,7 @@ function numberToRomanRepresentation($number) {
                                                                  <?php
                                                                     foreach ($teacher_remarks as $remarks) {
                                                                         echo $remarks->promotedClass;
-                                                                    }
+                                                                    }?>
                                                             </td>
                                                         </tr>            
                                                     </table>
@@ -620,10 +620,10 @@ function numberToRomanRepresentation($number) {
     </html>
     <?php
 } else {
-    if (count($student_per_data) == 1) {
-        echo 'No data Present for ' . $reg_id;
+    if (count($overall_result) == 1 && $regID_ != 0) {
+        echo 'No data Present for ' . $reg_id . '<br>Please calculate Result before Marksheet Printing';
     } else {
-        echo 'No data Present for Class' . $classID;
+        echo 'No data Present for Class' . $classID .  '<br>Please calculate Result before Marksheet Printing';
     }
 }
 ?>

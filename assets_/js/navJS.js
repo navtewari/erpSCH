@@ -2497,6 +2497,7 @@ $(function () {
                             str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
                             //str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg printfront' href='"+url_design+ obj.studentdata[i].regid+"' target='_blank'><i class='fa fa-print'></i></a></td>";                            
                            // str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a></td>";
+                            str_html = str_html + "<td style='text-align:center'>" + (i+1) + "</td>";                            
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
