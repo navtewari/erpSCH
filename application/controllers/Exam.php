@@ -578,6 +578,38 @@ class Exam extends CI_Controller {
         }
     }
 
+    function crossList($classsessid, $term){
+    	$classSessID = $classsessid;
+        $data['termLink'] = $term;
+    	$classID = $this->mem->mcheckClassID($classSessID);
+    	$data['classID'] = $classID;
+    	$regID =0; //whole class
+        $data['session'] = array($this->session->userdata('_current_year___'));   
+
+        $config["per_page"] = 100;
+        $page =0 ;
+
+        $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
+                            
+        $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___'));             
+        $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+        $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
+
+        $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);    
+
+        $data['overall_result'] = $this->mem->get_overall_result_in_classLimit($classSessID, $config["per_page"], $page);
+        $data['exam_term'] = $this->mem->mget_examterm_in_session();
+        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
+        $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+        $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+        $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
+        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));                
+        
+        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+
+    	$this->load->view('exam/crossList_class',$data);
+    }
+
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');

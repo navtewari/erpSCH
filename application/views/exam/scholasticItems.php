@@ -41,6 +41,12 @@
                                             ?>                                                  
                                         </div>
                                     </div>
+                                    <div class="control-group">                           
+                                        <div class="controls">
+                                            INCLUSIVE<input type="radio" class="span3" name="typeSch" id="typeSch" value="0">
+                                            EXCLUSIVE<input type="radio" class="span3" name="typeSch" id="typeSch" value="1"> 
+                                        </div>                                        
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">Maximum Marks</label>
                                         <div class="controls">                        
