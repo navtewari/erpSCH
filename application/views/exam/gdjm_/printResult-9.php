@@ -1,4 +1,4 @@
-<?php if (count($subject_marks) != 0) { ?>hello
+<?php if (count($overall_result) != 0) { ?>
     <html>
         <head>
             <title> Result of Class <?php echo $classID; ?> </title>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                        <div class="col-sm-12" style="align-items:center; justify-content:center;">
                             <table border="0" width="100%" height="100%" cellpadding="10" class="table_" align="center">
                                 <tr align="center">                                    
                                     <td>

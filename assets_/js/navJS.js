@@ -2496,15 +2496,16 @@ $(function () {
                             str_html = str_html + "<tr class='gradeX'>";
                             str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a></td>";
                             //str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-info btn-lg printfront' href='"+url_design+ obj.studentdata[i].regid+"' target='_blank'><i class='fa fa-print'></i></a></td>";                            
-                            str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a></td>";
+                           // str_html = str_html + "<td style='padding-left:20px;'><a type='button' id='" + obj.studentdata[i].regid + "' class='btn btn-primary btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a></td>";
+                            str_html = str_html + "<td style='text-align:center'>" + (i+1) + "</td>";                            
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
-                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:400px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "_' value='" + obj.studentdata[i].teacherRemark + "'/></td>";
-                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:100px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "__' value='" + obj.studentdata[i].promotedClass + "'/></td>";
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:250px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "_' value='" + obj.studentdata[i].teacherRemark + "'/></td>";
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:250px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "__' value='" + obj.studentdata[i].promotedClass + "'/></td>";
                             } else if (obj.checkRemarks === '2') {
-                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:400px;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "_'/></td>";
-                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:100px;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "__'/></td>";
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:250px;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "_'/></td>";
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:250px;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "__'/></td>";
                             }
                             str_html = str_html + "</tr>";
                         }
@@ -2517,11 +2518,11 @@ $(function () {
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
 
-                    var printAllLink = "<font size='1'>Print MARKSHEET BACK</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
+                    var printAllLink = "<font size='1'>PRINT MARKSHEET</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModal'><i class='fa fa-print'></i></a>";
                     $('#printAll').html(printAllLink);
                     //var printFrontLink = "<font size='1'>Print FRONT</font> <a type='button' id='0' class='btn btn-info btn-lg printfront' href='"+url_design+ 0+"' target='_blank'><i class='fa fa-print'></i></a>";
-                    var printFrontLink = "<font size='1'>Print MARKSHEET FRONT</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a>";
-                    $('#printFront').html(printFrontLink);
+                    //var printFrontLink = "<font size='1'>Print MARKSHEET FRONT</font> <a type='button' id='0' class='btn btn-danger btn-lg open-Dialog' data-toggle='modal' data-target='#myModalFront'><i class='fa fa-print'></i></a>";
+                    //$('#printFront').html(printFrontLink);
                     document.getElementById('divInfo').style.display = 'block';
                     $('#information').html("Below information <i><b>(TEACHER'S REMARK & PROMOTED TO CLASS)</b></i> will <strong>only be filled</strong> if the Result of all the terms is inserted.");
                 }

@@ -1,4 +1,4 @@
-<?php ini_set('max_execution_time', 300); if (count($subject_marks) != 0) { ?>
+<?php if (count($overall_result) != 0) { ?>
 <?php 
 function numberToRomanRepresentation($number) {
     $map = array('X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
@@ -76,7 +76,7 @@ function numberToRomanRepresentation($number) {
         </head>
         <body>
             <div class="page-loader"></div>
-            <?php if (count($student_per_data) == 1 && $regID_ != 0) { ?>
+            <?php if (count($overall_result) == 1 && $regID_ != 0) { ?>
                 <div class="container" style="padding-right: 10px !important;padding-left:30px;">
                     <div class="row">
                         <div class="col-sm-12 hide_button" align="center">
@@ -84,7 +84,7 @@ function numberToRomanRepresentation($number) {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                        <div class="col-sm-12" style="align-items:center; justify-content:center;">
                             <table border="0" width="100%" height="100%" cellpadding="3" class="table_" align="center">
                                 <tr>
                                     <td valign="top">
@@ -110,39 +110,23 @@ function numberToRomanRepresentation($number) {
                                                         <tr>
                                                             <td width='33%' valign="top" style="font-size:1em;">
                                                                 <?php
-                                                                foreach ($student_per_data as $stuData) {
-                                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                                    ?>
+                                                                foreach ($overall_result as $over_result) {
+                                                                    $personalDetail = explode(",", $over_result->personalInfo);
+                                                                }
+                                                                ?>
 
-                                                                     Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  
-                                                                     Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?></b>
-                                                                <?php } ?>
+                                                                     Student's Name: <b class='under'><?php echo $personalDetail[0]; ?></b><br/>  
+                                                                     Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?></b>                                                            
                                                             </td>        
                                                             <td width='33%' valign="top" style="font-size:1em;">
-                                                                <?php
-                                                                foreach ($student_per_data as $stuData) {
-                                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                                    ?>
-
-                                                                    Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>   
-                                                                    Admission No.: <b class='under'><?php echo $stuData->ADM_NO; ?></b>
-                                                                <?php } ?>
+                                                                
+                                                                    Mother's Name: <b class='under'><?php echo $personalDetail[1]; ?></b><br/>
+                                                                    Admission No.: <b class='under'><?php echo $personalDetail[3]; ?></b>                                                                
                                                             </td>        
                                                             <td valign="top" style="font-size:1em;">
-                                                                <?php
-                                                                foreach ($student_per_data as $stuData) {
-                                                                    $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                                    //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                                    //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                                    ?>
-
-                                                                    Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b><br/>
-                                                                    Date Of Birth: <b class='under'><?php echo $stuData->DOB_; ?></b>                                                
-                                                                <?php } ?>
+                                                               
+                                                                    Father's Name: <b class='under'><?php echo $personalDetail[2]; ?></b><br/>
+                                                                    Date Of Birth: <b class='under'><?php echo $personalDetail[4]; ?></b>                                                                                                                
                                                             </td>        
                                                         </tr>
                                                     </table>
@@ -151,18 +135,19 @@ function numberToRomanRepresentation($number) {
                                 <!-- Scholastic Area -->
                                             <tr>
                                                 <td colspan="2" style="vertical-align: top">
-                                                    <table border="1" cellpadding="6" width="100%"
+                                                    <table border="1" cellpadding="6" width="100%">
                                                         <tr>
                                                             <td width="16%" colspan="2">Scholastic Areas</td>
                                                             <?php
                                                             $schCount = 0;
-                                                            foreach ($sch_data_class as $scho_items) {
-                                                                $schCount++;
+                                                            foreach ($overall_result as $over_result) {
+                                                                $scholasticName = explode(",", $over_result->scholasticName);
+                                                                $schCount = count($scholasticName);                                                                
                                                             }
                                                             ?>
 
                                                             <?php foreach ($exam_term as $exterm) { ?> <!-- Display each exam term -->
-                                                                <td width="34%" align="center" colspan="<?php echo ($schCount + 1); ?>"><?php echo $exterm->termName; ?></td>
+                                                                <td width="34%" align="center" colspan="<?php echo ($schCount); ?>"><?php echo $exterm->termName; ?></td>
                                                             <?php } ?>                                                
                                                         </tr>
 
@@ -189,36 +174,37 @@ function numberToRomanRepresentation($number) {
                                                         </tr>
 
                                                         <?php $loopCount=0;
+                                                        $subjectLoop = 0;
                                                         foreach ($subject_class as $subjectClass) {
                                                             ?>
                                                             <tr>
                                                                 <td align="center" width="3%"><?php $loopCount++; echo $loopCount;?></td>
-                                                                <td style="padding-top:1em;padding-bottom:1em;"><?php
-                                                                    echo $subjectClass->subName;
-                                                                    $term = 1;
-                                                                    ?></td>
-                                                                <?php foreach ($exam_term as $exterm) { ?>                                                    
-                                                                    <?php foreach ($sch_data_class as $scho_items) { ?>
-                                                                        <?php $printData = false; ?>
-                                                                        <?php foreach ($subject_marks as $sub_marks) { ?>
-                                                                            <?php if ($subjectClass->subjectID == $sub_marks->subjectID) { ?>
-                                                                                <?php if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) { ?>
-                                                                                    <td align="center">
-                                                                                        <?php
-                                                                                        echo $sub_marks->marks;
-                                                                                        $printData = true;
-                                                                                        ?>
-                                                                                    </td>
-                                                                                <?php } ?>
-                                                                            <?php } ?>
-                                                                        <?php } ?>
-                                                                        <?php if ($printData == false) { ?>
-                                                                            <td></td>
-                                                                            <?php
-                                                                            $printData = false;
+                                                                <td style="padding-top:1em;padding-bottom:1em;">
+                                                                    <?php
+                                                                        echo $subjectClass->subName;
+                                                                        $term = 1;
+                                                                    ?>                                                                    
+                                                                </td>
+                                                                <?php foreach ($exam_term as $exterm) {
+                                                                    foreach ($overall_result as $over_result) {
+                                                                        if ($term == 1) {
+                                                                            $Term1TotalMarks = explode("@", $over_result->Term1SubjectWise);
+                                                                            $subjectMarks = explode(",", $Term1TotalMarks[$subjectLoop]);
+                                                                        } else {
+                                                                            $Term2TotalMarks = explode("@", $over_result->Term2SubjectWise);
+                                                                            $subjectMarks = explode(",", $Term2TotalMarks[$subjectLoop]);                                                                            
                                                                         }
-                                                                        ?>
-                                                                    <?php } ?>
+                                                                        if(count($subjectMarks)!=1){
+                                                                            for ($loop = 1; $loop < count($subjectMarks); $loop++) {                                                                            
+                                                                                    echo "<td align=center>" . $subjectMarks[$loop] . "</td>";
+                                                                            }
+                                                                        }else{                                                                        
+                                                                            for ($loop = 1; $loop <  $schCount; $loop++) { 
+                                                                                 echo "<td align=center> </td>";   
+                                                                            }
+                                                                        }
+
+                                                                    }?>
                                                                     <td align="center">
                                                                         <?php $yes=0;
                                                                         foreach ($overall_result as $over_result) {
@@ -248,6 +234,7 @@ function numberToRomanRepresentation($number) {
                                                                     </td>
                                                                 <?php } ?>                                                                                  
                                                             </tr>
+                                                            <?php $subjectLoop++;?>
                                                         <?php } ?>
                                                     </table>
                                                 </td>
@@ -332,7 +319,11 @@ function numberToRomanRepresentation($number) {
                                                         </tr>                                        
                                                         <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
+                                                                &nbsp;&nbsp;Note: 
+                                                                 <?php
+                                                                    foreach ($teacher_remarks as $remarks) {
+                                                                        echo $remarks->promotedClass;
+                                                                    }?>
                                                             </td>
                                                         </tr>            
                                                     </table>
@@ -360,9 +351,9 @@ function numberToRomanRepresentation($number) {
                             <button class="btn btn-danger print_button" onclick="window.print();">Print Result</button>
                         </div>
                     </div>
-                    <?php foreach ($student_per_data as $stuData) { ?>
+                    <?php foreach ($overall_result as $over_result) { ?>
                         <div class="row page" style="page-break-after: always;">
-                            <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                            <div class="col-sm-12" style="align-items:center; justify-content:center;">
                                 <table border="0" width="100%" height="100%" cellpadding="0" class="table_" align="center">
                                 	<tr>
                                     	<td valign="top">
@@ -389,36 +380,21 @@ function numberToRomanRepresentation($number) {
 				                                        <table border="0" style="line-height:40px;" width="100%">
 				                                            <tr>
 				                                                <td width='33%' valign="top" style="font-size:1em;">
-				                                                    <?php                                                    
-				                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-				                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-				                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-				                                                        ?>
+				                                                    <?php $stuREGID = $over_result->regid; //student registrationID
+                                                                    $personalDetail = explode(",", $over_result->personalInfo); ?>
 
-				                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  
-				                                                        Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?></b>
-				                                                                                                   
+			                                                        Student's Name: <b class='under'><?php echo $personalDetail[0] ?></b><br/>  
+			                                                        Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?></b>
+				                                                       
 				                                                </td>        
-				                                                <td width='33%' valign="top" style="font-size:1em;">
-				                                                    <?php
-				                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-				                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-				                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-				                                                        ?>
-				 														Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>
-				 														Admission No.: <b class='under'><?php echo $stuData->ADM_NO; ?></b>                                                        
-				                                                  
-				                                                </td>        
-				                                                <td valign="top" style="font-size:1em;">
-				                                                    <?php
-				                                                    
-				                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-				                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-				                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-				                                                        ?>  
-				                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b> <br>
-				                                                        Date Of Birth: <b class='under'><?php echo $stuData->DOB_; ?></b> <br/>                                                    
-				                                                </td>        
+				                                                <td width='33%' valign="top" style="font-size:1em;">                                                                
+                                                                    Mother's Name: <b class='under'><?php echo $personalDetail[1]; ?></b><br/>
+                                                                    Admission No.: <b class='under'><?php echo $personalDetail[3]; ?></b>                                                                
+                                                                </td>        
+                                                                <td valign="top" style="font-size:1em;">                                                               
+                                                                        Father's Name: <b class='under'><?php echo $personalDetail[2]; ?></b><br/>
+                                                                        Date Of Birth: <b class='under'><?php echo $personalDetail[4]; ?></b>                                                                                                                
+                                                                </td>         
 				                                            </tr>
 				                                        </table>
 				                                    </td>
@@ -464,6 +440,7 @@ function numberToRomanRepresentation($number) {
 			                                                </tr>
 
 			                                                <?php $loopCount=0;
+                                                            $subjectLoop = 0;
 			                                                foreach ($subject_class as $subjectClass) {
 			                                                    ?>
 			                                                    <tr>
@@ -471,35 +448,31 @@ function numberToRomanRepresentation($number) {
 			                                                        <td style="padding-top:1em;padding-bottom:1em;"><?php
 			                                                            echo $subjectClass->subName;
 			                                                            $term = 1;
-			                                                            ?></td>
+			                                                            ?>                                                                        
+                                                                    </td>
 			                                                        <?php foreach ($exam_term as $exterm) { ?>                                                    
-			                                                            <?php foreach ($sch_data_class as $scho_items) { ?>
-			                                                                <?php $printData = false; ?>
-			                                                                <?php foreach ($subject_marks as $sub_marks) { ?>
-			                                                                    <?php if ($stuData->regid == $sub_marks->regid) { ?>
-			                                                                        <?php if ($subjectClass->subjectID == $sub_marks->subjectID) { ?>
-			                                                                            <?php if ($sub_marks->termID == $exterm->termID && $sub_marks->itemID == $scho_items->itemID) { ?>
-			                                                                                <td align="center">
-			                                                                                    <?php
-			                                                                                    echo $sub_marks->marks;
-			                                                                                    $printData = true;
-			                                                                                    ?>
-			                                                                                </td>
-			                                                                            <?php } ?>
-			                                                                        <?php } ?>
-			                                                                    <?php } ?>
-			                                                                <?php } ?>
-			                                                                <?php if ($printData == false) { ?>
-			                                                                    <td></td>
-			                                                                    <?php
-			                                                                    $printData = false;
-			                                                                }
-			                                                                ?>
-			                                                            <?php } ?>
+			                                                            <?php
+                                                                        if ($term == 1) {
+                                                                            $Term1TotalMarks = explode("@", $over_result->Term1SubjectWise);
+                                                                            $subjectMarks = explode(",", $Term1TotalMarks[$subjectLoop]);
+                                                                        } else {
+                                                                            $Term2TotalMarks = explode("@", $over_result->Term2SubjectWise);
+                                                                            $subjectMarks = explode(",", $Term2TotalMarks[$subjectLoop]);
+                                                                        }
+                                                                        if(count($subjectMarks)!=1){
+                                                                            for ($loop = 1; $loop < count($subjectMarks); $loop++) {                                                                            
+                                                                                    echo "<td align=center>" . $subjectMarks[$loop] . "</td>";
+                                                                            }
+                                                                        }else{                                                                        
+                                                                            for ($loop = 1; $loop <  $schCount; $loop++) { 
+                                                                                 echo "<td align=center> </td>";   
+                                                                            }
+                                                                        }
+
+                                                                        ?>  
 			                                                            <td align="center">
 			                                                                <?php $yes=0;
-			                                                                foreach ($overall_result as $over_result) {
-			                                                                    if ($stuData->regid == $over_result->regid) {
+			                                                                
 			                                                                        $subjectID = explode(",", $over_result->subjectID);
 			                                                                        if ($term == 1) {
 			                                                                            $subjectTotal = explode(",", $over_result->term1Result);
@@ -516,8 +489,8 @@ function numberToRomanRepresentation($number) {
 			                                                                                }
 			                                                                            }
 			                                                                        }
-			                                                                    }
-			                                                                }
+			                                                                    
+			                                                                
 			                                                                if ($term == 1) {
 			                                                                    $term++;
 			                                                                } else if ($term == 2) {
@@ -527,6 +500,7 @@ function numberToRomanRepresentation($number) {
 			                                                            </td>
 			                                                        <?php } ?>
 			                                                    </tr>
+                                                                <?php $subjectLoop++; ?>
 			                                                <?php } ?>
 			                                            </table>
 			                                        </td>
@@ -554,7 +528,7 @@ function numberToRomanRepresentation($number) {
 			                                                                <?php foreach ($exam_term as $exterm) { ?>
 			                                                                    <?php $printTD1 = false; ?>
 			                                                                    <?php foreach ($coSch_marks as $coSchMarks) { ?>
-			                                                                        <?php if ($stuData->regid == $coSchMarks->regid) { ?>
+			                                                                        <?php if ($stuREGID == $coSchMarks->regid) { ?>
 			                                                                            <?php if ($coSchMarks->termID == $exterm->termID) { ?>
 			                                                                                <?php if ($coSchMarks->coitemID == $coSch->coitemID) { ?>
 			                                                                                    <td align="center" class="tdSize">
@@ -603,7 +577,7 @@ function numberToRomanRepresentation($number) {
                                                                 <span style='border-bottom: #000 dotted 1px; font-size: 15px;'>
 				                                                        <?php
 						                                                foreach ($teacher_remarks as $remarks) {
-						                                                    if ($stuData->regid == $remarks->regid) {
+						                                                    if ($stuREGID  == $remarks->regid) {
 						                                                        echo $remarks->teacherRemark;
 						                                                    }
 						                                                }
@@ -615,7 +589,14 @@ function numberToRomanRepresentation($number) {
 				                                            </tr>
                                                             <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: School Re-opens on 01-04-2019 at 7:30 A.M.
+                                                                &nbsp;&nbsp;Note: 
+                                                                <?php
+                                                                        foreach ($teacher_remarks as $remarks) {
+                                                                            if ($stuREGID == $remarks->regid) {
+                                                                                echo $remarks->promotedClass;
+                                                                            }
+                                                                        }
+                                                                        ?>
                                                             </td>
                                                         </tr> 
 				                                        </table>
@@ -639,10 +620,10 @@ function numberToRomanRepresentation($number) {
     </html>
     <?php
 } else {
-    if (count($student_per_data) == 1) {
-        echo 'No data Present for ' . $reg_id;
+    if (count($overall_result) == 1 && $regID_ != 0) {
+        echo 'No data Present for ' . $reg_id . '<br>Please calculate Result before Marksheet Printing';
     } else {
-        echo 'No data Present for Class' . $classID;
+        echo 'No data Present for Class' . $classID .  '<br>Please calculate Result before Marksheet Printing';
     }
 }
 ?>

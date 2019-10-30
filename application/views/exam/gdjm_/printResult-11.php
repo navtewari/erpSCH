@@ -1,4 +1,4 @@
-<?php if (count($subject_marks) != 0) { ?>
+<?php if (count($overall_result) != 0) { ?>
     <html>
         <head>
             <title> Result of Class <?php echo $classID; ?> </title>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12" style="display:flex;align-items:center; justify-content:center;">
+                        <div class="col-sm-12" style="align-items:center; justify-content:center;">
                             <table border="0" height="100%" cellpadding="1" class="table_" align="center">
                                 <tr align="center">                                    
                                     <td>
@@ -94,40 +94,25 @@
                                     <td colspan="2">
                                         <table border="0" style="line-height:30px;" width="100%">
                                             <tr>
-                                                <td width='33%' valign="top" style="font-size:.85em;">
+                                                <td width='33%' valign="top" style="font-size:1em;">
                                                     <?php
-                                                    foreach ($student_per_data as $stuData) {
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
+                                                    foreach ($overall_result as $over_result) {
+                                                        $personalDetail = explode(",", $over_result->personalInfo);
+                                                    }
+                                                    ?>
 
-                                                        Student's Name: <b class='under'><?php echo $name_ ?></b><br/>  
-                                                        Class/ Section: <b class='under'><?php echo substr($classID,0,2); ?></b>
-                                                    <?php } ?>
+                                                         Student's Name: <b class='under'><?php echo $personalDetail[0]; ?></b><br/>  
+                                                         Class/ Section: <b class='under'><?php echo numberToRomanRepresentation($classID);?></b>                                                            
                                                 </td>        
-                                                <td width='33%' valign="top" style="font-size:.85em;">
-                                                    <?php
-                                                    foreach ($student_per_data as $stuData) {
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-                                                        Mother's Name: <b class='under'><?php echo $stuData->MOTHER; ?></b><br/>   
-                                                        Admission No.: <b class='under'>
-                                                            <?php echo $stuData->ADM_NO; ?></b>
-                                                    <?php } ?>
+                                                <td width='33%' valign="top" style="font-size:1em;">
+                                                    
+                                                        Mother's Name: <b class='under'><?php echo $personalDetail[1]; ?></b><br/>
+                                                        Admission No.: <b class='under'><?php echo $personalDetail[3]; ?></b>                                                                
                                                 </td>        
-                                                <td valign="top" style="font-size:.85em;">
-                                                    <?php
-                                                    foreach ($student_per_data as $stuData) {
-                                                        $name_ = (($stuData->FNAME == "-x-") ? "" : $stuData->FNAME);
-                                                        //$name_ = $name_ . (($stuData->MNAME == "-x-") ? "" : " " . $stuData->MNAME);
-                                                        //$name_ = $name_ . (($stuData->LNAME == "-x-") ? "" : $stuData->LNAME);
-                                                        ?>
-                                                        Father's Name: <b class='under'><?php echo $stuData->FATHER; ?></b><br/>
-                                                        Date Of Birth: <b class='under'><?php echo $stuData->DOB_; ?></b>
-                                                    <?php } ?>
+                                                <td valign="top" style="font-size:1em;">
+                                                   
+                                                        Father's Name: <b class='under'><?php echo $personalDetail[2]; ?></b><br/>
+                                                        Date Of Birth: <b class='under'><?php echo $personalDetail[4]; ?></b>                                                                                                                
                                                 </td>        
                                             </tr>
                                         </table>
