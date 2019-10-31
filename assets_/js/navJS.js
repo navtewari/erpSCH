@@ -2602,6 +2602,28 @@ $(function () {
         });
     });
 
+    $('body').on('click', '#myLink', function (e) {        
+        classsessid = $('#cmbClassforResult').val();
+        if(classsessid !=''){
+            url_ = site_url_ + "/exam/crossList/" + classsessid + "/1";
+            $(this).attr("href", url_);        
+        }else{
+            alert("Please select the class first");            
+            e.preventDefault();
+        }
+    });
+
+    $('body').on('click', '#myLink2', function (e) {        
+        classsessid = $('#cmbClassforResult').val();
+        if(classsessid !=''){
+            url_ = site_url_ + "/exam/crossList/" + classsessid + "/2";
+            $(this).attr("href", url_);        
+        }else{
+            alert("Please select the class first");            
+            e.preventDefault();
+        }
+    });
+
     $('body').on('click', '#updateRemarks', function () {
         classsessid = $('#cmbClassforResult').val();
         data_ = $('#frmSubmitRemarks').serializeArray();

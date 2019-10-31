@@ -28,10 +28,12 @@
                     </div>                       
                 </div>                                        
                 <?php echo form_close(); ?>                
-            </div>            
-        </div>
+                <a href="" target="_blank" id="myLink"> &raquo; PRINT CROSSLIST FOR I<sup>st</sup> TERM</a><br/>
+            <a href="" target="_blank" id="myLink2">&raquo; PRINT CROSSLIST FOR II<sup>nd</sup> TERM</a>
+            </div>                        
+        </div>        
     </div>
-    <div class="span7" id="divInfo" style="display:none;">
+    <div class="span7" id="divInfo" style="display:none;">        
         <div class="widget-box">
             <div class="widget-content" style="background:#fdebeb;">
                 <input type="button" class="btn btn-danger" id="btnCalculateResult" value="Calculate Result"/> Click if result is not CALCULATED <span style="font-weight: bold; color:red;">OR</span> if result has to be RECALCULATED
@@ -41,7 +43,7 @@
             </div>                        
         </div>
     </div>
-
+    
     <div class="span11" id="divclassData">
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>

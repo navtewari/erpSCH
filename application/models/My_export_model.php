@@ -88,7 +88,8 @@ class My_export_model extends CI_Model {
         //$this->db->join('master_10_stud_contact e', 'b.regid=e.regid');
         $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
         $this->db->join('class_2_in_session d', 'c.CLSSESSID=d.CLSSESSID');
-        $this->db->order_by('cast(a.regid AS SIGNED INT)', 'ASC');
+        //$this->db->order_by('cast(a.regid AS SIGNED INT)', 'ASC');
+        $this->db->order_by('a.FNAME', 'ASC');
         $query = $this->db->get();
         //echo $this->db->last_query();
         //die();
