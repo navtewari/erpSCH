@@ -250,7 +250,7 @@ class Fee extends CI_Controller {
         $password = $this->session->userdata('sms_pwd');
         $number = $this->input->post("mobilenumbers");
         $sender = $this->session->userdata('sms_senderid');
-        $msg1=$this->input->post("Fee_Message");
+        $msg1=$this->input->post("Fee_Message")."\n--\n".$this->session->userdata('_abbrev_');
         $message = rawurlencode($msg1);
 
         if($this->input->post('check_sms') == 'yes'){

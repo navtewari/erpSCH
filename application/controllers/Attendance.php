@@ -110,7 +110,7 @@ class Attendance extends CI_Controller {
                 $password = $this->session->userdata('sms_pwd');
                 $number = $this->input->post("mobilenumbers");
                 $sender = $this->session->userdata('sms_senderid');
-                $msg1=$this->input->post("Absent_Message");
+                $msg1=$this->input->post("Absent_Message")."\n--\n".$this->session->userdata('_abbrev_');
                 $message = rawurlencode($msg1);
 
                 //$url=$this->session->userdata('sms_loginto')."/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');

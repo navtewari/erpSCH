@@ -20,6 +20,7 @@ class My_gen_login_model extends CI_Model{
 		if($query->num_rows()!=0){
 			$bool_ = true;
 			$row = $query->row();
+			$this->session->set_userdata('_abbrev_', $row->ABBREV);
 			$this->session->set_userdata('main_user', $row->USERNAME_);
 			$this->session->set_userdata('db2', $row->DB_);
 			$this->session->set_userdata('school_name', $row->CLIENT_NAME);
