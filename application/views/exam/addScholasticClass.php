@@ -23,18 +23,19 @@
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5 id="exitHeading">Select Class</h5>
             </div>
-            <div class="widget-content nopadding" id="fillclass" style="max-height:300px; overflow: scroll">
+            <div class="widget-content nopadding" id="fillclass" style="max-height:auto; overflow: scroll">
             </div>
         </div>
-    </div>
+    </div>      
+    
     <div class="span4">        
         <div class="control-group" style="padding-top:15px;">
             <div class="controls">
                 <input type="button" value="Add Scholastic Item to class" class="btn btn-success Add_scholastic_class">
             </div>
         </div>        
-    </div>
-    <?php echo form_close(); ?>
+    </div> 
+    <?php echo form_close();?>    
 
     <div class="span4">
         <div class="widget-box">
@@ -56,4 +57,5 @@
             </div>
         </div>
     </div>
+    
 </div>                                          

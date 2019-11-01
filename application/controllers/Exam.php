@@ -30,8 +30,23 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function submitScholasticItem() {
-        $data = $this->mem->msubmitScholasticItem();
+    function getAllScholasticItemsinClass($classSessID) {
+        $data['ExclusiveScholastic'] = $this->mem->mgetAllScholasticItemsinClass($classSessID);
+        echo json_encode($data);
+    }
+    
+    function submitExclusiveSchMarks($classid, $schid, $subjectid){
+        $data = $this->mem->msubmitExclusiveSchMarks($classid, $schid, $subjectid);
+        echo json_encode($data);
+    }
+
+    function get_subject_detail($subjectID){
+        $data['SubjectDetail'] = $this->mem->mget_subject_detail($subjectID);
+        echo json_encode($data);
+    }
+
+    function submitScholasticItem($status) {
+        $data = $this->mem->msubmitScholasticItem($status);
         echo json_encode($data);
     }
 
@@ -40,8 +55,8 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function updateScholasticItem() {
-        $data = $this->mem->mupdateScholasticItem();
+    function updateScholasticItem($status) {
+        $data = $this->mem->mupdateScholasticItem($status);
         echo json_encode($data);
     }
 

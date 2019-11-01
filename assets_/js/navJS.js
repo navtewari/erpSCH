@@ -55,6 +55,11 @@ $(function () {
             fillClasses_forscholastic();
         }
 
+        if ($("#frmExclusiveScholastic").length != 0) {
+            //fillexecutive_scholastic_forclass();
+            fillClasses_forexclusivescholastic();
+        }
+
         if ($("#frmCoScholastic").length != 0) {
             fillCoScholastic_item();
         }
@@ -1331,8 +1336,14 @@ $(function () {
                 if (obj.Scholastic.length) {
                     var str_html = '';
                     for (i = 0; i < obj.Scholastic.length; i++) {
+                        if(obj.Scholastic[i].STATUS == 0){
+                            var schoStatus ="INCLUSIVE";
+                        }else{
+                            schoStatus ="EXCLUSIVE";
+                        }
                         str_html = str_html + "<tr class='gradeX'>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].item + "</td>";
+                        str_html = str_html + "<td>" + schoStatus + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].maxMarks + "</td>";
                         str_html = str_html + "<td>" + obj.Scholastic[i].minMarks + "</td>";
                         str_html = str_html + "<td><input type='text' name='txtSub' class='span9 txtschoPriority' id='txt-" + obj.Scholastic[i].itemID + "' value='" + obj.Scholastic[i].priority + "'></td>";
@@ -1354,16 +1365,17 @@ $(function () {
         });
     }
 
-    $('.submitScholastic').click(function () {
+    $('.submitScholastic').click(function () {        
         if ($('#txtScholasticItem').val() === '') {
             callDanger("Please Enter Scholastic Item Name !!");
             $('#txtScholasticItem').focus();
-        } else if ($('#txtScholasticMarks').val() === '') {
+        } else if ($('#txtScholasticMarks').val() === '' && $("input[name='typeSch']:checked").val() === '0') {
             callDanger("Please Enter Marks allotted to Scholastic Item!!");
             $('#txtScholasticMarks').focus();
         } else {
+            status = $("input[name='typeSch']:checked").val();            
             data_ = $('#frmScholastic').serializeArray();
-            url_ = site_url_ + "/exam/submitScholasticItem";
+            url_ = site_url_ + "/exam/submitScholasticItem/" + status;
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -1376,6 +1388,7 @@ $(function () {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
                         fillscholastic_forclass();
+                        fillexecutive_scholastic_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1395,7 +1408,17 @@ $(function () {
                 $('#txtScholasticItem_edit').val(obj.Scholasticitem[0].item);
                 $('#txtScholasticMarks_edit').val(obj.Scholasticitem[0].maxMarks);
                 $('#txtScholasticminMarks_edit').val(obj.Scholasticitem[0].minMarks);
-                $('#editScholasticDiv').css({'display': 'block'});
+                $('#editScholasticDiv').css({'display': 'block'});                
+                if(obj.Scholasticitem[0].STATUS === '1'){
+                    $('#maxMarkID_edit').css({'display': 'none'});
+                    $('#pasMarkID_edit').css({'display': 'none'});
+                    $("input[name='typeSch_edit']:nth(1)").prop("checked", true);
+                   
+                }else{
+                    $('#maxMarkID_edit').css({'display': 'block'});
+                    $('#pasMarkID_edit').css({'display': 'block'});
+                    $("input[name='typeSch_edit']:nth(0)").prop("checked", true);
+                }
                 $('#txtScholasticItem_edit').focus();
             }, error: function (xhr, status, error) {
                 callSuccess(xhr.responseText);
@@ -1406,12 +1429,13 @@ $(function () {
         if ($('#txtScholasticItem_edit').val() === '') {
             callDanger("Please Enter Scholastic Item Name !!");
             $('#txtScholasticItem_edit').focus();
-        } else if ($('#txtScholasticMarks_edit').val() === '') {
+        } else if ($('#txtScholasticMarks_edit').val() === '' && $("input[name='typeSch_edit']:checked").val() === '0') {
             callDanger("Please Enter Marks allotted to Scholastic Item!!");
             $('#txtScholasticMarks_edit').focus();
         } else {
+            status = $("input[name='typeSch_edit']:checked").val();      
             data_ = $('#frmScholastic_edit').serializeArray();
-            url_ = site_url_ + "/exam/updateScholasticItem";
+            url_ = site_url_ + "/exam/updateScholasticItem/" + status;
             $.ajax({
                 type: 'POST',
                 url: url_,
@@ -1424,6 +1448,7 @@ $(function () {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
                         fillscholastic_forclass();
+                        fillexecutive_scholastic_forclass();
                         $('#editScholasticDiv').css({'display': 'none'});
                     }
                 }, error: function (xhr, status, error) {
@@ -1450,6 +1475,7 @@ $(function () {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
                         fillscholastic_forclass();
+                        fillexecutive_scholastic_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -1467,7 +1493,12 @@ $(function () {
                 if (obj.Scholastic.length) {
                     var str_html = '';
                     for (i = 0; i < obj.Scholastic.length; i++) {
-                        str_html = str_html + "<input type='checkbox' name='chkScholastic[]' class='span2' value='" + obj.Scholastic[i].itemID + "' id='" + obj.Scholastic[i].itemID + "'> <b> " + obj.Scholastic[i].item + " [" + obj.Scholastic[i].maxMarks + "]" + "</b><br>";
+                        if(obj.Scholastic[i].STATUS == 0){
+                            var schoStatus ="";
+                        }else{
+                            schoStatus ="<font color='red'>[EXCLUSIVE]</font>";
+                        }
+                        str_html = str_html + "<input type='checkbox' name='chkScholastic[]' class='span2' value='" + obj.Scholastic[i].itemID + "' id='" + obj.Scholastic[i].itemID + "'> <b> " + obj.Scholastic[i].item + " [" + obj.Scholastic[i].maxMarks + "] " + schoStatus + "</b><br>";
                     }
                     $('#fillscholastic').html(str_html);
                 } else {
@@ -1477,8 +1508,8 @@ $(function () {
                 callSuccess(xhr.responseText);
             }
         });
-    }
-
+    }    
+    
     function fillClasses_forscholastic() {
         url_ = site_url_ + "/reg_adm/getClasses_in_session";
         $.ajax({
@@ -1530,7 +1561,7 @@ $(function () {
     }
 
     $('#fillclass').on('change', '[type=radio]', function (e) {
-        fillAssociatedScholasticItem();
+        fillAssociatedScholasticItem();          
     });
 
     $('body').on('click', '.Add_scholastic_class', function () {
@@ -1554,6 +1585,7 @@ $(function () {
             }
         });
     });
+
     $('body').on('click', '.deleteAssociatedScholastic', function () {
         var assoID = this.id;
         url_ = site_url_ + "/exam/delAssociated_scholastic_class/" + assoID;
@@ -1575,6 +1607,161 @@ $(function () {
             });
         }
     });
+
+    function fillexecutive_scholastic_forclass(){
+        var classsid = $('input[type=radio][name=classExclusiveSch]:checked').attr('id');
+        var classid = $('input[type=radio][name=classExclusiveSch]:checked').attr('value');        
+        url_ = site_url_ + "/exam/getAllScholasticItemsinClass/" + classsid;
+       // alert(url_);
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {                
+                var obj = JSON.parse(data);
+                //alert(obj.ExclusiveScholastic.length);
+                if (obj.ExclusiveScholastic.length) {
+                    var str_html = '';
+                    for (i = 0; i < obj.ExclusiveScholastic.length; i++) {
+                        if(obj.ExclusiveScholastic[i].STATUS == 1){
+                            str_html = str_html + "<input type='radio' name='radioexclusiveScholastic' class='span2' value='" + obj.ExclusiveScholastic[i].itemID + "' id='" + obj.ExclusiveScholastic[i].itemID + "'> <b> " + obj.ExclusiveScholastic[i].item + " </b><br>";
+                        }
+                    }
+                    if(str_html !== ""){
+                        $('#fillexclusivescholastic').html(str_html);
+                        fillAssociatedSubjectExlusive();
+                    }else{
+                        $('#fillexclusivescholastic').html("No Exclusive Scholastic items present in "+classid);
+                    }
+                } else {
+                    $('#fillexclusivescholastic').html('No Exclusive Scholastic items present in '+ classid);
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    }
+    
+    function fillClasses_forexclusivescholastic() {
+        url_ = site_url_ + "/reg_adm/getClasses_in_session";
+        $.ajax({
+            type: "POST",
+            url: url_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                for (i = 0; i < obj.class_in_session.length; i++) {
+                    str_html = str_html + "<input type='radio' name='classExclusiveSch' class='span2' id='" + obj.class_in_session[i].CLSSESSID + "' value='" + obj.class_in_session[i].CLASSID + "'> <b>Class " + obj.class_in_session[i].CLASSID + "</b><br>";
+                }
+                $('#fillexclusiveclass').html(str_html);
+            }
+        });
+    }
+
+    $('#fillexclusiveclass').on('change', '[type=radio]', function (e) {        
+        fillexecutive_scholastic_forclass();                  
+    });
+
+    function fillAssociatedSubjectExlusive(){        
+        var classsid = $('input[type=radio][name=classExclusiveSch]:checked').attr('value');
+        //alert(classsid);
+        url_ = site_url_ + "/master/getClassSubject/" + classsid;
+        //alert(url_);
+        $('#s2id_cmbExclusiveSubjectMarks span').text("Checking...");
+        $.ajax({
+            type: "POST",
+            url: url_,            
+            success: function (data) {
+                var obj = JSON.parse(data);
+                var str_html = '';
+                //alert(obj.class_subject.length);
+                str_html = str_html + "<option value=''>Choose Subject</option>";
+                for (i = 0; i < obj.class_subject.length; i++) {
+                    str_html = str_html + "<option value='" + obj.class_subject[i].subjectID + "'>" + obj.class_subject[i].subName + "</option>";
+                }
+                $('#s2id_cmbExclusiveSubjectMarks span').text("Choose Subject");
+                $('#cmbExclusiveSubjectMarks').html(str_html);
+            }
+        });
+    }
+
+    $('.submitExclusiveScholastic').click(function () {
+        var classid = $('input[type=radio][name=classExclusiveSch]:checked').attr('value');
+        var schid = $('input[type=radio][name=radioexclusiveScholastic]:checked').attr('id');
+        var subjectID = $('#cmbExclusiveSubjectMarks').val();
+        //alert("classid = "+ classid +", scholastic = " + schid + ", subject = "+ subjectID);
+        
+        data_ = $('#frmExclusiveScholastic').serializeArray();
+        url_ = site_url_ + "/exam/submitExclusiveSchMarks/" + classid +"/" + schid + "/" + subjectID;
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);                   
+                }
+            }, error: function (xhr, status, error) {
+                callSuccess(xhr.responseText);
+            }
+        });
+    });
+
+    $('#fillexclusivescholastic').on('change', '[type=radio]', function (e) {        
+        callExclusiveNumber();              
+    });
+
+    $('#cmbExclusiveSubjectMarks').change(function () {        
+        callExclusiveNumber();
+    });
+
+    function callExclusiveNumber(){
+        var subjectID = $('#cmbExclusiveSubjectMarks').val();
+        var schid = $('input[type=radio][name=radioexclusiveScholastic]:checked').attr('id');
+        $('#txtExclusiveScholasticMarks').val('');
+        $('#txtExclusiveScholasticMinMarks').val('');
+        if(subjectID===''){
+            callDanger("Please select Subject");
+        }else if(schid===undefined){
+            callDanger("Please select Exclusive Scholastic Item");
+        }else{
+            url_ = site_url_ + "/exam/get_subject_detail/" + subjectID;
+            
+            $.ajax({
+                type: "POST",
+                url: url_,
+                success: function (data) {
+                    var obj = JSON.parse(data);                
+                    //alert(obj.SubjectDetail.length);                    
+                    if(obj.SubjectDetail.length !=0){
+                        if(obj.SubjectDetail[0].maxMarks !== ""){
+                            var str=obj.SubjectDetail[0].maxMarks;
+                            var arr_max = str.split('@');
+                            for(var i=1; i<arr_max.length; i++){
+                                var arr_max1 = arr_max[i].split(',');
+                                if(arr_max1[0]===schid){
+                                    $('#txtExclusiveScholasticMarks').val(arr_max1[1]);
+                                }
+                            }
+                        }
+                        if(obj.SubjectDetail[0].minMarks !== ""){
+                            var str=obj.SubjectDetail[0].minMarks;
+                            var arr_min = str.split('@');
+                            for(var i=1; i<arr_min.length; i++){
+                                var arr_min1 = arr_min[i].split(',');
+                                if(arr_min1[0]===schid){
+                                    $('#txtExclusiveScholasticMinMarks').val(arr_min1[1]);
+                                }
+                            }
+                        }                                                
+                    }                
+                }
+            });
+        }
+    }
+
     function fillCoScholastic_item() {
         url_ = site_url_ + "/exam/getAllCoScholasticItems";
         $.ajax({
@@ -1654,6 +1841,7 @@ $(function () {
             });
         }
     });
+
     $('body').on('click', '.editCoScholastic', function () {
         var coscholasticID = this.id;
         url_ = site_url_ + "/exam/get_coScholastic_for_update/" + coscholasticID;
@@ -1671,6 +1859,7 @@ $(function () {
             }
         });
     });
+
     function fillcoscholastic_forclass() {
         url_ = site_url_ + "/exam/getAllCoScholasticItems";
         $.ajax({
@@ -1746,6 +1935,7 @@ $(function () {
     $('#fillcoclass').on('change', '[type=radio]', function (e) {
         fillAssociatedcoScholasticItem();
     });
+
     $('body').on('click', '.Add_coscholastic_class', function () {
         var classsid = $('input[type=radio][name=classcoSch]:checked').attr('id');
         data_ = $('#frmcoScholasticAddClass').serializeArray();
@@ -1919,6 +2109,7 @@ $(function () {
                         callSuccess(obj.msg_);
                         fillScholastic_item();
                         fillscholastic_forclass();
+                        fillexecutive_scholastic_forclass();
                     }
                 }, error: function (xhr, status, error) {
                     callSuccess(xhr.responseText);
@@ -2469,6 +2660,26 @@ $(function () {
             }
         });
     }
+   
+    $("input[name='typeSch']").change(function(){
+        if ($(this).val() === '0') {
+            document.getElementById('maxMarkID').style.display = 'block';
+            document.getElementById('pasMarkID').style.display = 'block';
+          } else if ($(this).val() === '1') {
+            document.getElementById('maxMarkID').style.display = 'none';
+            document.getElementById('pasMarkID').style.display = 'none';
+          } 
+    });
+
+    $("input[name='typeSch_edit']").change(function(){        
+        if ($(this).val() === '0') {
+            document.getElementById('maxMarkID_edit').style.display = 'block';
+            document.getElementById('pasMarkID_edit').style.display = 'block';
+          } else if ($(this).val() === '1') {
+            document.getElementById('maxMarkID_edit').style.display = 'none';
+            document.getElementById('pasMarkID_edit').style.display = 'none';
+          } 
+    });
 
     $('#cmbClassforResult').change(function () {
         getRemarks();

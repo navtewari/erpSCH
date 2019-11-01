@@ -74,11 +74,67 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
-    function msubmitScholasticItem() {
+    function mgetAllScholasticItemsinClass($classSessID) {
+        $this->db->select('a.*,b.*');
+        $this->db->from('exam_2_add_scholastic_to_class b');        
+        $this->db->join('exam_1_scholastic_items a', 'b.itemID = a.itemID');
+        $this->db->where('b.SESSID', $this->session->userdata('_current_year___'));
+        $this->db->where('b.CLSSESSID', $classSessID);
+        $this->db->order_by('a.priority', 'Asc');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    function msubmitExclusiveSchMarks($classid, $schid, $subjectid){
+        $mMarks = "";
+        $miMarks = "";
+
+        $this->db->where('subjectID', $subjectid);
+        $this->db->from('master_12_subject');        
+        $query = $this->db->get();                
+
+        if($query->num_rows()!=0){
+            $r = $query->row();            
+            $mMarks = $r->maxMarks;
+            $miMarks = $r->minMarks;
+        }
+
+        $maxMarks = $this->input->post('txtExclusiveScholasticMarks');
+        $minMarks = $this->input->post('txtExclusiveScholasticMinMarks');
+
+        $mMarks .= "@" .$schid . "," . $maxMarks;
+        $miMarks .= "@" .$schid . "," . $minMarks;
+
+        $data = array(           
+            'maxMarks' => $mMarks,
+            'minMarks' => $miMarks            
+        );
+
+        $this->db->where('subjectID', $subjectid);
+        $query = $this->db->update('master_12_subject', $data);
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Scholastic Exclusive Marks Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+        return $bool_;
+    }
+
+    function mget_subject_detail($subjectID){
+        $this->db->where('subjectID', $subjectID);
+        $this->db->from('master_12_subject');        
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function msubmitScholasticItem($status) {
         $schlasticItem = $this->input->post('txtScholasticItem');
+        $schStatus = $status;
         $maxMarks = $this->input->post('txtScholasticMarks');
         $minMarks = $this->input->post('txtScholasticminMarks');
-
+        
         $this->db->where('item', $schlasticItem);
         $query = $this->db->get('exam_1_scholastic_items');
 
@@ -88,7 +144,8 @@ class My_exam_model extends CI_Model {
             $data = array(
                 'item' => $schlasticItem,
                 'maxMarks' => $maxMarks,
-                'minMarks' => $minMarks
+                'minMarks' => $minMarks,
+                'STATUS' => $schStatus
             );
 
             $query = $this->db->insert('exam_1_scholastic_items', $data);
@@ -108,11 +165,17 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
-    function mupdateScholasticItem() {
+    function mupdateScholasticItem($status) {
         $schlasticItem = $this->input->post('txtScholasticItem_edit');
         $schlasticID = $this->input->post('ScholasticID_Edit');
-        $maxMarks = $this->input->post('txtScholasticMarks_edit');
-        $minMarks = $this->input->post('txtScholasticminMarks_edit');
+        $schStatus = $status;
+        if($schStatus == 1){
+            $maxMarks=0;
+            $minMarks=0;
+        }else{            
+            $maxMarks = $this->input->post('txtScholasticMarks_edit');
+            $minMarks = $this->input->post('txtScholasticminMarks_edit');
+        }
 
         $this->db->where('itemID', $schlasticID);
         $this->db->where('SESSID', $this->session->userdata('_current_year___'));
@@ -126,7 +189,8 @@ class My_exam_model extends CI_Model {
             $data = array(
                 'item' => $schlasticItem,
                 'maxMarks' => $maxMarks,
-                'minMarks' => $minMarks
+                'minMarks' => $minMarks,
+                'STATUS' => $schStatus
             );
 
             $this->db->where('itemID', $schlasticID);
@@ -656,11 +720,29 @@ class My_exam_model extends CI_Model {
 
     function get_maxMarks_in_assessmentarea($assItem) {
         $this->db->where('itemID', $assItem);
-        $query = $this->db->get('exam_1_scholastic_items');
-
+        $query = $this->db->get('exam_1_scholastic_items');        
+        $maxMarks=0;
         if ($query->num_rows() != 0) {
             foreach ($query->result() as $row) {
-                $maxMarks = $row->maxMarks;
+                if($row->STATUS == 0){
+                    $maxMarks = $row->maxMarks;
+                }else{
+                    $subjectid = $this->input->post('cmbSubjectMarks');
+                    $this->db->where('subjectID', $subjectid);
+                    $query = $this->db->get('master_12_subject');
+                    if($query->num_rows()!=0){
+                        $r = $query->row();            
+                        $strMarks = $r->maxMarks;
+                        $mMarks = explode("@", $strMarks);
+                        for($loop=1; $loop< count($mMarks); $loop++){
+                            $maMarks = explode(",", $mMarks[$loop]);
+                            if($maMarks[0]==$assItem){
+                                $maxMarks=$maMarks[1];
+                            }
+                        }
+                    }
+
+                }
             }
         }
         return $maxMarks;
