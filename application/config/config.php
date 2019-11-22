@@ -24,7 +24,7 @@ $config['base_url'] = 'http://localhost/erpSCH';
 define('JS_VERSION_NITIN', 18.9);
 define('_NITIN_IMG_VERSION_', 1.2);
 
-define('JS_VERSION_NAVEEN', 4.6);
+define('JS_VERSION_NAVEEN', 5.9);
 define('_NAVEEN_IMG_VERSION_', 1.1);
 
 /*
