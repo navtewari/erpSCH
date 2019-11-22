@@ -19,7 +19,7 @@ class Exporting extends CI_Controller {
         $clssessid = $this->input->post('txtClassSessID');
         $cls = $this->input->post('txtClassName');
 
-        $this->mem->mtoCsvExam($clssessid, $cls);        
+        $this->mem->mtoCsvExam($clssessid, $cls);
     }
 
     function backup() {

@@ -193,31 +193,66 @@ class Exam extends CI_Controller {
     function getstudentsforclass($classID, $assmID, $assID = 0) {
         if ($assmID == 1) {
             $res_ = $this->mem->mcheckData_entry_result();
+            $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classID,$this->session->userdata('_current_year___'));
         } else if ($assmID == 2) {
             $res_ = $this->mem->mcheckcoSchData_entry_result();
+            $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classID,$this->session->userdata('_current_year___'));
         } else if ($assmID == 3) {
             $res_ = $this->mem->mcheckdisciplineData_entry_result();
+            $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classID,$this->session->userdata('_current_year___'));
         }
 
         $data['res_'] = '';
 
         $maxMarks = 0;
-        if ($assID != 0) {
-            $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($assID);
-        }
-
+        
+        $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($classID, $this->session->userdata('_current_year___'));
+                
         if ($res_['res_'] == FALSE) {
             $data['res_'] = $res_['msg_'];
-            $data['studentdata'] = $this->mem->mget_students_in_class_with_marks($classID);
-        } else {
-            $data['studentdata'] = $this->mem->mget_students_in_class($classID);
         }
-        //print_r($data);
+
+        $data['studentdata'] = $this->mem->mget_students_in_class($classID);
+        
         echo json_encode($data);
     }
 
-    function inputResult() {
-        $data = $this->mem->minputResult();
+    function toExcelExam(){        
+        //$termID = $this->input->post('txtExamTerm');
+        $classID = $this->input->post('txtClassSessID');
+        $assmID = $this->input->post('txtAssessmentArea');
+        $data['subjectName'] = $this->input->post('txtSubjectName');
+        $data['className'] = $this->input->post('txtClassName');
+        //$subjectID = $this->input->post('txtSubjectID');        
+
+        if ($assmID == 1) {            
+            $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classID,$this->session->userdata('_current_year___'));
+        } else if ($assmID == 2) {            
+            $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classID,$this->session->userdata('_current_year___'));
+        } else if ($assmID == 3) {            
+            $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classID,$this->session->userdata('_current_year___'));
+        }
+        $data['assArea']=$assmID;
+        $data['studentdata'] = $this->mem->mget_students_in_class($classID);
+        $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($classID, $this->session->userdata('_current_year___'));
+
+        $data['studentMarks'] = $this->mem->mget_students_in_class_with_marks($classID, 1);
+
+        $this->load->view('exam/excel', $data);
+    }
+
+    function getMarksinClass($classID){
+        $data['studentMarks'] = $this->mem->mget_students_in_class_with_marks($classID);
+        echo json_encode($data);
+    }
+
+    function inputResult($itemID) {
+        $data = $this->mem->minputResult($itemID);
+        echo json_encode($data);
+    }
+
+    function updateSingleMarks($regID, $itemID, $classID, $subjectID, $termID, $marks, $assTerm){
+        $data = $this->mem->mupdateSingleMarks($regID, $itemID, $classID, $subjectID, $termID, $marks, $assTerm);
         echo json_encode($data);
     }
 

@@ -212,14 +212,14 @@ $subjectLoop++;
 <script src="<?php echo base_url(). 'assets_/js/jquery.table2excel.js'?>"></script>
 <script>  
 	$("#create_excel").click(function(){
-  $("#student_table").table2excel({
-    // exclude CSS class
-    exclude: ".noExl",
-    name: "Worksheet Name",
-    filename: "crossList", //do not include extension
-    fileext: ".xls", // file extension
-    preserveColors:false
-  }); 
-});
+        $("#student_table").table2excel({
+            // exclude CSS class
+            exclude: ".noExl",
+            name: "Worksheet Name",
+            filename: "crossList", //do not include extension
+            fileext: ".xls", // file extension
+            preserveColors:false
+        }); 
+    });
  
 </script>  
