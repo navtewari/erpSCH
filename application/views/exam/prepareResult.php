@@ -28,8 +28,8 @@
                     </div>                       
                 </div>                                        
                 <?php echo form_close(); ?>                
-                <a href="" target="_blank" id="myLink"> &raquo; PRINT CROSSLIST FOR I<sup>st</sup> TERM</a><br/>
-            <a href="" target="_blank" id="myLink2">&raquo; PRINT CROSSLIST FOR II<sup>nd</sup> TERM</a>
+                <a href="" class="btn btn-primary" target="_blank" id="myLink" style="width:150px;height:20px;font-size:13px;margin-bottom:.6em;"> &raquo; Crosslist Of I<sup>st</sup> Term</a>
+                <a href="" class="btn btn-primary" target="_blank" id="myLink2" style="width:150px;height:20px;font-size:13px;">&raquo; Crosslist Of II<sup>nd</sup> Term</a>
             </div>                        
         </div>        
     </div>
@@ -66,8 +66,10 @@
                             <td>Sr No</td>
                             <td>Reg. ID</td>
                             <td>Name</td>
-                            <td>Final result <br/><input type="button" value="Click here if result is same for everyone" class="btn btn-success btnCopyRemarks"/></td> <!--Teacher's Remark in database -->
-                            <td> Note <br/><input type="button" value="Click here if Note is same for everyone" class="btn btn-success btnCopyPromoted"/></td>  <!--Promoted to Class in database -->                          
+                            <td>Final result <br/><input type="button" value="Same Result for everyone" class="btn btn-success btnCopyRemarks"/></td> <!--Teacher's Remark in database -->
+                            <td> Note <br/><input type="button" value="Same Note for everyone" class="btn btn-success btnCopyPromoted"/></td>  <!--Promoted to Class in database -->                          
+                            <td bgcolor="#ccff99">Attendence <br>(I<sup>ST</sup> TERM)</td>
+                            <td bgcolor="#ccff99">Attendence <br>(II<sup>ND</sup> TERM)</td>
                         </tr>
                     </thead>
 

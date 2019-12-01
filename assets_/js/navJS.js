@@ -2959,20 +2959,33 @@ $(function () {
                             str_html = str_html + "<td>" + obj.studentdata[i].regid + "</td>";
                             str_html = str_html + "<td>" + obj.studentdata[i].FNAME + "</td>";
                             if (obj.checkRemarks === '1') {
-                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:250px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "_' value='" + obj.studentdata[i].teacherRemark + "'/></td>";
-                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:250px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "__' value='" + obj.studentdata[i].promotedClass + "'/></td>";
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:150px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "_' value='" + obj.studentdata[i].teacherRemark + "'/></td>";                                
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:150px;background:#F7FB9F;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].resultsubtotalID + "]' id='" + obj.studentdata[i].regid + "__' value='" + obj.studentdata[i].promotedClass + "'/></td>";
                             } else if (obj.checkRemarks === '2') {
-                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:250px;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "_'/></td>";
-                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:250px;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "__'/></td>";
+                                str_html = str_html + "<td class='tdRemarks'><input type='text' style='width:150px;' class='form-control marks_0_4' name='stu_remark[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "_'/></td>";
+                                str_html = str_html + "<td class='tdPromoted'><input type='text' style='width:150px;' class='form-control marks_0_4' name='stu_promoted[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "__'/></td>";
+                            }
+                            if(obj.studentAtt.length > 0){
+                                for(j=0; j< obj.studentAtt.length; j++){
+                                    if(obj.studentdata[i].regid === obj.studentAtt[j].regid){
+                                        str_html = str_html + "<td class='tdAttFirst' bgcolor='#ccff99'><input type='text' style='width:50px;' class='form-control marks_0_4' name='stu_att_first[" + obj.studentdata[i].regid + "]' value='"+obj.studentAtt[j].ATT_TERM1 + "' id='" + obj.studentdata[i].regid + "___'/></td>";
+                                        str_html = str_html + "<td class='tdAttSec' bgcolor='#ccff99'><input type='text' style='width:50px;' class='form-control marks_0_4' name='stu_att_sec[" + obj.studentdata[i].regid + "]' value='"+obj.studentAtt[j].ATT_TERM2 + "' id='" + obj.studentdata[i].regid + "____'/></td>";
+                                    }
+                                }
+                            }else{
+                                str_html = str_html + "<td class='tdAttFirst' bgcolor='#ccff99'><input type='text' style='width:50px;' class='form-control marks_0_4' name='stu_att_first[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "___'/></td>";
+                                str_html = str_html + "<td class='tdAttSec' bgcolor='#ccff99'><input type='text' style='width:50px;' class='form-control marks_0_4' name='stu_att_sec[" + obj.studentdata[i].regid + "]' id='" + obj.studentdata[i].regid + "____'/></td>";
                             }
                             str_html = str_html + "</tr>";
                         }
                     }
                     if (obj.checkRemarks === '1') {
-                        str_html = str_html + "<tr><td colspan='5'><input type='button' id='updateRemarks' class='btn btn-success' value='Update Student Data' style='width:400px;float:right; margin-right:80px;'></td></tr>";
+                        str_html = str_html + "<tr><td colspan='6'><input type='button' id='updateRemarks' class='btn btn-success' value='Update Student Remarks' style='width:400px;float:right; margin-right:80px;'></td>";                                                
                     } else if (obj.checkRemarks === '2') {
-                        str_html = str_html + "<tr><td colspan='5'><input type='button' id='submitRemarks' class='btn btn-primary' value='Submit Student Data' style='width:400px;float:right; margin-right:80px;'></td></tr>";
+                        str_html = str_html + "<tr><td colspan='6'><input type='button' id='submitRemarks' class='btn btn-primary' value='Submit Student Remarks' style='width:400px;float:right; margin-right:80px;'></td>";                        
                     }
+                    str_html = str_html + "<td colspan='2' bgcolor='#ccff99'><input type='button' id='updateAtt' class='btn btn-primary' value='Update Attendence'></td></tr>";                    
+
                     $('#exitHeading').html('Student Detail of' + classID_);
                     $('#tabStudentForResult').html(str_html);
 
@@ -3041,6 +3054,29 @@ $(function () {
         classsessid = $('#cmbClassforResult').val();
         data_ = $('#frmSubmitRemarks').serializeArray();
         url_ = site_url_ + "/exam/submitRemarks/" + classsessid;
+
+        $.ajax({
+            type: 'POST',
+            url: url_,
+            data: data_,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.res_ === false) {
+                    callDanger(obj.msg_);
+                } else {
+                    callSuccess(obj.msg_);
+                    getRemarks();
+                }
+            }, error: function (xhr, status, error) {
+                callDanger(xhr.responseText);
+            }
+        });
+    });
+
+    $('body').on('click', '#updateAtt', function () {        
+        classsessid = $('#cmbClassforResult').val();        
+        data_ = $('#frmSubmitRemarks').serializeArray();
+        url_ = site_url_ + "/exam/updateAttendence/" + classsessid;
 
         $.ajax({
             type: 'POST',

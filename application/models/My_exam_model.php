@@ -1101,6 +1101,13 @@ class My_exam_model extends CI_Model {
         return $query->result();
     }
 
+    function mget_att_in_class($classID) {
+        $this->db->where('CLSSESSID', $classID);
+        $query = $this->db->get('exam_13_calculated_result');                
+
+        return $query->result();
+    }
+
     function mupdateSingleMarks($regID, $itemID, $classid, $subjectID, $termID, $marks, $assTerm){
         if ($assTerm == 1){
             $this->db->where('regid', $regID);
@@ -1458,6 +1465,55 @@ class My_exam_model extends CI_Model {
 
         if ($query == TRUE) {
             $bool_ = array('res_' => TRUE, 'msg_' => 'Remarks Updated Successfully');
+        } else {
+            $bool_ = array('res_' => FALSE, 'msg_' => 'error');
+        }
+
+        return $bool_;
+    }
+
+    function mupdateAttendence($clssessid) {
+        $sessionid = $this->session->userdata('_current_year___');
+
+        $obj = $this->input->post('stu_att_first');
+        $obj1 = $this->input->post('stu_att_sec');
+
+        $username = $this->session->userdata('_user___');
+        //----------------------------------------------------
+        foreach ($obj as $key => $value) {  
+            $this->db->where('regid', $key);            
+            $this->db->where('CLSSESSID', $clssessid);                           
+            $this->db->where('SESSID', $sessionid);                
+            $queryEdit = $this->db->get('exam_13_calculated_result');
+
+            if ($queryEdit->num_rows() != 0) {
+                $r = $queryEdit->row(); 
+                $this->db->where('calcResultID', $r->calcResultID);
+                
+                $data = array(                        
+                    'ATT_TERM1' => $value,                        
+                    'ATT_TERM2' => $obj1[$key],                        
+                    'USERNAME_' => $username,                    
+                );
+
+                $query = $this->db->update('exam_13_calculated_result', $data);
+            } else {
+                $data = array(
+                    'regid' => $key,
+                    'CLSSESSID' => $clssessid,
+                    'ROLLNO' => 0,
+                    'SESSID' => $sessionid,                        
+                    'ATT_TERM1' => $value,                        
+                    'ATT_TERM2' => $obj1[$key],   
+                    'USERNAME_' => $username,                    
+                );
+                $query = $this->db->insert('exam_13_calculated_result', $data);
+            }    
+        } 
+        //----------------------------------------------------        
+
+        if ($query == TRUE) {
+            $bool_ = array('res_' => TRUE, 'msg_' => 'Attndance Updated Successfully');
         } else {
             $bool_ = array('res_' => FALSE, 'msg_' => 'error');
         }
