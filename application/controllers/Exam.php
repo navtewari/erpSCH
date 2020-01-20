@@ -30,8 +30,23 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function submitScholasticItem() {
-        $data = $this->mem->msubmitScholasticItem();
+    function getAllScholasticItemsinClass($classSessID) {
+        $data['ExclusiveScholastic'] = $this->mem->mgetAllScholasticItemsinClass($classSessID);
+        echo json_encode($data);
+    }
+    
+    function submitExclusiveSchMarks($classid, $schid, $subjectid){
+        $data = $this->mem->msubmitExclusiveSchMarks($classid, $schid, $subjectid);
+        echo json_encode($data);
+    }
+
+    function get_subject_detail($subjectID){
+        $data['SubjectDetail'] = $this->mem->mget_subject_detail($subjectID);
+        echo json_encode($data);
+    }
+
+    function submitScholasticItem($status) {
+        $data = $this->mem->msubmitScholasticItem($status);
         echo json_encode($data);
     }
 
@@ -40,8 +55,8 @@ class Exam extends CI_Controller {
         echo json_encode($data);
     }
 
-    function updateScholasticItem() {
-        $data = $this->mem->mupdateScholasticItem();
+    function updateScholasticItem($status) {
+        $data = $this->mem->mupdateScholasticItem($status);
         echo json_encode($data);
     }
 
@@ -178,31 +193,66 @@ class Exam extends CI_Controller {
     function getstudentsforclass($classID, $assmID, $assID = 0) {
         if ($assmID == 1) {
             $res_ = $this->mem->mcheckData_entry_result();
+            $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classID,$this->session->userdata('_current_year___'));
         } else if ($assmID == 2) {
             $res_ = $this->mem->mcheckcoSchData_entry_result();
+            $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classID,$this->session->userdata('_current_year___'));
         } else if ($assmID == 3) {
             $res_ = $this->mem->mcheckdisciplineData_entry_result();
+            $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classID,$this->session->userdata('_current_year___'));
         }
 
         $data['res_'] = '';
 
         $maxMarks = 0;
-        if ($assID != 0) {
-            $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($assID);
-        }
-
+        
+        $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($classID, $this->session->userdata('_current_year___'));
+                
         if ($res_['res_'] == FALSE) {
             $data['res_'] = $res_['msg_'];
-            $data['studentdata'] = $this->mem->mget_students_in_class_with_marks($classID);
-        } else {
-            $data['studentdata'] = $this->mem->mget_students_in_class($classID);
         }
-        //print_r($data);
+
+        $data['studentdata'] = $this->mem->mget_students_in_class($classID);
+        
         echo json_encode($data);
     }
 
-    function inputResult() {
-        $data = $this->mem->minputResult();
+    function toExcelExam(){        
+        //$termID = $this->input->post('txtExamTerm');
+        $classID = $this->input->post('txtClassSessID');
+        $assmID = $this->input->post('txtAssessmentArea');
+        $data['subjectName'] = $this->input->post('txtSubjectName');
+        $data['className'] = $this->input->post('txtClassName');
+        //$subjectID = $this->input->post('txtSubjectID');        
+
+        if ($assmID == 1) {            
+            $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classID,$this->session->userdata('_current_year___'));
+        } else if ($assmID == 2) {            
+            $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classID,$this->session->userdata('_current_year___'));
+        } else if ($assmID == 3) {            
+            $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classID,$this->session->userdata('_current_year___'));
+        }
+        $data['assArea']=$assmID;
+        $data['studentdata'] = $this->mem->mget_students_in_class($classID);
+        $data['maxMarks'] = $this->mem->get_maxMarks_in_assessmentarea($classID, $this->session->userdata('_current_year___'));
+
+        $data['studentMarks'] = $this->mem->mget_students_in_class_with_marks($classID, 1);
+
+        $this->load->view('exam/excel', $data);
+    }
+
+    function getMarksinClass($classID){
+        $data['studentMarks'] = $this->mem->mget_students_in_class_with_marks($classID);
+        echo json_encode($data);
+    }
+
+    function inputResult($itemID) {
+        $data = $this->mem->minputResult($itemID);
+        echo json_encode($data);
+    }
+
+    function updateSingleMarks($regID, $itemID, $classID, $subjectID, $termID, $marks, $assTerm){
+        $data = $this->mem->mupdateSingleMarks($regID, $itemID, $classID, $subjectID, $termID, $marks, $assTerm);
         echo json_encode($data);
     }
 
@@ -214,16 +264,22 @@ class Exam extends CI_Controller {
     function get_student_for_result($classID) {
         $data['checkRemarks'] = $this->mem->checkStudentRemarks($classID);
         $data['studentdata'] = $this->mem->mget_students_in_class_for_remarks($classID);
+        $data['studentAtt'] = $this->mem->mget_att_in_class($classID);
         echo json_encode($data);
     }
 
     function submitRemarks($clssessid) {
         $data = $this->mem->mSubmitRemarks($clssessid);
         echo json_encode($data);
-    }
+    }    
 
     function updateRemarks($clssessid) {
         $data = $this->mem->mUpdateRemarks($clssessid);
+        echo json_encode($data);
+    }
+
+    function updateAttendence($clssessid) {
+        $data = $this->mem->mupdateAttendence($clssessid);
         echo json_encode($data);
     }
 

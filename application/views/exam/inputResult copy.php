@@ -9,18 +9,14 @@
             </div>                      
             <div class="widget-content tab-content">
                 <div class="tab-pane active" id="newClassEntry">                   
-                    <div class="span12" id="dwnldCSV" style="background: #ff9999; padding:1em;">
+                    <div class="span12" id="dwnldCSV" style="background: #ff9999; padding:1em; display:none">
                         <div class="control-group" style="float:right;">
-                            <form name="frmdownloadExcel" class="form-horizontal" target="_blank" method="post" action="<?php echo site_url() . '/exam/toExcelExam'; ?>">
+                            <form name="frmdownloadExcel" class="form-horizontal" method="post" action="<?php echo site_url() . '/exporting/toCsvExam'; ?>">
                                 <div class="control-group" style="background: #f2f2f2;padding-right:1em;">                                            
                                     <label class="control-label">Download CSV for bulk upload</label>
                                     <div class="controls">
-                                        <input type="hidden" id="txtExamTerm" name="txtExamTerm" required/>
-                                        <input type="hidden" id="txtClassSessID" name="txtClassSessID" required/>                                        
-                                        <input type="hidden" id="txtClassName" name="txtClassName" required/>     
-                                        <input type="hidden" id="txtAssessmentArea" name="txtAssessmentArea" required/>
-                                        <input type="hidden" id="txtSubjectID" name="txtSubjectID" required/>
-                                        <input type="hidden" id="txtSubjectName" name="txtSubjectName" required/>
+                                        <input type="hidden" id="txtClassSessID" name="txtClassSessID" required/>
+                                        <input type="hidden" id="txtClassName" name="txtClassName" required/>
                                         <input type="submit" value="Download CSV" class="btn btn-success"/>                                        
                                     </div>                                            
                                 </div>
@@ -35,8 +31,8 @@
                     );
                     ?>
                     <?php echo form_open('#', $attrib_); ?>
-                    <div class="span6">
-                        <div class="widget-box" id="newClass">
+                    <div class="span5">
+                        <div class="widget-box"  id="newClass">
                             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                                 <h5>Input Students Marks</h5>
                             </div>
@@ -50,7 +46,7 @@
                                                 $data = array(
                                                     'name' => 'cmbExamTerm',
                                                     'id' => 'cmbExamTerm',
-                                                    'required' => 'required',                                                    
+                                                    'required' => 'required'
                                                 );
                                                 $options = array();
                                                 ?>
@@ -67,7 +63,7 @@
                                                 $data = array(
                                                     'name' => 'cmbClassofResult',
                                                     'id' => 'cmbClassofResult',
-                                                    'required' => 'required',                                                    
+                                                    'required' => 'required'
                                                 );
                                                 $options = array();
                                                 ?>
@@ -83,7 +79,7 @@
                                                 $data = array(
                                                     'name' => 'cmbAssessment',
                                                     'id' => 'cmbAssessment',
-                                                    'required' => 'required',                                                    
+                                                    'required' => 'required'
                                                 );
                                                 $options = array();
                                                 $options['0'] = 'Choose Assessment Area';
@@ -95,24 +91,41 @@
                                             </div>
                                         </div>
                                     </div> 
-                                    <div class="control-group" id="subjectHidden" style="display:none">
+                                    <div class="control-group" style="display:none" id="subjectHidden">
                                         <div class="control-group">
                                             <label class="control-label">Select Subject</label>
                                             <div class="controls">                                            
                                                 <?php
                                                 $data = array(
-                                                    'required' => 'required',
+                                                    'class' => 'required form-control m-bot8',
                                                     'name' => 'cmbSubjectMarks',
                                                     'id' => 'cmbSubjectMarks',
-                                                    'style' =>'width:70%;'                                                 
+                                                    'style' =>'width:98%;'
                                                 );
                                                 $options1 = array();
-                                                $options1[''] = 'Select Subject';
+                                                $options1[''] = 'SELECT SUBJECT';
                                                 echo form_dropdown($data, $options1);
                                                 ?>
-                                            </div>    
-                                        </div>                                    
-                                    </div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="control-group">
+                                            <label class="control-label">Select Assessment Item</label>
+                                            <div class="controls">
+                                                <?php
+                                                $data = array(
+                                                    'name' => 'cmbAssessmentItem',
+                                                    'id' => 'cmbAssessmentItem',
+                                                    'required' => 'required'
+                                                );
+                                                $options = array();
+                                                $options['0'] = 'Select Above Assessment Area';
+                                                ?>
+                                                <?php echo form_dropdown($data, $options, ''); ?>
+                                            </div>
+                                        </div>
+                                    </div>                                     
 
                                     <div class="control-group">
                                         <div class="control-group">
@@ -137,40 +150,48 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                  
-                                                                      
-                                </div>                                                                  
+                                    </div>
+                                </div>                                  
                             </div>  
                         </div>
-                    </div>          
-                    <div class="span6">                        
-                        <div class="control-group" id="uploadCsvFile" style="background: #FAC7C7;margin-top:1.3em;">                                            
-                            <label class="control-label">UPLOAD FILE</label>
-                            <div class="controls">
-                                <input type="file" name="userfile" id="userfile" required="required"><br>
-                                <div id="__reg_err_msg" style="font-size:1em;"></div><br>
-                                <input type="button" name="submitCSV" id="submitCSV" value="Upload CSV with marks" class="btn btn-success">
-                                <input type="button" name="updateCSV" id="updateCSV" value="Upload CSV with marks" class="btn btn-primary">
-                            </div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>                                   
-                                        <th style="text-align:center;background: #000;color:yellow;">OR FILL MARKS BELOW INDIVIDUALLY</th>                                            
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>          
-                    <div class="span12" style="margin-left:0 !important;">
+                    </div>                    
+                    <div class="span7">
                         <div class="widget-box">
                             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                                 <h5 id="exitHeading">Student Marks</h5>
-                            </div>                                                        
+                            </div>
                             
-                            <div class="widget-content nopadding" style="height:auto; overflow: scroll">                                                                      
-                                    <div id="tabStudentsMarks"> 
-                                                <!------------STUDENT DATA HERE FROM JS---------->
-                                    </div>                                
+                            <div class="control-group" id="uploadCsvFile" style="background: #f2f2f2;display:none">                                            
+                                <label class="control-label">UPLOAD FILE</label>
+                                <div class="controls">
+                                    <input type="file" name="userfile" id="userfile" required="required"><br>
+                                    <div id="__reg_err_msg" style="font-size:1em;"></div><br>
+                                    <input type="button" name="submitCSV" id="submitCSV" value="Upload CSV with marks" class="btn btn-success">
+                                    <input type="button" name="updateCSV" id="updateCSV" value="Upload CSV with marks" class="btn btn-primary">
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>                                   
+                                            <th style="text-align:center;background: #000;color:yellow;">OR FILL MARKS BELOW INDIVIDUALLY</th>                                            
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            
+                            <div class="widget-content nopadding" style="height:auto; overflow: scroll">  
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>                                   
+                                            <th style="text-align:left;width:30%">Reg. No.</th>
+                                            <th style="text-align:left;width:30%">Student Name</th>                                           
+                                            <th style="text-align: center" id="trMarks">Marks</th>                                            
+                                            <th style="text-align: center; width:15%">ABSENT</th>    
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabStudentsMarks"> 
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
