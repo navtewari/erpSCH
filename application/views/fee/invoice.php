@@ -45,7 +45,10 @@
 	                            	'class' => 'span12'
 	                            );
 	                            $options = array();
-	                            for($i=date('Y'); $i<=(date('Y')+1);$i++){
+	                            //for($i=date('Y')-1; $i<=(date('Y')+1);$i++){
+	                            $year__ = $this->session->userdata('_current_year_selected__');
+	                            $limit_year = $year__+ 2;
+	                            for($i=$year__; $i<=$limit_year; $i++){
 	                            	$options[$i] = $i;
 	                            }
 	                        ?>
@@ -82,7 +85,10 @@
 	                            	'class' => 'span12'
 	                            );
 	                            $options = array();
-	                            for($i=date('Y'); $i<=(date('Y')+1);$i++){
+	                            //for($i=date('Y'); $i<=(date('Y')+1);$i++){
+	                            $year__ = $this->session->userdata('_current_year_selected__');
+	                            $limit_year = $year__+ 2;
+	                            for($i=$year__; $i<=$limit_year; $i++){
 	                            	$options[$i] = $i;
 	                            }
 	                        ?>

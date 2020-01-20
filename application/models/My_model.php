@@ -30,6 +30,7 @@ class My_model extends CI_Model {
             $this->session->set_userdata('_status_', $row_->CATEGORY_ID);
             $this->session->set_userdata('_current_year___', $this->input->post('cmbSession'));
             $sess_ = explode("-", $this->input->post('cmbSession'));
+            $this->session->set_userdata('_current_year_selected__', $sess_[0]);
             $prevSess = ($sess_[0] - 1) . "-" . ($sess_[1] - 1);
             $this->session->set_userdata('_previous_year___', $prevSess);
             $flag_ = true;

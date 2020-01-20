@@ -32,6 +32,7 @@ class Login extends CI_Controller {
             '_status_',
             '_current_year___',
             '_previous_year___',
+            '_current_year_selected__',
         );
         $this->session->unset_userdata($data);
         redirect('login');
