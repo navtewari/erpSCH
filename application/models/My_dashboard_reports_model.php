@@ -24,6 +24,7 @@ class My_dashboard_reports_model extends CI_Model {
         $data['todays_receipt_count'] = $this->todays_receipt_count();
         $data['total_dues_in_a_session'] = $this->total_dues_in_a_session();
         $data['total_student_having_dues'] = $this->total_student_having_dues_in_a_session();
+        $data['count_view_result'] = $this->viewResult();
         return $data;
     }
 
@@ -456,7 +457,7 @@ class My_dashboard_reports_model extends CI_Model {
         $this -> db -> where ('b.SESSID', $year__);
         $this -> db -> where('e.STATUS_', 1);
         $this -> db -> where('d.STATUS', 1);
-        $this -> db -> where('d.DUE_AMOUNT>', 0);
+        $this->db->where('d.DUE_AMOUNT>', 0);
         $this -> db -> order_by('ABS(a.CLASSID)');
         $this -> db -> order_by('a.SECTION');
         $this -> db -> group_by('b.CLSSESSID');
@@ -484,6 +485,11 @@ class My_dashboard_reports_model extends CI_Model {
             
         );
         $this->db->insert('_fee_reminders', $data);
+    }
+    
+    function viewResult(){
+        $query =  $this->db->get('viewResult');
+        return $query->result();
     }
 
 }

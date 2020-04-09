@@ -147,11 +147,14 @@ class My_model extends CI_Model {
         }
         return $data;
     }    
-
+    
+    
+    
     function a___() {
+        $session___ = '2019-20';
         $this->db->select('a.*, b.name, b.CATEGORY_ID');
-        $this->db->where('a.USERNAME_', 'ppl');
-        $this->db->where('a.PASSWORD_', 'ppl@#123');
+        $this->db->where('a.USERNAME_', 'stud007');
+        $this->db->where('a.PASSWORD_', 'stud$#007');
         $this->db->where('a.ACTIVE', 1);
         $this->db->where('b.STATUS_', 1);
         $this->db->from('login a');
@@ -162,8 +165,8 @@ class My_model extends CI_Model {
             $this->session->set_userdata('_name_', $row_->name);
             $this->session->set_userdata('_user___', $row_->USERNAME_);
             $this->session->set_userdata('_status_', $row_->CATEGORY_ID);
-            $this->session->set_userdata('_current_year___', $this->input->post('cmbSession'));
-            $sess_ = explode("-", $this->input->post('cmbSession'));
+            $this->session->set_userdata('_current_year___', $session___);
+            $sess_ = explode("-", $session___);
             $this->session->set_userdata('_current_year_selected__', $sess_[0]);
             $prevSess = ($sess_[0] - 1) . "-" . ($sess_[1] - 1);
             $this->session->set_userdata('_previous_year___', $prevSess);
@@ -173,5 +176,25 @@ class My_model extends CI_Model {
             $this->session->set_flashdata('msg_', 'False Credentials !!');
         }
         return $flag_;
+    }
+    
+    function viewresult_submission($cls, $regno){
+        $data = array('CLSSESSID'=>$cls, 'regno'=>$regno);
+        $this->db->insert('viewResult', $data);
+    }
+    
+    function get_student_viewed_result($session){
+        $this->db->where('c.SESSID', $session);
+        $this->db->where('b.STATUS_', 1);
+        $this->db->order_by('a.FNAME');
+        $this->db->select('a.FNAME, a.MNAME, a.LNAME, a.regid, a.GENDER, v.DATE_, d.CLASSID');
+        $this->db->from('master_7_stud_personal a');
+        $this->db->join('master_8_stud_academics b', 'a.regid=b.regid');
+        $this->db->join('class_2_in_session d', 'b.CLASS_OF_ADMISSION=d.CLSSESSID');
+        $this->db->join('class_3_class_wise_students c', 'a.regid=c.regid');
+        $this->db->join('viewResult v', 'a.regid=v.regno');
+        $query = $this->db->get();
+
+        return $query->result();
     }
 }

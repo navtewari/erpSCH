@@ -27,6 +27,13 @@
 						Admissions  
 						</a> 
 					</li>
+					<li class="bg_lg"> 
+						<a href="<?php echo site_url('DashboardReports/view_result');?>"> 
+							<i class="icon-ok"></i> 
+							<span class="label label-important"><?php echo count($figure['count_view_result']); ?></span> 
+						View Result  
+						</a> 
+					</li>
 				</ul>
 			</div>
 		</div>

@@ -386,6 +386,7 @@ class Exam extends CI_Controller {
             $this->load->view('exam/'.$res_prefix.'/printResult-11', $data);  
         }else {
             die();
+            //$this->load->view('exam/'.$res_prefix.'/printResult-1to8', $data); 
         }        
     }    
     
@@ -635,11 +636,11 @@ class Exam extends CI_Controller {
     }
 
     function crossList($classsessid, $term){
-    	$classSessID = $classsessid;
+        $classSessID = $classsessid;
         $data['termLink'] = $term;
-    	$classID = $this->mem->mcheckClassID($classSessID);
-    	$data['classID'] = $classID;
-    	$regID =0; //whole class
+        $classID = $this->mem->mcheckClassID($classSessID);
+        $data['classID'] = $classID;
+        $regID =0; //whole class
         $data['session'] = array($this->session->userdata('_current_year___'));   
 
         $config["per_page"] = 100;
@@ -663,7 +664,7 @@ class Exam extends CI_Controller {
         
         $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
 
-    	$this->load->view('exam/crossList_class',$data);
+        $this->load->view('exam/crossList_class',$data);
     }
 
     function check_login() {
@@ -671,7 +672,7 @@ class Exam extends CI_Controller {
             redirect('login/logout');
         }
     }
-
+    
 
 
 
@@ -681,110 +682,117 @@ class Exam extends CI_Controller {
     // below function is actually used to show the result from website. This function will not be used in this softfware
     // Name is chnaged to 'x' from 'fetchResult'
 
-    function viewresult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0,$pagi = 0) {              
+    function viewresult($classSessID = 0, $regID = 0, $reportlayout = 0, $sidelayout = 0, $classID = 0,$pagi = 0) {   
         //ini_set('max_execution_time', 300);
-        if ($pagi == 0) {
-            $classSessID = $this->input->post('classSessHiddenID');
-            $regID = $this->input->post('stuHiddenID');
-            $reportlayout = $this->input->post('reportLayout');
-            $sidelayout = $this->input->post('sideLayout');
-        }
-        $this->check_login();
-        $classID = $this->mem->mcheckClassID($classSessID);
-        
-        $data['regID_'] = $regID;
-        $data['classID'] = $classID;
-        $data['session'] = array($this->session->userdata('_current_year___'));        
-        
-        if ($regID == 0) {
-            $pagi = 1;
-            $config = array();
-            $config["base_url"] = site_url("exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi);            
-            $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
-            $config["per_page"] = 10;
-            $config["uri_segment"] = 9;
-            $choice = $config["total_rows"] / $config["per_page"];
-
-            $config["num_links"] = round($choice);
-            $config['full_tag_open'] = '<ul class="pagination pagination-lg">';
-            $config['full_tag_close'] = '</ul>';
-            $config['first_link'] = false;
-            $config['last_link'] = false;
-            $config['first_tag_open'] = '<li>';
-            $config['first_tag_close'] = '</li>';
-            $config['prev_link'] = '&laquo';
-            $config['prev_tag_open'] = '<li class="prev">';
-            $config['prev_tag_close'] = '</li>';
-            $config['next_link'] = '&raquo';
-            $config['next_tag_open'] = '<li>';
-            $config['next_tag_close'] = '</li>';
-            $config['last_tag_open'] = '<li>';
-            $config['last_tag_close'] = '</li>';
-            $config['cur_tag_open'] = '<li class="active"><a href="#">';
-            $config['cur_tag_close'] = '</a></li>';
-            $config['num_tag_open'] = '<li>';
-            $config['num_tag_close'] = '</li>';
-
-            $this->pagination->initialize($config);
-            $page = ($this->uri->segment(9)) ? $this->uri->segment(9) : 0;
-            $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
-            $data["links"] = $this->pagination->create_links();
-                        
-            $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___'));             
-            $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
-            $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
-            $data['overall_result'] = $this->mem->get_overall_result_in_classLimit($classSessID, $config["per_page"], $page);
-        }
-                
-        
-        if($regID != 0){
-            $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
-            $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));            
-            $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
-        }
-
-        $data['exam_term'] = $this->mem->mget_examterm_in_session();
-        $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
-        $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
-        $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));                
-        
-        $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
-        $data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
-        $data['sch_name'] = $this->session->userdata('sch_name');
-        $data['sch_remark'] = $this->session->userdata('remark');
-        $data['sch_logo'] = $this->session->userdata('logo');
-        $data['sch_addr'] = $this->session->userdata('sch_addr');
-        $data['sch_contact'] = $this->session->userdata('sch_contact');
-        $data['sch_email'] = $this->session->userdata('sch_email');
-        $data['sch_distt'] = $this->session->userdata('sch_distt');
-        $data['sch_state'] = $this->session->userdata('sch_state');        
-        $data['sch_country'] = $this->session->userdata('sch_country');
-        $data['sch_aff'] = $this->session->userdata('affiliation');
-        $data['website'] = $this->session->userdata('website');
-        $data['reg_id'] = $regID;
-
-        $res_prefix= $this->session->userdata('res_prefix');        
+        //if($this->mm->chekPassword($pwd)){
+            if ($pagi == 0) {
+                $classSessID = $this->input->post('classSessHiddenID');
+                $regID = $this->input->post('stuHiddenID');
+                $reportlayout = $this->input->post('reportLayout');
+                $sidelayout = $this->input->post('sideLayout');
+            }
+            $this->check_login();
+            $classID = $this->mem->mcheckClassID($classSessID);
+            
+            $data['regID_'] = $regID;
+            $data['classID'] = $classID;
+            $data['session'] = array($this->session->userdata('_current_year___'));        
+            
+            if ($regID == 0) {
+                $pagi = 1;
+                $config = array();
+                $config["base_url"] = site_url("exam/fetchResult" . "/" . $classSessID . "/" . $regID . "/" . $reportlayout . "/" . $sidelayout . "/" . $classID . "/" . $pagi);            
+                $config["total_rows"] = count($this->mem->mfetchStuDatainClass($classSessID));
+                $config["per_page"] = 10;
+                $config["uri_segment"] = 9;
+                $choice = $config["total_rows"] / $config["per_page"];
+    
+                $config["num_links"] = round($choice);
+                $config['full_tag_open'] = '<ul class="pagination pagination-lg">';
+                $config['full_tag_close'] = '</ul>';
+                $config['first_link'] = false;
+                $config['last_link'] = false;
+                $config['first_tag_open'] = '<li>';
+                $config['first_tag_close'] = '</li>';
+                $config['prev_link'] = '&laquo';
+                $config['prev_tag_open'] = '<li class="prev">';
+                $config['prev_tag_close'] = '</li>';
+                $config['next_link'] = '&raquo';
+                $config['next_tag_open'] = '<li>';
+                $config['next_tag_close'] = '</li>';
+                $config['last_tag_open'] = '<li>';
+                $config['last_tag_close'] = '</li>';
+                $config['cur_tag_open'] = '<li class="active"><a href="#">';
+                $config['cur_tag_close'] = '</a></li>';
+                $config['num_tag_open'] = '<li>';
+                $config['num_tag_close'] = '</li>';
+    
+                $this->pagination->initialize($config);
+                $page = ($this->uri->segment(9)) ? $this->uri->segment(9) : 0;
+                $data['student_per_data'] = $this->mem->mfetchStuDatainClassLimitwise($classSessID, $config["per_page"], $page);
+                $data["links"] = $this->pagination->create_links();
+                            
+                $data['subject_marks'] = $this->mem->mfetchSubMarkswholeClass($regID,$classSessID, $this->session->userdata('_current_year___'));             
+                $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+                $data['discipline_marks'] = $this->mem->mdisciplineMarksLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);
+                $data['teacher_remarks'] = $this->mem->checkregIDRemarkLimit($classSessID, $this->session->userdata('_current_year___'), $config["per_page"], $page);            
+                $data['overall_result'] = $this->mem->get_overall_result_in_classLimit($classSessID, $config["per_page"], $page);
+            }
                     
-        if ($reportlayout == 1 && $sidelayout == 1) {            
-            $this->load->view('exam/'.$res_prefix.'/printResult-1to8-1', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 1) {            
-            $this->load->view('exam/'.$res_prefix.'/printResult-9-1', $data);                  
-        } else if ($reportlayout == 1 && $sidelayout == 2) {            
-            $this->load->view('exam/'.$res_prefix.'/printResult-1to8', $data);
-        } else if ($reportlayout == 2 && $sidelayout == 2) {             
-            $this->load->view('exam/'.$res_prefix.'/printResult-9', $data);
-        } else if ($reportlayout == 3 && $sidelayout == 2) {            
-            $this->load->view('exam/'.$res_prefix.'/printResult-lkg', $data);
-        } else if ($reportlayout == 4 && $sidelayout == 2) {            
-            $this->load->view('exam/'.$res_prefix.'/printResult-11', $data);  
-        }else {
-            die();
-        }        
+            
+            if($regID != 0){
+                $data['subject_marks'] = $this->mem->mfetchSubMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+                $data['coSch_marks'] = $this->mem->mcoSchMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+                $data['discipline_marks'] = $this->mem->mdisciplineMarks($regID, $classSessID, $this->session->userdata('_current_year___'));
+                $data['teacher_remarks'] = $this->mem->checkregIDRemark($regID, $classSessID, $this->session->userdata('_current_year___'));            
+                $data['overall_result'] = $this->mem->get_overall_result_in_class($regID, $classSessID);
+            }
+    
+            $data['exam_term'] = $this->mem->mget_examterm_in_session();
+            $data['term_class'] = $this->mem->mfetchterm_class($classSessID, $this->session->userdata('_current_year___'));
+            $data['sch_data_class'] = $this->mem->mfetchScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+            $data['cosch_data_class'] = $this->mem->mfetchcoScholasticClassWise($classSessID, $this->session->userdata('_current_year___'));
+            $data['discipline_data_class'] = $this->mem->mfetchdisciplineClassWise($classSessID, $this->session->userdata('_current_year___'));
+            $data['subject_class'] = $this->mem->mfetchSubClassWise($classID, $this->session->userdata('_current_year___'));                
+            
+            $data['class_grade'] = $this->mem->get_grade_in_class($classSessID);
+            $data['sch_data'] = $this->mem->mfetchScholasticResult($regID, $this->session->userdata('_current_year___'), $classID, $classSessID);
+            $data['sch_name'] = $this->session->userdata('sch_name');
+            $data['sch_remark'] = $this->session->userdata('remark');
+            $data['sch_logo'] = $this->session->userdata('logo');
+            $data['sch_addr'] = $this->session->userdata('sch_addr');
+            $data['sch_contact'] = $this->session->userdata('sch_contact');
+            $data['sch_email'] = $this->session->userdata('sch_email');
+            $data['sch_distt'] = $this->session->userdata('sch_distt');
+            $data['sch_state'] = $this->session->userdata('sch_state');        
+            $data['sch_country'] = $this->session->userdata('sch_country');
+            $data['sch_aff'] = $this->session->userdata('affiliation');
+            $data['website'] = $this->session->userdata('website');
+            $data['reg_id'] = $regID;
+    
+            $res_prefix= $this->session->userdata('res_prefix');        
+                        
+            if ($reportlayout == 1 && $sidelayout == 1) {            
+                $this->load->view('exam/'.$res_prefix.'/printResult-1to8-1', $data);
+            } else if ($reportlayout == 2 && $sidelayout == 1) {            
+                $this->load->view('exam/'.$res_prefix.'/printResult-9-1', $data);                  
+            } else if ($reportlayout == 1 && $sidelayout == 2) {            
+                $this->load->view('exam/'.$res_prefix.'/printResult-1to8', $data);
+            } else if ($reportlayout == 2 && $sidelayout == 2) {             
+                $this->load->view('exam/'.$res_prefix.'/printResult-9', $data);
+            } else if ($reportlayout == 3 && $sidelayout == 2) {            
+                $this->load->view('exam/'.$res_prefix.'/printResult-lkg', $data);
+            } else if ($reportlayout == 4 && $sidelayout == 2) {            
+                $this->load->view('exam/'.$res_prefix.'/printResult-11', $data);  
+            }else {
+                die();
+            }   
+            if(count($data['overall_result'])!=0) $this->mm->viewresult_submission($classSessID, $regID);
+        //} else {
+            //echo "Creditials are not correct. Please try again<br><br>";
+            //echo "<a href='".site_url('viewresult/sunbeamschool')."'>Click to Try again...</a>";
+        //}
     }
+
 
 }

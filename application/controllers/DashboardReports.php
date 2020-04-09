@@ -295,6 +295,27 @@ class DashboardReports extends CI_Controller {
         }
         echo json_encode($data);
     }
+    
+    function view_result(){
+        $this->check_login();
+
+        $data['inner_page'] = 'view_result';
+        $data['active'] = 1;
+
+        $data['page_'] = 'dashboard_reports';
+        $data['title_'] = "Total Viewed Result";
+        $data['student_in_current_session'] = $this->mm->get_student_viewed_result($this->session->userdata('_current_year___'));
+
+        $data['menu'] = $this->mm->getmenu($this->session->userdata('_status_'), 1);
+        $data['sub_menu'] = $this->mm->getsubmenu();
+
+        $data['figure'] = $this->dr->all_figures_for_dashboard($this->session->userdata('_current_year___'));
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/menu', $data);
+        $this->load->view('dashboard', $data);
+        $this->load->view('templates/footer');
+    }
     function check_login() {
         if (!$this->session->userdata('_user___')) {
             redirect('login/logout');
