@@ -331,5 +331,10 @@ class Fee extends CI_Controller {
         function prac($class__, $yr_from, $mnth_from, $yr_to, $mnth_to){
             print_r($this->fm->get_invoice_without_any_receipt($class__, $yr_from, $mnth_from, $yr_to, $mnth_to));
         }
+
+        function menu(){
+            $class__ = 'UKG';
+            echo json_encode($this->mm->getmenu('adm', 1));
+        }
     // ------------------------------------
 }

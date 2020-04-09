@@ -6,7 +6,7 @@
         2017 &copy; Design &amp; Developed by <a href="http://teamfreelancers.com" target="_blank">Teamfreelancers.com</a></div>
 </div>
 
-<script src="<?php echo base_url('assets_/js/jquery.min.js'); ?>"></script> 
+ 
 <script src="<?php echo base_url('assets_/js/jquery.ui.custom.js'); ?>"></script> 
 <script src="<?php echo base_url('assets_/js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets_/js/myjs.js'); ?>?version=<?php echo JS_VERSION_NITIN; ?>"></script>  
