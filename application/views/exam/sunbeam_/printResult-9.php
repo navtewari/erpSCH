@@ -16,7 +16,7 @@ function numberToRomanRepresentation($number) {
 }
 ?>
     <html>
-        <head>
+        <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title> Result of Class <?php echo $classID; ?> </title>
             <!-- Bootstrap CSS -->
             <link href="<?PHP echo base_url() . 'assets_/css/bootstrap.min.css'; ?>" rel="stylesheet">
@@ -89,14 +89,15 @@ function numberToRomanRepresentation($number) {
                                 <tr>
                                     <td valign="top">
                                         <table border="0" width="100%" height="95%" cellpadding="2" align="center">        
-                                            <tr align="center">                                    
+                                            <tr align="center"> 
+                                            <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
                                                 <td>
                                                     <h1><?php echo $sch_name; ?></h1>
                                                     <h3><?php echo $sch_remark; ?></h3>
                                                     <h3><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h3> 
                                                     <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                                 </td>
-                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
+                                                
                                             </tr>
                                             <tr align="center" height="100px;">
                                                 <td colspan="2">
@@ -319,7 +320,7 @@ function numberToRomanRepresentation($number) {
                                                         </tr>                                        
                                                         <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: 
+                                                                &nbsp;&nbsp;Conduct: 
                                                                  <?php
                                                                     foreach ($teacher_remarks as $remarks) {
                                                                         echo $remarks->promotedClass;
@@ -358,14 +359,15 @@ function numberToRomanRepresentation($number) {
                                 	<tr>
                                     	<td valign="top">
                                         	<table border="0" width="100%" height="95%" cellpadding="2" align="center">
-                                    			<tr align="center">                                    
+                                    			<tr align="center">   
+                                    			<td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
 	                                                <td>
 	                                                    <h1><?php echo $sch_name; ?></h1>
 	                                                    <h3><?php echo $sch_remark; ?></h3>
 	                                                    <h3><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h3> 
 	                                                    <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
 	                                                </td>
-	                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
+	                                                
 	                                            </tr>
 	                                            <tr align="center" height="100px;">
 	                                                <td colspan="2">
@@ -464,7 +466,7 @@ function numberToRomanRepresentation($number) {
                                                                                     echo "<td align=center>" . $subjectMarks[$loop] . "</td>";
                                                                             }
                                                                         }else{                                                                        
-                                                                            for ($loop = 1; $loop <  $schCount; $loop++) { 
+                                                                            for ($loop = 1; $loop <  $schCount+1; $loop++) { 
                                                                                  echo "<td align=center> </td>";   
                                                                             }
                                                                         }
@@ -589,7 +591,7 @@ function numberToRomanRepresentation($number) {
 				                                            </tr>
                                                             <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: 
+                                                                &nbsp;&nbsp;Conduct: 
                                                                 <?php
                                                                         foreach ($teacher_remarks as $remarks) {
                                                                             if ($stuREGID == $remarks->regid) {

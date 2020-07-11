@@ -102,14 +102,15 @@ function numberToRomanRepresentation($number) {
                     <div class="row">
                         <div class="col-sm-12" style="align-items:center; justify-content:center;">
                             <table border="0" height="100%" cellpadding="0" class="table_" align="center">
-                                <tr align="center" height="140">                                    
+                                <tr align="center" height="140">   
+                                <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
                                     <td valign="top">
                                         <h1><?php echo $sch_name; ?></h1>
                                         <h3 class="marginLarge"><?php echo $sch_remark; ?></h3>
                                         <h4 class="marginLarge"><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
                                         <h4 class="marginLarge"><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                     </td>
-                                    <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
+                                    
                                 </tr>
                                 <tr align="center" height="40px">
                                     <td colspan="2">
@@ -327,7 +328,7 @@ function numberToRomanRepresentation($number) {
                                             </tr>
                                             <tr height="50px">
                                                 <td colspan="5" valign="top" style="font-size:18px;">
-                                                    &nbsp;&nbsp;Note: 
+                                                    &nbsp;&nbsp;Conduct: 
                                                     <?php
                                                         foreach ($teacher_remarks as $remarks) {
                                                             echo $remarks->promotedClass;
@@ -359,14 +360,15 @@ function numberToRomanRepresentation($number) {
                         <div class="row page" style="page-break-after: always;">
                             <div class="col-sm-12" style="align-items:center; justify-content:center;">
                                 <table border="0" height="100%" cellpadding="0" class="table_" align="center">
-                                    <tr align="center" height="140">                                
+                                    <tr align="center" height="140"> 
+                                    <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
                                         <td>
                                             <h1><?php echo $sch_name; ?></h1>
                                             <h3 class="marginLarge"><?php echo $sch_remark; ?></h3>
                                             <h4 class="marginLarge"><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h4> 
                                             <h4 class="marginLarge"><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                         </td>
-                                        <td width="150" valign="top" style="padding-right:2em;padding-top:5px;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="100"/></td>
+                                        
                                     </tr>
                                     <tr align="center" height="40px">
                                     <td colspan="2">
@@ -578,7 +580,7 @@ function numberToRomanRepresentation($number) {
                                                 </tr>
                                                 <tr height="30px">
                                                     <td colspan="5" valign="top" style="font-size:15px;">
-                                                        &nbsp;&nbsp;Note: 
+                                                        &nbsp;&nbsp;Conduct: 
                                                         <?php
                                                                         foreach ($teacher_remarks as $remarks) {
                                                                             if ($stuREGID == $remarks->regid) {

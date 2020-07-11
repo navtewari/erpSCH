@@ -93,14 +93,14 @@
                                 <tr>
                                     <td valign="top">
                                         <table border="0" width="100%" height="95%" cellpadding="2" align="center">        
-                                            <tr align="center">                                    
+                                            <tr align="center">
+                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>                                    
                                                 <td>
                                                     <h1><?php echo $sch_name; ?></h1>
                                                     <h3><?php echo $sch_remark; ?></h3>
                                                     <h3><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h3> 
                                                     <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                                 </td>
-                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
                                             </tr>
                                             <tr align="center" height="100px;">
                                                 <td colspan="2">
@@ -315,9 +315,9 @@
                                                                    
                                                                     foreach ($overall_result as $over_result) {
                                                                         if ($term == 1) {
-                                                                            echo $over_result->ATT_TERM1;
+                                                                            echo $over_result->ATT_TERM1 . "/" . $over_result->TOT_ATT_TERM1;
                                                                         } else {
-                                                                            echo $over_result->ATT_TERM2;
+                                                                            echo $over_result->ATT_TERM2. "/" . $over_result->TOT_ATT_TERM2;
                                                                         }                                                                        
                                                                     }
                                                                     if ($term == 1) {
@@ -404,7 +404,7 @@
                                                         </tr>
                                                         <tr height="50px">
                                                             <td colspan="5" valign="top" style="font-size:18px;">
-                                                                &nbsp;&nbsp;Note: <?php
+                                                                &nbsp;&nbsp;Conduct: <?php
                                                                     foreach ($teacher_remarks as $remarks) {
                                                                         echo $remarks->promotedClass;
                                                                     }?>
@@ -441,14 +441,15 @@
                                     <tr>
                                         <td valign="top">
                                             <table border="0" width="100%" height="95%" cellpadding="2" align="center">
-                                                <tr align="center">                                    
+                                                <tr align="center"> 
+                                                <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
                                                     <td>
                                                         <h1><?php echo $sch_name; ?></h1>
                                                         <h3><?php echo $sch_remark; ?></h3>
                                                         <h3><?php echo $sch_addr . ', Haldwani (' . $sch_distt . ') 263139'; ?></h3> 
                                                         <h4><?php echo $sch_aff; ?>, Website- <?php echo $website; ?></h4>
                                                     </td>
-                                                    <td width="150" valign="top" style="padding-right:1em;padding-top:2.5em;"><img src='<?php echo base_url('assets_/' . $this->session->userdata('db2') . '/logo/' . $this->session->userdata('logo')); ?>?ver=<?php echo _NITIN_IMG_VERSION_; ?>' width="140"/></td>
+                                                    
                                                 </tr>
                                                 <tr align="center" height="100px;">
                                                     <td colspan="2">
@@ -661,13 +662,14 @@
                                                                     <td width="43%" align="center" colspan="<?php echo ($schCount + 2); ?>">
                                                                     <?php
                                                                         
-                                                                        foreach ($overall_result as $over_result) {
-                                                                            
+                                                                        foreach ($overall_result as $over_result) {  
+                                                                            if ($stuREGID == $over_result->regid) {                                                                                                                                                      
                                                                                 if ($term == 1) {
-                                                                                    echo $over_result->ATT_TERM1;
+                                                                                    echo $over_result->ATT_TERM1 . "/" . $over_result->TOT_ATT_TERM1;
                                                                                 } else {
-                                                                                    echo $over_result->ATT_TERM2;
-                                                                                }                                                                                
+                                                                                    echo $over_result->ATT_TERM2. "/" . $over_result->TOT_ATT_TERM2;
+                                                                                }  
+                                                                            }                                                                              
                                                                             
                                                                         }
                                                                         if ($term == 1) {
@@ -758,7 +760,7 @@
                                                             </tr>
                                                             <tr height="50px">
                                                                 <td colspan="5" valign="top" style="font-size:18px;">
-                                                                    &nbsp;&nbsp;Note: 
+                                                                    &nbsp;&nbsp;Conduct: 
                                                                     <?php
                                                                         foreach ($teacher_remarks as $remarks) {
                                                                             if ($stuREGID == $remarks->regid) {
